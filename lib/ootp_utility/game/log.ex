@@ -1,7 +1,7 @@
 defmodule OOTPUtility.Game.Log do
   require IEx
 
-  alias OOTPUtility.Game.Event
+  alias OOTPUtility.Game.Log.Line
   alias OOTPUtility.Repo
 
   @moduledoc """
@@ -47,7 +47,7 @@ defmodule OOTPUtility.Game.Log do
     {path, Enum.sum(chunk_counts)}
   end
 
-  @spec import_from_list([String.t()]) :: [%Event{}]
+  @spec import_from_list([String.t()]) :: [%Line{}]
   def import_from_list(stream) do
     stream
     |> Stream.map(&String.split(&1,","))

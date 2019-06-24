@@ -1,8 +1,8 @@
-defmodule OOTPUtility.Game.Event do
+defmodule OOTPUtility.Game.Log.Line do
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "game_events" do
+  schema "game_log_lines" do
     field :formatted_text, :string
     field :game_id, :integer
     field :line, :integer
