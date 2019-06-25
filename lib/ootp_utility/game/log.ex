@@ -9,6 +9,21 @@ defmodule OOTPUtility.Game.Log do
   """
 
   @doc """
+  Returns the raw_text of all log lines which are not yet formatted
+
+  ## Examples
+
+      iex> unformatted_lines()
+  """
+  @spec unformatted_lines() :: [String.t()]
+  def unformatted_lines() do
+      Line.unformatted
+      |> Line.pitch_descriptions
+      |> Line.raw_text
+      |> Repo.all
+  end
+
+  @doc """
   Import the raw GameLog data from a file or director and insert them into the database
 
   ## Examples
