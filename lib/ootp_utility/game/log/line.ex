@@ -42,4 +42,15 @@ defmodule OOTPUtility.Game.Log.Line do
   def pitch_descriptions(query \\ OOTPUtility.Game.Log.Line) do
     from l in query, where: l.type == 3
   end
+
+  @doc """
+  Return all 'raw_text' fields for the Line
+
+  ## Examples
+    iex> OOTPUtility.Game.Log.Line.raw_text()
+  """
+  @spec raw_text(Ecto.Query.t() | Line.t()) :: Ecto.Query.t()
+  def raw_text(query \\ OOTPUtility.Game.Log.Line) do
+    from l in query, select: l.raw_text, limit: 100
+  end
 end

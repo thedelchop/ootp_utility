@@ -50,4 +50,18 @@ defmodule OOTPUtility.Game.Log.LineTest do
       assert Enum.count(results) == 1
     end
   end
+
+  describe "#raw_text" do
+    test "returns a query that selects all of the raw text from the log lines" do
+      foul_ball = Fixtures.create_game_log_line(%{raw_text: "0-0: Foul Ball, (location: 2F)"})
+      strike_out = Fixtures.create_game_log_line(%{raw_text: "1-2: Strikes Out Looking"})
+
+      results = Repo.all(Line.raw_text)
+
+      assert Enum.member?(results, foul_ball.raw_text)
+      assert Enum.member?(results, strike_out.raw_text)
+
+      assert Enum.count(results) == 2
+    end
+  end
 end
