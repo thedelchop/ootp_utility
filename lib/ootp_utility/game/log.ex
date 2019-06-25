@@ -41,7 +41,7 @@ defmodule OOTPUtility.Game.Log do
   end
 
   @spec import_from_file(Path.t()) :: {String.t(), integer}
-  def import_from_file(path) do
+  defp import_from_file(path) do
     chunk_counts = path
       |> File.stream!
       |> Stream.map(&String.trim(&1))
@@ -63,7 +63,7 @@ defmodule OOTPUtility.Game.Log do
   end
 
   @spec import_from_list([String.t()]) :: [%Line{}]
-  def import_from_list(stream) do
+  defp import_from_list(stream) do
     stream
     |> Stream.map(&String.split(&1,","))
     |> Stream.filter(fn
