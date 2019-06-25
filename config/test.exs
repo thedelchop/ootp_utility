@@ -2,8 +2,6 @@ use Mix.Config
 
 # Configure your database
 config :ootp_utility, OOTPUtility.Repo,
-  username: "postgres",
-  password: "postgres",
   database: "ootp_utility_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
