@@ -1,7 +1,7 @@
 defmodule OOTPUtility.Game.LogTest do
   use OOTPUtility.DataCase
 
-  alias OOTPUtility.{Fixtures, Repo, Game}
+  alias OOTPUtility.Fixtures
   alias OOTPUtility.Game.Log
 
   describe "unformatted_lines" do
