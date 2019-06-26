@@ -60,4 +60,21 @@ defmodule OOTPUtility.Game.Log.Line do
       |> limit([], 100)
       |> select([l], l.raw_text)
   end
+
+  @doc """
+  Take the Line's raw text, run it through the list of transformations
+  and set the result as the Line's formatted text
+  """
+  @spec format_raw_text(Line.t()) :: String.t()
+  def format_raw_text(line) do
+    {formatters, _} = Code.eval_file("priv/formatters.exs")
+
+    formatters
+    |> Enum.reduce(line.raw_text, fn 
+      formatter, formatted_text ->
+        {regex, format_fn} = formatter
+
+        Regex.replace(regex, formatted_text, format_fn)
+    end)
+  end
 end

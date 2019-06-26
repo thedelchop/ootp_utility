@@ -64,4 +64,13 @@ defmodule OOTPUtility.Game.Log.LineTest do
       assert Enum.count(results) == 2
     end
   end
+
+  describe "#format_raw_text" do
+    test "formats the string" do
+      formatted_line =  Fixtures.create_game_log_line(%{raw_text: "0-0: Foul Ball, (location: 2F)"})
+                        |> Line.format_raw_text
+
+      assert formatted_line == "0-0: Strike (Foul Ball, 2F)"
+    end
+  end
 end
