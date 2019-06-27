@@ -19,5 +19,12 @@
       _, count ->
         "#{count}: Ball"
     end)
+  },
+  {
+    ~r/^(\d-\d):\sStrikes\sout\sswinging$/,
+    (fn 
+      _, count ->
+        "#{count}: Strikeout (Swinging)"
+    end)
   }
 ]

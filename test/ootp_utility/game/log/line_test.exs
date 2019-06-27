@@ -70,7 +70,8 @@ defmodule OOTPUtility.Game.Log.LineTest do
     @formattable_strings [
       {"0-0: Foul Ball, (location: 2F)", "0-0: Strike (Foul Ball, 2F)" },
       {"1-0: Called Strike", "1-0: Strike (Looking)" },
-      {"1-1: Ball", "1-1: Ball" }
+      {"1-1: Ball", "1-1: Ball" },
+      {"2-2: Strikes out swinging", "2-2: Strikeout (Swinging)" }
     ]
 
     test "formats the string" do
