@@ -12,5 +12,12 @@
       _, count ->
         "#{count}: Strike (Looking)"
     end)
+  },
+  {
+    ~r/^(\d-\d):\sBall$/,
+    (fn 
+      _, count ->
+        "#{count}: Ball"
+    end)
   }
 ]
