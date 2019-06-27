@@ -66,11 +66,19 @@ defmodule OOTPUtility.Game.Log.LineTest do
   end
 
   describe "#format_raw_text" do
-    test "formats the string" do
-      formatted_line =  Fixtures.create_game_log_line(%{raw_text: "0-0: Foul Ball, (location: 2F)"})
-                        |> Line.format_raw_text
 
-      assert formatted_line == "0-0: Strike (Foul Ball, 2F)"
+    @formattable_strings [
+      {"0-0: Foul Ball, (location: 2F)", "0-0: Strike (Foul Ball, 2F)" },
+      {"1-0: Called Strike", "1-0: Strike (Looking)" }
+    ]
+
+    test "formats the string" do
+      for {raw, formatted} <- @formattable_strings do
+        formatted_line =  Fixtures.create_game_log_line(%{raw_text: raw})
+                          |> Line.format_raw_text
+
+        assert formatted_line == formatted
+      end
     end
 
     test "returns nil if the string was not formatted" do
