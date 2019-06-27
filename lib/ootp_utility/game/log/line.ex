@@ -69,12 +69,14 @@ defmodule OOTPUtility.Game.Log.Line do
   def format_raw_text(line) do
     {formatters, _} = Code.eval_file("priv/formatters.exs")
 
-    formatters
+    formatted_text = formatters
     |> Enum.reduce(line.raw_text, fn 
       formatter, formatted_text ->
         {regex, format_fn} = formatter
 
         Regex.replace(regex, formatted_text, format_fn)
     end)
+
+    if (formatted_text != line.raw_text), do: formatted_text, else: nil
   end
 end

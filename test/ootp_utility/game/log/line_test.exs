@@ -72,5 +72,13 @@ defmodule OOTPUtility.Game.Log.LineTest do
 
       assert formatted_line == "0-0: Strike (Foul Ball, 2F)"
     end
+
+    test "returns nil if the string was not formatted" do
+      formatted_line =  Fixtures.create_game_log_line(%{raw_text: "UNRECOGNIZED GAME EVENT"})
+                        |> Line.format_raw_text
+
+      assert is_nil(formatted_line)
+    end
+    
   end
 end
