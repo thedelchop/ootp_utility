@@ -9,6 +9,32 @@ defmodule OOTPUtility.Game.Log do
   """
 
   @doc """
+  Run all log lines that have yet to be formatted through the Log.Formatter, returns an error
+  if there are still log lines that are unformatted an error is returned with an array of all
+  the lines that were not processed by the formatter
+
+  ## Examples
+
+      iex> {:ok, lines_that_were_formatted} = Log.format_lines
+
+      iex> {:error, lines_that_still_need_formatting} = Log.format_lines
+  """
+  @spec format_lines(Ecto.Query.t() | Line.t()) :: {:ok, [Line.t()]} | {:error, [Line.t()]}
+  def format_lines(query \\ Line) do
+    formatted_line_attrs =
+      query
+      |> Ecto.Queryable.to_query
+      |> Line.unformatted
+      |> Line.pitch_descriptions
+      |> Repo.all
+      |> Enum.map(fn
+        line -> %{id: line.id, formatted_text: Line.format_raw_text(line)}
+      end)
+
+    Repo.insert_all(Line, formatted_line_attrs, on_conflict: {:replace, [:formatted_text]}, conflict_target: [:id])
+  end
+
+  @doc """
   Returns the raw_text of all log lines which are not yet formatted
 
   ## Examples
