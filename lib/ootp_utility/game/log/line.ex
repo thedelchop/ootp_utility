@@ -67,7 +67,7 @@ defmodule OOTPUtility.Game.Log.Line do
   """
   @spec format_raw_text(Line.t()) :: String.t()
   def format_raw_text(line) do
-    {formatters, _} = Code.eval_file("priv/formatters.exs")
+    {formatters, _} = Code.eval_file("priv/formatters.ex")
 
     case Enum.any?(formatters, fn {regex, _} -> Regex.match?(regex, line.raw_text) end) do
       true ->
