@@ -40,5 +40,19 @@
       _, count, scoring, location ->
         "#{count}: Ground out, #{scoring}, (Groundball, #{location})"
     end)
+  },
+  {
+    ~r/(\d-\d):\s+(\d-RUN|SOLO|GRAND\sSLAM)\sHOME\sRUN\s+\((Flyball|Line\sDrive),\s([1-9]{0,2}[A-Z]{0,3})\),\sDistance\s:\s([1-9]{3})\sft$/,
+    (fn
+      _, count, runs_scored, type, location, distance ->
+        runs = case runs_scored do
+          "SOLO" -> 1
+          "2-RUN"-> 2
+          "3-RUN" -> 3
+          "GRAND SLAM" -> 4
+        end
+
+        "#{count}: Home Run, #{runs}R, (#{type}, #{location}, #{distance} ft)"
+    end)
   }
 ]
