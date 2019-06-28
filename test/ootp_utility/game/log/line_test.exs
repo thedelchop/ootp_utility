@@ -73,7 +73,10 @@ defmodule OOTPUtility.Game.Log.LineTest do
       {"1-0: Called Strike", "1-0: Strike (Called)" },
       {"1-0: Swinging Strike", "1-0: Strike (Swinging)" },
       {"1-1: Ball", "1-1: Ball" },
-      {"2-2: Strikes out swinging", "2-2: Strikeout (Swinging)" }
+      {"2-2: Strikes out swinging", "2-2: Strikeout (Swinging)" },
+      {"1-0: Fly out, F8 (Line Drive, 8RM)", "1-0: Fly out, F8, (Line Drive, 8RM)"},
+      {"0-0: Fly out, F3 (Popup, 3)", "0-0: Fly out, F3, (Popup, 3)"},
+      {"0-1: Fly out, F1 (Line Drive, P)", "0-1: Fly out, F1, (Line Drive, P)"},
     ]
 
     test "formats the string" do
