@@ -72,6 +72,7 @@ defmodule OOTPUtility.Game.Log do
       |> File.stream!
       |> Stream.map(&String.trim(&1))
       |> Stream.map(&HtmlSanitizeEx.strip_tags(&1))
+      |> Stream.map(&String.replace(&1, ~r/\s+/, " "))
       |> Stream.map(&String.replace(&1, ~s("), ""))
       |> Stream.flat_map(&String.split(&1, "\n"))
       |> Stream.chunk_every(10_000)
