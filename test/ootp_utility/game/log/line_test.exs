@@ -67,9 +67,11 @@ defmodule OOTPUtility.Game.Log.LineTest do
 
   describe "#format_raw_text" do
 
+    # These are example strings from the actual dataset, which should give me a good feel for if I'm catching all the cases
     @formattable_strings [
       {"0-0: Foul Ball, (location: 2F)", "0-0: Strike (Foul Ball, 2F)" },
-      {"1-0: Called Strike", "1-0: Strike (Looking)" },
+      {"1-0: Called Strike", "1-0: Strike (Called)" },
+      {"1-0: Swinging Strike", "1-0: Strike (Swinging)" },
       {"1-1: Ball", "1-1: Ball" },
       {"2-2: Strikes out swinging", "2-2: Strikeout (Swinging)" }
     ]

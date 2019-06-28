@@ -7,10 +7,10 @@
     end)
   },
   {
-    ~r/^(\d-\d):\sCalled\sStrike$/,
+    ~r/^(\d-\d):\s(Called|Swinging)\sStrike$/,
     (fn 
-      _, count ->
-        "#{count}: Strike (Looking)"
+      _, count, type ->
+        "#{count}: Strike (#{type})"
     end)
   },
   {
