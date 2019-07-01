@@ -19,19 +19,32 @@ defmodule OOTPUtility.Game.Log do
 
       iex> {:error, lines_that_still_need_formatting} = Log.format_lines
   """
-  @spec format_lines(Ecto.Query.t() | Line.t()) :: {:ok, [Line.t()]} | {:error, [Line.t()]}
-  def format_lines(query \\ Line) do
-    formatted_line_attrs =
-      query
-      |> Ecto.Queryable.to_query
-      |> Line.unformatted
-      |> Line.pitch_descriptions
-      |> Repo.all
-      |> Enum.map(fn
-        line -> %{id: line.id, formatted_text: Line.format_raw_text(line)}
-      end)
+ @spec format_lines(Ecto.Query.t() | Line.t()) :: {:ok, integer} | {:error, String.t() }
+ def format_lines(query \\ Line) do
+    try do
+      formatted_lines_count =
+        query
+        |> Ecto.Queryable.to_query
+        |> Line.unformatted
+        |> Line.pitch_descriptions
+        |> Repo.all
+        |> Enum.map(fn
+          line -> %{id: line.id, formatted_text: Line.format_raw_text(line)}
+        end)
+        |> Enum.filter(fn
+          %{formatted_text: nil} -> false
+          _ -> true
+        end)
+        |> Enum.chunk_every(32768)
+        |> Enum.map(&Repo.insert_all(Line, &1, on_conflict: {:replace, [:formatted_text]}, conflict_target: [:id]))
+        |> Enum.reduce(fn
+          {count, _}, sum ->
+            sum + count
+        end)
 
-    Repo.insert_all(Line, formatted_line_attrs, on_conflict: {:replace, [:formatted_text]}, conflict_target: [:id])
+        {:ok, formatted_lines_count}
+    rescue error in Postgrex.Error  -> {:error, error.message}
+    end
   end
 
   @doc """
