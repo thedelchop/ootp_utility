@@ -70,6 +70,7 @@ defmodule OOTPUtility.Game.Log.LineTest do
     # These are example strings from the actual dataset, which should give me a good feel for if I'm catching all the cases
     @formattable_strings [
       {"0-0: Foul Ball, (location: 2F)", "0-0: Strike (Foul Ball, 2F)" },
+      {"1-0: Bunted foul", "1-0: Strike (Foul Ball, 2F)"},
       {"1-0: Called Strike", "1-0: Strike (Called)" },
       {"1-0: Swinging Strike", "1-0: Strike (Swinging)" },
       {"1-1: Ball", "1-1: Ball" },
@@ -87,7 +88,7 @@ defmodule OOTPUtility.Game.Log.LineTest do
       {"1-0: SINGLE  (Flyball, 8RS)", "1-0: Single, (Flyball, 8RS)"},
       {"2-0: SINGLE  (Groundball, 56D)", "2-0: Single, (Groundball, 56D)"},
       {"1-0: SINGLE  (Line Drive, 8RS)", "1-0: Single, (Line Drive, 8RS)"},
-      {"2-1: SINGLE  (Flyball, 8RS) - OUT at second base trying to stretch hit.", "2-1: Single, (Flyball, 8RS), [2B]"}
+      {"2-1: SINGLE  (Flyball, 8RS) - OUT at second base trying to stretch hit.", "2-1: Single, (Flyball, 8RS), [2B]"},
     ]
 
     test "formats the string" do

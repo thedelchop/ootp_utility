@@ -7,6 +7,13 @@
     end)
   },
   {
+    ~r/(\d-\d): Bunted foul/,
+    (fn
+      _, count ->
+        "#{count}: Strike (Foul Ball, 2F)"
+    end)
+  },
+  {
     ~r/^(\d-\d):\s(Called|Swinging)\sStrike$/,
     (fn 
       _, count, type ->
