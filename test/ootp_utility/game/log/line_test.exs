@@ -83,7 +83,11 @@ defmodule OOTPUtility.Game.Log.LineTest do
       {"0-1:  GRAND SLAM HOME RUN  (Flyball, 7D), Distance : 391 ft", "0-1: Home Run, 4R, (Flyball, 7D, 391 ft)"},
       {"3-2:  3-RUN HOME RUN  (Flyball, 78XD), Distance : 391 ft", "3-2: Home Run, 3R, (Flyball, 78XD, 391 ft)"},
       {"2-1:  2-RUN HOME RUN  (Flyball, 7LD), Distance : 344 ft", "2-1: Home Run, 2R, (Flyball, 7LD, 344 ft)"},
-      {"0-0:  SOLO HOME RUN  (Flyball, 9LD), Distance : 341 ft", "0-0: Home Run, 1R, (Flyball, 9LD, 341 ft)"}
+      {"0-0:  SOLO HOME RUN  (Flyball, 9LD), Distance : 341 ft", "0-0: Home Run, 1R, (Flyball, 9LD, 341 ft)"},
+      {"1-0: SINGLE  (Flyball, 8RS)", "1-0: Single, (Flyball, 8RS)"},
+      {"2-0: SINGLE  (Groundball, 56D)", "2-0: Single, (Groundball, 56D)"},
+      {"1-0: SINGLE  (Line Drive, 8RS)", "1-0: Single, (Line Drive, 8RS)"},
+      {"2-1: SINGLE  (Flyball, 8RS) - OUT at second base trying to stretch hit.", "2-1: Single, (Flyball, 8RS), [2B]"}
     ]
 
     test "formats the string" do

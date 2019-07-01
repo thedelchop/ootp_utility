@@ -54,5 +54,24 @@
 
         "#{count}: Home Run, #{runs}R, (#{type}, #{location}, #{distance} ft)"
     end)
+  },
+  {
+    ~r/(\d-\d):\s+(SINGLE|DOUBLE|TRIPLE)\s+\((Groundball|Flyball|Line\sDrive),\s([1-9]{0,2}[A-Z]{0,3})\)(?:\s-\sOUT\sat\s(first|second|third|home)\sbase\strying\sto\sstretch\shit\.)?$/,
+    (fn
+      _, count, scoring, contact_type, location, "" ->
+       "#{count}: #{String.capitalize(scoring)}, (#{contact_type}, #{location})" 
+
+      _, count, scoring, contact_type, location, "first" ->
+       "#{count}: #{String.capitalize(scoring)}, (#{contact_type}, #{location}), [1B]" 
+
+      _, count, scoring, contact_type, location, "second" ->
+       "#{count}: #{String.capitalize(scoring)}, (#{contact_type}, #{location}), [2B]" 
+
+      _, count, scoring, contact_type, location, "third" ->
+       "#{count}: #{String.capitalize(scoring)}, (#{contact_type}, #{location}), [3B]" 
+
+      _, count, scoring, contact_type, location, "home" ->
+       "#{count}: #{String.capitalize(scoring)}, (#{contact_type}, #{location}), [HOME]" 
+    end)
   }
 ]
