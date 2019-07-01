@@ -80,5 +80,15 @@
       _, count, scoring, contact_type, location, "home" ->
        "#{count}: #{String.capitalize(scoring)}, (#{contact_type}, #{location}), [HOME]" 
     end)
+  },
+  {
+    ~r/(\d-\d):\s+Bunt\sfor\shit\sto\s([A-Z,1-9]{1,3})\s-\splay\sat\sfirst,\sbatter\s(safe|OUT)!\s*([1-9]-[1-9])?$/,
+      (fn 
+        _, count, location, "safe", "" ->
+          "#{count}: Single, (Groundball, #{location})"
+
+        _, count, location, "OUT", scoring ->
+          "#{count}: Ground out, #{scoring}, (Groundball, #{location})"
+      end)
   }
 ]
