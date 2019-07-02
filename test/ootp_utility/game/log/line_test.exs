@@ -93,6 +93,7 @@ defmodule OOTPUtility.Game.Log.LineTest do
       {"1-0: Bunt for hit to 13S - play at first, batter OUT! 1-3", "1-0: Ground out, 1-3, (Groundball, 13S)"},
       {"0-0: Grounds into double play, U4-3 (Groundball, 6M)", "0-0: Ground out, U4-3 (DP), (Groundball, 6M)"},
       {"0-1: Grounds into double play, 4-6-3 (Groundball, 4)", "0-1: Ground out, 4-6-3 (DP), (Groundball, 4)"},
+      {"1-0: Grounds into DOUBLE play, U5-4-3 (Groundball, 5L)", "1-0: Ground out, U5-4-3 (DP), (Groundball, 5L)"},
       {"3-0: Base on Balls", "3-0: Base on Balls"}
     ]
 
