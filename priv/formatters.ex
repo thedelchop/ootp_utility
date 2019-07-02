@@ -119,5 +119,9 @@
       _, count ->
         "#{count}: Strike (Swinging) [Bunt]"
     end)
+  },
+  {
+    ~r/^(\d-\d):\sHit\sby\sPitch$/,
+    fn _, count -> "#{count}: HBP" end
   }
 ]

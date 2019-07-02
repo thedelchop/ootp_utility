@@ -102,7 +102,8 @@ defmodule OOTPUtility.Game.Log.LineTest do
       {"3-2: Fielders Choice at 1st, 1-3 (Groundball, P)", "3-2: Ground out, 1-3 (FC, 1B), (Groundball, P)"},
       {"1-1: Fielders Choice at 2nd, U6 (Groundball, 6M)", "1-1: Ground out, U6 (FC, 2B), (Groundball, 6M)"},
       {"1-2: Fielders Choice at 3rd, 6-5 (Groundball, 6)", "1-2: Ground out, 6-5 (FC, 3B), (Groundball, 6)"},
-      {"1-0: Bunt missed!", "1-0: Strike (Swinging) [Bunt]"}
+      {"1-0: Bunt missed!", "1-0: Strike (Swinging) [Bunt]"},
+      {"3-2: Hit by Pitch", "3-2: HBP"}
     ]
 
     test "formats the string" do
