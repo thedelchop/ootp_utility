@@ -49,7 +49,7 @@
     end)
   },
   {
-    ~r/(\d-\d):\s+(\d-RUN|SOLO|GRAND\sSLAM)\sHOME\sRUN\s+\((Flyball|Line\sDrive),\s([1-9]{0,2}[A-Z]{0,3})\),\sDistance\s:\s([1-9]{3})\sft$/,
+    ~r/^(\d-\d):\s+(\d-RUN|SOLO|GRAND\sSLAM)\sHOME\sRUN\s+\((Flyball|Line\sDrive),\s([1-9]{0,2}[A-Z]{0,3})\),\sDistance\s:\s([1-9]{3})\sft$/,
     (fn
       _, count, runs_scored, type, location, distance ->
         runs = case runs_scored do
@@ -63,7 +63,7 @@
     end)
   },
   {
-    ~r/(\d-\d):\s+(SINGLE|DOUBLE|TRIPLE)\s+\((Groundball|Flyball|Line\sDrive),\s([1-9]{0,2}[A-Z]{0,3})\)(?:\s-\sOUT\sat\s(first|second|third|home)\sbase\strying\sto\sstretch\shit\.)?$/,
+    ~r/^(\d-\d):\s+(SINGLE|DOUBLE|TRIPLE)\s+\((Groundball|Flyball|Line\sDrive),\s([1-9]{0,2}[A-Z]{0,3})\)(?:\s-\sOUT\sat\s(first|second|third|home)\sbase\strying\sto\sstretch\shit\.)?$/,
     (fn
       _, count, scoring, contact_type, location, "" ->
        "#{count}: #{String.capitalize(scoring)}, (#{contact_type}, #{location})" 
@@ -82,7 +82,7 @@
     end)
   },
   {
-    ~r/(\d-\d):\s+Bunt\sfor\shit\sto\s([A-Z,1-9]{1,3})\s-\splay\sat\sfirst,\sbatter\s(safe|OUT)!\s*([1-9]-[1-9])?$/,
+    ~r/^(\d-\d):\s+Bunt\sfor\shit\sto\s([A-Z,1-9]{1,3})\s-\splay\sat\sfirst,\sbatter\s(safe|OUT)!\s*([1-9]-[1-9])?$/,
       (fn 
         _, count, location, "safe", "" ->
           "#{count}: Single, (Groundball, #{location})"
@@ -92,7 +92,7 @@
       end)
   },
   {
-    ~r/(\d-\d):\sGrounds\sinto\sdouble\splay,\s(U?\d-\d(?:-\d)?)\s\(Groundball,\s([1-9]{0,2}[A-Z]{0,3})\)$/,
+    ~r/^(\d-\d):\sGrounds\sinto\sdouble\splay,\s(U?\d-\d(?:-\d)?)\s\(Groundball,\s([1-9]{0,2}[A-Z]{0,3})\)$/,
     (fn
       _, count, scoring, location ->
         "#{count}: Ground out, #{scoring} (DP), (Groundball, #{location})"
