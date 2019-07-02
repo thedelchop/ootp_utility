@@ -88,6 +88,7 @@ defmodule OOTPUtility.Game.Log.LineTest do
       {"0-0:  3-RUN HOME RUN  (Flyball, 78XD), Distance : 400 ft", "0-0: Home Run, 3R, (Flyball, 78XD, 400 ft)"},
       {"0-0: SOLO HOME RUN  (Flyball, 9LD), Distance : 341 ft", "0-0: Home Run, 1R, (Flyball, 9LD, 341 ft)"},
       {"1-0: SINGLE (Flyball, 8RS)", "1-0: Single, (Flyball, 8RS)"},
+      {"1-1: SINGLE  (Groundball, 6M) (infield hit)", "1-1: Single, (Groundball, 6M)"},
       {"2-0: SINGLE (Groundball, 56D)", "2-0: Single, (Groundball, 56D)"},
       {"1-0: SINGLE (Line Drive, 8RS)", "1-0: Single, (Line Drive, 8RS)"},
       {"2-1: SINGLE (Flyball, 8RS) - OUT at second base trying to stretch hit.", "2-1: Single, (Flyball, 8RS), [2B]"},
