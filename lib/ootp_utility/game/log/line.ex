@@ -1,7 +1,7 @@
 defmodule OOTPUtility.Game.Log.Line do
   use Ecto.Schema
   import Ecto.Changeset
-  import Ecto.Query, only: [where: 3, select: 3, limit: 3]
+  import Ecto.Query, only: [where: 3, select: 3]
 
   schema "game_log_lines" do
     field :formatted_text, :string
@@ -57,7 +57,6 @@ defmodule OOTPUtility.Game.Log.Line do
   def raw_text(query \\ OOTPUtility.Game.Log.Line) do
     query
       |> Ecto.Queryable.to_query()
-      |> limit([], 100)
       |> select([l], l.raw_text)
   end
 
