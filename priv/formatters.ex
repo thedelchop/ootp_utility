@@ -141,5 +141,9 @@
   {
     ~r/^(\d-\d):\sHit\sby\sPitch$/,
     fn _, count -> "#{count}: HBP" end
+  },
+  {
+    ~r/^(\d-\d):\s+Reached\son\serror,\s(E[1-9])\s\((Line\sDrive|Popup|Groundball|Flyball),\s([1-9]{0,2}[A-Z]{0,3})\)$/,
+    fn string, _ -> string end
   }
 ]
