@@ -49,7 +49,7 @@
     end)
   },
   {
-    ~r/^(\d-\d):\s+(\d-RUN|SOLO|GRAND\sSLAM)\sHOME\sRUN\s+\((Flyball|Line\sDrive),\s([1-9]{0,2}[A-Z]{0,3})\),\sDistance\s:\s([1-9]{3})\sft$/,
+    ~r/^(\d-\d):\s+(\d-RUN|SOLO|GRAND\sSLAM)\sHOME\sRUN\s+\((Flyball|Line Drive),\s([1-9]{0,2}[A-Z]{0,3})\),\sDistance\s:\s([0-9]{3})\sft$/,
     (fn
       _, count, runs_scored, type, location, distance ->
         runs = case runs_scored do
