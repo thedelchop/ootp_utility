@@ -100,7 +100,16 @@
   },
   {
     ~r/^(\d-\d):\sBase\son\sBalls$/,
-    fn string, _ -> string end
+    (fn
+      string, _ -> string 
+    end)
+  },
+  {
+    ~r/^(\d-\d):\sIntentional\sWalk$/,
+    (fn 
+      _, count -> 
+        "#{count}: Base on Balls (Intentional)" 
+    end)
   },
   {
     ~r/^(\d-\d):\sFielders\sChoice\sat\s(\d(?:nd|rd|st)),\s(U?\d-?\d?)\s\(Groundball,\s([A-Z,1-9]{1,3})\)$/,
