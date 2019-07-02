@@ -90,5 +90,12 @@
         _, count, location, "OUT", scoring ->
           "#{count}: Ground out, #{scoring}, (Groundball, #{location})"
       end)
+  },
+  {
+    ~r/(\d-\d):\sGrounds\sinto\sdouble\splay,\s(U?\d-\d(?:-\d)?)\s\(Groundball,\s([1-9]{0,2}[A-Z]{0,3})\)$/,
+    (fn
+      _, count, scoring, location ->
+        "#{count}: Ground out, #{scoring} (DP), (Groundball, #{location})"
+    end)
   }
 ]
