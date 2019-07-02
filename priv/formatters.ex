@@ -97,5 +97,9 @@
       _, count, scoring, location ->
         "#{count}: Ground out, #{scoring} (DP), (Groundball, #{location})"
     end)
+  },
+  {
+    ~r/^(\d-\d):\sBase\son\sBalls$/,
+    fn string, _ -> string end
   }
 ]

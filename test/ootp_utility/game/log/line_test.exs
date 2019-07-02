@@ -81,10 +81,10 @@ defmodule OOTPUtility.Game.Log.LineTest do
       {"3-2: Ground out 1-6-3 (Groundball, 15S)", "3-2: Ground out, 1-6-3, (Groundball, 15S)"},
       {"2-2: Ground out U3 (Groundball, 3S)", "2-2: Ground out, U3, (Groundball, 3S)"},
       {"1-0: Ground out 1-3 (Groundball, P)", "1-0: Ground out, 1-3, (Groundball, P)"},
-      {"0-1:  GRAND SLAM HOME RUN  (Flyball, 7D), Distance : 391 ft", "0-1: Home Run, 4R, (Flyball, 7D, 391 ft)"},
-      {"3-2:  3-RUN HOME RUN  (Flyball, 78XD), Distance : 391 ft", "3-2: Home Run, 3R, (Flyball, 78XD, 391 ft)"},
-      {"2-1:  2-RUN HOME RUN  (Flyball, 7LD), Distance : 344 ft", "2-1: Home Run, 2R, (Flyball, 7LD, 344 ft)"},
-      {"0-0:  SOLO HOME RUN  (Flyball, 9LD), Distance : 341 ft", "0-0: Home Run, 1R, (Flyball, 9LD, 341 ft)"},
+      {"0-1: GRAND SLAM HOME RUN  (Flyball, 7D), Distance : 391 ft", "0-1: Home Run, 4R, (Flyball, 7D, 391 ft)"},
+      {"3-2: 3-RUN HOME RUN  (Flyball, 78XD), Distance : 391 ft", "3-2: Home Run, 3R, (Flyball, 78XD, 391 ft)"},
+      {"2-1: 2-RUN HOME RUN  (Flyball, 7LD), Distance : 344 ft", "2-1: Home Run, 2R, (Flyball, 7LD, 344 ft)"},
+      {"0-0: SOLO HOME RUN  (Flyball, 9LD), Distance : 341 ft", "0-0: Home Run, 1R, (Flyball, 9LD, 341 ft)"},
       {"1-0: SINGLE  (Flyball, 8RS)", "1-0: Single, (Flyball, 8RS)"},
       {"2-0: SINGLE  (Groundball, 56D)", "2-0: Single, (Groundball, 56D)"},
       {"1-0: SINGLE  (Line Drive, 8RS)", "1-0: Single, (Line Drive, 8RS)"},
@@ -92,7 +92,8 @@ defmodule OOTPUtility.Game.Log.LineTest do
       {"1-0: Bunt for hit to 25 - play at first, batter safe!", "1-0: Single, (Groundball, 25)"},
       {"1-0: Bunt for hit to 13S - play at first, batter OUT! 1-3", "1-0: Ground out, 1-3, (Groundball, 13S)"},
       {"0-0: Grounds into double play, U4-3 (Groundball, 6M)", "0-0: Ground out, U4-3 (DP), (Groundball, 6M)"},
-      {"0-1: Grounds into double play, 4-6-3 (Groundball, 4)", "0-1: Ground out, 4-6-3 (DP), (Groundball, 4)"}
+      {"0-1: Grounds into double play, 4-6-3 (Groundball, 4)", "0-1: Ground out, 4-6-3 (DP), (Groundball, 4)"},
+      {"3-0: Base on Balls", "3-0: Base on Balls"}
     ]
 
     test "formats the string" do
