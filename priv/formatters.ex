@@ -28,10 +28,10 @@
     end)
   },
   {
-    ~r/^(\d-\d):\sStrikes\sout\sswinging$/,
+    ~r/^(\d-\d):\sStrikes\sout\s(swinging|looking)$/,
     (fn 
-      _, count ->
-        "#{count}: Strikeout (Swinging)"
+      _, count, type ->
+        "#{count}: Strikeout (#{String.capitalize(type)})"
     end)
   },
   {
