@@ -93,6 +93,7 @@ defmodule OOTPUtility.Game.Log.LineTest do
       {"2-0: SINGLE (Groundball, 56D)", "2-0: Single, (Groundball, 56D)"},
       {"1-0: SINGLE (Line Drive, 8RS)", "1-0: Single, (Line Drive, 8RS)"},
       {"2-1: SINGLE (Flyball, 8RS) - OUT at second base trying to stretch hit.", "2-1: Single, (Flyball, 8RS), [2B]"},
+      {"3-2: SINGLE  (Popup, 56D)", "3-2: Single, (Popup, 56D)"},
       {"1-0: Bunt for hit to 25 - play at first, batter safe!", "1-0: Single, (Groundball, 25)"},
       {"1-0: Bunt for hit to 13S - play at first, batter OUT! 1-3", "1-0: Ground out, 1-3, (Groundball, 13S)"},
       {"0-0: Grounds into double play, U4-3 (Groundball, 6M)", "0-0: Ground out, U4-3 (DP), (Groundball, 6M)"},

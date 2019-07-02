@@ -63,7 +63,7 @@
     end)
   },
   {
-    ~r/^(\d-\d):\s+(SINGLE|DOUBLE|TRIPLE)\s+\((Groundball|Flyball|Line\sDrive),\s([1-9]{0,2}[A-Z]{0,3})\)(?:\s\(infield\shit\))?(?:\s-\sOUT\sat\s(first|second|third|home)\sbase\strying\sto\sstretch\shit\.)?$/,
+    ~r/^(\d-\d):\s+(SINGLE|DOUBLE|TRIPLE)\s+\((Groundball|Flyball|Line\sDrive|Popup),\s([1-9]{0,2}[A-Z]{0,3})\)(?:\s\(infield\shit\))?(?:\s-\sOUT\sat\s(first|second|third|home)\sbase\strying\sto\sstretch\shit\.)?$/,
     (fn
       _, count, scoring, contact_type, location, "" ->
        "#{count}: #{String.capitalize(scoring)}, (#{contact_type}, #{location})" 
