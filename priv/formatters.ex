@@ -49,9 +49,18 @@
     end)
   },
   {
-    ~r/^(\d-\d):\s+(\d-RUN|SOLO|GRAND\sSLAM)\sHOME\sRUN\s+\((Flyball|Line Drive),\s([1-9]{0,2}[A-Z]{0,3})\),\sDistance\s:\s([0-9]{3})\sft$/,
+    ~r/^(\d-\d):\s+(\d-RUN|SOLO|GRAND\sSLAM)\sHOME\sRUN\s+\((Flyball|Line Drive),\s([1-9]{0,2}[A-Z]{0,3})\),?\s(?:(?:Distance\s:\s([0-9]{3})\sft)|(?:\((Inside\sthe\sPark)\)))$/,
     (fn
-      _, count, runs_scored, type, location, distance ->
+      _, count, runs_scored, type, location, "", "Inside the Park" ->
+        runs = case runs_scored do
+          "SOLO" -> 1
+          "2-RUN"-> 2
+          "3-RUN" -> 3
+          "GRAND SLAM" -> 4
+        end
+
+        "#{count}: Home Run, #{runs}R, (#{type}, #{location}, Inside the Park)"
+      _, count, runs_scored, type, location, distance, _ ->
         runs = case runs_scored do
           "SOLO" -> 1
           "2-RUN"-> 2
