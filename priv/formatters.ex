@@ -112,5 +112,12 @@
       _, count, "3rd", scoring, location ->
         "#{count}: Ground out, #{scoring} (FC, 3B), (Groundball, #{location})"
     end)
+  },
+  {
+    ~r/^(\d-\d):\sBunt\smissed!$/,
+    (fn 
+      _, count ->
+        "#{count}: Strike (Swinging) [Bunt]"
+    end)
   }
 ]
