@@ -101,5 +101,16 @@
   {
     ~r/^(\d-\d):\sBase\son\sBalls$/,
     fn string, _ -> string end
+  },
+  {
+    ~r/^(\d-\d):\sFielders\sChoice\sat\s(\d(?:nd|rd|st)),\s(U?\d-?\d?)\s\(Groundball,\s([A-Z,1-9]{1,3})\)$/,
+    (fn
+      _, count, "1st", scoring, location ->
+        "#{count}: Ground out, #{scoring} (FC, 1B), (Groundball, #{location})"
+      _, count, "2nd", scoring, location ->
+        "#{count}: Ground out, #{scoring} (FC, 2B), (Groundball, #{location})"
+      _, count, "3rd", scoring, location ->
+        "#{count}: Ground out, #{scoring} (FC, 3B), (Groundball, #{location})"
+    end)
   }
 ]
