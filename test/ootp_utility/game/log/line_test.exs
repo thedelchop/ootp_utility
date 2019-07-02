@@ -81,6 +81,7 @@ defmodule OOTPUtility.Game.Log.LineTest do
       {"0-1: Fly out, F1 (Line Drive, P)", "0-1: Fly out, F1, (Line Drive, P)"},
       {"3-2: Ground out 1-6-3 (Groundball, 15S)", "3-2: Ground out, 1-6-3, (Groundball, 15S)"},
       {"2-2: Ground out U3 (Groundball, 3S)", "2-2: Ground out, U3, (Groundball, 3S)"},
+      {"3-2: Grounds out, U3 (Groundball, 3L)", "3-2: Ground out, U3, (Groundball, 3L)"},
       {"1-0: Ground out 1-3 (Groundball, P)", "1-0: Ground out, 1-3, (Groundball, P)"},
       {"0-1: GRAND SLAM HOME RUN  (Flyball, 7D), Distance : 391 ft", "0-1: Home Run, 4R, (Flyball, 7D, 391 ft)"},
       {"3-2: 3-RUN HOME RUN  (Flyball, 78XD), Distance : 391 ft", "3-2: Home Run, 3R, (Flyball, 78XD, 391 ft)"},

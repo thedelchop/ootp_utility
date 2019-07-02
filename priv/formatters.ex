@@ -42,7 +42,7 @@
     end)
   },
   {
-    ~r/^(\d-\d):\s+Ground\sout\s([1-9,U]-*[1-9]*-*[1-9]*)\s+\(Groundball,\s([1-9]{0,2}[A-Z]{0,3})\)$/,
+    ~r/^(\d-\d):\s+Grounds?\sout,?\s([1-9,U]-*[1-9]*-*[1-9]*)\s+\(Groundball,\s([1-9]{0,2}[A-Z]{0,3})\)$/,
     (fn
       _, count, scoring, location ->
         "#{count}: Ground out, #{scoring}, (Groundball, #{location})"
