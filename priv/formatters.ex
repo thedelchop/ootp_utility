@@ -1,6 +1,6 @@
 [
   {
-    ~r/^(\d-\d):\sFoul\sBall,\s\(location:\s2F\)$/,
+    ~r/^(\d-\d):\sFoul\sBall,\slocation:\s2F$/,
     (fn 
       _, count ->
         "#{count}: Strike (Foul Ball, 2F)"

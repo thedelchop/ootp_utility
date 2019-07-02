@@ -7,7 +7,7 @@ defmodule OOTPUtility.Game.LogTest do
 
   describe "unformatted_lines" do
     test "returns all of the raw_text from all lines which are not formatted" do
-      foul_ball = Fixtures.create_game_log_line(%{raw_text: "0-0: Foul Ball, (location: 2F)", formatted_text: nil})
+      foul_ball = Fixtures.create_game_log_line(%{raw_text: "0-0: Foul Ball, location: 2F", formatted_text: nil})
       strike_out = Fixtures.create_game_log_line(%{raw_text: "1-2: Strikes Out Looking", formatted_text: nil})
 
       lines = Log.unformatted_lines()
@@ -19,7 +19,7 @@ defmodule OOTPUtility.Game.LogTest do
 
   describe "format_lines" do
     test "it formats all Lines for whom the \"formatted_text\" can be produced" do
-      formattable_line = Fixtures.create_game_log_line(%{raw_text: "0-0: Foul Ball, (location: 2F)", formatted_text: nil})
+      formattable_line = Fixtures.create_game_log_line(%{raw_text: "0-0: Foul Ball, location: 2F", formatted_text: nil})
       unformattable_line = Fixtures.create_game_log_line(%{raw_text: "1-2: Caught stealing home!", formatted_text: nil})
 
       Log.format_lines
@@ -29,8 +29,8 @@ defmodule OOTPUtility.Game.LogTest do
     end
 
     test "it only formats Lines who are included in the query if a query was included" do
-      formattable_line = Fixtures.create_game_log_line(%{raw_text: "0-0: Foul Ball, (location: 2F)", formatted_text: nil})
-      formattable_but_skipped_line = Fixtures.create_game_log_line(%{raw_text: "0-1: Foul Ball, (location: 2F)", formatted_text: nil})
+      formattable_line = Fixtures.create_game_log_line(%{raw_text: "0-0: Foul Ball, location: 2F", formatted_text: nil})
+      formattable_but_skipped_line = Fixtures.create_game_log_line(%{raw_text: "0-1: Foul Ball, location: 2F", formatted_text: nil})
       unformattable_line = Fixtures.create_game_log_line(%{raw_text: "1-2: Caught stealing home!", formatted_text: nil})
 
       Log.format_lines(from l in Line, where: l.id in [^formattable_line.id, ^unformattable_line.id])
