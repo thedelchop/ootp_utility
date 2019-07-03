@@ -1,9 +1,9 @@
 [
   {
-    ~r/^(\d-\d):\sFoul\sBall,\slocation:\s2F$/,
+    ~r/^(\d-\d):\sFoul\sBall,\slocation:\s([1-9]{0,2}[A-Z]{0,3})$/,
     (fn 
-      _, count ->
-        "#{count}: Strike (Foul Ball, 2F)"
+      _, count, location ->
+        "#{count}: Strike (Foul Ball, #{location})"
     end)
   },
   {
