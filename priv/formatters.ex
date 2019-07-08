@@ -152,5 +152,18 @@
       _, count, scoring, location ->
         "#{count}: Ground out, #{scoring} (FC, Home), (Groundball, #{location})"
     end)
+  },
+  {
+    ~r/^(\d-\d):\sReached\svia\serror\son\sa\sdropped\sthrow\sfrom\s(\d?[A-Z]*),\sE(\d)\s\(Groundball,\s([1-9]{0,2}[A-Z]{0,3})\)$/,
+    (fn
+      _, count, thrower, error_position, location ->
+        import OOTPUtility.Utilities
+
+        {:ok, receiver} = position_from_scoring_key(error_position)
+        {:ok, thrower_scoring} = scoring_key_from_position(thrower)
+        scoring = "#{thrower_scoring}-#{error_position}"
+
+        "#{count}: Reached on error by #{receiver}, #{scoring} (E#{error_position}), (Groundball, #{location})"
+    end)
   }
 ]
