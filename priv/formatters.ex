@@ -165,5 +165,18 @@
 
         "#{count}: Reached on error by #{receiver}, #{scoring} (E#{error_position}), (Groundball, #{location})"
     end)
+  },
+  {
+    ~r/^(\d-\d):\sSac\sBunt\s(?:to\s([1-9]{0,3}[A-Z]?)\s)?-\splay\sat\s(first|second|third),\s(?:batter|runner)\s(OUT|safe)(?:\s-&gt;\sthrow\sto\s(first|second|third|home),\sDP)?!(?:\s([1-9,U]-*[1-9]*-*[1-9]*))?$/,
+    (fn
+      _, count, "", "second", _outcome, "first", "" ->
+        "#{count}: Ground out, 2-6-3 (DP), (Groundball, 2L)"
+      _, count, location, _base, "safe", "", _scoring ->
+        "#{count}: Single, (Groundball, #{location}) [Bunt]"
+      _, count, location, "second", "OUT", "", scoring ->
+        "#{count}: Ground out, #{scoring} (FC, 2B), (Groundball, #{location}) [Bunt]"
+      _, count, location, "first", "OUT", "", scoring ->
+        "#{count}: Ground out, #{scoring} (FC, 1B), (Groundball, #{location}) [SH]"
+    end)
   }
 ]

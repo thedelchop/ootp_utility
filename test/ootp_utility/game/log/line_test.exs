@@ -111,7 +111,11 @@ defmodule OOTPUtility.Game.Log.LineTest do
       {"3-2: Reached on error, E9 (Flyball, 9LD)", "3-2: Reached on error, E9 (Flyball, 9LD)"},
       {"3-2: Grounds into fielders choice 4-2 (Groundball, 34)", "3-2: Ground out, 4-2 (FC, Home), (Groundball, 34)"},
       {"3-2: Reached via error on a dropped throw from SS, E3 (Groundball, 6M)", "3-2: Reached on error by 1B, 6-3 (E3), (Groundball, 6M)"},
-      {"0-1: Reached via error on a dropped throw from P, E3 (Groundball, 23)", "0-1: Reached on error by 1B, 1-3 (E3), (Groundball, 23)"}
+      {"0-1: Reached via error on a dropped throw from P, E3 (Groundball, 23)", "0-1: Reached on error by 1B, 1-3 (E3), (Groundball, 23)"},
+      {"2-1: Sac Bunt - play at second, runner OUT -&gt; throw to first, DP!", "2-1: Ground out, 2-6-3 (DP), (Groundball, 2L)"},
+      {"2-1: Sac Bunt to 15 - play at first, batter safe!", "2-1: Single, (Groundball, 15) [Bunt]"},
+      {"2-1: Sac Bunt to 15S - play at first, batter OUT! 1-4", "2-1: Ground out, 1-4 (FC, 1B), (Groundball, 15S) [SH]"},
+      {"2-1: Sac Bunt to P - play at second, runner OUT! 1-6", "2-1: Ground out, 1-6 (FC, 2B), (Groundball, P) [Bunt]"}
     ]
 
     test "formats the string" do
