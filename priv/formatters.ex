@@ -191,5 +191,12 @@
 
         "#{count}: Fly out, #{scoring} (DP, #{double_play_base}), (Popup, #{location}), [Bunt]"
     end)
+  },
+  {
+    ~r/^(\d-\d):\sSingle,\sError\sin\sOF,\s(E[1-9]),\sbatter\sto\ssecond\sbase\s\((Groundball|Line Drive),\s([1-9]{0,2}[A-Z]{0,3})\)$/,
+    (fn
+      _, count, error, contact_type, location ->
+        "#{count}: Single, (#{contact_type}, #{location}), [Batter to 2B on #{error}]"
+    end)
   }
 ]
