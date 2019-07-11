@@ -174,9 +174,22 @@
       _, count, location, _base, "safe", "", _scoring ->
         "#{count}: Single, (Groundball, #{location}) [Bunt]"
       _, count, location, "second", "OUT", "", scoring ->
-        "#{count}: Ground out, #{scoring} (FC, 2B), (Groundball, #{location}) [Bunt]"
+        "#{count}: Ground out, #{scoring} (FC, 2B), (Groundball, #{location}), [Bunt]"
       _, count, location, "first", "OUT", "", scoring ->
-        "#{count}: Ground out, #{scoring} (FC, 1B), (Groundball, #{location}) [SH]"
+        "#{count}: Ground out, #{scoring} (FC, 1B), (Groundball, #{location}), [SH]"
+    end)
+  },
+  {
+    ~r/^(\d-\d):\sBunt\s-\sFlyout\sto\s([1-9]{0,2}[A-Z]{0,3})(?:\s-\sDP\sat\s(first|second|third))?!?\s([1-9,U,F]-*[1-9]*-*[1-9]*)$/,
+    (fn 
+      _, count, location, "", scoring ->
+        "#{count}: Fly out, #{scoring}, (Popup, #{location}), [Bunt]"
+      _, count, location, double_play_location, scoring ->
+        import OOTPUtility.Utilities
+
+        {:ok, double_play_base} = position_from_base(double_play_location)
+
+        "#{count}: Fly out, #{scoring} (DP, #{double_play_base}), (Popup, #{location}), [Bunt]"
     end)
   }
 ]

@@ -52,4 +52,20 @@ defmodule OOTPUtility.Utilities do
       :error
     end
   end
+
+  @spec position_from_base(String.t()) :: {:ok, String.t() } | :error
+  def position_from_base(base) do
+    position = %{
+      "first" => "1B",
+      "second" => "2B",
+      "third" => "3B",
+      "home" => "Home"
+    }[base]
+
+    if not(is_nil(position)) do
+      {:ok, position}
+    else
+      {:error, nil }
+    end
+  end
 end
