@@ -173,10 +173,13 @@
         "#{count}: Ground out, 2-6-3 (DP), (Groundball, 2L)"
       _, count, location, _base, "safe", "", _scoring ->
         "#{count}: Single, (Groundball, #{location}) [Bunt]"
-      _, count, location, "second", "OUT", "", scoring ->
-        "#{count}: Ground out, #{scoring} (FC, 2B), (Groundball, #{location}), [Bunt]"
       _, count, location, "first", "OUT", "", scoring ->
         "#{count}: Ground out, #{scoring} (FC, 1B), (Groundball, #{location}), [SH]"
+      _, count, location, base, "OUT", "", scoring ->
+        import OOTPUtility.Utilities
+        {:ok, position} = position_from_base(base)
+
+        "#{count}: Ground out, #{scoring} (FC, #{position}), (Groundball, #{location}), [Bunt]"
     end)
   },
   {
