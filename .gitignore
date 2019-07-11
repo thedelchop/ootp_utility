@@ -39,5 +39,7 @@ npm-debug.log
 # Ignore the link to the csv data for development
 /priv/data
 
+/priv/csv_data/
+
 # Ignore any files cached by the elixir langserver
 /.elixir_ls/
