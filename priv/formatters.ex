@@ -111,6 +111,33 @@
     end)
   },
   {
+    ~r/(SINGLE|DOUBLE), but batter called out on appeal for missing (first|second) base!/,
+    (fn 
+      _, hit, base ->
+        import OOTPUtility.Utilities
+        {:ok, position} = position_from_base(base)
+
+        "#{String.capitalize(hit)}, {Batter out after missing #{position}}"
+    end)
+  },
+  {
+    ~r/(SINGLE|DOUBLE), rundown, out at (1st|2nd|3rd)!/,
+    (fn 
+      _, hit, base ->
+        import OOTPUtility.Utilities
+        {:ok, position} = position_from_base(base)
+
+        "#{String.capitalize(hit)}, {Batter out at #{position} after rundown}"
+    end)
+  },
+  {
+    ~r/^(SINGLE|DOUBLE|TRIPLE)\.$/,
+    (fn 
+      _, hit ->
+        "#{String.capitalize(hit)}"
+    end)
+  },
+  {
     ~r/^(\d-\d):\s+Bunt\sfor\shit\sto\s([A-Z,1-9]{1,3})\s-\splay\sat\sfirst,\sbatter\s(safe|OUT)!\s*([1-9]-[1-9])?$/,
       (fn 
         _, count, location, "safe", "" ->
