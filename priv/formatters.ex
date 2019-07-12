@@ -246,5 +246,12 @@
     (fn 
       text -> text
     end)
+  },
+  {
+    ~r/^(\d-\d):\sLines\sinto\sTRIPLE\splay,\s([1-9,U,F]-*[1-9]*-*[1-9]*)\s\((Line Drive|Groundball|Popup|Flyball),\s([1-9,U,F]-*[1-9]*-*[1-9]*)\)$/,
+    (fn 
+      _, count, scoring, contact_type, location ->
+        "#{count}: Fly out, #{scoring} (TP), (#{contact_type}, #{location})"
+    end)
   }
 ]

@@ -104,6 +104,7 @@ defmodule OOTPUtility.Game.Log.LineTest do
       {"0-0: Grounds into double play, U4-3 (Groundball, 6M)", "0-0: Ground out, U4-3 (DP), (Groundball, 6M)"},
       {"0-1: Grounds into double play, 4-6-3 (Groundball, 4)", "0-1: Ground out, 4-6-3 (DP), (Groundball, 4)"},
       {"1-0: Grounds into DOUBLE play, U5-4-3 (Groundball, 5L)", "1-0: Ground out, U5-4-3 (DP), (Groundball, 5L)"},
+      {"2-1: Lines into TRIPLE play, 5-4-3 (Line Drive, 5)", "2-1: Fly out, 5-4-3 (TP), (Line Drive, 5)"},
       {"3-0: Base on Balls", "3-0: Base on Balls"},
       {"3-2: Intentional Walk", "3-2: Base on Balls (Intentional)"},
       {"3-2: Fielders Choice at 1st, 1-3 (Groundball, P)", "3-2: Ground out, 1-3 (FC, 1B), (Groundball, P)"},
