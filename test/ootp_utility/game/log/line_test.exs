@@ -111,6 +111,7 @@ defmodule OOTPUtility.Game.Log.LineTest do
       {"1-2: Fielders Choice at 3rd, 6-5 (Groundball, 6)", "1-2: Ground out, 6-5 (FC, 3B), (Groundball, 6)"},
       {"1-0: Bunt missed!", "1-0: Strike (Swinging) [Bunt]"},
       {"3-2: Hit by Pitch", "3-2: HBP"},
+      {"2-2: Hit by Pitch, AND HE CHARGES THE MOUND! The benches clear!", "2-2: HBP {Batter charges mound, benches clear}"},
       {"3-2: Reached on error, E9 (Flyball, 9LD)", "3-2: Reached on error, E9 (Flyball, 9LD)"},
       {"3-2: Grounds into fielders choice 4-2 (Groundball, 34)", "3-2: Ground out, 4-2 (FC, Home), (Groundball, 34)"},
       {"3-2: Reached via error on a dropped throw from SS, E3 (Groundball, 6M)", "3-2: Reached on error by 1B, 6-3 (E3), (Groundball, 6M)"},

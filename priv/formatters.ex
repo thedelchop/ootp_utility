@@ -152,8 +152,13 @@
     end)
   },
   {
-    ~r/^(\d-\d):\sHit\sby\sPitch$/,
-    fn _, count -> "#{count}: HBP" end
+    ~r/^(\d-\d):\sHit\sby\sPitch(.*)$/,
+    (fn
+      _, count, "" ->
+        "#{count}: HBP" 
+      _, count, _charges_mound ->
+        "#{count}: HBP {Batter charges mound, benches clear}" 
+    end)
   },
   {
     ~r/^(\d-\d):\s+Reached\son\serror,\s(E[1-9])\s\((Line\sDrive|Popup|Groundball|Flyball),\s([1-9]{0,2}[A-Z]{0,3})\)$/,
