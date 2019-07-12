@@ -292,5 +292,14 @@
       _, player, base, error ->
         "#{player}: SB [#{base}B], #{error}"
     end)
+  },
+  {
+    ~r/^Steal\sof\shome,\s(.+)\sis\s(safe|out)$/,
+    (fn 
+      _, player, "safe" ->
+        "#{player}: SB [Home]"
+      _, player, "out" ->
+        "#{player}: CS [Home], 1-2"
+    end)
   }
 ]
