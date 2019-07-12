@@ -305,5 +305,9 @@
   {
     ~r/Wild Pitch!/,
     fn _ -> "WP" end
+  },
+  {
+    ~r/^Throwing\serror,\s(E\d)$/,
+    fn _, error -> "#{error} (throw)" end
   }
 ]

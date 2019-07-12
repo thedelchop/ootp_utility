@@ -145,7 +145,8 @@ defmodule OOTPUtility.Game.Log.LineTest do
       {"Yale Reizenstein steals 2nd base", "Yale Reizenstein: SB [2B]"},
       {"Steal of home, Alfredo Escalera is safe", "Alfredo Escalera: SB [Home]"},
       {"Steal of home, Arquimedes Gamboa is out", "Arquimedes Gamboa: CS [Home], 1-2"},
-      {"Wild Pitch!", "WP"}
+      {"Wild Pitch!", "WP"},
+      {"Throwing error, E9", "E9 (throw)"}
     ]
 
     test "formats the string" do
