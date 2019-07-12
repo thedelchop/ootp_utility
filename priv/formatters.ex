@@ -280,7 +280,17 @@
     ~r/^(.+)\sis\scaught\sstealing\s(\d)(?:nd|rd)\sbase\s(2-[4-6])$/,
     (fn 
       _, player, base, scoring ->
-        "#{player}: CS at #{base}B, #{scoring}"
+        "#{player}: CS [#{base}B], #{scoring}"
+    end)
+  },
+  {
+    ~r/^(.+)\ssteals\s(\d)(?:nd|rd)(?:\sbase)?(?:,\sthrowing\serror,\s(E\d))?(?:\s\(no\sthrow\))?$/,
+    (fn 
+      _, player, base, "" ->
+        "#{player}: SB [#{base}B]"
+
+      _, player, base, error ->
+        "#{player}: SB [#{base}B], #{error}"
     end)
   }
 ]
