@@ -28,10 +28,23 @@
     end)
   },
   {
-    ~r/^(\d-\d):\sStrikes\sout\s(swinging|looking)$/,
+    ~r/^(\d-\d):\sStrikes\sout\s+swinging(?:\s(passed\sball|wild\spitch),\sreaches\sfirst!|(?:,\s([1-9]-[1-9])\sout\sat\sfirst.))?$/,
     (fn 
-      _, count, type ->
-        "#{count}: Strikeout (#{String.capitalize(type)})"
+      _, count, "", "" ->
+        "#{count}: Strikeout (Swinging)"
+      _, count, event, "" ->
+        "#{count}: Strikeout (Swinging), {Batter to 1B on #{event}}"
+      _, count, "", scoring ->
+        "#{count}: Strikeout (Swinging), #{scoring}, {Batter 1B attempt}"
+    end)
+  },
+  {
+    ~r/^(\d-\d):\sStrikes\sout\s+looking(\sand\she\s(?:physically\s)?ARGUES\sTHE\sCALL\sAND\sIS\sTOSSED!)?$/,
+    (fn
+      _, count, "" ->
+        "#{count}: Strikeout (Looking)"
+      _, count, _ejected ->
+        "#{count}: Strikeout (Looking), <Batter ejected>"
     end)
   },
   {

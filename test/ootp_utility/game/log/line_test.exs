@@ -76,6 +76,9 @@ defmodule OOTPUtility.Game.Log.LineTest do
       {"1-0: Swinging Strike", "1-0: Strike (Swinging)" },
       {"1-1: Ball", "1-1: Ball" },
       {"2-2: Strikes out swinging", "2-2: Strikeout (Swinging)" },
+      {"1-2: Strikes out swinging passed ball, reaches first!", "1-2: Strikeout (Swinging), {Batter to 1B on passed ball}"},
+      {"1-2: Strikes out swinging wild pitch, reaches first!", "1-2: Strikeout (Swinging), {Batter to 1B on wild pitch}"},
+      {"3-2: Strikes out swinging, 2-3 out at first.", "3-2: Strikeout (Swinging), 2-3, {Batter 1B attempt}"},
       {"0-2: Strikes out looking", "0-2: Strikeout (Looking)" },
       {"1-0: Fly out, F8 (Line Drive, 8RM)", "1-0: Fly out, F8, (Line Drive, 8RM)"},
       {"0-0: Fly out, F3 (Popup, 3)", "0-0: Fly out, F3, (Popup, 3)"},
@@ -122,7 +125,9 @@ defmodule OOTPUtility.Game.Log.LineTest do
       {"3-2: Single, Error in OF, E9, batter to second base (Groundball, 3D)", "3-2: Single, (Groundball, 3D), {Batter to 2B on E9}"},
       {"3-2: Single, Error in OF, E8, batter to second base (Line Drive, 9LS)", "3-2: Single, (Line Drive, 9LS), {Batter to 2B on E8}"},
       {"0-0: Squeeze Bunt to 15 - play home, runner OUT, batter safe! 1-2", "0-0: Ground out, 1-2 (FC, Home), (Groundball, 15), [Bunt]"},
-      {"0-0: Squeeze Bunt to 2L - play home, runner scores, batter safe!", "0-0: Single, (Groundball, 2L), [Bunt], {Runner from 3B scores}"}
+      {"0-0: Squeeze Bunt to 2L - play home, runner scores, batter safe!", "0-0: Single, (Groundball, 2L), [Bunt], {Runner from 3B scores}"},
+      {"2-2: Strikes out looking and he ARGUES THE CALL AND IS TOSSED!", "2-2: Strikeout (Looking), <Batter ejected>"},
+      {"2-2: Strikes out looking and he physically ARGUES THE CALL AND IS TOSSED!", "2-2: Strikeout (Looking), <Batter ejected>"},
     ]
 
     test "formats the string" do
