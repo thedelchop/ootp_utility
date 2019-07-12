@@ -275,5 +275,12 @@
         "#{player} to #{position}"
       string, _player, "", "scores" -> string
     end)
+  },
+  {
+    ~r/^(.+)\sis\scaught\sstealing\s(\d)(?:nd|rd)\sbase\s(2-[4-6])$/,
+    (fn 
+      _, player, base, scoring ->
+        "#{player}: CS at #{base}B, #{scoring}"
+    end)
   }
 ]
