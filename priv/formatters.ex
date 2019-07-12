@@ -309,5 +309,9 @@
   {
     ~r/^Throwing\serror,\s(E\d)$/,
     fn _, error -> "#{error} (throw)" end
+  },
+  {
+    ~r/^Squeeze\sbunt\sis\son,\s(.+)\sis\sout$/,
+    fn _, player -> "#{player}: CS [Home], 1-2" end
   }
 ]
