@@ -199,7 +199,28 @@
     ~r/^(\d-\d):\sSingle,\sError\sin\sOF,\s(E[1-9]),\sbatter\sto\ssecond\sbase\s\((Groundball|Line Drive),\s([1-9]{0,2}[A-Z]{0,3})\)$/,
     (fn
       _, count, error, contact_type, location ->
-        "#{count}: Single, (#{contact_type}, #{location}), [Batter to 2B on #{error}]"
+        "#{count}: Single, (#{contact_type}, #{location}), {Batter to 2B on #{error}}"
+    end)
+  },
+  {
+    ~r/^(\d-\d):\sSqueeze\sBunt\sto\s([1-9]{0,2}[A-Z]{0,3})\s-\splay\s(?:at\s)?(home|first),\srunner\s(OUT|scores),\sbatter\s(safe|OUT)!\s?([1-9,U,F]-*[1-9]*-*[1-9]*)?$/,
+    (fn
+      # Sacrifice Bunt
+      _, count, location, play_location, "scores", "OUT", scoring ->
+        import OOTPUtility.Utilities
+        {:ok, position} = position_from_base(play_location)
+
+        "#{count}: Ground out, #{scoring} (FC, #{position}), (Groundball, #{location}), [SH], {Runner from 3B scores}"
+
+      # Fielder's Choice
+      _, count, location, play_location, "OUT", "safe", scoring ->
+        import OOTPUtility.Utilities
+        {:ok, position} = position_from_base(play_location)
+
+        "#{count}: Ground out, #{scoring} (FC, #{position}), (Groundball, #{location}), [Bunt]"
+      # Single
+      _, count, location, _play_location, "scores", "safe", _scoring ->
+        "#{count}: Single, (Groundball, #{location}), [Bunt], {Runner from 3B scores}"
     end)
   }
 ]
