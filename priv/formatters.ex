@@ -235,5 +235,11 @@
       _, count, location, _play_location, "scores", "safe", _scoring ->
         "#{count}: Single, (Groundball, #{location}), [Bunt], {Runner from 3B scores}"
     end)
+  },
+  {
+    ~r/^(\d-\d): Reaches on Catchers interference$/,
+    (fn 
+      text -> text
+    end)
   }
 ]

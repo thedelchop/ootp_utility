@@ -126,6 +126,7 @@ defmodule OOTPUtility.Game.Log.LineTest do
       {"3-2: Single, Error in OF, E8, batter to second base (Line Drive, 9LS)", "3-2: Single, (Line Drive, 9LS), {Batter to 2B on E8}"},
       {"0-0: Squeeze Bunt to 15 - play home, runner OUT, batter safe! 1-2", "0-0: Ground out, 1-2 (FC, Home), (Groundball, 15), [Bunt]"},
       {"0-0: Squeeze Bunt to 2L - play home, runner scores, batter safe!", "0-0: Single, (Groundball, 2L), [Bunt], {Runner from 3B scores}"},
+      {"3-2: Reaches on Catchers interference", "3-2: Reaches on Catchers interference"},
       {"2-2: Strikes out looking and he ARGUES THE CALL AND IS TOSSED!", "2-2: Strikeout (Looking), <Batter ejected>"},
       {"2-2: Strikes out looking and he physically ARGUES THE CALL AND IS TOSSED!", "2-2: Strikeout (Looking), <Batter ejected>"},
     ]
