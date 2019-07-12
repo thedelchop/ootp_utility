@@ -143,13 +143,15 @@
     end)
   },
   {
-    ~r/^(\d-\d):\sFielders\sChoice\sat\s(\d(?:nd|rd|st)),\s(U?\d-?\d?)\s\(Groundball,\s([A-Z,1-9]{1,3})\)$/,
+    ~r/^(\d-\d):\sFielders\sChoice\s(?:attempt\s)?at\s(\d(?:nd|rd|st)|home),\s(Runner\sSAFE.\s)?(U?\d-?\d?)\s\(Groundball,\s([A-Z,1-9]{1,3})\)$/,
     (fn
-      _, count, "1st", scoring, location ->
+      _, count, "home", _runner_outcome, scoring, location ->
+        "#{count}: Single, #{scoring} (Groundball, #{location}), {Runner safe at home on FC attempt}"
+      _, count, "1st", "", scoring, location ->
         "#{count}: Ground out, #{scoring} (FC, 1B), (Groundball, #{location})"
-      _, count, "2nd", scoring, location ->
+      _, count, "2nd", "", scoring, location ->
         "#{count}: Ground out, #{scoring} (FC, 2B), (Groundball, #{location})"
-      _, count, "3rd", scoring, location ->
+      _, count, "3rd", "", scoring, location ->
         "#{count}: Ground out, #{scoring} (FC, 3B), (Groundball, #{location})"
     end)
   },
