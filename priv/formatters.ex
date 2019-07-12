@@ -104,6 +104,13 @@
     end)
   },
   {
+    ~r/^(\d-\d):\s+SINGLE\s+\(Groundball,\s([1-9]{0,2}[A-Z]{0,3})\)\s-\srunner\sOUT\sbeing\shit\sby\sbatted\sball\.(?:\s\(infield\shit\))?$/,
+    (fn
+      _, count, location ->
+        "#{count}: Single, (Groundball, #{location}) {Runner out, hit by batted ball}"
+    end)
+  },
+  {
     ~r/^(\d-\d):\s+Bunt\sfor\shit\sto\s([A-Z,1-9]{1,3})\s-\splay\sat\sfirst,\sbatter\s(safe|OUT)!\s*([1-9]-[1-9])?$/,
       (fn 
         _, count, location, "safe", "" ->
