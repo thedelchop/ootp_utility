@@ -301,5 +301,9 @@
       _, player, "out" ->
         "#{player}: CS [Home], 1-2"
     end)
+  },
+  {
+    ~r/Wild Pitch!/,
+    fn _ -> "WP" end
   }
 ]
