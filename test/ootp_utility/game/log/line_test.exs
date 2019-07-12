@@ -147,7 +147,14 @@ defmodule OOTPUtility.Game.Log.LineTest do
       {"Steal of home, Arquimedes Gamboa is out", "Arquimedes Gamboa: CS [Home], 1-2"},
       {"Wild Pitch!", "WP"},
       {"Throwing error, E9", "E9 (throw)"},
-      {"Squeeze bunt is on, Zack Short is out", "Zack Short: CS [Home], 1-2"}
+      {"Squeeze bunt is on, Zack Short is out", "Zack Short: CS [Home], 1-2"},
+      {"Runner from 1st tags up, OUT at 2nd! 7-4", "Runner from 1B out trying for 2B, 7-4"},
+      {"Runner from 1st tags up, SAFE at 2nd", "Runner from 1B tags up, advances to 2B"},
+      {"Runner from 2nd tags up, SAFE at 3rd with throw by CF", "Runner from 2B tags up, advances to 3B"},
+      {"Runner from 2nd tags up, SAFE at 3rd, no throw by CF", "Runner from 2B tags up, advances to 3B"},
+      {"Runner from 3rd tags up, OUT at HOME! 7-2", "Runner from 3B out trying for Home, 7-2"},
+      {"Runner from 3rd tags up, SCORES, no throw by RF", "Runner from 3B scores"},
+      {"Runner from 3rd tags up, SCORES, throw by CF", "Runner from 3B scores"}
     ]
 
     test "formats the string" do

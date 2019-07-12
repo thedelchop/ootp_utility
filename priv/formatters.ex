@@ -313,5 +313,26 @@
   {
     ~r/^Squeeze\sbunt\sis\son,\s(.+)\sis\sout$/,
     fn _, player -> "#{player}: CS [Home], 1-2" end
+  },
+  {
+    ~r/^Runner\sfrom\s(1st|2nd|3rd)\stags\sup,\s(OUT|SAFE|SCORES)(?:\sat\s(2nd|3rd|HOME))?(?:!\s([1-9]-[1-9]))?(?:,?\s(with|no)?\s?throw\sby\s([1-9]?[A-Z]{0,2}))?/,
+    (fn 
+      _, _starting_base, "SCORES", _destination_base, _scoring ->
+        "Runner from 3B scores"
+      _, starting_base, "SAFE", destination_base, _scoring ->
+        import OOTPUtility.Utilities
+
+        {:ok, starting_position} = position_from_base(starting_base)
+        {:ok, destination_position} = position_from_base(destination_base)
+
+        "Runner from #{starting_position} tags up, advances to #{destination_position}"
+      _, starting_base, "OUT", destination_base, scoring ->
+        import OOTPUtility.Utilities
+
+        {:ok, starting_position} = position_from_base(starting_base)
+        {:ok, destination_position} = position_from_base(destination_base)
+        
+        "Runner from #{starting_position} out trying for #{destination_position}, #{scoring}"
+    end)
   }
 ]
