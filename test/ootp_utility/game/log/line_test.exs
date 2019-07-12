@@ -135,6 +135,9 @@ defmodule OOTPUtility.Game.Log.LineTest do
       {"3-2: Reaches on Catchers interference", "3-2: Reaches on Catchers interference"},
       {"2-2: Strikes out looking and he ARGUES THE CALL AND IS TOSSED!", "2-2: Strikeout (Looking), <Batter ejected>"},
       {"2-2: Strikes out looking and he physically ARGUES THE CALL AND IS TOSSED!", "2-2: Strikeout (Looking), <Batter ejected>"},
+      {"Zach McKinstry to third", "Zach McKinstry to 3B"},
+      {"Zach R. Davis to second", "Zach R. Davis to 2B"},
+      {"Zach Dezenzo scores", "Zach Dezenzo scores"}
     ]
 
     test "formats the string" do

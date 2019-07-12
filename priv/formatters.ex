@@ -264,5 +264,16 @@
       _, count, scoring, contact_type, location ->
         "#{count}: Fly out, #{scoring} (TP), (#{contact_type}, #{location})"
     end)
+  },
+  {
+    ~r/^(.+)\s(?:to\s(second|third)|(scores))$/,
+    (fn
+      _, player, base, "" ->
+        import OOTPUtility.Utilities
+        {:ok, position} = position_from_base(base)
+
+        "#{player} to #{position}"
+      string, _player, "", "scores" -> string
+    end)
   }
 ]
