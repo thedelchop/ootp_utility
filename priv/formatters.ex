@@ -121,9 +121,11 @@
       end)
   },
   {
-    ~r/^(\d-\d):\sGrounds\sinto\s(?:double|DOUBLE)\splay,\s(U?\d-\d(?:-\d)?)\s\(Groundball,\s([1-9]{0,2}[A-Z]{0,3})\)$/,
+    ~r/^(\d-\d):\sGrounds\sinto\s(?:double|DOUBLE)\splay,\s(U?(\d)-\d(?:-\d)?)(?:\s\(Groundball,\s([1-9]{0,2}[A-Z]{0,3})\))?$/,
     (fn
-      _, count, scoring, location ->
+      _, count, scoring, possible_location, "" ->
+        "#{count}: Ground out, #{scoring} (DP), (Groundball, #{possible_location})"
+      _, count, scoring, _possible_location, location ->
         "#{count}: Ground out, #{scoring} (DP), (Groundball, #{location})"
     end)
   },
