@@ -57,10 +57,13 @@ defmodule OOTPUtility.Utilities do
   def position_from_base(base) do
     position = %{
       "first" => "1B",
+      "1st" => "1B",
       "second" => "2B",
+      "2nd" => "2B",
       "third" => "3B",
+      "3rd" => "3B",
       "home" => "Home"
-    }[base]
+    }[String.downcase(base)]
 
     if not(is_nil(position)) do
       {:ok, position}

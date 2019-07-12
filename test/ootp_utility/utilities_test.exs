@@ -44,16 +44,32 @@ defmodule OOTPUtility.UtilitiesTest do
       assert Utilities.position_from_base("first") == {:ok, "1B"}
     end
 
+    test "it returns 1B when given 1st" do
+      assert Utilities.position_from_base("1st") == {:ok, "1B"}
+    end
+
     test "it returns 2B when given second" do
       assert Utilities.position_from_base("second") == {:ok, "2B"}
+    end
+
+    test "it returns 2B when given 2nd" do
+      assert Utilities.position_from_base("2nd") == {:ok, "2B"}
     end
 
     test "it returns 3B when given third" do
       assert Utilities.position_from_base("third") == {:ok, "3B"}
     end
 
+    test "it returns 3B when given 3rd" do
+      assert Utilities.position_from_base("3rd") == {:ok, "3B"}
+    end
+
     test "it returns Home when given home" do
       assert Utilities.position_from_base("home") == {:ok, "Home"}
+    end
+
+    test "it returns Home when given HOME" do
+      assert Utilities.position_from_base("HOME") == {:ok, "Home"}
     end
 
     test "it returns an error if the position has no corresponding base" do
