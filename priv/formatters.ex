@@ -504,5 +504,25 @@
 
         "Runner from #{starting_position} tags up, advances to #{ending_position}, Runner from 2B tags up, advances to 3B"
     end)
-  }
+    },
+    {
+      ~r/^Runner\sfrom\s(1st|2nd|3rd)\stries\sfor\s(2nd|3rd|Home),\s(?:throw\sby\s[1-9]*[A-Z]+\sand\s)?(SAFE|OUT)(?:\safter\srundown\.)?!?/,
+      (fn
+      _, starting_base, ending_base, "OUT" ->
+        import OOTPUtility.Utilities
+
+        {:ok, starting_position} = position_from_base(starting_base)
+        {:ok, ending_position} = position_from_base(ending_base)
+
+        "Runner from #{starting_position} out trying for #{ending_position}"
+
+      _, starting_base, ending_base, "SAFE" ->
+        import OOTPUtility.Utilities
+
+        {:ok, starting_position} = position_from_base(starting_base)
+        {:ok, ending_position} = position_from_base(ending_base)
+
+        "Runner from #{starting_position} tags up, advances to #{ending_position}"
+      end)
+    }
 ]
