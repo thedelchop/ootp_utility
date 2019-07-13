@@ -37,6 +37,10 @@
     end)
   },
   {
+    ~r/Batter strikes out./,
+    fn _ -> "Strikeout (Swinging)" end
+  },
+  {
     ~r/^(\d-\d):\sStrikes\sout\s+swinging(?:\s(passed\sball|wild\spitch),\sreaches\sfirst!|(?:,\s([1-9]-[1-9])\sout\sat\sfirst.))?$/,
     (fn 
       _, count, "", "" ->

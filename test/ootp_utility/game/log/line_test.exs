@@ -78,6 +78,7 @@ defmodule OOTPUtility.Game.Log.LineTest do
       {"1-0: Swinging Strike", "1-0: Strike (Swinging)" },
       {"1-1: Ball", "1-1: Ball" },
       {"2-2: Strikes out swinging", "2-2: Strikeout (Swinging)" },
+      {"Batter strikes out.", "Strikeout (Swinging)" },
       {"1-2: Strikes out swinging passed ball, reaches first!", "1-2: Strikeout (Swinging), {Batter to 1B on passed ball}"},
       {"1-2: Strikes out swinging wild pitch, reaches first!", "1-2: Strikeout (Swinging), {Batter to 1B on wild pitch}"},
       {"3-2: Strikes out swinging, 2-3 out at first.", "3-2: Strikeout (Swinging), 2-3, {Batter 1B attempt}"},
