@@ -361,5 +361,49 @@
         
         "Runner from #{starting_position} out trying for #{destination_position}, #{scoring}"
     end)
+  },
+  {
+    ~r/^Pickoff\sThrow\s(?:by\s(Catcher)\s)?to\s(First|Second|Third)\s-\s(?:Error!\s(E\d))?(?:Out!(?:\s([1-9,U]-*[1-9]*-*[1-9]*))?)?$/,
+    (fn
+      _, "", base, "", _scoring ->
+        import OOTPUtility.Utilities
+
+        {:ok, position} = position_from_base(base)
+        {:ok, receiver_scoring_key } = scoring_key_from_position(position)
+
+        scoring = "1-#{receiver_scoring_key}"
+
+        "Pickoff, #{scoring}"
+
+      _, "", base, error, "" ->
+        import OOTPUtility.Utilities
+
+        {:ok, position} = position_from_base(base)
+        {:ok, receiver_scoring_key } = scoring_key_from_position(position)
+
+        scoring = "1-#{receiver_scoring_key}"
+
+        "Pickoff Attempt, #{scoring}, #{error}"
+
+      _, "Catcher", base, "", _scoring ->
+        import OOTPUtility.Utilities
+
+        {:ok, position} = position_from_base(base)
+        {:ok, receiver_scoring_key } = scoring_key_from_position(position)
+
+        scoring = "2-#{receiver_scoring_key}"
+
+        "Pickoff, #{scoring}"
+
+      _, "Catcher", base, error, "" ->
+        import OOTPUtility.Utilities
+
+        {:ok, position} = position_from_base(base)
+        {:ok, receiver_scoring_key } = scoring_key_from_position(position)
+
+        scoring = "2-#{receiver_scoring_key}"
+
+        "Pickoff Attempt, #{scoring}, #{error}"
+    end)
   }
 ]

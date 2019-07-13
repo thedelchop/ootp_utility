@@ -157,7 +157,13 @@ defmodule OOTPUtility.Game.Log.LineTest do
       {"Runner from 3rd tags up, SCORES, throw by CF", "Runner from 3B scores"},
       {"SINGLE, but batter called out on appeal for missing first base!", "Single, {Batter out after missing 1B}"},
       {"SINGLE, rundown, out at 1st!", "Single, {Batter out at 1B after rundown}"},
-      {"DOUBLE.", "Double"}
+      {"DOUBLE.", "Double"},
+      {"Pickoff Throw by Catcher to First - Error! E2", "Pickoff Attempt, 2-3, E2"},
+      {"Pickoff Throw by Catcher to First - Out!", "Pickoff, 2-3"},
+      {"Pickoff Throw to First - Error! E1", "Pickoff Attempt, 1-3, E1"},
+      {"Pickoff Throw to First - Out! 1-3", "Pickoff, 1-3"},
+      {"Pickoff Throw to Second - Error! E1", "Pickoff Attempt, 1-4, E1"},
+      {"Pickoff Throw to Second - Out!", "Pickoff, 1-4"}
     ]
 
     test "formats the string" do
