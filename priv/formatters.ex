@@ -7,6 +7,15 @@
     end)
   },
   {
+    ~r/^Error\son\sfoul\sball,\sE([1-9])$/,
+    (fn 
+      _, error_location ->
+        location = if (error_location == "2"), do: "2F", else: "#{error_location}MF"
+
+        "Strike (Foul Ball, #{location}) [E#{error_location}]"
+    end)
+  },
+  {
     ~r/(\d-\d): Bunted foul/,
     (fn
       _, count ->

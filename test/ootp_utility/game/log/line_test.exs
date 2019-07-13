@@ -71,6 +71,8 @@ defmodule OOTPUtility.Game.Log.LineTest do
     @formattable_strings [
       {"0-0: Foul Ball, location: 2F", "0-0: Strike (Foul Ball, 2F)" },
       {"1-2: Foul Ball, location: 7LMF", "1-2: Strike (Foul Ball, 7LMF)"},
+      {"Error on foul ball, E9", "Strike (Foul Ball, 9MF) [E9]"},
+      {"Error on foul ball, E2", "Strike (Foul Ball, 2F) [E2]"},
       {"1-0: Bunted foul", "1-0: Strike (Foul Ball, 2F)"},
       {"1-0: Called Strike", "1-0: Strike (Called)" },
       {"1-0: Swinging Strike", "1-0: Strike (Swinging)" },
