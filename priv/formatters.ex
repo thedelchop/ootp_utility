@@ -37,7 +37,7 @@
     end)
   },
   {
-    ~r/Batter strikes out./,
+    ~r/^Batter strikes out.$/,
     fn _ -> "Strikeout (Swinging)" end
   },
   {
@@ -429,6 +429,10 @@
   {
     ~r/^Passed\sBall!$/,
     fn _ -> "Passed Ball" end
+  },
+  {
+    ~r/^Balk!$/,
+    fn _ -> "Balk" end
   },
   {
     ~r/^Hidden ball trick at (first|second|third) base, runner out!/,
