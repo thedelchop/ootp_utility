@@ -412,9 +412,20 @@
 
         "Pickoff Attempt, #{scoring}, #{error}"
     end)
-    },
-    {
-      ~r/^Passed\sBall!$/,
-      fn _ -> "Passed Ball" end
-    }
+  },
+  {
+    ~r/^Passed\sBall!$/,
+    fn _ -> "Passed Ball" end
+  },
+  {
+    ~r/^Hidden ball trick at (first|second|third) base, runner out!/,
+    (fn
+      _, base ->
+        import OOTPUtility.Utilities
+
+        {:ok, position} = position_from_base(base)
+
+        "Runner out at #{position}, [Hidden Ball Trick]"
+    end)
+  }
 ]
