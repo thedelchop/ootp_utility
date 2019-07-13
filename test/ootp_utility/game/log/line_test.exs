@@ -163,7 +163,8 @@ defmodule OOTPUtility.Game.Log.LineTest do
       {"Pickoff Throw to First - Error! E1", "Pickoff Attempt, 1-3, E1"},
       {"Pickoff Throw to First - Out! 1-3", "Pickoff, 1-3"},
       {"Pickoff Throw to Second - Error! E1", "Pickoff Attempt, 1-4, E1"},
-      {"Pickoff Throw to Second - Out!", "Pickoff, 1-4"}
+      {"Pickoff Throw to Second - Out!", "Pickoff, 1-4"},
+      {"Passed Ball!", "Passed Ball"}
     ]
 
     test "formats the string" do

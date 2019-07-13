@@ -405,5 +405,9 @@
 
         "Pickoff Attempt, #{scoring}, #{error}"
     end)
-  }
+    },
+    {
+      ~r/^Passed\sBall!$/,
+      fn _ -> "Passed Ball" end
+    }
 ]
