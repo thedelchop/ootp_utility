@@ -468,5 +468,41 @@
 
         "Runner from #{starting_position} tags up, advances to #{ending_position}"
     end)
+  },
+  {
+    ~r/^Runner\sfrom\s(1st|2nd|3rd)\stries\sfor\s(2nd|3rd|Home),\sSAFE,\sthrow\sby\s(?:[1-9]*[A-Z]+)\s(?:made\sat)?(?:to)?\strailing\srunner,\s(SAFE|OUT)\s?(?:at\s(first|second|third))?!?\s?([1-9]-[1-9]-*[1-9]*)?$/,
+    (fn 
+      _, starting_base, ending_base, "OUT", "", scoring ->
+        import OOTPUtility.Utilities
+
+        {:ok, starting_position} = position_from_base(starting_base)
+        {:ok, ending_position} = position_from_base(ending_base)
+
+        "Runner from #{starting_position} tags up, advances to #{ending_position}, Runner from 1B out trying for 2B, #{scoring}"
+
+      _, starting_base, ending_base, "OUT", "third", scoring ->
+        import OOTPUtility.Utilities
+
+        {:ok, starting_position} = position_from_base(starting_base)
+        {:ok, ending_position} = position_from_base(ending_base)
+
+        "Runner from #{starting_position} tags up, advances to #{ending_position}, Runner from 2B out trying for 3B, #{scoring}"
+
+      _, starting_base, ending_base, "SAFE", "", "" ->
+        import OOTPUtility.Utilities
+
+        {:ok, starting_position} = position_from_base(starting_base)
+        {:ok, ending_position} = position_from_base(ending_base)
+
+        "Runner from #{starting_position} tags up, advances to #{ending_position}, Runner from 1B tags up, advances to 2B"
+
+      _, starting_base, ending_base, "SAFE", "third", "" ->
+        import OOTPUtility.Utilities
+
+        {:ok, starting_position} = position_from_base(starting_base)
+        {:ok, ending_position} = position_from_base(ending_base)
+
+        "Runner from #{starting_position} tags up, advances to #{ending_position}, Runner from 2B tags up, advances to 3B"
+    end)
   }
 ]
