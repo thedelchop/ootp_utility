@@ -286,10 +286,17 @@
     end)
   },
   {
-    ~r/^(\d-\d):\sLines\sinto\sTRIPLE\splay,\s([1-9,U,F]-*[1-9]*-*[1-9]*)\s\((Line Drive|Groundball|Popup|Flyball),\s([1-9,U,F]-*[1-9]*-*[1-9]*)\)$/,
+    ~r/^(?:(\d-\d):\s)?Lines?d?\sinto\s(TRIPLE\splay|DP),\s([1-9,U,F]-*[1-9]*-*[1-9]*)\s\((Line Drive|Groundball|Popup|Flyball),\s([1-9]{0,2}[A-Z]{0,3})\)$/,
     (fn 
-      _, count, scoring, contact_type, location ->
-        "#{count}: Fly out, #{scoring} (TP), (#{contact_type}, #{location})"
+      _, "", type, scoring, contact_type, location ->
+        play_type = if (type == "DP"), do: "DP", else: "TP"
+
+        "Fly out, #{scoring} (#{play_type}), (#{contact_type}, #{location})"
+
+      _, count, type, scoring, contact_type, location ->
+        play_type = if (type == "DP"), do: "DP", else: "TP"
+
+        "#{count}: Fly out, #{scoring} (#{play_type}), (#{contact_type}, #{location})"
     end)
   },
   {
