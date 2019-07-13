@@ -456,5 +456,17 @@
 
         "Runner from #{starting_position} out trying for #{ending_position}, #{scoring}"
     end)
+  },
+  {
+    ~r/^Runner\sfrom\s(1st|2nd|3rd)\stries\sfor\s(2nd|3rd|Home),\sSAFE,\s(?:no\s)?throw\sby\s(?:[1-9]*[A-Z]+)(?:\sto\s(2nd|3rd|home))?$/,
+    (fn
+      _, starting_base, ending_base ->
+        import OOTPUtility.Utilities
+
+        {:ok, starting_position} = position_from_base(starting_base)
+        {:ok, ending_position} = position_from_base(ending_base)
+
+        "Runner from #{starting_position} tags up, advances to #{ending_position}"
+    end)
   }
 ]
