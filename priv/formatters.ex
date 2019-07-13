@@ -444,5 +444,17 @@
 
         "Runner out at #{position}, [Hidden Ball Trick]"
     end)
+  },
+  {
+    ~r/^Runner\sfrom\s(1st|2nd|3rd)\stries\sfor\s(2nd|3rd|Home),\s(?:throw\sby\s(?:[1-9]?[A-Z]+)\sand\s)?OUT!\s([1-9]-[1-9]-*[1-9]*)$/,
+    (fn 
+      _, starting_base, ending_base, scoring ->
+        import OOTPUtility.Utilities
+
+        {:ok, starting_position} = position_from_base(starting_base)
+        {:ok, ending_position} = position_from_base(ending_base)
+
+        "Runner from #{starting_position} out trying for #{ending_position}, #{scoring}"
+    end)
   }
 ]

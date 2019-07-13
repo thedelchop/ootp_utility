@@ -160,6 +160,8 @@ defmodule OOTPUtility.Game.Log.LineTest do
       {"Runner from 3rd tags up, OUT at HOME! 7-2", "Runner from 3B out trying for Home, 7-2"},
       {"Runner from 3rd tags up, SCORES, no throw by RF", "Runner from 3B scores"},
       {"Runner from 3rd tags up, SCORES, throw by CF", "Runner from 3B scores"},
+      {"Runner from 2nd tries for 3rd, OUT! 7-5", "Runner from 2B out trying for 3B, 7-5"},
+      {"Runner from 3rd tries for Home, throw by CF and OUT! 8-6-2", "Runner from 3B out trying for Home, 8-6-2"},
       {"SINGLE, but batter called out on appeal for missing first base!", "Single, {Batter out after missing 1B}"},
       {"SINGLE, rundown, out at 1st!", "Single, {Batter out at 1B after rundown}"},
       {"DOUBLE.", "Double"},
