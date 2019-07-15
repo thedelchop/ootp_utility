@@ -50,4 +50,39 @@ defmodule OOTPUtility.Game.Log.LineTest do
       assert Enum.count(results) == 1
     end
   end
+
+  describe "#raw_text" do
+    test "returns a query that selects all of the raw text from the log lines" do
+      foul_ball = Fixtures.create_game_log_line(%{raw_text: "0-0: Foul Ball, (location: 2F)"})
+      strike_out = Fixtures.create_game_log_line(%{raw_text: "1-2: Strikes Out Looking"})
+
+      results = Repo.all(Line.raw_text)
+
+      assert Enum.member?(results, foul_ball.raw_text)
+      assert Enum.member?(results, strike_out.raw_text)
+
+      assert Enum.count(results) == 2
+    end
+  end
+
+  describe "#format_raw_text" do
+    test "formats the string" do
+      {fixtures, _} = Code.eval_file("test/support/fixtures/line_formatting_fixtures.ex")
+
+      for {raw, formatted} <- fixtures do
+        formatted_line =  Fixtures.create_game_log_line(%{raw_text: raw})
+                          |> Line.format_raw_text
+
+        assert formatted_line == formatted
+      end
+    end
+
+    test "returns nil if the string was not formatted" do
+      formatted_line =  Fixtures.create_game_log_line(%{raw_text: "UNRECOGNIZED GAME EVENT"})
+                        |> Line.format_raw_text
+
+      assert is_nil(formatted_line)
+    end
+    
+  end
 end
