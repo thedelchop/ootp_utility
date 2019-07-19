@@ -1,0 +1,297 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:team="https://api.mysportsfeeds.com/v2.0/common/team"
+           xmlns:venue="https://api.mysportsfeeds.com/v2.0/common/venue"
+           xmlns:game="https://api.mysportsfeeds.com/v2.0/common/game"
+           xmlns:player="https://api.mysportsfeeds.com/v2.0/common/player"
+           xmlns:stats="https://api.mysportsfeeds.com/v2.0/common/stats"
+           xmlns:basebl_stats="https://api.mysportsfeeds.com/v2.0/common/basebl_stats"
+           xmlns:ref="https://api.mysportsfeeds.com/v2.0/common/references"
+           targetNamespace="https://api.mysportsfeeds.com/v2.0/basebl/game_playbyplay"
+           xmlns="https://api.mysportsfeeds.com/v2.0/basebl/game_playbyplay"
+           elementFormDefault="unqualified">
+
+  <xs:import namespace="https://api.mysportsfeeds.com/v2.0/common/team" schemaLocation="included/team.xsd" />
+
+  <xs:import namespace="https://api.mysportsfeeds.com/v2.0/common/venue" schemaLocation="included/venue.xsd" />
+
+  <xs:import namespace="https://api.mysportsfeeds.com/v2.0/common/game" schemaLocation="included/game.xsd" />
+
+  <xs:import namespace="https://api.mysportsfeeds.com/v2.0/common/player" schemaLocation="included/player.xsd" />
+
+  <xs:import namespace="https://api.mysportsfeeds.com/v2.0/common/stats" schemaLocation="included/stats.xsd" />
+
+  <xs:import namespace="https://api.mysportsfeeds.com/v2.0/common/basebl_stats" schemaLocation="included/basebl_stats.xsd" />
+
+  <xs:import namespace="https://api.mysportsfeeds.com/v2.0/common/references" schemaLocation="included/references.xsd" />
+
+  <xs:simpleType name="batterUpResultType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="SINGLE"/>
+      <xs:enumeration value="DOUBLE"/>
+      <xs:enumeration value="TRIPLE"/>
+      <xs:enumeration value="SACRIFICE_FLY"/>
+      <xs:enumeration value="SACRIFICE_BUNT"/>
+      <xs:enumeration value="STRIKEOUT"/>
+      <xs:enumeration value="GROUNDOUT"/>
+      <xs:enumeration value="HOMERUN"/>
+      <xs:enumeration value="POPOUT"/>
+      <xs:enumeration value="FLYOUT"/>
+      <xs:enumeration value="FORCEOUT"/>
+      <xs:enumeration value="WALK"/>
+      <xs:enumeration value="INTENTIONAL_WALK"/>
+      <xs:enumeration value="LINEOUT"/>
+      <xs:enumeration value="DOUBLE_PLAY"/>
+      <xs:enumeration value="TRIPLE_PLAY"/>
+      <xs:enumeration value="SACRIFICE_FLY_DOUBLE_PLAY"/>
+      <xs:enumeration value="SACRIFICE_FLY_TRIPLE_PLAY"/>
+      <xs:enumeration value="SACRIFICE_BUNT_DOUBLE_PLAY"/>
+      <xs:enumeration value="SACRIFICE_BUNT_TRIPLE_PLAY"/>
+      <xs:enumeration value="HIT_BY_PITCH"/>
+      <xs:enumeration value="BATTER_INTERFERENCE"/>
+      <xs:enumeration value="CATCHER_INTERFERENCE"/>
+      <xs:enumeration value="OUTS_WHILE_AT_BAT"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="pitchThrowType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="TWO_SEAM_FASTBALL"/>
+      <xs:enumeration value="FOUR_SEAM_FASTBALL"/>
+      <xs:enumeration value="CURVEBALL"/>
+      <xs:enumeration value="CHANGEUP"/>
+      <xs:enumeration value="CUTTER"/>
+      <xs:enumeration value="SLIDER"/>
+      <xs:enumeration value="INTENTIONAL_BALL"/>
+      <xs:enumeration value="SINKER"/>
+      <xs:enumeration value="SPLITTER"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="pitchResultType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="SWINGING_STRIKE"/>
+      <xs:enumeration value="CALLED_STRIKE"/>
+      <xs:enumeration value="BALL"/>
+      <xs:enumeration value="BALL_IN_DIRT"/>
+      <xs:enumeration value="INTENTIONAL_BALL"/>
+      <xs:enumeration value="FOUL"/>
+      <xs:enumeration value="FOUL_TIP"/>
+      <xs:enumeration value="IN_PLAY_NO_OUTS"/>
+      <xs:enumeration value="IN_PLAY_OUTS"/>
+      <xs:enumeration value="IN_PLAY_RUNS"/>
+      <xs:enumeration value="MISSED_BUNT"/>
+      <xs:enumeration value="HIT_BY_PITCH"/>
+      <xs:enumeration value="WILD_PITCH"/>
+      <xs:enumeration value="PASSED_BALL"/>
+      <xs:enumeration value="BALK"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="hitResultType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="LINE_DRIVE"/>
+      <xs:enumeration value="GROUND_BALL"/>
+      <xs:enumeration value="FLY_BALL"/>
+      <xs:enumeration value="POP_UP"/>
+      <xs:enumeration value="BUNT"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="playStatusType">
+    <xs:sequence>
+      <xs:element name="teamAtBat" minOccurs="0" maxOccurs="1" type="team:teamShortType" />
+
+      <xs:element name="batter" minOccurs="1" maxOccurs="1" type="player:playerShortType" />
+      <xs:element name="firstBaseRunner" minOccurs="1" maxOccurs="1" type="player:playerShortType" />
+      <xs:element name="secondBaseRunner" minOccurs="1" maxOccurs="1" type="player:playerShortType" />
+      <xs:element name="thirdBaseRunner" minOccurs="1" maxOccurs="1" type="player:playerShortType" />
+
+      <xs:element name="pitcher" minOccurs="1" maxOccurs="1" type="player:playerShortType" />
+      <xs:element name="catcher" minOccurs="1" maxOccurs="1" type="player:playerShortType" />
+      <xs:element name="firstBaseman" minOccurs="1" maxOccurs="1" type="player:playerShortType" />
+      <xs:element name="secondBaseman" minOccurs="1" maxOccurs="1" type="player:playerShortType" />
+      <xs:element name="thirdBaseman" minOccurs="1" maxOccurs="1" type="player:playerShortType" />
+      <xs:element name="shortStop" minOccurs="1" maxOccurs="1" type="player:playerShortType" />
+      <xs:element name="leftFielder" minOccurs="1" maxOccurs="1" type="player:playerShortType" />
+      <xs:element name="centerFielder" minOccurs="1" maxOccurs="1" type="player:playerShortType" />
+      <xs:element name="rightFielder" minOccurs="1" maxOccurs="1" type="player:playerShortType" />
+      <xs:element name="outFielder" minOccurs="1" maxOccurs="1" type="player:playerShortType" />
+
+      <xs:element name="ballCount" minOccurs="1" maxOccurs="1" type="xs:integer" />
+      <xs:element name="strikeCount" minOccurs="1" maxOccurs="1" type="xs:integer" />
+      <xs:element name="outCount" minOccurs="1" maxOccurs="1" type="xs:integer" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="batterUpType">
+    <xs:sequence>
+      <xs:element name="battingPlayer" type="player:playerShortType" minOccurs="1" maxOccurs="1" />
+
+      <xs:element name="standingLeftOrRight" type="xs:string" minOccurs="1" maxOccurs="1" />
+
+      <xs:element name="result" type="batterUpResultType" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="pitchType">
+    <xs:sequence>
+      <xs:element name="battingPlayer" type="player:playerShortType" minOccurs="1" maxOccurs="1" />
+      <xs:element name="pitchingPlayer" type="player:playerShortType" minOccurs="1" maxOccurs="1" />
+
+      <xs:element name="throwingLeftOrRight" type="xs:string" minOccurs="1" maxOccurs="1" />
+
+      <xs:element name="throwType" type="pitchThrowType" minOccurs="1" maxOccurs="1" />
+
+      <xs:element name="result" type="pitchResultType" minOccurs="1" maxOccurs="1" />
+
+      <xs:element name="ballStartSpeed" type="xs:integer" minOccurs="1" maxOccurs="1" />
+      <xs:element name="ballEndSpeed" type="xs:integer" minOccurs="1" maxOccurs="1" />
+
+      <xs:element name="pitchedLocation" type="basebl_stats:pitchLocationType" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="hitType">
+    <xs:sequence>
+      <xs:element name="battingPlayer" type="player:playerShortType" minOccurs="1" maxOccurs="1" />
+      <xs:element name="pitchingPlayer" type="player:playerShortType" minOccurs="1" maxOccurs="1" />
+
+      <xs:element name="hitType" type="hitResultType" minOccurs="1" maxOccurs="1" />
+
+      <xs:element name="isOut" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+      <xs:element name="isCaughtOut" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+      <xs:element name="isError" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+
+      <xs:element name="retrievedByPlayer" type="player:playerShortType" minOccurs="1" maxOccurs="1" />
+
+      <xs:element name="retrievedAtLocation" type="basebl_stats:fieldLocationType" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="baseRunAttemptType">
+    <xs:sequence>
+      <xs:element name="runningPlayer" type="player:playerShortType" minOccurs="1" maxOccurs="1" />
+
+      <xs:element name="fromBase" type="xs:integer" minOccurs="1" maxOccurs="1" />
+      <xs:element name="toBase" type="xs:integer" minOccurs="1" maxOccurs="1" />
+
+      <xs:element name="isSafe" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+      <xs:element name="isRunScored" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+      <xs:element name="isForcedOut" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+      <xs:element name="isWalk" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+      <xs:element name="isWalkIntentional" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+      <xs:element name="isPassedBall" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+      <xs:element name="isWildPitch" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+      <xs:element name="isEarnedRun" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="baseStealAttemptType">
+    <xs:sequence>
+      <xs:element name="stealingPlayer" type="player:playerShortType" minOccurs="1" maxOccurs="1" />
+
+      <xs:element name="base" type="xs:integer" minOccurs="1" maxOccurs="1" />
+
+      <xs:element name="isSuccessful" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="pickoffAttemptType">
+    <xs:sequence>
+      <xs:element name="pitchingPlayer" type="player:playerShortType" minOccurs="1" maxOccurs="1" />
+      <xs:element name="runningPlayer" type="player:playerShortType" minOccurs="1" maxOccurs="1" />
+      <xs:element name="catchingPlayer" type="player:playerShortType" minOccurs="1" maxOccurs="1" />
+
+      <xs:element name="toBase" type="xs:integer" minOccurs="1" maxOccurs="1" />
+
+      <xs:element name="isSuccessful" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ballThrowType">
+    <xs:sequence>
+      <xs:element name="fromPlayer" type="player:playerShortType" minOccurs="1" maxOccurs="1" />
+      <xs:element name="toPlayer" type="player:playerShortType" minOccurs="1" maxOccurs="1" />
+      <xs:element name="runningPlayer" type="player:playerShortType" minOccurs="1" maxOccurs="1" />
+
+      <xs:element name="fromBase" type="xs:integer" minOccurs="1" maxOccurs="1" />
+      <xs:element name="toBase" type="xs:integer" minOccurs="1" maxOccurs="1" />
+
+      <xs:element name="thrownFromLocation" type="basebl_stats:fieldLocationType" minOccurs="1" maxOccurs="1" />
+
+      <xs:element name="thrownToLocation" type="basebl_stats:fieldLocationType" minOccurs="1" maxOccurs="1" />
+
+      <xs:element name="isCaught" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+      <xs:element name="isRunningPlayerOut" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+      <xs:element name="isTagOut" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+      <xs:element name="isForceOut" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+      <xs:element name="isThrowingError" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+      <xs:element name="isCatchingError" type="xs:boolean" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="playerSubstitutionType">
+    <xs:sequence>
+      <xs:element name="team" type="team:teamShortType" minOccurs="1" maxOccurs="1" />
+
+      <xs:element name="position" type="xs:string" minOccurs="1" maxOccurs="1" />
+
+      <xs:element name="outgoingPlayer" type="player:playerShortType" minOccurs="1" maxOccurs="1" />
+
+      <xs:element name="incomingPlayer" type="player:playerShortType" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="atBatType">
+    <xs:sequence>
+      <xs:element name="inning" minOccurs="1" maxOccurs="1" type="xs:integer" />
+      <xs:element name="inningHalf" minOccurs="1" maxOccurs="1" type="xs:string" />
+
+      <xs:element name="battingTeam" minOccurs="1" maxOccurs="1" type="team:teamShortType" />
+
+      <xs:element name="atBatPlay" minOccurs="1" maxOccurs="unbounded" type="atBatPlayType" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="atBatPlayType">
+    <xs:sequence>
+      <xs:element name="description" minOccurs="1" maxOccurs="1" type="xs:string" />
+
+	  <xs:choice minOccurs="1" maxOccurs="1">
+        <xs:element name="batterUp" type="batterUpType" />
+
+        <xs:element name="pitch" type="pitchType" />
+
+        <xs:element name="hit" type="hitType" />
+
+        <xs:element name="baseRunAttempt" type="baseRunAttemptType" />
+
+        <xs:element name="baseStealAttempt" type="baseStealAttemptType" />
+
+        <xs:element name="pickoffAttempt" type="pickoffAttemptType" />
+
+        <xs:element name="ballThrow" type="ballThrowType" />
+
+        <xs:element name="playerSubstitution" type="playerSubstitutionType" />
+      </xs:choice>
+
+      <xs:element name="playStatus" type="playStatusType" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="gamePlayByPlay">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="lastUpdatedOn" type="xs:dateTime" minOccurs="1" maxOccurs="1" />
+
+        <xs:element name="game" type="game:gameLongType" minOccurs="1" maxOccurs="1" />
+
+        <xs:element name="atBats" minOccurs="1" maxOccurs="unbounded" type="atBatType" />
+
+        <xs:element name="references" type="ref:referenceType" minOccurs="1" maxOccurs="1" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>
