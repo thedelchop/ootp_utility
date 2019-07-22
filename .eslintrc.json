@@ -2,7 +2,8 @@
   "parser":  "@typescript-eslint/parser",
   "extends": [
     "plugin:@typescript-eslint/recommended",
-    "prettier/@typescript-eslint"
+    "prettier/@typescript-eslint",
+    "plugin:react/recommended"
   ],
   "parserOptions": {
     "ecmaVersion":  2018,
@@ -12,6 +13,12 @@
     "@typescript-eslint/explicit-function-return-type": false,
     "@typescript-eslint/explicit-member-accessibility": [
       { "overrides": { "constructors": "no-public" } }
-    ]
+    ],
+    "react/prop-types": false
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
   }
 }
