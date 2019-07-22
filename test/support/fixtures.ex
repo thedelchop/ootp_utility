@@ -13,7 +13,7 @@ defmodule OOTPUtility.Fixtures do
   def create_game_log_line(attrs \\ %{}) do
     attributes = attrs |> Enum.into(@line_attrs)
 
-    {:ok, game_log_line} = 
+    {:ok, game_log_line} =
       %Line{}
       |> Line.changeset(attributes)
       |> Repo.insert()

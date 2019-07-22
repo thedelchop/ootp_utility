@@ -56,8 +56,8 @@ defmodule OOTPUtility.Game.Log.Line do
   @spec raw_text(Ecto.Query.t() | Line.t()) :: Ecto.Query.t()
   def raw_text(query \\ OOTPUtility.Game.Log.Line) do
     query
-      |> Ecto.Queryable.to_query()
-      |> select([l], l.raw_text)
+    |> Ecto.Queryable.to_query()
+    |> select([l], l.raw_text)
   end
 
   @doc """
@@ -70,13 +70,15 @@ defmodule OOTPUtility.Game.Log.Line do
 
     case Enum.any?(formatters, fn {regex, _} -> Regex.match?(regex, line.raw_text) end) do
       true ->
-        Enum.reduce(formatters, line.raw_text, fn 
+        Enum.reduce(formatters, line.raw_text, fn
           formatter, formatted_text ->
             {regex, format_fn} = formatter
 
             Regex.replace(regex, formatted_text, format_fn)
         end)
-      false -> nil
+
+      false ->
+        nil
     end
   end
 end

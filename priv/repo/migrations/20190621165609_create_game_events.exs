@@ -9,7 +9,7 @@ defmodule OOTPUtility.Repo.Migrations.CreateGameEvents do
       add :raw_text, :text
       add :formatted_text, :text
     end
-    
+
     create index(:game_events, [:game_id])
   end
 end

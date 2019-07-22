@@ -11,11 +11,12 @@ defmodule OOTPUtility.Utilities do
   ## Examples
     iex> OOTPUtility.Utilities.scoring_key_from_position("3B") #-> 5
   """
-  @spec scoring_key_from_position(String.t()) :: {:ok, String.t() } | :error
+  @spec scoring_key_from_position(String.t()) :: {:ok, String.t()} | :error
   def scoring_key_from_position(position) do
-    scoring_key = %{
-        "P" =>  "1",
-        "C" =>  "2",
+    scoring_key =
+      %{
+        "P" => "1",
+        "C" => "2",
         "1B" => "3",
         "2B" => "4",
         "3B" => "5",
@@ -23,52 +24,54 @@ defmodule OOTPUtility.Utilities do
         "LF" => "7",
         "CF" => "8",
         "RF" => "9"
-    }[position]
+      }[position]
 
-    if not(is_nil(scoring_key)) do
+    if not is_nil(scoring_key) do
       {:ok, scoring_key}
     else
       :error
     end
   end
 
-  @spec position_from_scoring_key(String.t()) :: {:ok, String.t() } | :error
+  @spec position_from_scoring_key(String.t()) :: {:ok, String.t()} | :error
   def position_from_scoring_key(scoring_key) do
-    position = %{
-      1 => "P",
-      2 => "C",
-      3 => "1B",
-      4 => "2B",
-      5 => "3B",
-      6 => "SS",
-      7 => "LF",
-      8 => "CF",
-      9 => "RF"
-    }[String.to_integer(scoring_key)]
+    position =
+      %{
+        1 => "P",
+        2 => "C",
+        3 => "1B",
+        4 => "2B",
+        5 => "3B",
+        6 => "SS",
+        7 => "LF",
+        8 => "CF",
+        9 => "RF"
+      }[String.to_integer(scoring_key)]
 
-    if not(is_nil(position)) do
+    if not is_nil(position) do
       {:ok, position}
     else
       :error
     end
   end
 
-  @spec position_from_base(String.t()) :: {:ok, String.t() } | :error
+  @spec position_from_base(String.t()) :: {:ok, String.t()} | :error
   def position_from_base(base) do
-    position = %{
-      "first" => "1B",
-      "1st" => "1B",
-      "second" => "2B",
-      "2nd" => "2B",
-      "third" => "3B",
-      "3rd" => "3B",
-      "home" => "Home"
-    }[String.downcase(base)]
+    position =
+      %{
+        "first" => "1B",
+        "1st" => "1B",
+        "second" => "2B",
+        "2nd" => "2B",
+        "third" => "3B",
+        "3rd" => "3B",
+        "home" => "Home"
+      }[String.downcase(base)]
 
-    if not(is_nil(position)) do
+    if not is_nil(position) do
       {:ok, position}
     else
-      {:error, nil }
+      {:error, nil}
     end
   end
 end

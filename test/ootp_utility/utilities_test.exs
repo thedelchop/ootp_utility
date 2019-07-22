@@ -18,7 +18,7 @@ defmodule OOTPUtility.UtilitiesTest do
   describe "scoring_key_from_position/1" do
     test "returns the correct scoring key for the specified position" do
       for {position, scoring_key} <- @positions do
-        assert {:ok, scoring_key } == Utilities.scoring_key_from_position(position)
+        assert {:ok, scoring_key} == Utilities.scoring_key_from_position(position)
       end
     end
 
@@ -30,7 +30,7 @@ defmodule OOTPUtility.UtilitiesTest do
   describe "position_from_scoring_key" do
     test "returns the correct position for the specified scoring key" do
       for {position, scoring_key} <- @positions do
-        assert {:ok, position } == Utilities.position_from_scoring_key(scoring_key)
+        assert {:ok, position} == Utilities.position_from_scoring_key(scoring_key)
       end
     end
 
