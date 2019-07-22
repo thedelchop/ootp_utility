@@ -9,11 +9,14 @@ module.exports = (env, options) => ({
   optimization: {
     minimizer: [
       new UglifyJsPlugin({ cache: true, parallel: true, sourceMap: false }),
-      new OptimizeCSSAssetsPlugin({})
+      new OptimizeCSSAssetsPlugin({
+        cssProcessor: require('cssnano'),
+        cssProcessorOptions: { discardUnused: { fontFace: false } }
+      })
     ]
   },
   entry: {
-    app: './assets/js/app.js'
+    App: './assets/js/App.tsx'
   },
   output: {
     filename: 'App.js',
@@ -22,7 +25,7 @@ module.exports = (env, options) => ({
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(js|jsx|ts|tsx)$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader'
@@ -35,7 +38,12 @@ module.exports = (env, options) => ({
     ]
   },
   plugins: [
-    new MiniCssExtractPlugin({filename: '../css/app.css'}),
-    new CopyWebpackPlugin([{from: 'assets/static/',to: '../'}])
-  ]
+    new MiniCssExtractPlugin({ filename: '../css/app.css' }),
+    new CopyWebpackPlugin([{ from: 'assets/static/', to: '../', ignore: '*.ts' }])
+  ],
+  resolve: {
+    // Add '.ts' and '.tsx' as resolvable extensions.
+    modules: [path.resolve('./node_modules'), path.resolve('./assets/js')],
+    extensions: ['.ts', '.tsx', '.js', '.jsx', '.json']
+  }
 });
