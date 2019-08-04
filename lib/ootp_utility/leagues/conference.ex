@@ -9,6 +9,8 @@ defmodule OOTPUtility.Leagues.Conference do
     field :name, :string
 
     belongs_to :league, OOTPUtility.Leagues.League, references: :league_id, foreign_key: :league_id
+
+    has_many :divisions, OOTPUtility.Leagues.Division, foreign_key: :division_id, references: :conference_id
   end
 
   @doc false
