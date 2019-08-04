@@ -8,6 +8,8 @@ defmodule OOTPUtility.Leagues.Division do
 
     belongs_to :league, OOTPUtility.Leagues.League, references: :league_id, foreign_key: :league_id
     belongs_to :conference, OOTPUtility.Leagues.Conference, references: :conference_id, foreign_key: :conference_id
+
+    has_many :teams, OOTPUtility.Leagues.Team, foreign_key: :team_id, references: :division_id
   end
 
   @doc false

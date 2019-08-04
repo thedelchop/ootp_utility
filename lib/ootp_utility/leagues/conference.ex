@@ -11,6 +11,7 @@ defmodule OOTPUtility.Leagues.Conference do
     belongs_to :league, OOTPUtility.Leagues.League, references: :league_id, foreign_key: :league_id
 
     has_many :divisions, OOTPUtility.Leagues.Division, foreign_key: :division_id, references: :conference_id
+    has_many :teams, OOTPUtility.Leagues.Team, foreign_key: :team_id, references: :conference_id
   end
 
   @doc false
