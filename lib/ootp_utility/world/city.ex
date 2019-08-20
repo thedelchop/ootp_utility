@@ -2,7 +2,7 @@ defmodule OOTPUtility.World.City do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @primary_key { :city_id, :id, autogenerate: false}
+  @primary_key {:city_id, :id, autogenerate: false}
   schema "cities" do
     field :abbreviation, :string
     field :name, :string

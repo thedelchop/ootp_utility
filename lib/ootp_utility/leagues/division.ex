@@ -2,12 +2,17 @@ defmodule OOTPUtility.Leagues.Division do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @primary_key { :division_id, :id, autogenerate: false}
+  @primary_key {:division_id, :id, autogenerate: false}
   schema "divisions" do
     field :name, :string
 
-    belongs_to :league, OOTPUtility.Leagues.League, references: :league_id, foreign_key: :league_id
-    belongs_to :conference, OOTPUtility.Leagues.Conference, references: :conference_id, foreign_key: :conference_id
+    belongs_to :league, OOTPUtility.Leagues.League,
+      references: :league_id,
+      foreign_key: :league_id
+
+    belongs_to :conference, OOTPUtility.Leagues.Conference,
+      references: :conference_id,
+      foreign_key: :conference_id
 
     has_many :teams, OOTPUtility.Leagues.Team, foreign_key: :team_id, references: :division_id
   end

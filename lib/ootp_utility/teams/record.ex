@@ -21,7 +21,27 @@ defmodule OOTPUtility.Teams.Record do
   @doc false
   def changeset(record, attrs) do
     record
-    |> cast(attrs, [:games, :wins, :losses, :position, :winning_percentage, :games_behind, :streak, :magic_number, :team_id])
-    |> validate_required([:games, :wins, :losses, :position, :winning_percentage, :games_behind, :streak, :magic_number, :team_id])
+    |> cast(attrs, [
+      :games,
+      :wins,
+      :losses,
+      :position,
+      :winning_percentage,
+      :games_behind,
+      :streak,
+      :magic_number,
+      :team_id
+    ])
+    |> validate_required([
+      :games,
+      :wins,
+      :losses,
+      :position,
+      :winning_percentage,
+      :games_behind,
+      :streak,
+      :magic_number,
+      :team_id
+    ])
   end
 end

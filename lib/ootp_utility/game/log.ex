@@ -1,6 +1,4 @@
 defmodule OOTPUtility.Game.Log do
-  require IEx
-
   alias OOTPUtility.Game.Log.Line
   alias OOTPUtility.Repo
 
