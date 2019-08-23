@@ -2,6 +2,8 @@ defmodule OOTPUtility.Team.Record do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias OOTPUtility.Team
+
   schema "team_records" do
     field :games, :integer
     field :games_behind, :float
@@ -13,7 +15,7 @@ defmodule OOTPUtility.Team.Record do
     field :wins, :integer
     field :game_date, :date
 
-    belongs_to :team, OOTPUtility.Team, foreign_key: :team_id, references: :team_id
+    belongs_to :team, Team, foreign_key: :team_id, references: :team_id
 
     timestamps()
   end

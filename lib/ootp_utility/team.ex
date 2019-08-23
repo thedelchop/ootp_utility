@@ -2,6 +2,10 @@ defmodule OOTPUtility.Team do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias OOTPUtility.{League}
+  alias OOTPUtility.Leagues.{Conference, Division}
+  alias OOTPUtility.World.City
+
   @primary_key {:team_id, :id, autogenerate: false}
   schema "teams" do
     field :abbr, :string
@@ -9,17 +13,17 @@ defmodule OOTPUtility.Team do
     field :logo_filename, :string
     field :name, :string
 
-    belongs_to :city, OOTPUtility.World.City, references: :city_id, foreign_key: :city_id
+    belongs_to :city, City, references: :city_id, foreign_key: :city_id
 
-    belongs_to :league, OOTPUtility.League,
+    belongs_to :league, League,
       references: :league_id,
       foreign_key: :league_id
 
-    belongs_to :conference, OOTPUtility.Leagues.Conference,
+    belongs_to :conference, Conference,
       references: :conference_id,
       foreign_key: :conference_id
 
-    belongs_to :division, OOTPUtility.Leagues.Division,
+    belongs_to :division, Division,
       references: :division_id,
       foreign_key: :division_id
   end
