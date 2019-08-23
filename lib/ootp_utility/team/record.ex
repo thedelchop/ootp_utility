@@ -1,4 +1,4 @@
-defmodule OOTPUtility.Teams.Record do
+defmodule OOTPUtility.Team.Record do
   use Ecto.Schema
   import Ecto.Changeset
 
