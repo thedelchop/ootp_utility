@@ -16,7 +16,7 @@ defmodule OOTPUtility.Leagues.Conference do
       foreign_key: :division_id,
       references: :conference_id
 
-    has_many :teams, OOTPUtility.Leagues.Team, foreign_key: :team_id, references: :conference_id
+    has_many :teams, OOTPUtility.Team, foreign_key: :team_id, references: :conference_id
   end
 
   @doc false

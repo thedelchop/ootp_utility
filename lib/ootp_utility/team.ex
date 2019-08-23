@@ -1,4 +1,4 @@
-defmodule OOTPUtility.Leagues.Team do
+defmodule OOTPUtility.Team do
   use Ecto.Schema
   import Ecto.Changeset
 
