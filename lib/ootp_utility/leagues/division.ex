@@ -6,7 +6,7 @@ defmodule OOTPUtility.Leagues.Division do
   schema "divisions" do
     field :name, :string
 
-    belongs_to :league, OOTPUtility.Leagues.League,
+    belongs_to :league, OOTPUtility.League,
       references: :league_id,
       foreign_key: :league_id
 

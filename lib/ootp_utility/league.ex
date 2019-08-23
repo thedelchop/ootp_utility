@@ -1,4 +1,4 @@
-defmodule OOTPUtility.Leagues.League do
+defmodule OOTPUtility.League do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -14,9 +14,9 @@ defmodule OOTPUtility.Leagues.League do
     field :season_year, :integer
     field :start_date, :date
 
-    belongs_to :parent_league, OOTPUtility.Leagues.League, references: :parent_league_id
+    belongs_to :parent_league, OOTPUtility.League, references: :parent_league_id
 
-    has_many :child_leagues, OOTPUtility.Leagues.League,
+    has_many :child_leagues, OOTPUtility.League,
       foreign_key: :parent_league_id,
       references: :league_id
 

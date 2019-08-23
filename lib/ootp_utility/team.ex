@@ -11,7 +11,7 @@ defmodule OOTPUtility.Team do
 
     belongs_to :city, OOTPUtility.World.City, references: :city_id, foreign_key: :city_id
 
-    belongs_to :league, OOTPUtility.Leagues.League,
+    belongs_to :league, OOTPUtility.League,
       references: :league_id,
       foreign_key: :league_id
 

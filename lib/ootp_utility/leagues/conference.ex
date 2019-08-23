@@ -8,7 +8,7 @@ defmodule OOTPUtility.Leagues.Conference do
     field :designated_hitter, :boolean, default: false
     field :name, :string
 
-    belongs_to :league, OOTPUtility.Leagues.League,
+    belongs_to :league, OOTPUtility.League,
       references: :league_id,
       foreign_key: :league_id
 
