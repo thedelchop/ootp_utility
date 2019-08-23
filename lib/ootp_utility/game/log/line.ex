@@ -26,7 +26,7 @@ defmodule OOTPUtility.Game.Log.Line do
       iex> OOTPUtility.Game.Log.Line.unformatted
   """
   @spec unformatted(Ecto.Query.t() | Line.t()) :: Ecto.Query.t()
-  def unformatted(query \\ OOTPUtility.Game.Log.Line) do
+  def unformatted(query \\ __MODULE__) do
     query
     |> Ecto.Queryable.to_query()
     |> where([l], is_nil(l.formatted_text))
@@ -41,7 +41,7 @@ defmodule OOTPUtility.Game.Log.Line do
   """
 
   @spec pitch_descriptions(Ecto.Query.t() | Line.t()) :: Ecto.Query.t()
-  def pitch_descriptions(query \\ OOTPUtility.Game.Log.Line) do
+  def pitch_descriptions(query \\ __MODULE__) do
     query
     |> Ecto.Queryable.to_query()
     |> where([l], l.type == 3)
@@ -54,7 +54,7 @@ defmodule OOTPUtility.Game.Log.Line do
     iex> OOTPUtility.Game.Log.Line.raw_text()
   """
   @spec raw_text(Ecto.Query.t() | Line.t()) :: Ecto.Query.t()
-  def raw_text(query \\ OOTPUtility.Game.Log.Line) do
+  def raw_text(query \\ __MODULE__) do
     query
     |> Ecto.Queryable.to_query()
     |> select([l], l.raw_text)
