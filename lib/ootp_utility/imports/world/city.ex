@@ -1,4 +1,6 @@
 defmodule OOTPUtility.Imports.World.City do
+  alias OOTPUtility.Imports
+  alias OOTPUtility.World.City
 
   @headers [
     "city_id",
@@ -12,16 +14,26 @@ defmodule OOTPUtility.Imports.World.City do
     "main_language_id"
   ]
 
-  def headers, do: @headers
+  @attributes [
+    :city_id,
+    :name,
+    :abbreviation
+  ]
 
-  @spec csv_to_changeset([String.t()]) :: %{city_id: integer, name: String.t(), abbreviation: String.t()}
-  def csv_to_changeset(city_as_csv) do
-    [city_id, _nation_id, _state_id, name, abbreviation | _ ] = city_as_csv
+  @spec import_from_path(Path.t()) :: {String.t(), integer}
+  def import_from_path(path) do
+    path
+    |> Imports.read_from_path()
+    |> Imports.trim_headers(@headers)
+    |> Imports.build_attributes_map(@attributes, &csv_to_changeset/1)
+    |> Imports.insert_into_database(City)
+  end
 
-    %{
-      city_id: String.to_integer(city_id),
-      name: name,
-      abbreviation: abbreviation
-    }
+  defp csv_to_changeset([city_id, _nation_id, _state_id, name, abbreviation | _]) do
+    [
+      String.to_integer(city_id),
+      name,
+      abbreviation
+    ]
   end
 end
