@@ -1,6 +1,7 @@
 defmodule OOTPUtility.League do
   use Ecto.Schema
   import Ecto.Changeset
+  import OOTPUtility.Imports, only: [import_from_path: 2]
 
   @primary_key {:league_id, :id, autogenerate: false}
   schema "leagues" do
@@ -29,6 +30,27 @@ defmodule OOTPUtility.League do
       references: :league_id
 
     has_many :teams, OOTPUtility.Team, foreign_key: :team_id, references: :league_id
+  end
+
+  def import_from_path(path) do
+    import_from_path(path, &import_changeset/1)
+  end
+
+  def import_changeset(attrs) do
+    %__MODULE__{}
+    |> cast(attrs,[
+      :league_id,
+      :name,
+      :abbr,
+      :logo_filename,
+      :start_date,
+      :league_state,
+      :season_year,
+      :historical_year,
+      :league_level,
+      :current_date
+    ])
+    |> apply_changes
   end
 
   @doc false
