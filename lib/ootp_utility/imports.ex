@@ -4,6 +4,7 @@ defmodule OOTPUtility.Imports do
   data and prepping it to be imported.
   """
   alias OOTPUtility.Repo
+  alias Ecto.Multi
 
   def read_from_path(path) do
     path
@@ -31,10 +32,20 @@ defmodule OOTPUtility.Imports do
     |> Stream.map(&Enum.into(&1, %{}))
   end
 
-  def insert_into_database(changesets, schema_module) do
+  def insert_into_database(changesets) do
     changesets
     |> Stream.chunk_every(10_000)
-    |> Enum.map(&Repo.insert_all(schema_module, &1))
-    |> Enum.reduce(0, fn {count, _}, total_count -> total_count + count end)
+    |> Enum.reduce(0, fn
+        attributes, total_count ->
+          records_inserted = attributes
+          |> Enum.reduce(Multi.new(), &Multi.insert(&2, "insert_city_#{&1.city_id}", &1)) 
+          |> Repo.transaction()
+          |> Tuple.to_list()
+          |> List.last()
+          |> Map.keys()
+          |> Enum.count()
+
+          total_count + records_inserted
+    end)
   end
 end

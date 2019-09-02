@@ -8,6 +8,12 @@ defmodule OOTPUtility.World.City do
     field :name, :string
   end
 
+  def import_changeset(attrs) do
+    %__MODULE__{}
+    |> cast(attrs, [:city_id, :name, :abbreviation])
+    |> apply_changes()
+  end
+
   @doc false
   def changeset(city, attrs) do
     city
