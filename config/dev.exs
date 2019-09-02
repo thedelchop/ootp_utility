@@ -5,7 +5,7 @@ config :ootp_utility, OOTPUtility.Repo,
   database: "ootp_utility_dev",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
-  pool_size: 200,
+  pool_size: 50,
   timeout: :infinity,
   socket_options: [recbuf: 8192, sndbuf: 8192]
 
