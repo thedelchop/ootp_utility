@@ -2,6 +2,7 @@ defmodule OOTPUtility.Game.Log.Line do
   use Ecto.Schema
   import Ecto.Changeset
   import Ecto.Query, only: [where: 3, select: 3]
+  import OOTPUtility.Imports, only: [import_from_path: 3]
 
   schema "game_log_lines" do
     field :formatted_text, :string
@@ -11,9 +12,19 @@ defmodule OOTPUtility.Game.Log.Line do
     field :type, :integer
   end
 
+  def import_from_path(path) do
+    import_from_path(path, &sanitize_import_attributes/1, &import_changeset/1)
+  end
+
+  def import_changeset(attrs) do
+    %__MODULE__{}
+    |> cast(attrs, [:game_id, :type, :line, :raw_text, :formatted_text])
+    |> apply_changes()
+  end
+
   @doc false
-  def changeset(event, attrs) do
-    event
+  def changeset(line, attrs) do
+    line
     |> cast(attrs, [:game_id, :type, :line, :raw_text, :formatted_text])
     |> validate_required([:game_id, :type, :line, :raw_text])
   end
@@ -81,4 +92,24 @@ defmodule OOTPUtility.Game.Log.Line do
         nil
     end
   end
+
+  defp sanitize_import_attributes([game_id, type, line, text]) do
+    [
+      game_id,
+      type,
+      line,
+      text
+    ]
+  end
+
+  defp sanitize_import_attributes([game_id, type, line, text | rest_of_text]) do
+    [
+      game_id,
+      type,
+      line,
+      Enum.join([text | rest_of_text], ",")
+    ]
+  end
+
+
 end
