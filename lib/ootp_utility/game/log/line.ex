@@ -5,11 +5,11 @@ defmodule OOTPUtility.Game.Log.Line do
   import OOTPUtility.Imports, only: [import_from_path: 3]
 
   schema "game_log_lines" do
-    field :formatted_text, :string
     field :game_id, :integer
     field :line, :integer
-    field :raw_text, :string
+    field :text, :string
     field :type, :integer
+    field :formatted_text, :string
   end
 
   def import_from_path(path) do
@@ -18,15 +18,15 @@ defmodule OOTPUtility.Game.Log.Line do
 
   def import_changeset(attrs) do
     %__MODULE__{}
-    |> cast(attrs, [:game_id, :type, :line, :raw_text, :formatted_text])
+    |> cast(attrs, [:game_id, :type, :line, :text, :formatted_text])
     |> apply_changes()
   end
 
   @doc false
   def changeset(line, attrs) do
     line
-    |> cast(attrs, [:game_id, :type, :line, :raw_text, :formatted_text])
-    |> validate_required([:game_id, :type, :line, :raw_text])
+    |> cast(attrs, [:game_id, :type, :line, :text, :formatted_text])
+    |> validate_required([:game_id, :type, :line, :text])
   end
 
   @doc """
@@ -59,7 +59,7 @@ defmodule OOTPUtility.Game.Log.Line do
   end
 
   @doc """
-  Return all 'raw_text' fields for the Line
+  Return all 'text' fields for the Line
 
   ## Examples
     iex> OOTPUtility.Game.Log.Line.raw_text()
@@ -68,7 +68,7 @@ defmodule OOTPUtility.Game.Log.Line do
   def raw_text(query \\ __MODULE__) do
     query
     |> Ecto.Queryable.to_query()
-    |> select([l], l.raw_text)
+    |> select([l], l.text)
   end
 
   @doc """
@@ -79,9 +79,9 @@ defmodule OOTPUtility.Game.Log.Line do
   def format_raw_text(line) do
     {formatters, _} = Code.eval_file("priv/formatters.ex")
 
-    case Enum.any?(formatters, fn {regex, _} -> Regex.match?(regex, line.raw_text) end) do
+    case Enum.any?(formatters, fn {regex, _} -> Regex.match?(regex, line.text) end) do
       true ->
-        Enum.reduce(formatters, line.raw_text, fn
+        Enum.reduce(formatters, line.text, fn
           formatter, formatted_text ->
             {regex, format_fn} = formatter
 
