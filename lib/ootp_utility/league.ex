@@ -38,18 +38,7 @@ defmodule OOTPUtility.League do
 
   def import_changeset(attrs) do
     %__MODULE__{}
-    |> cast(attrs,[
-      :league_id,
-      :name,
-      :abbr,
-      :logo_filename,
-      :start_date,
-      :league_state,
-      :season_year,
-      :historical_year,
-      :league_level,
-      :current_date
-    ])
+    |> changeset(attrs)
     |> apply_changes
   end
 

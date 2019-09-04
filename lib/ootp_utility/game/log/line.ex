@@ -18,7 +18,7 @@ defmodule OOTPUtility.Game.Log.Line do
 
   def import_changeset(attrs) do
     %__MODULE__{}
-    |> cast(attrs, [:game_id, :type, :line, :text, :formatted_text])
+    |> changeset(attrs)
     |> apply_changes()
   end
 
