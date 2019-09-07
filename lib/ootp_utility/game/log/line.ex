@@ -2,7 +2,7 @@ defmodule OOTPUtility.Game.Log.Line do
   use Ecto.Schema
   import Ecto.Changeset
   import Ecto.Query, only: [where: 3, select: 3]
-  import OOTPUtility.Imports, only: [import_from_path: 3]
+  import OOTPUtility.Imports, only: [import_from_path: 4]
 
   schema "game_log_lines" do
     field :game_id, :integer
@@ -13,7 +13,7 @@ defmodule OOTPUtility.Game.Log.Line do
   end
 
   def import_from_path(path) do
-    import_from_path(path, &sanitize_import_attributes/1, &import_changeset/1)
+    import_from_path(path, __MODULE__, &sanitize_import_attributes/1, &import_changeset/1)
   end
 
   def import_changeset(attrs) do

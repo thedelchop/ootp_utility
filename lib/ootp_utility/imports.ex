@@ -4,20 +4,19 @@ defmodule OOTPUtility.Imports do
   data and prepping it to be imported.
   """
   alias OOTPUtility.Repo
-  alias Ecto.Multi
 
-  def import_from_path(path, csv_to_changeset) do
+  def import_from_path(path, schema, csv_to_changeset) do
     path
     |> prepare_csv_file_for_import()
     |> create_attribute_maps_from_csv_rows(csv_to_changeset)
-    |> write_attributes_to_database()
+    |> write_attributes_to_database(schema)
   end
 
-  def import_from_path(path, sanitize_attributes, csv_to_changeset) do
+  def import_from_path(path, schema, sanitize_attributes, csv_to_changeset) do
     path
     |> prepare_csv_file_for_import()
     |> create_attribute_maps_from_csv_rows(sanitize_attributes, csv_to_changeset)
-    |> write_attributes_to_database()
+    |> write_attributes_to_database(schema)
   end
 
   defp prepare_csv_file_for_import(path) do
@@ -34,31 +33,33 @@ defmodule OOTPUtility.Imports do
     end)
   end
 
-  defp create_attribute_maps_from_csv_rows([headers | attributes], sanitize_attributes, csv_to_changeset) do
+  defp create_attribute_maps_from_csv_rows(
+         [headers | attributes],
+         sanitize_attributes,
+         csv_to_changeset
+       ) do
     attributes
     |> Stream.map(&sanitize_attributes.(&1))
     |> Stream.map(&Enum.zip(headers, &1))
     |> Stream.map(&Enum.into(&1, %{}))
     |> Stream.map(&csv_to_changeset.(&1))
+    |> Stream.map(&Map.delete(&1, :__meta__))
+    |> Stream.map(&Map.from_struct(&1))
   end
 
-  defp create_attribute_maps_from_csv_rows([headers | attributes], csv_to_changeset ) do
+  defp create_attribute_maps_from_csv_rows([headers | attributes], csv_to_changeset) do
     attributes
     |> Stream.map(&Enum.zip(headers, &1))
     |> Stream.map(&Enum.into(&1, %{}))
     |> Stream.map(&csv_to_changeset.(&1))
+    |> Stream.map(&Map.delete(&1, :__meta__))
+    |> Stream.map(&Map.from_struct(&1))
   end
 
-  defp write_attributes_to_database(attribute_maps) do
+  defp write_attributes_to_database(attribute_maps, schema) do
     attribute_maps
     |> Stream.chunk_every(10_000)
-    |> Enum.reduce(0, fn
-      attributes, total_count ->
-        attributes
-        |> Enum.reduce(Multi.new(), &Multi.insert(&2, "insert_record_#{Ecto.UUID.generate()}", &1)) 
-        |> Repo.transaction()
-
-        total_count + Enum.count(attributes)
-    end)
+    |> Enum.map(&Repo.insert_all(schema, &1))
+    |> Enum.reduce(0, fn {count, _}, total_count -> total_count + count end)
   end
 end

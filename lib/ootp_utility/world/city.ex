@@ -1,7 +1,7 @@
 defmodule OOTPUtility.World.City do
   use Ecto.Schema
   import Ecto.Changeset
-  import OOTPUtility.Imports, only: [import_from_path: 2]
+  import OOTPUtility.Imports, only: [import_from_path: 3]
 
   @primary_key {:city_id, :id, autogenerate: false}
   schema "cities" do
@@ -10,7 +10,7 @@ defmodule OOTPUtility.World.City do
   end
 
   def import_from_path(path) do
-    import_from_path(path, &import_changeset/1)
+    import_from_path(path, __MODULE__, &import_changeset/1)
   end
 
   def import_changeset(attrs) do
