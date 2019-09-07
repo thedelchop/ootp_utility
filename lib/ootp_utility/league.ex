@@ -1,6 +1,5 @@
 defmodule OOTPUtility.League do
-  use Ecto.Schema
-  import Ecto.Changeset
+  use OOTPUtility.Schema
   import OOTPUtility.Imports, only: [import_from_path: 3]
 
   @primary_key {:league_id, :id, autogenerate: false}

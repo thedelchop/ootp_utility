@@ -1,9 +1,7 @@
 defmodule OOTPUtility.World.City do
-  use Ecto.Schema
-  import Ecto.Changeset
+  use OOTPUtility.Schema
   import OOTPUtility.Imports, only: [import_from_path: 3]
 
-  @primary_key {:city_id, :id, autogenerate: false}
   schema "cities" do
     field :abbreviation, :string
     field :name, :string

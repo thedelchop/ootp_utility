@@ -1,6 +1,5 @@
 defmodule OOTPUtility.Team.Record do
-  use Ecto.Schema
-  import Ecto.Changeset
+  use OOTPUtility.Schema
 
   alias OOTPUtility.Team
 

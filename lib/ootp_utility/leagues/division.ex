@@ -1,6 +1,5 @@
 defmodule OOTPUtility.Leagues.Division do
-  use Ecto.Schema
-  import Ecto.Changeset
+  use OOTPUtility.Schema
 
   alias OOTPUtility.{League, Team}
   alias OOTPUtility.Leagues.Conference

@@ -1,6 +1,5 @@
 defmodule OOTPUtility.Game.Log.Line do
-  use Ecto.Schema
-  import Ecto.Changeset
+  use OOTPUtility.Schema
   import Ecto.Query, only: [where: 3, select: 3]
   import OOTPUtility.Imports, only: [import_from_path: 4]
 
