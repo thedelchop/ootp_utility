@@ -5,14 +5,13 @@ defmodule OOTPUtility.Team do
   alias OOTPUtility.Leagues.{Conference, Division}
   alias OOTPUtility.World.City
 
-  @primary_key {:team_id, :id, autogenerate: false}
   schema "teams" do
     field :abbr, :string
     field :level, :string
     field :logo_filename, :string
     field :name, :string
 
-    belongs_to :city, City, references: :city_id, foreign_key: :city_id
+    belongs_to :city, City
 
     belongs_to :league, League
 

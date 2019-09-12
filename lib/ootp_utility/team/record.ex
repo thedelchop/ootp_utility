@@ -14,7 +14,7 @@ defmodule OOTPUtility.Team.Record do
     field :wins, :integer
     field :game_date, :date
 
-    belongs_to :team, Team, foreign_key: :team_id, references: :team_id
+    belongs_to :team, Team
 
     timestamps()
   end

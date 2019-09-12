@@ -13,7 +13,7 @@ defmodule OOTPUtility.Repo.Migrations.CreateTeamRecords do
       add :magic_number, :integer
       add :game_date, :date
 
-      add :team_id, references(:teams, column: :team_id, on_delete: :nothing)
+      add :team_id, references(:teams, on_delete: :nothing)
 
       timestamps()
     end
