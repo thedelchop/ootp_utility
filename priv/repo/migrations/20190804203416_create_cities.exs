@@ -2,8 +2,7 @@ defmodule OOTPUtility.Repo.Migrations.CreateCities do
   use Ecto.Migration
 
   def change do
-    create table(:cities, primary_key: false) do
-      add :city_id, :integer, primary_key: true
+    create table(:cities) do
       add :name, :string
       add :abbreviation, :string
     end
