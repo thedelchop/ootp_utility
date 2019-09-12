@@ -1,24 +1,18 @@
 defmodule OOTPUtility.Leagues.Conference do
-  use OOTPUtility.Schema
+  use OOTPUtility.Schema, composite_key: [:league_id, :conference_id]
 
   alias OOTPUtility.{League, Team}
   alias OOTPUtility.Leagues.Division
 
-  @primary_key {:conference_id, :id, autogenerate: false}
   schema "conferences" do
+    field :name, :string
     field :abbr, :string
     field :designated_hitter, :boolean, default: false
-    field :name, :string
 
-    belongs_to :league, League,
-      references: :league_id,
-      foreign_key: :league_id
+    belongs_to :league, League
 
-    has_many :divisions, Division,
-      foreign_key: :division_id,
-      references: :conference_id
-
-    has_many :teams, Team, foreign_key: :team_id, references: :conference_id
+    has_many :divisions, Division
+    has_many :teams, Team
   end
 
   @doc false
