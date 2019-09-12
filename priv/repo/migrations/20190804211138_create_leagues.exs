@@ -2,8 +2,7 @@ defmodule OOTPUtility.Repo.Migrations.CreateLeagues do
   use Ecto.Migration
 
   def change do
-    create table(:leagues, primary_key: false) do
-      add :league_id, :integer, primary_key: true
+    create table(:leagues) do
       add :name, :string
       add :abbr, :string
       add :logo_filename, :string
@@ -13,6 +12,10 @@ defmodule OOTPUtility.Repo.Migrations.CreateLeagues do
       add :historical_year, :integer
       add :league_level, :string
       add :current_date, :date
+
+      add :parent_league_id, references(:leagues, on_delete: :nothing)
     end
+
+    create index(:leagues, [:parent_league_id])
   end
 end

@@ -14,17 +14,11 @@ defmodule OOTPUtility.Team do
 
     belongs_to :city, City, references: :city_id, foreign_key: :city_id
 
-    belongs_to :league, League,
-      references: :league_id,
-      foreign_key: :league_id
+    belongs_to :league, League
 
-    belongs_to :conference, Conference,
-      references: :conference_id,
-      foreign_key: :conference_id
+    belongs_to :conference, Conference
 
-    belongs_to :division, Division,
-      references: :division_id,
-      foreign_key: :division_id
+    belongs_to :division, Division
   end
 
   @doc false

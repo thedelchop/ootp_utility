@@ -2,7 +2,6 @@ defmodule OOTPUtility.League do
   use OOTPUtility.Schema
   import OOTPUtility.Imports, only: [import_from_path: 3]
 
-  @primary_key {:league_id, :id, autogenerate: false}
   schema "leagues" do
     field :abbr, :string
     field :current_date, :date
@@ -14,21 +13,15 @@ defmodule OOTPUtility.League do
     field :season_year, :integer
     field :start_date, :date
 
-    belongs_to :parent_league, OOTPUtility.League, references: :parent_league_id
+    belongs_to :parent_league, OOTPUtility.League
 
-    has_many :child_leagues, OOTPUtility.League,
-      foreign_key: :parent_league_id,
-      references: :league_id
+    has_many :child_leagues, OOTPUtility.League, foreign_key: :parent_league_id
 
-    has_many :conferences, OOTPUtility.Leagues.Conference,
-      foreign_key: :conference_id,
-      references: :league_id
+    has_many :conferences, OOTPUtility.Leagues.Conference
 
-    has_many :divisions, OOTPUtility.Leagues.Division,
-      foreign_key: :division_id,
-      references: :league_id
+    has_many :divisions, OOTPUtility.Leagues.Division
 
-    has_many :teams, OOTPUtility.Team, foreign_key: :team_id, references: :league_id
+    has_many :teams, OOTPUtility.Team
   end
 
   def import_from_path(path) do
