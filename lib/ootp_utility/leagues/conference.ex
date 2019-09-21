@@ -1,5 +1,6 @@
 defmodule OOTPUtility.Leagues.Conference do
   use OOTPUtility.Schema, composite_key: [:league_id, :conference_id]
+  import OOTPUtility.Imports, only: [import_from_path: 3]
 
   alias OOTPUtility.{League, Team}
   alias OOTPUtility.Leagues.Division
@@ -15,10 +16,28 @@ defmodule OOTPUtility.Leagues.Conference do
     has_many :teams, Team
   end
 
+  def import_from_path(path) do
+    import_from_path(path, __MODULE__, &import_changeset/1)
+  end
+
+  def import_changeset(attrs) do
+    with attrs_with_conference_id <-
+           attrs |> Map.put(:conference_id, attrs[:sub_league_id]),
+         scrubbed_attributes <-
+           attrs_with_conference_id
+           |> Map.put(:id, generate_composite_key(attrs_with_conference_id))
+           |> Map.delete(:conference_id)
+           |> Map.delete(:sub_league_id) do
+      %__MODULE__{}
+      |> changeset(scrubbed_attributes)
+      |> apply_changes()
+    end
+  end
+
   @doc false
   def changeset(conference, attrs) do
     conference
-    |> cast(attrs, [:sub_league_id, :name, :abbr, :designated_hitter, :league_id])
-    |> validate_required([:sub_league_id, :name, :abbr, :designated_hitter, :league_id])
+    |> cast(attrs, [:id, :name, :abbr, :designated_hitter, :league_id])
+    |> validate_required([:id, :name, :abbr, :designated_hitter, :league_id])
   end
 end
