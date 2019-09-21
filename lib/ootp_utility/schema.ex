@@ -9,11 +9,11 @@ defmodule OOTPUtility.Schema do
 
       @composite_keys unquote(keys)
 
-      def generate_composite_key(%_{} = struct) do
-        struct
-        |> Map.take(@composite_keys)
-        |> Map.values()
+      def generate_composite_key(%{} = struct) do
+        @composite_keys
+        |> Enum.map(&Map.get(struct, &1))
         |> Enum.join("-")
+        |> Ecto.UUID.cast()
       end
     end
   end
@@ -27,11 +27,11 @@ defmodule OOTPUtility.Schema do
 
       @composite_keys [:id]
 
-      def generate_composite_key(%_{} = struct) do
-        struct
-        |> Map.take(@composite_keys)
-        |> Map.values()
+      def generate_composite_key(%{} = struct) do
+        @composite_keys
+        |> Enum.map(&Map.get(struct, &1))
         |> Enum.join("-")
+        |> Ecto.UUID.cast()
       end
     end
   end
