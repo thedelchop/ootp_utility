@@ -29,16 +29,19 @@ defmodule OOTPUtility.League do
   end
 
   def import_changeset(attrs) do
-    %__MODULE__{}
-    |> changeset(attrs)
-    |> apply_changes
+    with scrubbed_attributes <-
+           attrs |> Map.put(:id, Map.get(attrs, :league_id)) |> Map.delete(:league_id) do
+      %__MODULE__{}
+      |> changeset(scrubbed_attributes)
+      |> apply_changes
+    end
   end
 
   @doc false
   def changeset(league, attrs) do
     league
     |> cast(attrs, [
-      :league_id,
+      :id,
       :name,
       :abbr,
       :logo_filename,
@@ -50,7 +53,7 @@ defmodule OOTPUtility.League do
       :current_date
     ])
     |> validate_required([
-      :league_id,
+      :id,
       :name,
       :abbr,
       :logo_filename,
