@@ -1,5 +1,5 @@
 defmodule OOTPUtility.Game.Log.Line do
-  use OOTPUtility.Schema
+  use OOTPUtility.Schema, composite_key: [:game_id, :line]
   import Ecto.Query, only: [where: 3, select: 3]
   import OOTPUtility.Imports, only: [import_from_path: 4]
 
@@ -109,6 +109,4 @@ defmodule OOTPUtility.Game.Log.Line do
       Enum.join([text | rest_of_text], ",")
     ]
   end
-
-
 end
