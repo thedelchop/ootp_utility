@@ -3,7 +3,7 @@ use Mix.Config
 defaults = [
   hostname: "localhost",
   pool_size: 10,
-  migration_primary_key: [name: :id, type: :binary_id]
+  migration_primary_key: [name: :id, type: :string]
 ]
 
 auth_config =

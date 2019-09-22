@@ -4,8 +4,8 @@ defmodule OOTPUtility.Schema do
     quote do
       use Ecto.Schema
       import Ecto.Changeset
-      @primary_key {:id, :binary_id, autogenerate: false}
-      @foreign_key_type :binary_id
+      @primary_key {:id, :string, autogenerate: false}
+      @foreign_key_type :id
 
       @composite_keys unquote(keys)
 
@@ -13,8 +13,9 @@ defmodule OOTPUtility.Schema do
         @composite_keys
         |> Enum.map(&Map.get(struct, &1))
         |> Enum.join("-")
-        |> Ecto.UUID.cast()
       end
+
+      defoverridable generate_composite_key: 1
     end
   end
 
@@ -22,8 +23,8 @@ defmodule OOTPUtility.Schema do
     quote do
       use Ecto.Schema
       import Ecto.Changeset
-      @primary_key {:id, :binary_id, autogenerate: false}
-      @foreign_key_type :binary_id
+      @primary_key {:id, :string, autogenerate: false}
+      @foreign_key_type :id
 
       @composite_keys [:id]
 
@@ -31,8 +32,9 @@ defmodule OOTPUtility.Schema do
         @composite_keys
         |> Enum.map(&Map.get(struct, &1))
         |> Enum.join("-")
-        |> Ecto.UUID.cast()
       end
+
+      defoverridable generate_composite_key: 1
     end
   end
 end
