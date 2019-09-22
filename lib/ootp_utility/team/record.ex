@@ -1,5 +1,6 @@
 defmodule OOTPUtility.Team.Record do
   use OOTPUtility.Schema
+  import OOTPUtility.Imports, only: [import_from_path: 3]
 
   alias OOTPUtility.Team
 
@@ -19,10 +20,24 @@ defmodule OOTPUtility.Team.Record do
     timestamps()
   end
 
+  def import_from_path(path) do
+    import_from_path(path, __MODULE__, &import_changeset/1)
+  end
+
+  def import_changeset(attrs) do
+    with scrubbed_attributes <-
+           attrs |> Map.put(:id, Map.get(attrs, :team_id)) do
+      %__MODULE__{}
+      |> changeset(scrubbed_attributes)
+      |> apply_changes()
+    end
+  end
+
   @doc false
   def changeset(record, attrs) do
     record
     |> cast(attrs, [
+      :id,
       :games,
       :wins,
       :losses,
@@ -34,6 +49,7 @@ defmodule OOTPUtility.Team.Record do
       :team_id
     ])
     |> validate_required([
+      :id,
       :games,
       :wins,
       :losses,
