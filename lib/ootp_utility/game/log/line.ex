@@ -16,16 +16,19 @@ defmodule OOTPUtility.Game.Log.Line do
   end
 
   def import_changeset(attrs) do
-    %__MODULE__{}
-    |> changeset(attrs)
-    |> apply_changes()
+    with scrubbed_attributes <-
+           attrs |> Map.put(:id, generate_composite_key(attrs)) do
+      %__MODULE__{}
+      |> changeset(scrubbed_attributes)
+      |> apply_changes()
+    end
   end
 
   @doc false
   def changeset(line, attrs) do
     line
-    |> cast(attrs, [:game_id, :type, :line, :text, :formatted_text])
-    |> validate_required([:game_id, :type, :line, :text])
+    |> cast(attrs, [:id, :game_id, :type, :line, :text, :formatted_text])
+    |> validate_required([:id, :game_id, :type, :line, :text])
   end
 
   @doc """
