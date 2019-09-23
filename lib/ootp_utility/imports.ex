@@ -6,16 +6,13 @@ defmodule OOTPUtility.Imports do
   alias OOTPUtility.Repo
 
   def import_from_path(path, schema, csv_to_changeset) do
-    path
-    |> prepare_csv_file_for_import()
-    |> create_attribute_maps_from_csv_rows(csv_to_changeset)
-    |> write_attributes_to_database(schema)
+    import_from_path(path, schema, fn csv_row -> csv_row end, csv_to_changeset)
   end
 
-  def import_from_path(path, schema, sanitize_attributes, csv_to_changeset) do
+  def import_from_path(path, schema, sanitize_csv_data, csv_to_changeset) do
     path
     |> prepare_csv_file_for_import()
-    |> create_attribute_maps_from_csv_rows(sanitize_attributes, csv_to_changeset)
+    |> create_attribute_maps_from_csv_rows(sanitize_csv_data, csv_to_changeset)
     |> write_attributes_to_database(schema)
   end
 
@@ -35,25 +32,19 @@ defmodule OOTPUtility.Imports do
 
   defp create_attribute_maps_from_csv_rows(
          [headers | attributes],
-         sanitize_attributes,
+         sanitize_csv_data,
          csv_to_changeset
        ) do
-    attributes
-    |> Stream.map(&sanitize_attributes.(&1))
-    |> Stream.map(&Enum.zip(headers, &1))
-    |> Stream.map(&Enum.into(&1, %{}))
-    |> Stream.map(&csv_to_changeset.(&1))
-    |> Stream.map(&Map.delete(&1, :__meta__))
-    |> Stream.map(&Map.from_struct(&1))
+    with sanitized_csv_data <- attributes |> Stream.map(&sanitize_csv_data.(&1)) do
+      create_attribute_maps_from_csv_rows([headers | sanitized_csv_data], csv_to_changeset)
+    end
   end
 
-  defp create_attribute_maps_from_csv_rows([headers | attributes], csv_to_changeset) do
+  defp create_attribute_maps_from_csv_rows([headers | attributes], csv_to_attribute_map) do
     attributes
     |> Stream.map(&Enum.zip(headers, &1))
     |> Stream.map(&Enum.into(&1, %{}))
-    |> Stream.map(&csv_to_changeset.(&1))
-    |> Stream.map(&Map.delete(&1, :__meta__))
-    |> Stream.map(&Map.from_struct(&1))
+    |> Stream.map(&csv_to_attribute_map.(&1))
   end
 
   defp write_attributes_to_database(attribute_maps, schema) do
