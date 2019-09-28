@@ -18,7 +18,10 @@ defmodule OOTPUtility.ImportsTest do
         values
       ]
 
-      assert Imports.trim_headers(csv_attributes, headers) |> Enum.to_list() == [values, values]
+      assert [values, values] == 
+        csv_attributes 
+        |> Imports.trim_headers(headers)
+        |> Enum.to_list()
     end
 
     test "it filters nothing if no headers were included in the list of attributes being trimmed of its headers",
@@ -31,11 +34,10 @@ defmodule OOTPUtility.ImportsTest do
         values
       ]
 
-      assert Imports.trim_headers(csv_attributes, headers) |> Enum.to_list() == [
-               values,
-               values,
-               values
-             ]
+      assert [values, values, values ] ==
+        csv_attributes
+        |> Imports.trim_headers(headers)
+        |> Enum.to_list()
     end
   end
 
@@ -48,21 +50,24 @@ defmodule OOTPUtility.ImportsTest do
 
     test "it returns a struct with the specified values being set on the specified keys, in the order they are passed",
          %{attr_names: attr_names, attr_values: attr_values} do
-      assert Imports.build_attributes_map(attr_values, attr_names, fn attrs -> attrs end)
-             |> Enum.to_list() == [
-               %{
-                 game_id: "1",
-                 type: "1",
-                 line: "1",
-                 raw_text: "text"
-               },
-               %{
-                 game_id: "1",
-                 type: "1",
-                 line: "1",
-                 raw_text: "text"
-               }
-             ]
+
+      assert [
+        %{
+          game_id: "1",
+          type: "1",
+          line: "1",
+          raw_text: "text"
+        },
+        %{
+          game_id: "1",
+          type: "1",
+          line: "1",
+          raw_text: "text"
+        }
+      ] == 
+      attr_values
+      |> Imports.build_attributes_map(attr_names, fn attrs -> attrs end)
+      |> Enum.to_list()
     end
 
     test "the values of the struct are updated using the transform function if nessecary",
@@ -77,21 +82,23 @@ defmodule OOTPUtility.ImportsTest do
           ]
       end
 
-      assert Imports.build_attributes_map(attr_values, attr_names, transform_fn) |> Enum.to_list() ==
-               [
-                 %{
-                   game_id: 1,
-                   type: 1,
-                   line: 1,
-                   raw_text: "text"
-                 },
-                 %{
-                   game_id: 1,
-                   type: 1,
-                   line: 1,
-                   raw_text: "text"
-                 }
-               ]
+      assert [
+        %{
+          game_id: 1,
+          type: 1,
+          line: 1,
+          raw_text: "text"
+        },
+        %{
+          game_id: 1,
+          type: 1,
+          line: 1,
+          raw_text: "text"
+        }
+      ] ==
+      attr_values
+      |> Imports.build_attributes_map(attr_names, transform_fn)
+      |> Enum.to_list()
     end
   end
 end

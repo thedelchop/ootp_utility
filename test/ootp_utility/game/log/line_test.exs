@@ -100,7 +100,8 @@ defmodule OOTPUtility.Game.Log.LineTest do
 
       for {{raw, formatted}, index} <- Enum.with_index(fixtures) do
         formatted_line =
-          Fixtures.create_game_log_line(%{text: raw, line: Integer.to_string(index)})
+          %{text: raw, line: Integer.to_string(index)}
+          |> Fixtures.create_game_log_line()
           |> Line.format_raw_text()
 
         assert formatted_line == formatted
@@ -109,7 +110,8 @@ defmodule OOTPUtility.Game.Log.LineTest do
 
     test "returns nil if the string was not formatted" do
       formatted_line =
-        Fixtures.create_game_log_line(%{text: "UNRECOGNIZED GAME EVENT"})
+        %{text: "UNRECOGNIZED GAME EVENT"}
+        |> Fixtures.create_game_log_line()
         |> Line.format_raw_text()
 
       assert is_nil(formatted_line)
