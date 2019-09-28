@@ -33,19 +33,20 @@ defmodule OOTPUtility.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.4.7"},
-      {:phoenix_pubsub, "~> 1.1"},
-      {:phoenix_ecto, "~> 4.0"},
-      {:ecto_sql, "~> 3.0"},
-      {:postgrex, ">= 0.0.0"},
-      {:phoenix_html, "~> 2.11"},
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:gettext, "~> 0.11"},
-      {:jason, "~> 1.1"},
-      {:plug_cowboy, "~> 2.0"},
       {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0.0-rc.6", only: [:dev, :test], runtime: false},
-      {:html_sanitize_ex, "~> 1.3"}
+      {:ecto_sql, "~> 3.0"},
+      {:gettext, "~> 0.11"},
+      {:html_sanitize_ex, "~> 1.3"},
+      {:jason, "~> 1.1"},
+      {:morphix, "~> 0.7.0"},
+      {:phoenix, "~> 1.4.7"},
+      {:phoenix_ecto, "~> 4.0"},
+      {:phoenix_html, "~> 2.11"},
+      {:phoenix_live_reload, "~> 1.2", only: :dev},
+      {:phoenix_pubsub, "~> 1.1"},
+      {:plug_cowboy, "~> 2.0"},
+      {:postgrex, ">= 0.0.0"}
     ]
   end
 
