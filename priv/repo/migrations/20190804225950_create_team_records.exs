@@ -14,8 +14,6 @@ defmodule OOTPUtility.Repo.Migrations.CreateTeamRecords do
       add :game_date, :date
 
       add :team_id, references(:teams, on_delete: :nothing)
-
-      timestamps()
     end
 
     create index(:team_records, [:team_id])
