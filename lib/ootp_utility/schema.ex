@@ -5,7 +5,7 @@ defmodule OOTPUtility.Schema do
       use Ecto.Schema
       import Ecto.Changeset
       @primary_key {:id, :string, autogenerate: false}
-      @foreign_key_type :id
+      @foreign_key_type :string
 
       unless is_nil(unquote(params)) do
         def generate_composite_key(struct),
