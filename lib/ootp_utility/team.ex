@@ -45,21 +45,41 @@ defmodule OOTPUtility.Team do
   end
 
   def sanitize_attributes(attrs) do
+    with {:ok, atomized_attrs} <- Morphix.atomorphiform(attrs) do
+      atomized_attrs
+      |> map_import_attributes_to_schema
+      |> build_association_ids
+    end
+  end
+
+  defp map_import_attributes_to_schema(attrs) do
     attrs
-    |> Map.put("id", Map.get(attrs, "team_id"))
-    |> Map.put("conference_id", Map.get(attrs, "sub_league_id"))
-    |> Map.put("division_id", Division.generate_composite_key(attrs))
-    |> Map.put("conference_id", Conference.generate_composite_key(attrs))
-    |> Map.put("league_id", League.generate_composite_key(attrs))
-    |> Map.put("city_id", City.generate_composite_key(attrs))
-    |> Map.delete("team_id")
-    |> Map.delete("sub_league_id")
+    |> Map.put(:id, Map.get(attrs, :team_id))
+    |> Map.put(:conference_id, Map.get(attrs, :sub_league_id))
+    |> Map.put(:city_id, nil)
+    |> Map.delete(:team_id)
+    |> Map.delete(:sub_league_id)
+  end
+
+  defp build_association_ids(attrs) do
+    attrs
+    |> Map.put(:division_id, Division.generate_composite_key(attrs))
+    |> Map.put(:conference_id, Conference.generate_composite_key(attrs))
   end
 
   @doc false
   def changeset(team, attrs) do
     team
     |> cast(attrs, @import_attributes)
-    |> validate_required(@import_attributes)
+    |> validate_required([
+      :id,
+      :abbr,
+      :name,
+      :logo_filename,
+      :level,
+      :league_id,
+      :conference_id,
+      :division_id
+    ])
   end
 end
