@@ -60,6 +60,6 @@ defmodule OOTPUtility.Utilities do
         "home" => "Home"
       }[String.downcase(base)]
 
-    if is_nil(position), do: :error, else:  {:ok, position}
+    if is_nil(position), do: :error, else: {:ok, position}
   end
 end
