@@ -1,7 +1,10 @@
 defmodule OOTPUtility.Game.Log.Line do
   use OOTPUtility.Schema, composite_key: [:game_id, :line]
+  use OOTPUtility.Imports
+
   import Ecto.Query, only: [where: 3, select: 3]
-  import OOTPUtility.Imports, only: [import_from_path: 4]
+
+  attributes_to_import([:game_id, :line, :text, :type])
 
   schema "game_log_lines" do
     field :game_id, :integer
@@ -11,25 +14,19 @@ defmodule OOTPUtility.Game.Log.Line do
     field :formatted_text, :string
   end
 
-  def import_from_path(path) do
-    import_from_path(path, __MODULE__, &sanitize_import_attributes/1, &import_changeset/1)
+  @impl OOTPUtility.Imports
+  def sanitize_attributes(attrs) do
+    attrs
+    |> Map.put(:conference_id, Map.get(attrs, :sub_league_id))
   end
 
-  def import_changeset(attrs) do
-    with scrubbed_attributes <-
-           attrs |> Map.put(:id, generate_composite_key(attrs)) do
-      %__MODULE__{}
-      |> changeset(scrubbed_attributes)
-      |> apply_changes()
-    end
+  @impl OOTPUtility.Imports
+  def sanitize_csv_data([game_id, type, line, text | rest_of_text]) do
+    sanitize_csv_data([game_id, type, line, Enum.join([text | rest_of_text], ",")])
   end
 
-  @doc false
-  def changeset(line, attrs) do
-    line
-    |> cast(attrs, [:id, :game_id, :type, :line, :text, :formatted_text])
-    |> validate_required([:id, :game_id, :type, :line, :text])
-  end
+  @impl OOTPUtility.Imports
+  def sanitize_csv_data(data), do: data
 
   @doc """
   Return all of the lines that need to be formatted
@@ -93,23 +90,5 @@ defmodule OOTPUtility.Game.Log.Line do
       false ->
         nil
     end
-  end
-
-  defp sanitize_import_attributes([game_id, type, line, text]) do
-    [
-      game_id,
-      type,
-      line,
-      text
-    ]
-  end
-
-  defp sanitize_import_attributes([game_id, type, line, text | rest_of_text]) do
-    [
-      game_id,
-      type,
-      line,
-      Enum.join([text | rest_of_text], ",")
-    ]
   end
 end

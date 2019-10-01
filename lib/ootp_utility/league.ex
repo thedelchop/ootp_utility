@@ -1,8 +1,8 @@
 defmodule OOTPUtility.League do
   use OOTPUtility.Schema
-  import OOTPUtility.Imports, only: [import_from_path: 3]
+  use OOTPUtility.Imports
 
-  @import_attributes [
+  attributes_to_import([
     :id,
     :name,
     :abbr,
@@ -13,7 +13,7 @@ defmodule OOTPUtility.League do
     :historical_year,
     :league_level,
     :current_date
-  ]
+  ])
 
   schema "leagues" do
     field :abbr, :string
@@ -37,29 +37,10 @@ defmodule OOTPUtility.League do
     has_many :teams, OOTPUtility.Team
   end
 
-  def import_from_path(path) do
-    import_from_path(path, __MODULE__, &build_attributes_for_import/1)
-  end
-
-  def build_attributes_for_import(attrs) do
-    %__MODULE__{}
-    |> changeset(sanitize_attributes(attrs))
-    |> apply_changes()
-    |> Map.take(@import_attributes)
-  end
-
+  @impl OOTPUtility.Imports
   def sanitize_attributes(attrs) do
-    with {:ok, atomized_attrs} <- Morphix.atomorphiform(attrs) do
-      atomized_attrs
-      |> Map.put(:id, Map.get(atomized_attrs, :league_id))
-      |> Map.delete(:league_id)
-    end
-  end
-
-  @doc false
-  def changeset(league, attrs) do
-    league
-    |> cast(attrs, @import_attributes)
-    |> validate_required(@import_attributes)
+    attrs
+    |> Map.put(:id, Map.get(attrs, :league_id))
+    |> Map.delete(:league_id)
   end
 end

@@ -1,11 +1,11 @@
 defmodule OOTPUtility.Leagues.Conference do
   use OOTPUtility.Schema, composite_key: [:league_id, :conference_id]
-  import OOTPUtility.Imports, only: [import_from_path: 3]
+  use OOTPUtility.Imports
 
   alias OOTPUtility.{League, Team}
   alias OOTPUtility.Leagues.Division
 
-  @import_attributes [:id, :name, :abbr, :designated_hitter, :league_id]
+  attributes_to_import([:id, :name, :abbr, :designated_hitter, :league_id])
 
   schema "conferences" do
     field :name, :string
@@ -18,23 +18,11 @@ defmodule OOTPUtility.Leagues.Conference do
     has_many :teams, Team
   end
 
-  def import_from_path(path) do
-    import_from_path(path, __MODULE__, &build_attributes_for_import/1)
-  end
-
-  def build_attributes_for_import(attrs) do
-    %__MODULE__{}
-    |> changeset(sanitize_attributes(attrs))
-    |> apply_changes()
-    |> Map.take(@import_attributes)
-  end
-
+  @impl OOTPUtility.Imports
   def sanitize_attributes(attrs) do
-    with {:ok, atomized_attrs} <- Morphix.atomorphiform(attrs) do
-      atomized_attrs
-      |> map_import_attributes_to_schema
-      |> build_association_ids
-    end
+    attrs
+    |> map_import_attributes_to_schema
+    |> build_association_ids
   end
 
   defp map_import_attributes_to_schema(attrs) do
@@ -47,12 +35,5 @@ defmodule OOTPUtility.Leagues.Conference do
     attrs
     |> Map.put(:id, generate_composite_key(attrs))
     |> Map.delete(:conference_id)
-  end
-
-  @doc false
-  def changeset(conference, attrs) do
-    conference
-    |> cast(attrs, @import_attributes)
-    |> validate_required(@import_attributes)
   end
 end
