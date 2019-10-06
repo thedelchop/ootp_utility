@@ -6,7 +6,7 @@ defmodule OOTPUtility.Repo.Migrations.CreateConferences do
       add :name, :string
       add :abbr, :string
       add :designated_hitter, :boolean, default: false, null: false
-      add :league_id, references(:leagues, on_delete: :nothing)
+      add :league_id, :string
     end
 
     create index(:conferences, [:league_id])

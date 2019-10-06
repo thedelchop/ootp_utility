@@ -8,13 +8,11 @@ defmodule OOTPUtility.Repo.Migrations.CreateTeams do
       add :logo_filename, :string
       add :level, :string
 
-      add :city_id, references(:cities, on_delete: :nothing)
-      add :league_id, references(:leagues, on_delete: :nothing)
-      add :conference_id, references(:conferences, on_delete: :nothing)
-      add :division_id, references(:divisions, on_delete: :nothing)
+      add :league_id, :string
+      add :conference_id, :string
+      add :division_id, :string
     end
 
-    create index(:teams, [:city_id])
     create index(:teams, [:league_id])
     create index(:teams, [:conference_id])
     create index(:teams, [:division_id])

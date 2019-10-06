@@ -13,7 +13,7 @@ defmodule OOTPUtility.Repo.Migrations.CreateLeagues do
       add :league_level, :string
       add :current_date, :date
 
-      add :parent_league_id, references(:leagues, on_delete: :nothing)
+      add :parent_league_id, :string
     end
 
     create index(:leagues, [:parent_league_id])

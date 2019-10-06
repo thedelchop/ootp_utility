@@ -8,7 +8,6 @@ defmodule OOTPUtility.Team do
       :name,
       :logo_filename,
       :level,
-      :city_id,
       :league_id,
       :conference_id,
       :division_id
@@ -17,7 +16,6 @@ defmodule OOTPUtility.Team do
 
   alias OOTPUtility.{League}
   alias OOTPUtility.Leagues.{Conference, Division}
-  alias OOTPUtility.World.City
 
   schema "teams" do
     field :abbr, :string
@@ -25,12 +23,9 @@ defmodule OOTPUtility.Team do
     field :logo_filename, :string
     field :name, :string
 
-    belongs_to :city, City
 
     belongs_to :league, League
-
     belongs_to :conference, Conference
-
     belongs_to :division, Division
   end
 
@@ -45,7 +40,6 @@ defmodule OOTPUtility.Team do
     attrs
     |> Map.put(:id, Map.get(attrs, :team_id))
     |> Map.put(:conference_id, Map.get(attrs, :sub_league_id))
-    |> Map.put(:city_id, nil)
     |> Map.delete(:team_id)
     |> Map.delete(:sub_league_id)
   end

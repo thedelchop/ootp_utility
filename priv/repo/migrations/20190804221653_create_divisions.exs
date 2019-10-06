@@ -5,10 +5,11 @@ defmodule OOTPUtility.Repo.Migrations.CreateDivisions do
     create table(:divisions) do
       add :name, :string
 
-      add :league_id, references(:leagues, on_delete: :nothing)
-      add :conference_id, references(:conferences, on_delete: :nothing)
+      add :league_id, :string
+      add :conference_id, :string
     end
 
     create index(:divisions, [:league_id])
+    create index(:divisions, [:conference_id])
   end
 end

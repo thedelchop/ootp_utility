@@ -11,5 +11,6 @@ defmodule OOTPUtility.Repo.Migrations.CreateGameLogLines do
     end
 
     create index(:game_log_lines, [:game_id])
+    create index(:game_log_lines, [:game_id, :line])
   end
 end
