@@ -4,7 +4,7 @@ defmodule OOTPUtility.Game.Log.Line do
 
   import Ecto.Query, only: [where: 3, select: 3]
 
-  attributes_to_import([:game_id, :line, :text, :type])
+  imports attributes: [:game_id, :line, :text, :type], from: "game_logs.csv"
 
   schema "game_log_lines" do
     field :game_id, :integer

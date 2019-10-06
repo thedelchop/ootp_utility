@@ -2,18 +2,21 @@ defmodule OOTPUtility.League do
   use OOTPUtility.Schema
   use OOTPUtility.Imports
 
-  attributes_to_import([
-    :id,
-    :name,
-    :abbr,
-    :logo_filename,
-    :start_date,
-    :league_state,
-    :season_year,
-    :historical_year,
-    :league_level,
-    :current_date
-  ])
+  imports(
+    attributes: [
+      :id,
+      :name,
+      :abbr,
+      :logo_filename,
+      :start_date,
+      :league_state,
+      :season_year,
+      :historical_year,
+      :league_level,
+      :current_date
+    ],
+    from: "leagues.csv"
+  )
 
   schema "leagues" do
     field :abbr, :string

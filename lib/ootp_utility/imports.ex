@@ -3,7 +3,6 @@ defmodule OOTPUtility.Imports do
   This module is the set of common operations that can be taken on an import, like reading the raw CSV
   data and prepping it to be imported.
   """
-
   @callback sanitize_csv_data(row :: list) :: list
   @callback sanitize_attributes(attributes :: map) :: map
 
@@ -25,17 +24,28 @@ defmodule OOTPUtility.Imports do
 
       defoverridable sanitize_attributes: 1, sanitize_csv_data: 1
 
-      import OOTPUtility.Imports, only: [attributes_to_import: 1]
+      import OOTPUtility.Imports, only: [imports: 1]
     end
   end
 
-  defmacro attributes_to_import(attributes) do
+  defmacro imports([{:attributes, attributes}, {:from, path}]) do
     module = __CALLER__.module
     Module.put_attribute(module, :attributes_to_import, attributes)
+    Module.put_attribute(module, :import_path, path)
 
     # Also put it back in so it is accessible at run-time
     quote do
       @attributes_to_import unquote(attributes)
+      @import_path unquote(path)
+    end
+  end
+
+  def import_all_from(dir_path) do
+    for module <- Module.get_attribute(__MODULE__, :modules_to_import) do
+      with path <- Path.join(dir_path, Module.get_attribute(module, :import_path)) do
+        require IEx; IEx.pry
+        import_from_path(module, path)
+      end
     end
   end
 
@@ -63,16 +73,8 @@ defmodule OOTPUtility.Imports do
   def do_sanitize_attributes(module, attrs) do
     attrs
     |> Morphix.atomorphiform()
-
-    module.sanitize_attributes()
-  end
-
-  def import_from_path(module, path, _function) do
-    import_from_path(module, path)
-  end
-
-  def import_from_path(module, path, _function, _function_two) do
-    import_from_path(module, path)
+    |> elem(1)
+    |> module.sanitize_attributes()
   end
 
   def import_changeset(module, attrs) do

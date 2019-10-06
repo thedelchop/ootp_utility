@@ -6,17 +6,20 @@ defmodule OOTPUtility.Team do
   alias OOTPUtility.Leagues.{Conference, Division}
   alias OOTPUtility.World.City
 
-  attributes_to_import([
-    :id,
-    :abbr,
-    :name,
-    :logo_filename,
-    :level,
-    :city_id,
-    :league_id,
-    :conference_id,
-    :division_id
-  ])
+  imports(
+    attributes: [
+      :id,
+      :abbr,
+      :name,
+      :logo_filename,
+      :level,
+      :city_id,
+      :league_id,
+      :conference_id,
+      :division_id
+    ],
+    from: "teams.csv"
+  )
 
   schema "teams" do
     field :abbr, :string

@@ -4,18 +4,21 @@ defmodule OOTPUtility.Team.Record do
 
   alias OOTPUtility.Team
 
-  attributes_to_import([
-    :id,
-    :games,
-    :wins,
-    :losses,
-    :position,
-    :winning_percentage,
-    :games_behind,
-    :streak,
-    :magic_number,
-    :team_id
-  ])
+  imports(
+    attributes: [
+      :id,
+      :games,
+      :wins,
+      :losses,
+      :position,
+      :winning_percentage,
+      :games_behind,
+      :streak,
+      :magic_number,
+      :team_id
+    ],
+    from: "team_record.csv"
+  )
 
   schema "team_records" do
     field :games, :integer

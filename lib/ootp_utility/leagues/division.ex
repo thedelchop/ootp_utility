@@ -5,7 +5,7 @@ defmodule OOTPUtility.Leagues.Division do
   alias OOTPUtility.{League, Team}
   alias OOTPUtility.Leagues.Conference
 
-  attributes_to_import([:id, :name, :league_id, :conference_id])
+  imports(attributes: [:id, :name, :league_id, :conference_id], from: "divisions.csv")
 
   schema "divisions" do
     field :name, :string
