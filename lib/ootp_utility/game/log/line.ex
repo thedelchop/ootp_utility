@@ -1,10 +1,8 @@
 defmodule OOTPUtility.Game.Log.Line do
   use OOTPUtility.Schema, composite_key: [:game_id, :line]
-  use OOTPUtility.Imports
+  use OOTPUtility.Imports, attributes: [:game_id, :line, :text, :type], from: "game_logs.csv"
 
   import Ecto.Query, only: [where: 3, select: 3]
-
-  imports attributes: [:game_id, :line, :text, :type], from: "game_logs.csv"
 
   schema "game_log_lines" do
     field :game_id, :integer

@@ -1,11 +1,12 @@
 defmodule OOTPUtility.Leagues.Division do
   use OOTPUtility.Schema, composite_key: [:league_id, :conference_id, :division_id]
-  use OOTPUtility.Imports
+
+  use OOTPUtility.Imports,
+    attributes: [:id, :name, :league_id, :conference_id],
+    from: "divisions.csv"
 
   alias OOTPUtility.{League, Team}
   alias OOTPUtility.Leagues.Conference
-
-  imports(attributes: [:id, :name, :league_id, :conference_id], from: "divisions.csv")
 
   schema "divisions" do
     field :name, :string

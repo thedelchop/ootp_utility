@@ -1,10 +1,7 @@
 defmodule OOTPUtility.Team.Record do
   use OOTPUtility.Schema
-  use OOTPUtility.Imports
 
-  alias OOTPUtility.Team
-
-  imports(
+  use OOTPUtility.Imports,
     attributes: [
       :id,
       :games,
@@ -18,7 +15,8 @@ defmodule OOTPUtility.Team.Record do
       :team_id
     ],
     from: "team_record.csv"
-  )
+
+  alias OOTPUtility.Team
 
   schema "team_records" do
     field :games, :integer

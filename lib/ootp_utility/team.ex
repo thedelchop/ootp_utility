@@ -1,12 +1,7 @@
 defmodule OOTPUtility.Team do
   use OOTPUtility.Schema
-  use OOTPUtility.Imports
 
-  alias OOTPUtility.{League}
-  alias OOTPUtility.Leagues.{Conference, Division}
-  alias OOTPUtility.World.City
-
-  imports(
+  use OOTPUtility.Imports,
     attributes: [
       :id,
       :abbr,
@@ -19,7 +14,10 @@ defmodule OOTPUtility.Team do
       :division_id
     ],
     from: "teams.csv"
-  )
+
+  alias OOTPUtility.{League}
+  alias OOTPUtility.Leagues.{Conference, Division}
+  alias OOTPUtility.World.City
 
   schema "teams" do
     field :abbr, :string

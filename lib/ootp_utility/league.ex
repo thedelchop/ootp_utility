@@ -1,8 +1,7 @@
 defmodule OOTPUtility.League do
   use OOTPUtility.Schema
-  use OOTPUtility.Imports
 
-  imports(
+  use OOTPUtility.Imports,
     attributes: [
       :id,
       :name,
@@ -16,7 +15,6 @@ defmodule OOTPUtility.League do
       :current_date
     ],
     from: "leagues.csv"
-  )
 
   schema "leagues" do
     field :abbr, :string

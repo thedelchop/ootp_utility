@@ -1,8 +1,6 @@
 defmodule OOTPUtility.World.City do
   use OOTPUtility.Schema
-  use OOTPUtility.Imports
-
-  imports(attributes: [:id, :name, :abbreviation], from: "cities.csv")
+  use OOTPUtility.Imports, attributes: [:id, :name, :abbreviation], from: "cities.csv"
 
   schema "cities" do
     field :abbreviation, :string
