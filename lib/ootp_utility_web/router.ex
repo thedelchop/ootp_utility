@@ -19,8 +19,13 @@ defmodule OOTPUtilityWeb.Router do
     get "/", PageController, :index
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", OOTPUtilityWeb do
-  #   pipe_through :api
-  # end
+  scope "/api" do
+    pipe_through :api
+
+    forward "/graphiql", Absinthe.Plug.GraphiQL,
+      schema: OOTPUtility.GraphQL.Schema
+
+    forward "/", Absinthe.Plug,
+      schema: OOTPUtility.GraphQL.Schema
+  end
 end
