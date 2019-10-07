@@ -6,11 +6,9 @@ defmodule OOTPUtility.Imports do
   @callback sanitize_csv_data(row :: list) :: list
   @callback sanitize_attributes(attributes :: map) :: map
 
-  defmacro __using__([{:attributes, attributes}, {:from, path}]) do
+  defmacro __using__([{:attributes, attributes}, {:from, filename}]) do
     quote do
       @behaviour unquote(__MODULE__)
-
-      @import_path unquote(path)
 
       @impl OOTPUtility.Imports
       def sanitize_attributes(attrs),
@@ -26,7 +24,12 @@ defmodule OOTPUtility.Imports do
         OOTPUtility.Imports.build_attributes_for_import(__MODULE__, attrs, unquote(attributes))
       end
 
-      def import_from_path(path), do: OOTPUtility.Imports.import_from_path(__MODULE__, path)
+      def import_from_path(path) do
+        with full_path <- Path.join(path, unquote(filename)) do
+          __MODULE__
+          |> OOTPUtility.Imports.import_from_path(full_path)
+        end
+      end
     end
   end
 
@@ -50,9 +53,11 @@ defmodule OOTPUtility.Imports do
     |> module.sanitize_attributes()
   end
 
-  def import_all_from(dir_path) do
+  def import_all_from(dir_path, skipped_modules \\ []) do
     for module <- implementors() do
-      module.import_from_path(dir_path)
+      unless Enum.member?(skipped_modules, module) do
+        module.import_from_path(dir_path)
+      end
     end
   end
 
