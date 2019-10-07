@@ -1,22 +1,30 @@
 defmodule OOTPUtility.Game.Log.Line do
-  use Ecto.Schema
-  import Ecto.Changeset
+  use OOTPUtility.Schema, composite_key: [:game_id, :line]
+  use OOTPUtility.Imports, attributes: [:game_id, :line, :text, :type], from: "game_logs.csv"
+
   import Ecto.Query, only: [where: 3, select: 3]
 
   schema "game_log_lines" do
-    field :formatted_text, :string
     field :game_id, :integer
     field :line, :integer
-    field :raw_text, :string
+    field :text, :string
     field :type, :integer
+    field :formatted_text, :string
   end
 
-  @doc false
-  def changeset(event, attrs) do
-    event
-    |> cast(attrs, [:game_id, :type, :line, :raw_text, :formatted_text])
-    |> validate_required([:game_id, :type, :line, :raw_text])
+  @impl OOTPUtility.Imports
+  def sanitize_attributes(attrs) do
+    attrs
+    |> Map.put(:conference_id, Map.get(attrs, :sub_league_id))
   end
+
+  @impl OOTPUtility.Imports
+  def sanitize_csv_data([game_id, type, line, text | rest_of_text]) do
+    sanitize_csv_data([game_id, type, line, Enum.join([text | rest_of_text], ",")])
+  end
+
+  @impl OOTPUtility.Imports
+  def sanitize_csv_data(data), do: data
 
   @doc """
   Return all of the lines that need to be formatted
@@ -26,7 +34,7 @@ defmodule OOTPUtility.Game.Log.Line do
       iex> OOTPUtility.Game.Log.Line.unformatted
   """
   @spec unformatted(Ecto.Query.t() | Line.t()) :: Ecto.Query.t()
-  def unformatted(query \\ OOTPUtility.Game.Log.Line) do
+  def unformatted(query \\ __MODULE__) do
     query
     |> Ecto.Queryable.to_query()
     |> where([l], is_nil(l.formatted_text))
@@ -41,23 +49,23 @@ defmodule OOTPUtility.Game.Log.Line do
   """
 
   @spec pitch_descriptions(Ecto.Query.t() | Line.t()) :: Ecto.Query.t()
-  def pitch_descriptions(query \\ OOTPUtility.Game.Log.Line) do
+  def pitch_descriptions(query \\ __MODULE__) do
     query
     |> Ecto.Queryable.to_query()
     |> where([l], l.type == 3)
   end
 
   @doc """
-  Return all 'raw_text' fields for the Line
+  Return all 'text' fields for the Line
 
   ## Examples
     iex> OOTPUtility.Game.Log.Line.raw_text()
   """
   @spec raw_text(Ecto.Query.t() | Line.t()) :: Ecto.Query.t()
-  def raw_text(query \\ OOTPUtility.Game.Log.Line) do
+  def raw_text(query \\ __MODULE__) do
     query
     |> Ecto.Queryable.to_query()
-    |> select([l], l.raw_text)
+    |> select([l], l.text)
   end
 
   @doc """
@@ -68,9 +76,9 @@ defmodule OOTPUtility.Game.Log.Line do
   def format_raw_text(line) do
     {formatters, _} = Code.eval_file("priv/formatters.ex")
 
-    case Enum.any?(formatters, fn {regex, _} -> Regex.match?(regex, line.raw_text) end) do
+    case Enum.any?(formatters, fn {regex, _} -> Regex.match?(regex, line.text) end) do
       true ->
-        Enum.reduce(formatters, line.raw_text, fn
+        Enum.reduce(formatters, line.text, fn
           formatter, formatted_text ->
             {regex, format_fn} = formatter
 

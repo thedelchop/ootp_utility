@@ -26,11 +26,7 @@ defmodule OOTPUtility.Utilities do
         "RF" => "9"
       }[position]
 
-    if not is_nil(scoring_key) do
-      {:ok, scoring_key}
-    else
-      :error
-    end
+    if is_nil(scoring_key), do: :error, else: {:ok, scoring_key}
   end
 
   @spec position_from_scoring_key(String.t()) :: {:ok, String.t()} | :error
@@ -48,11 +44,7 @@ defmodule OOTPUtility.Utilities do
         9 => "RF"
       }[String.to_integer(scoring_key)]
 
-    if not is_nil(position) do
-      {:ok, position}
-    else
-      :error
-    end
+    if is_nil(position), do: :error, else: {:ok, position}
   end
 
   @spec position_from_base(String.t()) :: {:ok, String.t()} | :error
@@ -68,10 +60,6 @@ defmodule OOTPUtility.Utilities do
         "home" => "Home"
       }[String.downcase(base)]
 
-    if not is_nil(position) do
-      {:ok, position}
-    else
-      {:error, nil}
-    end
+    if is_nil(position), do: :error, else: {:ok, position}
   end
 end
