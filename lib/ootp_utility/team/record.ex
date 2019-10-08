@@ -27,7 +27,6 @@ defmodule OOTPUtility.Team.Record do
     field :streak, :integer
     field :winning_percentage, :float
     field :wins, :integer
-    field :game_date, :date
 
     belongs_to :team, Team
   end
@@ -35,5 +34,11 @@ defmodule OOTPUtility.Team.Record do
   def sanitize_attributes(attrs) do
     attrs
     |> Map.put(:id, Map.get(attrs, :team_id))
+    |> Map.put(:games_behind, Map.get(attrs, :gb))
+    |> Map.put(:losses, Map.get(attrs, :l))
+    |> Map.put(:wins, Map.get(attrs, :w))
+    |> Map.put(:winning_percentage, Map.get(attrs, :pct))
+    |> Map.put(:games, Map.get(attrs, :g))
+    |> Map.put(:position, Map.get(attrs, :pos))
   end
 end

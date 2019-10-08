@@ -11,12 +11,10 @@ defmodule OOTPUtility.Repo.Migrations.CreateTeamRecords do
       add :games_behind, :float
       add :streak, :integer
       add :magic_number, :integer
-      add :game_date, :date
 
       add :team_id, :string
     end
 
     create index(:team_records, [:team_id])
-    create index(:team_records, [:game_date])
   end
 end
