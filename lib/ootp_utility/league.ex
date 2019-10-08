@@ -12,7 +12,8 @@ defmodule OOTPUtility.League do
       :season_year,
       :historical_year,
       :league_level,
-      :current_date
+      :current_date,
+      :parent_league_id
     ],
     from: "leagues.csv"
 
