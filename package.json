@@ -8,7 +8,8 @@
     "format:check": "yarn prettier --check 'assets/js/**/*.{ts,tsx}'",
     "typecheck": "yarn tsc --noEmit --project tsconfig.json",
     "typecheck:watch": "yarn tsc --watch --noEmit --project tsconfig.json",
-    "lint": "yarn eslint 'assets/js/**/*.{ts,tsx}'"
+    "lint": "yarn eslint 'assets/js/**/*.{ts,tsx}'",
+    "test": "jest"
   },
   "dependencies": {
     "phoenix": "file:./deps/phoenix",
