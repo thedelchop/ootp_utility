@@ -8,7 +8,8 @@
     "format:check": "yarn prettier --check 'assets/js/**/*.{ts,tsx}'",
     "typecheck": "yarn tsc --noEmit --project tsconfig.json",
     "typecheck:watch": "yarn tsc --watch --noEmit --project tsconfig.json",
-    "lint": "yarn eslint 'assets/js/**/*.{ts,tsx}'"
+    "lint": "yarn eslint 'assets/js/**/*.{ts,tsx}'",
+    "storybook": "start-storybook"
   },
   "dependencies": {
     "phoenix": "file:./deps/phoenix",
@@ -23,6 +24,7 @@
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.3.3",
+    "@storybook/react": "^5.2.3",
     "@types/react": "^16.8.23",
     "@types/react-dom": "^16.8.4",
     "@typescript-eslint/eslint-plugin": "^1.13.0",
