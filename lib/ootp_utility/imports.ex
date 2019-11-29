@@ -26,6 +26,10 @@ defmodule OOTPUtility.Imports do
         OOTPUtility.Imports.build_attributes_for_import(__MODULE__, attrs, unquote(attributes))
       end
 
+      def import_changeset(attrs) do
+        OOTPUtility.Imports.import_changeset(__MODULE__, attrs, unquote(attributes))
+      end
+
       def import_from_path(path) do
         with full_path <- Path.join(path, unquote(filename)) do
           __MODULE__

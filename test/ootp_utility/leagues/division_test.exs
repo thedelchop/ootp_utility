@@ -6,7 +6,7 @@ defmodule OOTPUtility.Leagues.DivisionTest do
   describe "import_changset" do
     test "it correctly writes the binary ID" do
       division =
-        Division.import_changeset(%{
+        Division.build_attributes_for_import(%{
           name: "Test Division",
           league_id: "1",
           conference_id: "2",
@@ -15,7 +15,6 @@ defmodule OOTPUtility.Leagues.DivisionTest do
 
       attrs =
         division
-        |> Map.from_struct()
         |> Map.take([:id, :name, :league_id, :conference_id])
 
       assert attrs == %{

@@ -2,6 +2,8 @@ defmodule OOTPUtility.Fixtures do
   alias OOTPUtility.Game.Log.Line
   alias OOTPUtility.Repo
 
+  require OOTPUtility.Game.Log.Line
+
   @line_attrs %{
     game_id: "1",
     type: "3",
@@ -11,13 +13,12 @@ defmodule OOTPUtility.Fixtures do
   }
 
   def create_game_log_line(attrs \\ %{}) do
-    attributes = attrs |> Enum.into(@line_attrs)
-
-    {:ok, game_log_line} =
-      attributes
+    attributes = 
+      attrs 
+      |> Enum.into(@line_attrs)
       |> Line.import_changeset()
-      |> Repo.insert()
 
-    game_log_line
+    Repo.insert(attributes)
+    |> elem(1)
   end
 end

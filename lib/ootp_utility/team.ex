@@ -23,7 +23,6 @@ defmodule OOTPUtility.Team do
     field :logo_filename, :string
     field :name, :string
 
-
     belongs_to :league, League
     belongs_to :conference, Conference
     belongs_to :division, Division
