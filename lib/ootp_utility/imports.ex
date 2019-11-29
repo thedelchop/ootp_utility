@@ -1,4 +1,6 @@
 defmodule OOTPUtility.Imports do
+  import Ecto.Changeset, only: [cast: 3, validate_required: 2, apply_changes: 1]
+
   @moduledoc """
   This module is the set of common operations that can be taken on an import, like reading the raw CSV
   data and prepping it to be imported.
@@ -35,14 +37,14 @@ defmodule OOTPUtility.Imports do
 
   def import_changeset(module, attrs, attributes_to_import) do
     %{__struct__: module}
-    |> Ecto.Changeset.cast(attrs, attributes_to_import)
-    |> Ecto.Changeset.validate_required(attributes_to_import)
+    |> cast(attrs, attributes_to_import)
+    |> validate_required(attributes_to_import)
   end
 
   def build_attributes_for_import(module, attrs, attributes_to_import) do
     module
     |> import_changeset(do_sanitize_attributes(module, attrs), attributes_to_import)
-    |> Ecto.Changeset.apply_changes()
+    |> apply_changes()
     |> Map.take(attributes_to_import)
   end
 
