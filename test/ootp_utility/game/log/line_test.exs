@@ -1,7 +1,8 @@
 defmodule OOTPUtility.Game.Log.LineTest do
   use OOTPUtility.DataCase
 
-  alias OOTPUtility.{Fixtures, Repo, Game.Log.Line}
+  alias OOTPUtility.{Fixtures, Repo}
+  alias OOTPUtility.Game.Log.Line
 
   describe "import_changset" do
     test "it correctly writes the binary ID" do
@@ -32,23 +33,27 @@ defmodule OOTPUtility.Game.Log.LineTest do
 
   describe "unformatted" do
     test "returns a query which includes any unformatted log lines" do
-      Fixtures.create_game_log_line(%{text: "0-0: Ball", line: "1"})
+      formatted_line = Fixtures.create_game_log_line(%{text: "0-0: Ball", line: "1"})
       unformatted_line = Fixtures.create_game_log_line(%{formatted_text: nil, line: "2"})
 
       results = Repo.all(Line.unformatted())
 
       assert Enum.member?(results, unformatted_line)
+      refute Enum.member?(results, formatted_line)
 
       assert Enum.count(results) == 1
     end
+  end
 
-    test "returns a query which excludes any formatted log lines" do
-      Fixtures.create_game_log_line(%{formatted_text: nil, line: "1"})
-      formatted_line = Fixtures.create_game_log_line(%{text: "0-0: Ball", line: "2"})
+  describe "formatted" do
+    test "returns a query which includes any formatted log lines" do
+      formatted_line = Fixtures.create_game_log_line(%{text: "0-0: Ball", line: "1"})
+      unformatted_line = Fixtures.create_game_log_line(%{formatted_text: nil, line: "2"})
 
-      results = Repo.all(Line.unformatted())
+      results = Repo.all(Line.formatted())
 
-      refute Enum.member?(results, formatted_line)
+      assert Enum.member?(results, formatted_line)
+      refute Enum.member?(results, unformatted_line)
 
       assert Enum.count(results) == 1
     end

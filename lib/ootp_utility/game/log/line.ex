@@ -1,8 +1,8 @@
 defmodule OOTPUtility.Game.Log.Line do
   use OOTPUtility.Schema, composite_key: [:game_id, :line]
-  use OOTPUtility.Imports, attributes: [:game_id, :line, :text, :type], from: "game_logs.csv"
+  use OOTPUtility.Imports, attributes: [:id, :game_id, :line, :text, :type, :formatted_text], from: "game_logs.csv"
 
-  import Ecto.Query, only: [where: 3, select: 3]
+  import Ecto.Query, only: [where: 3, select: 3, order_by: 3]
 
   schema "game_log_lines" do
     field :game_id, :integer
@@ -12,19 +12,31 @@ defmodule OOTPUtility.Game.Log.Line do
     field :formatted_text, :string
   end
 
+  @doc """
+  Generate the composite id and format the raw text for later processing
+  """
   @impl OOTPUtility.Imports
   def sanitize_attributes(attrs) do
     attrs
-    |> Map.put(:conference_id, Map.get(attrs, :sub_league_id))
+    |> Map.put(:id, generate_composite_key(attrs))
+    |> Map.put(:formatted_text, format_raw_text(attrs))
   end
+
+  @doc """
+  If the CSV data contains commas in the "text" that are not correctly escaped, then the CSV
+  row can appear to have more columns than expected.  So, for each row that has more columns
+  than "game_id", "type", "line" and "text", concat all of the extra columns with a comma to 
+  the "text" column.
+
+  When the CSV data has the expected number of columns, just return the row, unchanged.
+  """
+  @impl OOTPUtility.Imports
+  def sanitize_csv_data([game_id, type, line, text | []]), do: [game_id, type, line, text]
 
   @impl OOTPUtility.Imports
   def sanitize_csv_data([game_id, type, line, text | rest_of_text]) do
     sanitize_csv_data([game_id, type, line, Enum.join([text | rest_of_text], ",")])
   end
-
-  @impl OOTPUtility.Imports
-  def sanitize_csv_data(data), do: data
 
   @doc """
   Return all of the lines that need to be formatted
@@ -38,6 +50,20 @@ defmodule OOTPUtility.Game.Log.Line do
     query
     |> Ecto.Queryable.to_query()
     |> where([l], is_nil(l.formatted_text))
+  end
+
+  @doc """
+  Return all of the lines that have been formatted
+
+  ## Examples
+
+      iex> OOTPUtility.Game.Log.Line.formatted
+  """
+  @spec formatted(Ecto.Query.t() | Line.t()) :: Ecto.Query.t()
+  def formatted(query \\ __MODULE__) do
+    query
+    |> Ecto.Queryable.to_query()
+    |> where([l], not is_nil(l.formatted_text))
   end
 
   @doc """
@@ -88,5 +114,16 @@ defmodule OOTPUtility.Game.Log.Line do
       false ->
         nil
     end
+  end
+
+  @doc """
+  Return the 
+    
+  """
+  @spec ordered_by_game(Ecto.Query.t() | Line.t()) :: Ecto.Query.t()
+  def ordered_by_game(query \\ __MODULE__) do
+    query
+    |> Ecto.Queryable.to_query()
+    |> order_by([l], [l.game_id, l.line])
   end
 end
