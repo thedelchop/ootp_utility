@@ -16,7 +16,7 @@ defmodule OOTPUtility.Team.Record do
     ],
     from: "team_record.csv"
 
-  alias OOTPUtility.Team
+  alias OOTPUtility.{Team, Utilities}
 
   schema "team_records" do
     field :games, :integer
@@ -33,12 +33,14 @@ defmodule OOTPUtility.Team.Record do
 
   def sanitize_attributes(attrs) do
     attrs
-    |> Map.put(:id, Map.get(attrs, :team_id))
-    |> Map.put(:games_behind, Map.get(attrs, :gb))
-    |> Map.put(:losses, Map.get(attrs, :l))
-    |> Map.put(:wins, Map.get(attrs, :w))
-    |> Map.put(:winning_percentage, Map.get(attrs, :pct))
-    |> Map.put(:games, Map.get(attrs, :g))
-    |> Map.put(:position, Map.get(attrs, :pos))
+    |> Utilities.rename_keys([
+      {:team_id, :id},
+      {:gb, :games_behind},
+      {:l, :losses},
+      {:w, :wins},
+      {:winning_percentage, :pct},
+      {:games, :g},
+      {:position, :pos}
+    ])
   end
 end

@@ -73,7 +73,7 @@ defmodule OOTPUtility.UtilitiesTest do
     end
 
     test "it returns an error if the position has no corresponding base" do
-      assert Utilities.position_from_base("mars") == {:error, nil}
+      assert Utilities.position_from_base("mars") == :error
     end
   end
 end

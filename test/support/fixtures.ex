@@ -5,6 +5,7 @@ defmodule OOTPUtility.Fixtures do
   require OOTPUtility.Game.Log.Line
 
   @line_attrs %{
+    id: "1-1",
     game_id: "1",
     type: "3",
     line: "1",
@@ -13,12 +14,10 @@ defmodule OOTPUtility.Fixtures do
   }
 
   def create_game_log_line(attrs \\ %{}) do
-    attributes = 
-      attrs 
-      |> Enum.into(@line_attrs)
-      |> Line.import_changeset()
-
-    Repo.insert(attributes)
+    attrs
+    |> Enum.into(@line_attrs)
+    |> Line.import_changeset()
+    |> Repo.insert()
     |> elem(1)
   end
 end

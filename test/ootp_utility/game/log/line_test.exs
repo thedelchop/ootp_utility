@@ -8,6 +8,7 @@ defmodule OOTPUtility.Game.Log.LineTest do
     test "it correctly writes the binary ID" do
       line =
         Line.import_changeset(%{
+          id: "1-1",
           game_id: "1",
           line: "1",
           type: "3",
@@ -15,12 +16,7 @@ defmodule OOTPUtility.Game.Log.LineTest do
           formatted_text: "2-2: Swinging Strike (Foul Ball, 2F)"
         })
 
-      attrs =
-        line
-        |> Map.from_struct()
-        |> Map.take([:id, :game_id, :line, :type, :text, :formatted_text])
-
-      assert attrs == %{
+      assert line.changes == %{
                id: "1-1",
                game_id: 1,
                line: 1,
@@ -33,8 +29,10 @@ defmodule OOTPUtility.Game.Log.LineTest do
 
   describe "unformatted" do
     test "returns a query which includes any unformatted log lines" do
-      formatted_line = Fixtures.create_game_log_line(%{text: "0-0: Ball", line: "1"})
-      unformatted_line = Fixtures.create_game_log_line(%{formatted_text: nil, line: "2"})
+      formatted_line = Fixtures.create_game_log_line(%{id: "1-1", text: "0-0: Ball", line: "1"})
+
+      unformatted_line =
+        Fixtures.create_game_log_line(%{id: "1-2", formatted_text: nil, line: "2"})
 
       results = Repo.all(Line.unformatted())
 
@@ -47,8 +45,10 @@ defmodule OOTPUtility.Game.Log.LineTest do
 
   describe "formatted" do
     test "returns a query which includes any formatted log lines" do
-      formatted_line = Fixtures.create_game_log_line(%{text: "0-0: Ball", line: "1"})
-      unformatted_line = Fixtures.create_game_log_line(%{formatted_text: nil, line: "2"})
+      formatted_line = Fixtures.create_game_log_line(%{id: "1-1", text: "0-0: Ball", line: "1"})
+
+      unformatted_line =
+        Fixtures.create_game_log_line(%{id: "1-2", formatted_text: nil, line: "2"})
 
       results = Repo.all(Line.formatted())
 
@@ -61,8 +61,8 @@ defmodule OOTPUtility.Game.Log.LineTest do
 
   describe "pitch_descriptions" do
     test "returns a query which includes any log lines that are descriptions of pitches" do
-      Fixtures.create_game_log_line(%{type: "1", line: "1"})
-      pitch_description = Fixtures.create_game_log_line(%{type: "3", line: "2"})
+      Fixtures.create_game_log_line(%{id: "1-1", type: "1", line: "1"})
+      pitch_description = Fixtures.create_game_log_line(%{id: "1-2", type: "3", line: "2"})
 
       results = Repo.all(Line.pitch_descriptions())
 
@@ -72,8 +72,8 @@ defmodule OOTPUtility.Game.Log.LineTest do
     end
 
     test "returns a query which excludes any log lines that are not descriptions of pitches" do
-      at_bat_setup = Fixtures.create_game_log_line(%{type: "1", line: "1"})
-      Fixtures.create_game_log_line(%{type: "3", line: "2"})
+      at_bat_setup = Fixtures.create_game_log_line(%{id: "1-1", type: "1", line: "1"})
+      Fixtures.create_game_log_line(%{id: "1-2", type: "3", line: "2"})
 
       results = Repo.all(Line.pitch_descriptions())
 
@@ -86,9 +86,14 @@ defmodule OOTPUtility.Game.Log.LineTest do
   describe "#raw_text" do
     test "returns a query that selects all of the raw text from the log lines" do
       foul_ball =
-        Fixtures.create_game_log_line(%{text: "0-0: Foul Ball, (location: 2F)", line: "1"})
+        Fixtures.create_game_log_line(%{
+          id: "1-1",
+          text: "0-0: Foul Ball, (location: 2F)",
+          line: "1"
+        })
 
-      strike_out = Fixtures.create_game_log_line(%{text: "1-2: Strikes Out Looking", line: "2"})
+      strike_out =
+        Fixtures.create_game_log_line(%{id: "1-2", text: "1-2: Strikes Out Looking", line: "2"})
 
       results = Repo.all(Line.raw_text())
 
@@ -105,7 +110,7 @@ defmodule OOTPUtility.Game.Log.LineTest do
 
       for {{raw, formatted}, index} <- Enum.with_index(fixtures) do
         formatted_line =
-          %{text: raw, line: Integer.to_string(index)}
+          %{id: "1-#{Integer.to_string(index)}", text: raw, line: Integer.to_string(index)}
           |> Fixtures.create_game_log_line()
           |> Line.format_raw_text()
 

@@ -1,8 +1,12 @@
 defmodule OOTPUtility.Game.Log.Line do
   use OOTPUtility.Schema, composite_key: [:game_id, :line]
-  use OOTPUtility.Imports, attributes: [:id, :game_id, :line, :text, :type, :formatted_text], from: "game_logs.csv"
 
-  import Ecto.Query, only: [where: 3, select: 3, order_by: 3]
+  use OOTPUtility.Imports,
+    attributes: [:id, :game_id, :line, :text, :type, :formatted_text],
+    from: "game_logs.csv"
+
+  import Ecto.Query, only: [order_by: 3]
+  import Ecto.Queryable, only: [to_query: 1]
 
   schema "game_log_lines" do
     field :game_id, :integer
@@ -13,13 +17,13 @@ defmodule OOTPUtility.Game.Log.Line do
   end
 
   @doc """
-  Generate the composite id and format the raw text for later processing
+  Append the composite id and format the raw text for later processing
   """
   @impl OOTPUtility.Imports
-  def sanitize_attributes(attrs) do
-    attrs
-    |> Map.put(:id, generate_composite_key(attrs))
-    |> Map.put(:formatted_text, format_raw_text(attrs))
+  def update_import_changeset(changeset) do
+    changeset
+    |> put_formatted_text()
+    |> put_composite_key()
   end
 
   @doc """
@@ -36,62 +40,6 @@ defmodule OOTPUtility.Game.Log.Line do
   @impl OOTPUtility.Imports
   def sanitize_csv_data([game_id, type, line, text | rest_of_text]) do
     sanitize_csv_data([game_id, type, line, Enum.join([text | rest_of_text], ",")])
-  end
-
-  @doc """
-  Return all of the lines that need to be formatted
-
-  ## Examples
-
-      iex> OOTPUtility.Game.Log.Line.unformatted
-  """
-  @spec unformatted(Ecto.Query.t() | Line.t()) :: Ecto.Query.t()
-  def unformatted(query \\ __MODULE__) do
-    query
-    |> Ecto.Queryable.to_query()
-    |> where([l], is_nil(l.formatted_text))
-  end
-
-  @doc """
-  Return all of the lines that have been formatted
-
-  ## Examples
-
-      iex> OOTPUtility.Game.Log.Line.formatted
-  """
-  @spec formatted(Ecto.Query.t() | Line.t()) :: Ecto.Query.t()
-  def formatted(query \\ __MODULE__) do
-    query
-    |> Ecto.Queryable.to_query()
-    |> where([l], not is_nil(l.formatted_text))
-  end
-
-  @doc """
-  Return all of the Log.Lines that are descriptions of a pitch/outcome
-
-  ## Examples
-
-      iex> OOTPUtility.Game.Log.Line.pitch_descriptors
-  """
-
-  @spec pitch_descriptions(Ecto.Query.t() | Line.t()) :: Ecto.Query.t()
-  def pitch_descriptions(query \\ __MODULE__) do
-    query
-    |> Ecto.Queryable.to_query()
-    |> where([l], l.type == 3)
-  end
-
-  @doc """
-  Return all 'text' fields for the Line
-
-  ## Examples
-    iex> OOTPUtility.Game.Log.Line.raw_text()
-  """
-  @spec raw_text(Ecto.Query.t() | Line.t()) :: Ecto.Query.t()
-  def raw_text(query \\ __MODULE__) do
-    query
-    |> Ecto.Queryable.to_query()
-    |> select([l], l.text)
   end
 
   @doc """
@@ -117,13 +65,16 @@ defmodule OOTPUtility.Game.Log.Line do
   end
 
   @doc """
-  Return the 
-    
+  Return the query that includes an ordering of the lines in the query by their game.
   """
   @spec ordered_by_game(Ecto.Query.t() | Line.t()) :: Ecto.Query.t()
   def ordered_by_game(query \\ __MODULE__) do
     query
-    |> Ecto.Queryable.to_query()
+    |> to_query()
     |> order_by([l], [l.game_id, l.line])
+  end
+
+  defp put_formatted_text(%Ecto.Changeset{changes: changes} = changeset) do
+    change(changeset, %{formatted_text: format_raw_text(changes)})
   end
 end

@@ -1,11 +1,11 @@
 defmodule OOTPUtility.Leagues.Conference do
-  use OOTPUtility.Schema, composite_key: [:league_id, :conference_id]
+  use OOTPUtility.Schema, composite_key: [:league_id, :id]
 
   use OOTPUtility.Imports,
     attributes: [:id, :name, :abbr, :designated_hitter, :league_id],
     from: "sub_leagues.csv"
 
-  alias OOTPUtility.{League, Team}
+  alias OOTPUtility.{League, Team, Utilities}
   alias OOTPUtility.Leagues.Division
 
   schema "conferences" do
@@ -20,21 +20,9 @@ defmodule OOTPUtility.Leagues.Conference do
   end
 
   @impl OOTPUtility.Imports
-  def sanitize_attributes(attrs) do
-    attrs
-    |> map_import_attributes_to_schema
-    |> build_association_ids
-  end
+  def update_import_changeset(changeset), do: put_composite_key(changeset)
 
-  defp map_import_attributes_to_schema(attrs) do
-    attrs
-    |> Map.put(:conference_id, Map.get(attrs, :sub_league_id))
-    |> Map.delete(:sub_league_id)
-  end
-
-  defp build_association_ids(attrs) do
-    attrs
-    |> Map.put(:id, generate_composite_key(attrs))
-    |> Map.delete(:conference_id)
-  end
+  @impl OOTPUtility.Imports
+  def sanitize_attributes(attrs),
+    do: Utilities.rename_keys(attrs, [{:sub_league_id, :id}])
 end

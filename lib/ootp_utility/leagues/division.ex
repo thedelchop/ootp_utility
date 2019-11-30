@@ -1,11 +1,11 @@
 defmodule OOTPUtility.Leagues.Division do
-  use OOTPUtility.Schema, composite_key: [:league_id, :conference_id, :division_id]
+  use OOTPUtility.Schema, composite_key: [:league_id, :conference_id, :id]
 
   use OOTPUtility.Imports,
     attributes: [:id, :name, :league_id, :conference_id],
     from: "divisions.csv"
 
-  alias OOTPUtility.{League, Team}
+  alias OOTPUtility.{League, Team, Utilities}
   alias OOTPUtility.Leagues.Conference
 
   schema "divisions" do
@@ -16,22 +16,19 @@ defmodule OOTPUtility.Leagues.Division do
   end
 
   @impl OOTPUtility.Imports
-  def sanitize_attributes(attrs) do
-    attrs
-    |> map_import_attributes_to_schema
-    |> build_association_ids
+  def update_import_changeset(changeset) do
+    changeset
+    |> put_composite_key()
+    |> put_conference_id()
   end
 
-  defp map_import_attributes_to_schema(attrs) do
-    attrs
-    |> Map.put(:conference_id, Map.get(attrs, :sub_league_id))
-  end
+  @impl OOTPUtility.Imports
+  def sanitize_attributes(attrs),
+    do: Utilities.rename_keys(attrs, [{:sub_league_id, :conference_id}, {:division_id, :id}])
 
-  defp build_association_ids(attrs) do
-    attrs
-    |> Map.put(:id, generate_composite_key(attrs))
-    |> Map.put(:conference_id, Conference.generate_composite_key(attrs))
-    |> Map.delete(:division_id)
-    |> Map.delete(:sub_league_id)
+  defp put_conference_id(%Ecto.Changeset{changes: changes} = changeset) do
+    with conference_id <- Conference.generate_composite_key(changes) do
+      change(changeset, %{conference_id: conference_id})
+    end
   end
 end
