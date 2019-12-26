@@ -45,12 +45,12 @@ defmodule OOTPUtility.League do
   def sanitize_attributes(
         %{start_date: start_date_as_string, current_date: current_date_as_string} = attrs
       ) do
-    with start_date <- Timex.parse(start_date_as_string, "{YYYY}-{M}-{D}"),
-         current_date <- Timex.parse(current_date_as_string, "{YYYY}-{M}-{D}") do
+    with {:ok, start_date } <- Timex.parse(start_date_as_string, "{YYYY}-{M}-{D}"),
+         {:ok, current_date } <- Timex.parse(current_date_as_string, "{YYYY}-{M}-{D}") do
       attrs
       |> Utilities.rename_keys([{:league_id, :id}])
-      |> Map.put(:start_date, start_date)
-      |> Map.put(:current_date, current_date)
+      |> Map.put(:start_date, NaiveDateTime.to_date(start_date))
+      |> Map.put(:current_date, NaiveDateTime.to_date(current_date))
     end
   end
 end
