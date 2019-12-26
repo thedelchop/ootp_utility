@@ -11,10 +11,13 @@ defmodule OOTPUtility.Schema do
         def generate_composite_key(struct),
           do: OOTPUtility.Schema.generate_composite_key(struct, unquote(params[:composite_key]))
 
-        defoverridable generate_composite_key: 1
+        def generate_foreign_key(struct),
+          do: OOTPUtility.Schema.generate_composite_key(struct, unquote(params[:foreign_key]))
 
-        def put_composite_key(%Ecto.Changeset{changes: changes} = changeset, id_field \\ :id),
-          do: change(changeset, %{id_field => generate_composite_key(changes)})
+        defoverridable generate_composite_key: 1, generate_foreign_key: 1
+
+        def put_composite_key(%Ecto.Changeset{changes: changes} = changeset),
+          do: change(changeset, %{id: __MODULE__.generate_composite_key(changes)})
       end
     end
   end

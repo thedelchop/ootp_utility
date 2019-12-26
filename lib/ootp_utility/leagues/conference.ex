@@ -1,5 +1,7 @@
 defmodule OOTPUtility.Leagues.Conference do
-  use OOTPUtility.Schema, composite_key: [:league_id, :id]
+  use OOTPUtility.Schema,
+    composite_key: [:league_id, :id],
+    foreign_key: [:league_id, :conference_id]
 
   use OOTPUtility.Imports,
     attributes: [:id, :name, :abbr, :designated_hitter, :league_id],

@@ -3,9 +3,9 @@ defmodule OOTPUtility.Leagues.DivisionTest do
 
   alias OOTPUtility.Leagues.Division
 
-  describe "import_changset" do
+  describe "build_attributes_for_import" do
     test "it correctly writes the binary ID" do
-      division =
+      division_attrs =
         Division.build_attributes_for_import(%{
           name: "Test Division",
           league_id: "1",
@@ -13,7 +13,7 @@ defmodule OOTPUtility.Leagues.DivisionTest do
           division_id: "3"
         })
 
-      assert division == %{
+      assert division_attrs == %{
                name: "Test Division",
                league_id: "1",
                conference_id: "1-2",

@@ -3,9 +3,9 @@ defmodule OOTPUtility.Leagues.ConferenceTest do
 
   alias OOTPUtility.Leagues.Conference
 
-  describe "import_changset" do
+  describe "build_attributes_for_import" do
     test "it correctly writes the binary ID" do
-      conference =
+      conference_attrs =
         Conference.build_attributes_for_import(%{
           sub_league_id: "2",
           name: "Test Conference",
@@ -14,7 +14,7 @@ defmodule OOTPUtility.Leagues.ConferenceTest do
           designated_hitter: true
         })
 
-      assert conference == %{
+      assert conference_attrs == %{
                name: "Test Conference",
                abbr: "TC",
                league_id: "1",

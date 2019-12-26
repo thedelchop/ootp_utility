@@ -40,13 +40,13 @@ defmodule OOTPUtility.Team do
     do: Utilities.rename_keys(attrs, [{:sub_league_id, :conference_id}, {:team_id, :id}])
 
   defp put_division_id(%Ecto.Changeset{changes: changes} = changeset) do
-    with division_id <- Division.generate_composite_key(changes) do
+    with division_id <- Division.generate_foreign_key(changes) do
       change(changeset, %{division_id: division_id})
     end
   end
 
   defp put_conference_id(%Ecto.Changeset{changes: changes} = changeset) do
-    with conference_id <- Conference.generate_composite_key(changes) do
+    with conference_id <- Conference.generate_foreign_key(changes) do
       change(changeset, %{conference_id: conference_id})
     end
   end

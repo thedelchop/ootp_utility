@@ -1,5 +1,7 @@
 defmodule OOTPUtility.Leagues.Division do
-  use OOTPUtility.Schema, composite_key: [:league_id, :conference_id, :id]
+  use OOTPUtility.Schema,
+    composite_key: [:league_id, :conference_id, :id],
+    foreign_key: [:league_id, :conference_id, :division_id]
 
   use OOTPUtility.Imports,
     attributes: [:id, :name, :league_id, :conference_id],
@@ -27,7 +29,7 @@ defmodule OOTPUtility.Leagues.Division do
     do: Utilities.rename_keys(attrs, [{:sub_league_id, :conference_id}, {:division_id, :id}])
 
   defp put_conference_id(%Ecto.Changeset{changes: changes} = changeset) do
-    with conference_id <- Conference.generate_composite_key(changes) do
+    with conference_id <- Conference.generate_foreign_key(changes) do
       change(changeset, %{conference_id: conference_id})
     end
   end
