@@ -5,7 +5,7 @@ defmodule OOTPUtility.Leagues.LeagueTest do
 
   describe "import_changset" do
     test "it correctly writes the binary ID" do
-      league =
+      league_attrs =
         League.build_attributes_for_import(%{
           league_id: "1",
           name: "Test League",
@@ -19,7 +19,7 @@ defmodule OOTPUtility.Leagues.LeagueTest do
           start_date: "2030-04-05"
         })
 
-      assert league == %{
+      assert league_attrs == %{
                id: "1",
                name: "Test League",
                abbr: "TL",
