@@ -20,11 +20,14 @@ defmodule OOTPUtility.Game.Log.Line do
   Append the composite id and format the raw text for later processing
   """
   @impl OOTPUtility.Imports
-  def update_import_changeset(changeset) do
+  def update_import_changeset(%Ecto.Changeset{changes: %{formatted_text: nil}} = changeset) do
     changeset
     |> put_formatted_text()
-    |> put_composite_key()
+    |> update_import_changeset()
   end
+
+  @impl OOTPUtility.Imports
+  def update_import_changeset(changeset), do: changeset |> put_composite_key()
 
   @doc """
   If the CSV data contains commas in the "text" that are not correctly escaped, then the CSV
