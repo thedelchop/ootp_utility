@@ -44,5 +44,8 @@ npm-debug.log
 # Ignore any files cached by the elixir langserver
 /.elixir_ls/
 
+# Ignore the icons for now until I decide what I'm going to use
+/assets/static/icons/
+
 # Leave myself someplace to take notes on where I left off/what I'd like to do
 TODO.md
