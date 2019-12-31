@@ -34,6 +34,19 @@ module.exports = (env, options) => ({
       {
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader']
+      },
+      {
+        test: /\.svg$/,
+        use: [
+          {
+            loader: '@svgr/webpack',
+            options: {
+              svgoConfig: {
+                plugins: [{ removeViewBox: false }, { cleanupIDs: false }]
+              }
+            }
+          }
+        ]
       }
     ]
   },
@@ -43,7 +56,7 @@ module.exports = (env, options) => ({
   ],
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
-    modules: [path.resolve('./node_modules'), path.resolve('./assets/js')],
+    modules: [path.resolve('./node_modules'), path.resolve('./assets/js'), path.resolve('./assets/static/images')],
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.json']
   }
 });
