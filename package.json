@@ -10,7 +10,7 @@
     "typecheck:watch": "yarn tsc --watch --noEmit --project tsconfig.json",
     "lint": "yarn eslint 'assets/js/**/*.{ts,tsx}'",
     "test": "jest",
-    "storybook": "start-storybook"
+    "storybook": "start-storybook -s ./assets/static/images"
   },
   "dependencies": {
     "@material-ui/core": "^4.8.1",
