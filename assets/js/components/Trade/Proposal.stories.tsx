@@ -1,10 +1,12 @@
 import React from 'react';
 import { host } from 'storybook-host';
 
-import TradeProposalCard, { TradeProposal } from './Proposal';
+import { TradeProposal } from 'api/types';
+
+import Proposal from 'components/Trade/Proposal';
 
 export default {
-  component: TradeProposalCard,
+  component: Proposal,
   title: 'Proposal Card',
   // Our exports that end in "Data" are not stories.
   excludeStories: /.*Data$/,
@@ -26,21 +28,27 @@ const proposalData: TradeProposal = {
         name: 'Shawn Lewis',
         position: 'SP',
         team: 'Cincinnati Reds',
-        level: 'MLB'
+        level: 'MLB',
+        overallRating: 3.5,
+        potentialRating: 4
       },
       {
         id: '2',
         name: 'Rod Griffin',
         position: 'CF',
         team: 'Poland Whiskeyjacks',
-        level: 'A-'
+        level: 'A-',
+        overallRating: 3.5,
+        potentialRating: 4
       },
       {
         id: '3',
         name: 'Robby Dropo',
         position: 'SP',
         team: 'Sarasota Reds',
-        level: 'A'
+        level: 'A',
+        overallRating: 3.5,
+        potentialRating: 4
       }
     ]
   },
@@ -53,19 +61,23 @@ const proposalData: TradeProposal = {
         name: 'Myron Vazquez',
         position: 'RF',
         team: 'New York Mets',
-        level: 'MLB'
+        level: 'MLB',
+        overallRating: 3.5,
+        potentialRating: 4
       },
       {
         id: '5',
         name: 'Bud Dailey',
         position: 'SP',
         team: 'Binghamton Mets',
-        level: 'AA'
+        level: 'AA',
+        overallRating: 3.5,
+        potentialRating: 4
       }
     ]
   }
 };
 
 export const AcceptedTradeProposal = () => {
-  return <TradeProposalCard {...proposalData} />;
+  return <Proposal {...proposalData} />;
 };
