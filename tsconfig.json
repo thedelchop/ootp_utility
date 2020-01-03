@@ -3,22 +3,21 @@
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
+    "inlineSources": true,
     "isolatedModules": false,
     "lib": [
+      "dom",
       "esnext",
-      "dom"
+      "es2018.promise"
     ],
     "jsx": "react",
     "target": "es2016",
     "module": "esnext",
     "moduleResolution": "node",
-    "noImplicitAny": true,
-    "noImplicitThis": true,
     "preserveConstEnums": true,
     "removeComments": false,
     "sourceMap": true,
     "strict": true,
-    "strictNullChecks": true,
     "baseUrl": "assets/js",
     "paths": {
       "*": ["*"]
@@ -29,7 +28,7 @@
     "./**/*.tsx"
   ],
   "exclude": [
-    "node_modules",
+    "./node_modules/**/*",
     "./_build/**/*",
     "./priv/**/*",
     "./deps/**/*",
