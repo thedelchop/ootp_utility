@@ -20,15 +20,25 @@ export default {
 
 const proposalData: TradeProposal = {
   initiator: {
-    name: 'Cincinnati Reds',
-    logo: 'logos/reds.svg',
+    team: {
+      id: '1',
+      name: 'Cincinnati Reds',
+      logo: 'logos/reds.svg',
+      level: 'MLB',
+      city: 'Cincinnati'
+    },
     assets: [
       {
         id: '1',
         name: 'Shawn Lewis',
         position: 'SP',
-        team: 'Cincinnati Reds',
-        level: 'MLB',
+        team: {
+          id: '1',
+          name: 'Cincinnati Reds',
+          logo: 'logos/reds.svg',
+          level: 'MLB',
+          city: 'Cincinnati'
+        },
         overallRating: 3.5,
         potentialRating: 4
       },
@@ -36,32 +46,39 @@ const proposalData: TradeProposal = {
         id: '2',
         name: 'Rod Griffin',
         position: 'CF',
-        team: 'Poland Whiskeyjacks',
-        level: 'A-',
+        team: {
+          id: '100',
+          name: 'Poland Whiskeyjacks',
+          logo: 'logos/reds.svg',
+          level: 'A-',
+          city: 'Poland'
+        },
         overallRating: 3.5,
         potentialRating: 4
       },
-      {
-        id: '3',
-        name: 'Robby Dropo',
-        position: 'SP',
-        team: 'Sarasota Reds',
-        level: 'A',
-        overallRating: 3.5,
-        potentialRating: 4
-      }
+      5000000
     ]
   },
   recipient: {
-    name: 'New York Mets',
-    logo: 'logos/mets.svg',
+    team: {
+      id: '2',
+      name: 'New York Mets',
+      logo: 'logos/mets.svg',
+      level: 'MLB',
+      city: 'New York'
+    },
     assets: [
       {
         id: '4',
         name: 'Myron Vazquez',
         position: 'RF',
-        team: 'New York Mets',
-        level: 'MLB',
+        team: {
+          id: '2',
+          name: 'New York Mets',
+          logo: 'logos/mets.svg',
+          level: 'MLB',
+          city: 'New York'
+        },
         overallRating: 3.5,
         potentialRating: 4
       },
