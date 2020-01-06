@@ -2,10 +2,11 @@ import React, { Fragment, FunctionComponent } from 'react';
 
 import { Avatar, Divider, List, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
 
-import { TeamOffering } from 'api/types';
-import TradeAsset from 'components/Trade/TradeAsset';
+import { TeamOffer } from 'api/types';
+import TradeAsset from 'components/TradeAsset';
 
-const TeamOffer: FunctionComponent<TeamOffering> = ({ name, logo, assets }) => {
+const TeamOffer: FunctionComponent<TeamOffer> = ({ team, assets }) => {
+  const { logo, name } = team;
   const lastAssetIndex = assets.length - 1;
 
   return (
@@ -18,7 +19,7 @@ const TeamOffer: FunctionComponent<TeamOffering> = ({ name, logo, assets }) => {
       </ListItem>
       <List dense disablePadding>
         {assets.map((asset, index) => (
-          <Fragment key={asset.id}>
+          <Fragment key={index}>
             <TradeAsset {...asset} />
             {index < lastAssetIndex && <Divider variant="inset" />}
           </Fragment>
