@@ -5,7 +5,7 @@ import { Avatar, Divider, List, ListItem, ListItemAvatar, ListItemText } from '@
 import { TeamOffer } from 'api/types';
 import TradeAsset from 'components/TradeAsset';
 
-const TeamOffer: FunctionComponent<TeamOffer> = ({ team, assets }) => {
+const TeamOfferCard: FunctionComponent<TeamOffer> = ({ team, assets }) => {
   const { logo, name } = team;
   const lastAssetIndex = assets.length - 1;
 
@@ -29,4 +29,4 @@ const TeamOffer: FunctionComponent<TeamOffer> = ({ team, assets }) => {
   );
 };
 
-export default TeamOffer;
+export default TeamOfferCard;
