@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
-import { IconButton, ListItem, ListItemSecondaryAction, ListItemText, Typography } from '@material-ui/core';
-import { MoreVertSharp } from '@material-ui/icons';
+import { ListItemText, Typography } from '@material-ui/core';
 import { DraftPick } from 'api/types';
+import TradeAssetContainer from 'components/TradeAsset/Container';
 
 const toOrdinal = (num: number): string => {
   const digits = [num % 10, num % 100],
@@ -13,18 +13,29 @@ const toOrdinal = (num: number): string => {
     : num + ordinals[3];
 };
 
-const DraftPickTradeAsset: FunctionComponent<DraftPick> = ({ year, round }) => (
-  <ListItem dense disableGutters button>
+interface SecondaryTextProps {
+  year: number;
+  teamName: string;
+}
+
+const SecondaryText: FunctionComponent<SecondaryTextProps> = ({ year, teamName }) => (
+  <Typography variant="overline" color="textSecondary" display="inline">
+    {year} | {teamName}
+  </Typography>
+);
+
+const DraftPickTradeAsset: FunctionComponent<DraftPick> = ({
+  year,
+  round,
+  originalTeam: { name: originalTeamName }
+}) => (
+  <TradeAssetContainer>
     <ListItemText
       inset
-      primary={<Typography variant="body1">{`${year} ${toOrdinal(round)} round draft pick`}</Typography>}
+      primary={<Typography variant="body1">{toOrdinal(round)} Round Draft Pick</Typography>}
+      secondary={<SecondaryText year={year} teamName={originalTeamName} />}
     />
-    <ListItemSecondaryAction>
-      <IconButton>
-        <MoreVertSharp />
-      </IconButton>
-    </ListItemSecondaryAction>
-  </ListItem>
+  </TradeAssetContainer>
 );
 
 export default DraftPickTradeAsset;

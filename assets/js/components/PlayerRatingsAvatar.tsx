@@ -1,10 +1,10 @@
 import React, { FunctionComponent } from 'react';
 
-import { List, ListItem, Theme } from '@material-ui/core';
-import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { List, ListItem } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { grey, yellow } from '@material-ui/core/colors';
 import { Rating } from '@material-ui/lab';
-import { StarBorderOutlined } from '@material-ui/icons';
+import { StarBorder } from '@material-ui/icons';
 
 import { PlayerRating, PlayerRatingType } from 'api/types';
 
@@ -13,16 +13,11 @@ interface PlayerRatingProps {
   type?: PlayerRatingType;
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    starSize: {
-      fontSize: theme.typography.pxToRem(16)
-    },
-    starColor: {
-      color: ({ type }: PlayerRatingProps) => (type == 'Potential' ? grey[500] : yellow['A200'])
-    }
-  })
-);
+const useStyles = makeStyles({
+  starColor: {
+    color: ({ type }: PlayerRatingProps) => (type == 'Potential' ? grey[500] : yellow[400])
+  }
+});
 
 const PlayerRatingsAvatar: FunctionComponent<PlayerRatingProps> = ({ rating, type = 'Actual' }) => {
   const styles = useStyles({ type, rating });
@@ -32,9 +27,9 @@ const PlayerRatingsAvatar: FunctionComponent<PlayerRatingProps> = ({ rating, typ
       value={rating}
       readOnly
       size="small"
-      classes={{ sizeSmall: styles.starSize, iconFilled: styles.starColor }}
+      classes={{ iconFilled: styles.starColor }}
       precision={0.5}
-      emptyIcon={<StarBorderOutlined fontSize="inherit" />}
+      emptyIcon={<StarBorder fontSize="inherit" htmlColor="transparent" />}
     />
   );
 };
