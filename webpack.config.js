@@ -52,7 +52,7 @@ module.exports = (env, options) => ({
   },
   plugins: [
     new MiniCssExtractPlugin({ filename: '../css/app.css' }),
-    new CopyWebpackPlugin([{ from: 'assets/static/', to: '../', ignore: '*.ts' }])
+    new CopyWebpackPlugin([{ from: 'assets/static/', to: '../', ignore: ['*.ts'] }])
   ],
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
