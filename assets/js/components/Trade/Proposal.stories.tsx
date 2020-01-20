@@ -32,6 +32,7 @@ const proposalData: TradeProposal = {
         id: '1',
         name: 'Shawn Lewis',
         position: 'SP',
+        type: 'Player',
         team: {
           id: '1',
           name: 'Cincinnati Reds',
@@ -46,6 +47,7 @@ const proposalData: TradeProposal = {
         id: '2',
         name: 'Rod Griffin',
         position: 'CF',
+        type: 'Player',
         team: {
           id: '100',
           name: 'Poland Whiskeyjacks',
@@ -56,7 +58,10 @@ const proposalData: TradeProposal = {
         overallRating: 3.5,
         potentialRating: 4
       },
-      5000000
+      {
+        type: 'Cash',
+        amount: 5000000
+      }
     ]
   },
   recipient: {
@@ -72,6 +77,7 @@ const proposalData: TradeProposal = {
         id: '4',
         name: 'Myron Vazquez',
         position: 'RF',
+        type: 'Player',
         team: {
           id: '2',
           name: 'New York Mets',
@@ -83,13 +89,16 @@ const proposalData: TradeProposal = {
         potentialRating: 4
       },
       {
-        id: '5',
-        name: 'Bud Dailey',
-        position: 'SP',
-        team: 'Binghamton Mets',
-        level: 'AA',
-        overallRating: 3.5,
-        potentialRating: 4
+        type: 'DraftPick',
+        round: 1,
+        year: 2053,
+        originalTeam: {
+          id: '3',
+          name: 'Boston Red Sox',
+          logo: 'logos/red_sox.svg',
+          level: 'MLB',
+          city: 'Boston'
+        }
       }
     ]
   }

@@ -1,21 +1,18 @@
 import React, { FunctionComponent } from 'react';
-import { IconButton, ListItem, ListItemSecondaryAction, ListItemText, Typography } from '@material-ui/core';
-import { MoreVertSharp } from '@material-ui/icons';
-import { Cash } from 'api/types';
+import { ListItemText, Typography } from '@material-ui/core';
+import { CashTradeAsset } from 'api/types';
+import TradeAssetContainer from 'components/TradeAsset/Container';
 
 const currencyRegex = /(\d)(?=(\d{3})+(?!\d))/g;
 
-const toCurrency = (cashValue: number): string => `$${cashValue.toFixed(2).replace(currencyRegex, '$1,')}`;
+const toCurrency = (cashValue: number): string => `$${cashValue.toFixed(0).replace(currencyRegex, '$1,')}`;
 
-const CashTradeAsset: FunctionComponent<Cash> = (cashValue) => (
-  <ListItem dense disableGutters button>
-    <ListItemText inset primary={<Typography variant="body1">{toCurrency(cashValue)}</Typography>} />
-    <ListItemSecondaryAction>
-      <IconButton>
-        <MoreVertSharp />
-      </IconButton>
-    </ListItemSecondaryAction>
-  </ListItem>
-);
+const CashTradeAssetCard: FunctionComponent<CashTradeAsset> = ({ amount }) => {
+  return (
+    <TradeAssetContainer>
+      <ListItemText inset primary={<Typography variant="body1">{toCurrency(amount)} Cash</Typography>} />
+    </TradeAssetContainer>
+  );
+};
 
-export default CashTradeAsset;
+export default CashTradeAssetCard;

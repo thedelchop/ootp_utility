@@ -2,7 +2,6 @@ export type Position = 'SP' | 'C' | '1B' | '2B' | '3B' | 'SS' | 'LF' | 'CF' | 'R
 export type Level = 'MLB' | 'AAA' | 'AA' | 'A' | 'A-' | 'R';
 export type PlayerRating = 0.5 | 1 | 1.5 | 2 | 2.5 | 3 | 3.5 | 4 | 4.5 | 5;
 export type PlayerRatingType = 'Actual' | 'Potential';
-export type Cash = number;
 
 export interface Team {
   id: string;
@@ -24,9 +23,26 @@ export interface Player {
 export interface DraftPick {
   round: number;
   year: number;
+  originalTeam: Team;
 }
 
-export type TradeAsset = Player | DraftPick | Cash;
+export interface Cash {
+  amount: number;
+}
+
+export interface CashTradeAsset extends Cash {
+  type: 'Cash';
+}
+
+export interface DraftPickTradeAsset extends DraftPick {
+  type: 'DraftPick';
+}
+
+export interface PlayerTradeAsset extends Player {
+  type: 'Player';
+}
+
+export type TradeAsset = CashTradeAsset | PlayerTradeAsset | DraftPickTradeAsset;
 
 export interface TeamOffer {
   team: Team;
