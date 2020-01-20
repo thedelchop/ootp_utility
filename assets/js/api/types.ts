@@ -9,6 +9,7 @@ export interface Team {
   logo: string;
   city: string;
   level: Level;
+  abbrev: string;
 }
 
 export interface Player {
@@ -52,4 +53,6 @@ export interface TeamOffer {
 export interface TradeProposal {
   initiator: TeamOffer;
   recipient: TeamOffer;
+  acceptedAt?: Date;
+  proposedAt: Date;
 }
