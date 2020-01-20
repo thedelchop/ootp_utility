@@ -19,13 +19,15 @@ export default {
 };
 
 const proposalData: TradeProposal = {
+  proposedAt: new Date(2053, 0, 12),
   initiator: {
     team: {
       id: '1',
       name: 'Cincinnati Reds',
       logo: 'logos/reds.svg',
       level: 'MLB',
-      city: 'Cincinnati'
+      city: 'Cincinnati',
+      abbrev: 'CIN'
     },
     assets: [
       {
@@ -38,7 +40,8 @@ const proposalData: TradeProposal = {
           name: 'Cincinnati Reds',
           logo: 'logos/reds.svg',
           level: 'MLB',
-          city: 'Cincinnati'
+          city: 'Cincinnati',
+          abbrev: 'CIN'
         },
         overallRating: 3.5,
         potentialRating: 4
@@ -53,7 +56,8 @@ const proposalData: TradeProposal = {
           name: 'Poland Whiskeyjacks',
           logo: 'logos/reds.svg',
           level: 'A-',
-          city: 'Poland'
+          city: 'Poland',
+          abbrev: 'POL'
         },
         overallRating: 3.5,
         potentialRating: 4
@@ -70,7 +74,8 @@ const proposalData: TradeProposal = {
       name: 'New York Mets',
       logo: 'logos/mets.svg',
       level: 'MLB',
-      city: 'New York'
+      city: 'New York',
+      abbrev: 'NYM'
     },
     assets: [
       {
@@ -83,7 +88,8 @@ const proposalData: TradeProposal = {
           name: 'New York Mets',
           logo: 'logos/mets.svg',
           level: 'MLB',
-          city: 'New York'
+          city: 'New York',
+          abbrev: 'NYM'
         },
         overallRating: 3.5,
         potentialRating: 4
@@ -97,7 +103,16 @@ const proposalData: TradeProposal = {
           name: 'Boston Red Sox',
           logo: 'logos/red_sox.svg',
           level: 'MLB',
-          city: 'Boston'
+          city: 'Boston',
+          abbrev: 'BOS'
+        },
+        currentTeam: {
+          id: '2',
+          name: 'New York Mets',
+          logo: 'logos/mets.svg',
+          level: 'MLB',
+          city: 'New York',
+          abbrev: 'NYM'
         }
       }
     ]
