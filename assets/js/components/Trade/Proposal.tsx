@@ -82,7 +82,7 @@ const TradeProposalCard: FunctionComponent<TradeProposal> = (props) => {
   const [open, setOpen] = useState(!acceptedAt);
 
   const cardStyles = makeStyles({
-    root: { width: 525 }
+    root: { width: 475 }
   })();
 
   const renderButtons = () => (

@@ -41,11 +41,11 @@ interface Props {
 
 const PlayerRatings: FunctionComponent<Props> = ({ overallRating, potentialRating }) => {
   return (
-    <List dense disablePadding>
-      <ListItem dense disableGutters alignItems="center">
+    <List dense>
+      <ListItem dense alignItems="center">
         <PlayerRatingsAvatar rating={overallRating} />
       </ListItem>
-      <ListItem dense disableGutters alignItems="center">
+      <ListItem dense alignItems="center">
         <PlayerRatingsAvatar rating={potentialRating} type="Potential" />
       </ListItem>
     </List>
