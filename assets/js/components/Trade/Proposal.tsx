@@ -1,7 +1,18 @@
 import React, { useState, FunctionComponent, MouseEventHandler } from 'react';
 import { format as formatDate } from 'date-fns';
 
-import { Avatar, Card, CardContent, CardHeader, Collapse, Divider, IconButton, Typography } from '@material-ui/core';
+import {
+  Avatar,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Collapse,
+  Divider,
+  IconButton,
+  Typography
+} from '@material-ui/core';
 import { ExpandMore, ExpandLess } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/styles';
 import { AvatarGroup } from '@material-ui/lab';
@@ -67,12 +78,23 @@ const TradeProposalHeader: FunctionComponent<TradeProposalHeaderProps> = ({
 };
 
 const TradeProposalCard: FunctionComponent<TradeProposal> = (props) => {
-  const [open, setOpen] = useState(true);
+  const { initiator, recipient, acceptedAt } = props;
+  const [open, setOpen] = useState(!acceptedAt);
 
-  const { initiator, recipient } = props;
   const cardStyles = makeStyles({
     root: { width: 525 }
   })();
+
+  const renderButtons = () => (
+    <CardActions>
+      <Button size="medium" color="secondary">
+        Reject
+      </Button>
+      <Button size="medium" color="primary">
+        Accept
+      </Button>
+    </CardActions>
+  );
 
   return (
     <Card classes={cardStyles} raised>
@@ -84,6 +106,7 @@ const TradeProposalCard: FunctionComponent<TradeProposal> = (props) => {
           <TeamOffer {...recipient} />
         </CardContent>
       </Collapse>
+      {!acceptedAt && renderButtons()}
     </Card>
   );
 };
