@@ -87,10 +87,10 @@ const TradeProposalCard: FunctionComponent<TradeProposal> = (props) => {
 
   const renderButtons = () => (
     <CardActions>
-      <Button size="medium" color="secondary">
+      <Button size="large" color="secondary">
         Reject
       </Button>
-      <Button size="medium" color="primary">
+      <Button size="large" color="primary">
         Accept
       </Button>
     </CardActions>
