@@ -87,14 +87,6 @@ const proposalData: TradeProposal = {
           level: 'MLB',
           city: 'Boston',
           abbrev: 'BOS'
-        },
-        currentTeam: {
-          id: '2',
-          name: 'New York Mets',
-          logo: 'logos/mets.svg',
-          level: 'MLB',
-          city: 'New York',
-          abbrev: 'NYM'
         }
       }
     ]
