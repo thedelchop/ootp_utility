@@ -61,23 +61,23 @@
     end)
   },
   {
-    ~r/^(\d-\d):\s+Fly\sout,\s(F[1-9])\s+\((Popup|Flyball|Line\sDrive),\s([1-9]{0,2}[A-Z]{0,3})\)$/,
+    ~r/^(\d-\d):\s+Fly\sout,\s(F[1-9])\s+\((Popup|Flyball|Line\sDrive),\s([1-9]{0,2}[A-Z]{0,3}),\sEV\s([0-9]{2,3}\.[0-9])\sMPH\)$/,
     (fn
-      _, count, scoring, contact_type, location ->
-        "#{count}: Fly out, #{scoring}, (#{contact_type}, #{location})"
+      _, count, scoring, contact_type, location, exit_velocity ->
+        "#{count}: Fly out, #{scoring}, (#{contact_type}, #{location}, #{exit_velocity})"
     end)
   },
   {
-    ~r/^(\d-\d):\s+Grounds?\sout,?\s([1-9,U]-*[1-9]*-*[1-9]*)\s+\(Groundball,\s([1-9]{0,2}[A-Z]{0,3})\)$/,
+    ~r/^(\d-\d):\s+Grounds?\sout,?\s([1-9,U]-*[1-9]*-*[1-9]*)\s+\(Groundball,\s([1-9]{0,2}[A-Z]{0,3}),\sEV\s([0-9]{2,3}\.[0-9])\sMPH\)$/,
     (fn
-      _, count, scoring, location ->
-        "#{count}: Ground out, #{scoring}, (Groundball, #{location})"
+      _, count, scoring, location, exit_velocity ->
+        "#{count}: Ground out, #{scoring}, (Groundball, #{location}, #{exit_velocity})"
     end)
   },
   {
-    ~r/^(\d-\d):\s+(\d-RUN|SOLO|GRAND\sSLAM)\sHOME\sRUN\s+\((Flyball|Line Drive),\s([1-9]{0,2}[A-Z]{0,3})\),?\s(?:(?:Distance\s:\s([0-9]{3})\sft)|(?:\((Inside\sthe\sPark)\)))$/,
+    ~r/^(\d-\d):\s+(\d-RUN|SOLO|GRAND\sSLAM)\sHOME\sRUN\s+\((Flyball|Line Drive),\s([1-9]{0,2}[A-Z]{0,3}),\sEV\s([0-9]{2,3}\.[0-9])\sMPH\),?\s(?:(?:Distance\s:\s([0-9]{3})\sft)|(?:\((Inside\sthe\sPark)\)))$/,
     (fn
-      _, count, runs_scored, type, location, "", "Inside the Park" ->
+      _, count, runs_scored, type, location, "", "", "Inside the Park" ->
         runs = case runs_scored do
           "SOLO" -> 1
           "2-RUN"-> 2
@@ -86,7 +86,7 @@
         end
 
         "#{count}: Home Run, #{runs}R, (#{type}, #{location}, Inside the Park)"
-      _, count, runs_scored, type, location, distance, _ ->
+      _, count, runs_scored, type, location, exit_velocity, distance, _ ->
         runs = case runs_scored do
           "SOLO" -> 1
           "2-RUN"-> 2
@@ -94,33 +94,33 @@
           "GRAND SLAM" -> 4
         end
 
-        "#{count}: Home Run, #{runs}R, (#{type}, #{location}, #{distance} ft)"
+        "#{count}: Home Run, #{runs}R, (#{type}, #{location}, #{exit_velocity}, #{distance} ft)"
     end)
   },
   {
-    ~r/^(\d-\d):\s+(SINGLE|DOUBLE|TRIPLE)\s+\((Groundball|Flyball|Line\sDrive|Popup),\s([1-9]{0,2}[A-Z]{0,3})\)(?:\s\(infield\shit\))?(?:\s-\sOUT\sat\s(first|second|third|home)\sbase\strying\sto\sstretch\shit\.)?$/,
+    ~r/^(\d-\d):\s+(SINGLE|DOUBLE|TRIPLE)\s+\((Groundball|Flyball|Line\sDrive|Popup),\s([1-9]{0,2}[A-Z]{0,3}),\sEV\s([0-9]{2,3}\.[0-9])\sMPH\)(?:\s\(infield\shit\))?(?:\s-\sOUT\sat\s(first|second|third|home)\sbase\strying\sto\sstretch\shit\.)?$/,
     (fn
-      _, count, scoring, contact_type, location, "" ->
-       "#{count}: #{String.capitalize(scoring)}, (#{contact_type}, #{location})" 
+      _, count, scoring, contact_type, location, exit_velocity, "" ->
+       "#{count}: #{String.capitalize(scoring)}, (#{contact_type}, #{location}, #{exit_velocity})" 
 
-      _, count, scoring, contact_type, location, "first" ->
-       "#{count}: #{String.capitalize(scoring)}, (#{contact_type}, #{location}), [1B]" 
+      _, count, scoring, contact_type, location, exit_velocity, "first" ->
+       "#{count}: #{String.capitalize(scoring)}, (#{contact_type}, #{location}, #{exit_velocity}), [1B]" 
 
-      _, count, scoring, contact_type, location, "second" ->
-       "#{count}: #{String.capitalize(scoring)}, (#{contact_type}, #{location}), [2B]" 
+      _, count, scoring, contact_type, location, exit_velocity, "second" ->
+       "#{count}: #{String.capitalize(scoring)}, (#{contact_type}, #{location}, #{exit_velocity}), [2B]" 
 
-      _, count, scoring, contact_type, location, "third" ->
-       "#{count}: #{String.capitalize(scoring)}, (#{contact_type}, #{location}), [3B]" 
+      _, count, scoring, contact_type, location, exit_velocity, "third" ->
+       "#{count}: #{String.capitalize(scoring)}, (#{contact_type}, #{location}, #{exit_velocity}), [3B]" 
 
-      _, count, scoring, contact_type, location, "home" ->
-       "#{count}: #{String.capitalize(scoring)}, (#{contact_type}, #{location}), [HOME]" 
+      _, count, scoring, contact_type, location, exit_velocity, "home" ->
+       "#{count}: #{String.capitalize(scoring)}, (#{contact_type}, #{location}, #{exit_velocity}), [HOME]" 
     end)
   },
   {
-    ~r/^(\d-\d):\s+SINGLE\s+\(Groundball,\s([1-9]{0,2}[A-Z]{0,3})\)\s-\srunner\sOUT\sbeing\shit\sby\sbatted\sball\.(?:\s\(infield\shit\))?$/,
+    ~r/^(\d-\d):\s+SINGLE\s+\(Groundball,\s([1-9]{0,2}[A-Z]{0,3}),\sEV\s([0-9]{2,3}\.[0-9])\sMPH\)\s-\srunner\sOUT\sbeing\shit\sby\sbatted\sball\.(?:\s\(infield\shit\))?$/,
     (fn
-      _, count, location ->
-        "#{count}: Single, (Groundball, #{location}) {Runner out, hit by batted ball}"
+      _, count, location, exit_velocity ->
+        "#{count}: Single, (Groundball, #{location}, #{exit_velocity}) {Runner out, hit by batted ball}"
     end)
   },
   {
@@ -161,12 +161,12 @@
       end)
   },
   {
-    ~r/^(\d-\d):\sGrounds\sinto\s(?:double|DOUBLE)\splay,\s(U?(\d)-\d(?:-\d)?)(?:\s\(Groundball,\s([1-9]{0,2}[A-Z]{0,3})\))?$/,
+    ~r/^(\d-\d):\sGrounds\sinto\s(?:double|DOUBLE)\splay,\s(U?(\d)-\d(?:-\d)?)(?:\s\(Groundball,\s([1-9]{0,2}[A-Z]{0,3}),\sEV\s([0-9]{2,3}\.[0-9])\sMPH\))?$/,
     (fn
-      _, count, scoring, possible_location, "" ->
-        "#{count}: Ground out, #{scoring} (DP), (Groundball, #{possible_location})"
-      _, count, scoring, _possible_location, location ->
-        "#{count}: Ground out, #{scoring} (DP), (Groundball, #{location})"
+      _, count, scoring, possible_location, "", exit_velocity ->
+        "#{count}: Ground out, #{scoring} (DP), (Groundball, #{possible_location}, #{exit_velocity})"
+      _, count, scoring, _possible_location, location, exit_velocity ->
+        "#{count}: Ground out, #{scoring} (DP), (Groundball, #{location}, #{exit_velocity})"
     end)
   },
   {
@@ -183,16 +183,16 @@
     end)
   },
   {
-    ~r/^(\d-\d):\sFielders\sChoice\s(?:attempt\s)?at\s(\d(?:nd|rd|st)|home),\s(Runner\sSAFE.\s)?(U?\d-?\d?)\s\(Groundball,\s([A-Z,1-9]{1,3})\)$/,
+    ~r/^(\d-\d):\sFielders\sChoice\s(?:attempt\s)?at\s(\d(?:nd|rd|st)|home),\s(Runner\sSAFE.\s)?(U?\d-?\d?)\s\(Groundball,\s([A-Z,1-9]{1,3}),\sEV\s([0-9]{2,3}\.[0-9])\sMPH\)$/,
     (fn
-      _, count, "home", _runner_outcome, scoring, location ->
-        "#{count}: Single, #{scoring} (Groundball, #{location}), {Runner safe at home on FC attempt}"
-      _, count, "1st", "", scoring, location ->
-        "#{count}: Ground out, #{scoring} (FC, 1B), (Groundball, #{location})"
-      _, count, "2nd", "", scoring, location ->
-        "#{count}: Ground out, #{scoring} (FC, 2B), (Groundball, #{location})"
-      _, count, "3rd", "", scoring, location ->
-        "#{count}: Ground out, #{scoring} (FC, 3B), (Groundball, #{location})"
+      _, count, "home", _runner_outcome, scoring, location, exit_velocity ->
+        "#{count}: Single, #{scoring} (Groundball, #{location}, #{exit_velocity}), {Runner safe at home on FC attempt}"
+      _, count, "1st", "", scoring, location, exit_velocity ->
+        "#{count}: Ground out, #{scoring} (FC, 1B), (Groundball, #{location}, #{exit_velocity})"
+      _, count, "2nd", "", scoring, location, exit_velocity ->
+        "#{count}: Ground out, #{scoring} (FC, 2B), (Groundball, #{location}, #{exit_velocity})"
+      _, count, "3rd", "", scoring, location, exit_velocity ->
+        "#{count}: Ground out, #{scoring} (FC, 3B), (Groundball, #{location}, #{exit_velocity})"
     end)
   },
   {
@@ -212,27 +212,27 @@
     end)
   },
   {
-    ~r/^(\d-\d):\s+Reached\son\serror,\s(E[1-9])\s\((Line\sDrive|Popup|Groundball|Flyball),\s([1-9]{0,2}[A-Z]{0,3})\)$/,
+    ~r/^(\d-\d):\s+Reached\son\serror,\s(E[1-9])\s\((Line\sDrive|Popup|Groundball|Flyball),\s([1-9]{0,2}[A-Z]{0,3}),\sEV\s([0-9]{2,3}\.[0-9])\sMPH\)$/,
     fn string, _ -> string end
   },
   {
-    ~r/^(\d-\d):\s+Grounds\sinto\sfielders\schoice\s([1-9,U]-*[1-9]*-*[1-9]*)\s\(Groundball,\s([1-9]{0,2}[A-Z]{0,3})\)$/,
+    ~r/^(\d-\d):\s+Grounds\sinto\sfielders\schoice\s([1-9,U]-*[1-9]*-*[1-9]*)\s\(Groundball,\s([1-9]{0,2}[A-Z]{0,3}),\sEV\s([0-9]{2,3}\.[0-9])\sMPH\)$/,
     (fn 
-      _, count, scoring, location ->
-        "#{count}: Ground out, #{scoring} (FC, Home), (Groundball, #{location})"
+      _, count, scoring, location, exit_velocity ->
+        "#{count}: Ground out, #{scoring} (FC, Home), (Groundball, #{location}, #{exit_velocity})"
     end)
   },
   {
-    ~r/^(\d-\d):\sReached\svia\serror\son\sa\sdropped\sthrow\sfrom\s(\d?[A-Z]*),\sE(\d)\s\(Groundball,\s([1-9]{0,2}[A-Z]{0,3})\)$/,
+    ~r/^(\d-\d):\sReached\svia\serror\son\sa\sdropped\sthrow\sfrom\s(\d?[A-Z]*),\sE(\d)\s\(Groundball,\s([1-9]{0,2}[A-Z]{0,3}),\sEV\s([0-9]{2,3}\.[0-9])\sMPH\)$/,
     (fn
-      _, count, thrower, error_position, location ->
+      _, count, thrower, error_position, location, exit_velocity ->
         import OOTPUtility.Utilities
 
         {:ok, receiver} = position_from_scoring_key(error_position)
         {:ok, thrower_scoring} = scoring_key_from_position(thrower)
         scoring = "#{thrower_scoring}-#{error_position}"
 
-        "#{count}: Reached on error by #{receiver}, #{scoring} (E#{error_position}), (Groundball, #{location})"
+        "#{count}: Reached on error by #{receiver}, #{scoring} (E#{error_position}), (Groundball, #{location}, #{exit_velocity})"
     end)
   },
   {
@@ -265,10 +265,10 @@
     end)
   },
   {
-    ~r/^(\d-\d):\sSingle,\sError\sin\sOF,\s(E[1-9]),\sbatter\sto\ssecond\sbase\s\((Groundball|Line Drive),\s([1-9]{0,2}[A-Z]{0,3})\)$/,
+    ~r/^(\d-\d):\sSingle,\sError\sin\sOF,\s(E[1-9]),\sbatter\sto\ssecond\sbase\s\((Groundball|Line Drive),\s([1-9]{0,2}[A-Z]{0,3}),\sEV\s([0-9]{2,3}\.[0-9])\sMPH\)$/,
     (fn
-      _, count, error, contact_type, location ->
-        "#{count}: Single, (#{contact_type}, #{location}), {Batter to 2B on #{error}}"
+      _, count, error, contact_type, location, exit_velocity ->
+        "#{count}: Single, (#{contact_type}, #{location}, #{exit_velocity}), {Batter to 2B on #{error}}"
     end)
   },
   {
@@ -299,17 +299,17 @@
     end)
   },
   {
-    ~r/^(?:(\d-\d):\s)?Lines?d?\sinto\s(TRIPLE\splay|DP),\s([1-9,U,F]-*[1-9]*-*[1-9]*)\s\((Line Drive|Groundball|Popup|Flyball),\s([1-9]{0,2}[A-Z]{0,3})\)$/,
+    ~r/^(?:(\d-\d):\s)?Lines?d?\sinto\s(TRIPLE\splay|DP),\s([1-9,U,F]-*[1-9]*-*[1-9]*)\s\((Line Drive|Groundball|Popup|Flyball),\s([1-9]{0,2}[A-Z]{0,3}),\sEV\s([0-9]{2,3}\.[0-9])\sMPH\)$/,
     (fn 
-      _, "", type, scoring, contact_type, location ->
+      _, "", type, scoring, contact_type, location, exit_velocity ->
         play_type = if (type == "DP"), do: "DP", else: "TP"
 
-        "Fly out, #{scoring} (#{play_type}), (#{contact_type}, #{location})"
+        "Fly out, #{scoring} (#{play_type}), (#{contact_type}, #{location}, #{exit_velocity})"
 
-      _, count, type, scoring, contact_type, location ->
+      _, count, type, scoring, contact_type, location, exit_velocity ->
         play_type = if (type == "DP"), do: "DP", else: "TP"
 
-        "#{count}: Fly out, #{scoring} (#{play_type}), (#{contact_type}, #{location})"
+        "#{count}: Fly out, #{scoring} (#{play_type}), (#{contact_type}, #{location}, #{exit_velocity})"
     end)
   },
   {
