@@ -4,8 +4,8 @@ defmodule OOTPUtility.MixProject do
   def project do
     [
       app: :ootp_utility,
-      version: "0.1.0",
-      elixir: "~> 1.5",
+      version: "0.2.0",
+      elixir: "~> 1.10",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
@@ -33,22 +33,22 @@ defmodule OOTPUtility.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:absinthe, "~> 1.4.0"},
+      {:absinthe, "~> 1.4.16"},
       {:absinthe_plug, "~> 1.4.0"},
-      {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.0.0-rc.6", only: [:dev, :test], runtime: false},
-      {:ecto_sql, "~> 3.0"},
-      {:gettext, "~> 0.11"},
-      {:html_sanitize_ex, "~> 1.3"},
+      {:credo, "~> 1.2.2", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.0.0-rc.7", only: [:dev, :test], runtime: false},
+      {:ecto_sql, "~> 3.3"},
+      {:gettext, "~> 0.17"},
+      {:html_sanitize_ex, "~> 1.4"},
       {:jason, "~> 1.1"},
-      {:morphix, "~> 0.7.0"},
-      {:phoenix, "~> 1.4.7"},
-      {:phoenix_ecto, "~> 4.0"},
-      {:phoenix_html, "~> 2.11"},
+      {:morphix, "~> 0.8.0"},
+      {:phoenix, "~> 1.4.12"},
+      {:phoenix_ecto, "~> 4.1"},
+      {:phoenix_html, "~> 2.14"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_pubsub, "~> 1.1"},
-      {:plug_cowboy, "~> 2.0"},
-      {:postgrex, ">= 0.0.0"},
+      {:plug_cowboy, "~> 2.1"},
+      {:postgrex, "~> 0.15.3"},
       {:timex, ">= 3.6.1"}
     ]
   end
