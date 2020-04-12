@@ -77,7 +77,7 @@
   {
     ~r/^(\d-\d):\s+(\d-RUN|SOLO|GRAND\sSLAM)\sHOME\sRUN\s+\((Flyball|Line Drive),\s([1-9]{0,2}[A-Z]{0,3}),\sEV\s([0-9]{2,3}\.[0-9])\sMPH\),?\s(?:(?:Distance\s:\s([0-9]{3})\sft)|(?:\((Inside\sthe\sPark)\)))$/,
     (fn
-      _, count, runs_scored, type, location, "", "", "Inside the Park" ->
+      _, count, runs_scored, type, location, exit_velocity, "", "Inside the Park" ->
         runs = case runs_scored do
           "SOLO" -> 1
           "2-RUN"-> 2
@@ -85,7 +85,7 @@
           "GRAND SLAM" -> 4
         end
 
-        "#{count}: Home Run, #{runs}R, (#{type}, #{location}, Inside the Park)"
+        "#{count}: Home Run, #{runs}R, (#{type}, #{location}, #{exit_velocity}, Inside the Park)"
       _, count, runs_scored, type, location, exit_velocity, distance, _ ->
         runs = case runs_scored do
           "SOLO" -> 1
@@ -163,6 +163,8 @@
   {
     ~r/^(\d-\d):\sGrounds\sinto\s(?:double|DOUBLE)\splay,\s(U?(\d)-\d(?:-\d)?)(?:\s\(Groundball,\s([1-9]{0,2}[A-Z]{0,3}),\sEV\s([0-9]{2,3}\.[0-9])\sMPH\))?$/,
     (fn
+      _, count, scoring, possible_location, "", "" ->
+        "#{count}: Ground out, #{scoring} (DP), (Groundball, #{possible_location})"
       _, count, scoring, possible_location, "", exit_velocity ->
         "#{count}: Ground out, #{scoring} (DP), (Groundball, #{possible_location}, #{exit_velocity})"
       _, count, scoring, _possible_location, location, exit_velocity ->
@@ -213,7 +215,13 @@
   },
   {
     ~r/^(\d-\d):\s+Reached\son\serror,\s(E[1-9])\s\((Line\sDrive|Popup|Groundball|Flyball),\s([1-9]{0,2}[A-Z]{0,3}),\sEV\s([0-9]{2,3}\.[0-9])\sMPH\)$/,
-    fn string, _ -> string end
+    (fn
+      _, count, error, "Groundball", location, exit_velocity -> 
+        "#{count}: Reached on error, (Groundball, #{location}, #{exit_velocity}), [#{error}]"
+
+      _, count, error, contact_type, location, exit_velocity -> 
+        "#{count}: Reached on error, (#{contact_type}, #{location}, #{exit_velocity}), [#{error}]"
+    end)
   },
   {
     ~r/^(\d-\d):\s+Grounds\sinto\sfielders\schoice\s([1-9,U]-*[1-9]*-*[1-9]*)\s\(Groundball,\s([1-9]{0,2}[A-Z]{0,3}),\sEV\s([0-9]{2,3}\.[0-9])\sMPH\)$/,
@@ -232,7 +240,7 @@
         {:ok, thrower_scoring} = scoring_key_from_position(thrower)
         scoring = "#{thrower_scoring}-#{error_position}"
 
-        "#{count}: Reached on error by #{receiver}, #{scoring} (E#{error_position}), (Groundball, #{location}, #{exit_velocity})"
+        "#{count}: Reached on error by #{receiver}, #{scoring}, (Groundball, #{location}, #{exit_velocity}), [E#{error_position}]"
     end)
   },
   {
@@ -268,7 +276,7 @@
     ~r/^(\d-\d):\sSingle,\sError\sin\sOF,\s(E[1-9]),\sbatter\sto\ssecond\sbase\s\((Groundball|Line Drive),\s([1-9]{0,2}[A-Z]{0,3}),\sEV\s([0-9]{2,3}\.[0-9])\sMPH\)$/,
     (fn
       _, count, error, contact_type, location, exit_velocity ->
-        "#{count}: Single, (#{contact_type}, #{location}, #{exit_velocity}), {Batter to 2B on #{error}}"
+        "#{count}: Single, (#{contact_type}, #{location}, #{exit_velocity}), [#{error}], {Batter to 2B on #{error}}"
     end)
   },
   {
@@ -337,7 +345,7 @@
         "#{player}: SB [#{base}B]"
 
       _, player, base, error ->
-        "#{player}: SB [#{base}B], #{error}"
+        "#{player}: SB [#{base}B], [#{error}]"
     end)
   },
   {
@@ -355,7 +363,7 @@
   },
   {
     ~r/^Throwing\serror,\s(E\d)$/,
-    fn _, error -> "#{error} (throw)" end
+    fn _, error -> "[#{error}] (throw)" end
   },
   {
     ~r/^Squeeze\sbunt\sis\son,\s(.+)\sis\sout$/,
@@ -403,7 +411,7 @@
 
         scoring = "1-#{receiver_scoring_key}"
 
-        "Pickoff Attempt, #{scoring}, #{error}"
+        "Pickoff Attempt, #{scoring}, [#{error}]"
 
       _, "Catcher", base, "", _scoring ->
         import OOTPUtility.Utilities
@@ -423,7 +431,7 @@
 
         scoring = "2-#{receiver_scoring_key}"
 
-        "Pickoff Attempt, #{scoring}, #{error}"
+        "Pickoff Attempt, #{scoring}, [#{error}]"
     end)
   },
   {

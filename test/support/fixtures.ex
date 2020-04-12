@@ -21,8 +21,8 @@ defmodule OOTPUtility.Fixtures do
 
   defp line_changeset(attrs) do
     %Line{}
-    |> cast(attrs, [:id, :game_id, :line, :text, :type, :formatted_text])
-    |> validate_required([:id, :game_id, :line, :text, :type, :formatted_text])
+    |> cast(attrs, [:game_id, :line, :text, :type, :formatted_text])
+    |> validate_required([:game_id, :line, :text, :type, :formatted_text])
     |> Line.update_import_changeset()
   end
 end
