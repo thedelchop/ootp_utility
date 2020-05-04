@@ -5,7 +5,7 @@ defmodule OOTPUtility.Game.Log.Line do
     attributes: [:id, :game_id, :line, :text, :type, :formatted_text],
     from: "game_logs.csv"
 
-  import Ecto.Query, only: [order_by: 3]
+  import Ecto.Query, only: [order_by: 3, where: 3]
   import Ecto.Queryable, only: [to_query: 1]
 
   schema "game_log_lines" do
@@ -62,6 +62,16 @@ defmodule OOTPUtility.Game.Log.Line do
       false ->
         nil
     end
+  end
+
+  @doc """
+  Return a query that scopes the lines to a specified game
+  """
+  @spec for_game(Ecto.Queryable.t(), number) :: Ecto.Query.t()
+  def for_game(query, game_id) do
+    query
+    |> to_query()
+    |> where([l], l.game_id == ^game_id)
   end
 
   @doc """
