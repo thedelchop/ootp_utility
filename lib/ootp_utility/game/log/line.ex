@@ -22,7 +22,6 @@ defmodule OOTPUtility.Game.Log.Line do
   @doc """
   Append the composite id and format the raw text for later processing
   """
-  @impl OOTPUtility.Imports
   def update_import_changeset(changeset) do
     changeset
     |> put_composite_key()
@@ -37,10 +36,8 @@ defmodule OOTPUtility.Game.Log.Line do
 
   When the CSV data has the expected number of columns, just return the row, unchanged.
   """
-  @impl OOTPUtility.Imports
   def sanitize_csv_data([game_id, type, line, text | []]), do: [game_id, type, line, text]
 
-  @impl OOTPUtility.Imports
   def sanitize_csv_data([game_id, type, line, text | rest_of_text]) do
     sanitize_csv_data([game_id, type, line, Enum.join([text | rest_of_text], ",")])
   end

@@ -5,23 +5,14 @@ defmodule OOTPUtility.Imports do
   This module is the set of common operations that can be taken on an import, like reading the raw CSV
   data and prepping it to be imported.
   """
-  @callback sanitize_csv_data(row :: list) :: list
-  @callback sanitize_attributes(attributes :: map) :: map
-  @callback update_import_changeset(changeset :: struct) :: struct
-
   defmacro __using__([{:attributes, attributes}, {:from, filename}]) do
     quote do
-      @behaviour unquote(__MODULE__)
-
-      @impl OOTPUtility.Imports
       def sanitize_attributes(attrs),
         do: OOTPUtility.Imports.sanitize_attributes(__MODULE__, attrs)
 
-      @impl OOTPUtility.Imports
       def sanitize_csv_data(attrs_row),
         do: OOTPUtility.Imports.sanitize_csv_data(__MODULE__, attrs_row)
 
-      @impl OOTPUtility.Imports
       def update_import_changeset(changeset) do
         OOTPUtility.Imports.update_import_changeset(__MODULE__, changeset)
       end

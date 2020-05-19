@@ -28,14 +28,12 @@ defmodule OOTPUtility.Team do
     belongs_to :division, Division
   end
 
-  @impl OOTPUtility.Imports
   def update_import_changeset(changeset) do
     changeset
     |> put_division_id()
     |> put_conference_id()
   end
 
-  @impl OOTPUtility.Imports
   def sanitize_attributes(attrs),
     do: Utilities.rename_keys(attrs, [{:sub_league_id, :conference_id}, {:team_id, :id}])
 

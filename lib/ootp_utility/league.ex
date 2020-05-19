@@ -41,7 +41,6 @@ defmodule OOTPUtility.League do
     has_many :teams, OOTPUtility.Team
   end
 
-  @impl OOTPUtility.Imports
   def sanitize_attributes(
         %{start_date: start_date_as_string, current_date: current_date_as_string} = attrs
       ) do

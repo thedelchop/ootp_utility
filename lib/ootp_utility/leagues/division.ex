@@ -17,14 +17,12 @@ defmodule OOTPUtility.Leagues.Division do
     has_many :teams, Team
   end
 
-  @impl OOTPUtility.Imports
   def update_import_changeset(changeset) do
     changeset
     |> put_composite_key()
     |> put_conference_id()
   end
 
-  @impl OOTPUtility.Imports
   def sanitize_attributes(attrs),
     do: Utilities.rename_keys(attrs, [{:sub_league_id, :conference_id}, {:division_id, :id}])
 

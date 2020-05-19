@@ -21,10 +21,8 @@ defmodule OOTPUtility.Leagues.Conference do
     has_many :teams, Team
   end
 
-  @impl OOTPUtility.Imports
   def update_import_changeset(changeset), do: put_composite_key(changeset)
 
-  @impl OOTPUtility.Imports
   def sanitize_attributes(attrs),
     do: Utilities.rename_keys(attrs, [{:sub_league_id, :id}])
 end
