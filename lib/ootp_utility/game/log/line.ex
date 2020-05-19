@@ -8,6 +8,9 @@ defmodule OOTPUtility.Game.Log.Line do
   import Ecto.Query, only: [order_by: 3, where: 3]
   import Ecto.Queryable, only: [to_query: 1]
 
+  alias __MODULE__
+  @type t() :: %__MODULE__{}
+
   schema "game_log_lines" do
     field :game_id, :integer
     field :line, :integer
@@ -78,7 +81,7 @@ defmodule OOTPUtility.Game.Log.Line do
   Return the query that includes an ordering of the lines in the query by their game.
   """
   @spec ordered_by_game(Ecto.Query.t() | Line.t()) :: Ecto.Query.t()
-  def ordered_by_game(query \\ __MODULE__) do
+  def ordered_by_game(query \\ %Line{}) do
     query
     |> to_query()
     |> order_by([l], [l.game_id, l.line])
