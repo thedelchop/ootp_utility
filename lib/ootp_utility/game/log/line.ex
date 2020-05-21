@@ -67,20 +67,14 @@ defmodule OOTPUtility.Game.Log.Line do
   @doc """
   Return a query that scopes the lines to a specified game
   """
+  @spec for_game(number) :: Ecto.Query.t()
+  def for_game(game_id), do: for_game(Line, game_id)
+
   @spec for_game(Ecto.Queryable.t(), number) :: Ecto.Query.t()
   def for_game(query, game_id) do
     query
     |> to_query()
     |> where([l], l.game_id == ^game_id)
-  end
-
-  @doc """
-  Return the query that includes an ordering of the lines in the query by their game.
-  """
-  @spec ordered_by_game(Ecto.Query.t() | Line.t()) :: Ecto.Query.t()
-  def ordered_by_game(query \\ %Line{}) do
-    query
-    |> to_query()
     |> order_by([l], [l.game_id, l.line])
   end
 
