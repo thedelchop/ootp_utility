@@ -42,6 +42,7 @@ defmodule OOTPUtility.MixProject do
       {:html_sanitize_ex, "~> 1.4"},
       {:jason, "~> 1.1"},
       {:morphix, "~> 0.8.0"},
+      {:number, "~> 1.0.1"},
       {:phoenix, "~> 1.4.12"},
       {:phoenix_ecto, "~> 4.1"},
       {:phoenix_html, "~> 2.14"},

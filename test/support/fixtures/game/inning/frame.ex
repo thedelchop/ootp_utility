@@ -1,5 +1,5 @@
 defmodule OOTPUtility.Fixtures.Game.Inning.Frame do
-  import OOTPUtility.Fixtures, only: [build_game_log_line: 1]
+  import OOTPUtility.Fixtures.Game.Log.Line, only: [lines_for_frame: 3]
 
   alias OOTPUtility.Game.Inning.Frame
 
@@ -8,15 +8,18 @@ defmodule OOTPUtility.Fixtures.Game.Inning.Frame do
     orientation: :top
   }
 
-  def create_frame(attrs \\ %{}) do
+  def create_frame(attrs \\ %{}, [{:game, game}, {:inning, inning}] \\ [{:game, 1}, {:inning, 1}]) do
+    frame_attrs =
+      attrs
+      |> Enum.into(@attrs)
+
     %{
       inning_id: inning_id,
       orientation: orientation,
       lines: lines
     } =
-      attrs
-      |> Enum.into(@attrs)
-      |> Map.put_new(:lines, Enum.map(1..4, &build_game_log_line(%{line: &1})))
+      frame_attrs
+      |> Map.put_new(:lines, lines_for_frame(game, inning, Map.get(attrs, :orientation)))
 
     Frame.new(inning_id, orientation, lines)
   end
