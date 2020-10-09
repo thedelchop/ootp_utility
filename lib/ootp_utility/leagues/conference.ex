@@ -1,4 +1,6 @@
 defmodule OOTPUtility.Leagues.Conference do
+  @type t() :: %__MODULE__{}
+
   use OOTPUtility.Schema,
     composite_key: [:league_id, :id],
     foreign_key: [:league_id, :conference_id]

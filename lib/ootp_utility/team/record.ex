@@ -1,6 +1,8 @@
 defmodule OOTPUtility.Team.Record do
   use OOTPUtility.Schema
 
+  @type t() :: %__MODULE__{}
+
   use OOTPUtility.Imports,
     attributes: [
       :id,

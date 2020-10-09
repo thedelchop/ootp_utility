@@ -1,4 +1,6 @@
 defmodule OOTPUtility.Game.Log.Line do
+  @type t() :: %__MODULE__{}
+
   use OOTPUtility.Schema, composite_key: [:game_id, :line]
 
   use OOTPUtility.Imports,
@@ -9,7 +11,6 @@ defmodule OOTPUtility.Game.Log.Line do
   import Ecto.Queryable, only: [to_query: 1]
 
   alias __MODULE__
-  @type t() :: %__MODULE__{}
 
   schema "game_log_lines" do
     field :game_id, :integer

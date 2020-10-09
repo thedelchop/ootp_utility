@@ -1,4 +1,6 @@
 defmodule OOTPUtility.World.City do
+  @type t() :: %__MODULE__{}
+
   use OOTPUtility.Schema
   use OOTPUtility.Imports, attributes: [:id, :name, :abbreviation], from: "cities.csv"
 

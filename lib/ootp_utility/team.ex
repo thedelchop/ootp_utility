@@ -1,4 +1,6 @@
 defmodule OOTPUtility.Team do
+  @type t() :: %__MODULE__{}
+
   use OOTPUtility.Schema
 
   use OOTPUtility.Imports,

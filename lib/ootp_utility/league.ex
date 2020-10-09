@@ -1,4 +1,6 @@
 defmodule OOTPUtility.League do
+  @type t() :: %__MODULE__{}
+
   use OOTPUtility.Schema
 
   alias OOTPUtility.Utilities
