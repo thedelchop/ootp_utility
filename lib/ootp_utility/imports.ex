@@ -7,18 +7,22 @@ defmodule OOTPUtility.Imports do
   """
   defmacro __using__([{:attributes, attributes}, {:from, filename}]) do
     quote do
+      @spec sanitize_attributes(map()) :: map()
       def sanitize_attributes(attrs),
         do: OOTPUtility.Imports.sanitize_attributes(__MODULE__, attrs)
 
+      @spec sanitize_attributes(map()) :: map()
       def sanitize_csv_data(attrs_row),
         do: OOTPUtility.Imports.sanitize_csv_data(__MODULE__, attrs_row)
 
+      @spec update_import_changeset(Ecto.Changeset.t(__MODULE__.t())) :: Ecto.Changeset.t()
       def update_import_changeset(changeset) do
         OOTPUtility.Imports.update_import_changeset(__MODULE__, changeset)
       end
 
       defoverridable sanitize_attributes: 1, sanitize_csv_data: 1, update_import_changeset: 1
 
+      @spec build_attributes_for_import(map()) :: map()
       def build_attributes_for_import(attrs) do
         OOTPUtility.Imports.build_attributes_for_import(__MODULE__, attrs, unquote(attributes))
       end
