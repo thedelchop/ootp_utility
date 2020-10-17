@@ -33,7 +33,8 @@ defmodule OOTPUtility.Team.Record do
     belongs_to :team, Team
   end
 
-  def sanitize_attributes(attrs) do
+  @spec sanitize_attributes(map()) :: map()
+  def sanitize_attributes(%{} = attrs) do
     attrs
     |> Utilities.rename_keys([
       {:team_id, :id},
