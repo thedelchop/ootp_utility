@@ -6,10 +6,12 @@ defmodule OOTPUtility.Game do
   alias __MODULE__
   alias OOTPUtility.Game.{Log, Inning}
 
+  @spec new(integer()) :: Game.t()
   def new(game_id) do
     new(game_id, Log.new(game_id))
   end
 
+  @spec new(integer(), Game.Log.t()) :: Game.t()
   def new(game_id, log) do
     game = %Game{
       id: game_id,
