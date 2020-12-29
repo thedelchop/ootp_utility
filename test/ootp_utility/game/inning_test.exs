@@ -1,8 +1,18 @@
 defmodule OOTPUtility.Game.InningTest do
   use OOTPUtility.DataCase
 
-  alias OOTPUtility.{Fixtures}
+  alias OOTPUtility.{Fixtures, Game}
   alias OOTPUtility.Game.Inning
+
+  describe "from_game/1" do
+    test "it returns a list of Innings, one for each set of lines that represent a game" do
+      game_lines = Fixtures.lines_for_game(1)
+
+      innings = Inning.from_game(%Game{id: 1, log: game_lines})
+
+      assert length(innings) == 9
+    end
+  end
 
   describe "new/3" do
     setup do
@@ -73,7 +83,8 @@ defmodule OOTPUtility.Game.InningTest do
          } do
       inning_id = "#{game_id}-#{inning_number}"
 
-      require IEx; IEx.pry
+      require IEx
+      IEx.pry()
 
       assert(
         %Inning.Frame{
