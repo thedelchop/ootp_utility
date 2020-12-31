@@ -1,4 +1,4 @@
-defmodule OOTPUtility.Leagues.Division do
+defmodule OOTPUtility.Imports.Division do
   @type t() :: %__MODULE__{}
 
   use OOTPUtility.Schema,
@@ -9,8 +9,8 @@ defmodule OOTPUtility.Leagues.Division do
     attributes: [:id, :name, :league_id, :conference_id],
     from: "divisions.csv"
 
-  alias OOTPUtility.{League, Team, Utilities}
-  alias OOTPUtility.Leagues.Conference
+  alias OOTPUtility.{Utilities}
+  alias OOTPUtility.Imports.{League, Team, Conference}
 
   schema "divisions" do
     field :name, :string

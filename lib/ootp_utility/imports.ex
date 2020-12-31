@@ -11,7 +11,6 @@ defmodule OOTPUtility.Imports do
       def sanitize_attributes(attrs),
         do: OOTPUtility.Imports.sanitize_attributes(__MODULE__, attrs)
 
-      @spec sanitize_attributes(map()) :: map()
       def sanitize_csv_data(attrs_row),
         do: OOTPUtility.Imports.sanitize_csv_data(__MODULE__, attrs_row)
 
@@ -19,8 +18,6 @@ defmodule OOTPUtility.Imports do
       def update_import_changeset(changeset) do
         OOTPUtility.Imports.update_import_changeset(__MODULE__, changeset)
       end
-
-      defoverridable sanitize_attributes: 1, sanitize_csv_data: 1, update_import_changeset: 1
 
       @spec build_attributes_for_import(map()) :: map()
       def build_attributes_for_import(attrs) do
@@ -33,6 +30,8 @@ defmodule OOTPUtility.Imports do
           |> OOTPUtility.Imports.import_from_path(full_path)
         end
       end
+
+      defoverridable sanitize_attributes: 1, sanitize_csv_data: 1, update_import_changeset: 1
     end
   end
 

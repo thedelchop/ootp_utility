@@ -1,4 +1,4 @@
-defmodule OOTPUtility.World.City do
+defmodule OOTPUtility.Imports.City do
   @type t() :: %__MODULE__{}
 
   use OOTPUtility.Schema

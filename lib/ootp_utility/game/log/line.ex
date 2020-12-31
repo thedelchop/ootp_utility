@@ -3,10 +3,6 @@ defmodule OOTPUtility.Game.Log.Line do
 
   use OOTPUtility.Schema, composite_key: [:game_id, :line]
 
-  use OOTPUtility.Imports,
-    attributes: [:id, :game_id, :line, :text, :type, :formatted_text],
-    from: "game_logs.csv"
-
   import Ecto.Query, only: [order_by: 3, where: 3]
   import Ecto.Queryable, only: [to_query: 1]
 
@@ -18,29 +14,6 @@ defmodule OOTPUtility.Game.Log.Line do
     field :text, :string
     field :type, :integer
     field :formatted_text, :string
-  end
-
-  @doc """
-  Append the composite id and format the raw text for later processing
-  """
-  def update_import_changeset(changeset) do
-    changeset
-    |> put_composite_key()
-    |> put_formatted_text()
-  end
-
-  @doc """
-  If the CSV data contains commas in the "text" that are not correctly escaped, then the CSV
-  row can appear to have more columns than expected.  So, for each row that has more columns
-  than "game_id", "type", "line" and "text", concat all of the extra columns with a comma to 
-  the "text" column.
-
-  When the CSV data has the expected number of columns, just return the row, unchanged.
-  """
-  def sanitize_csv_data([game_id, type, line, text | []]), do: [game_id, type, line, text]
-
-  def sanitize_csv_data([game_id, type, line, text | rest_of_text]) do
-    sanitize_csv_data([game_id, type, line, Enum.join([text | rest_of_text], ",")])
   end
 
   @doc """
@@ -79,7 +52,8 @@ defmodule OOTPUtility.Game.Log.Line do
     |> order_by([l], [l.game_id, l.line])
   end
 
-  defp put_formatted_text(%Ecto.Changeset{changes: changes} = changeset) do
-    change(changeset, %{formatted_text: format_raw_text(changes)})
+  @spec parse(Line.t()) :: Line.t()
+  def parse(line) do
+    line
   end
 end

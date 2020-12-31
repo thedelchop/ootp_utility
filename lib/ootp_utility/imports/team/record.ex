@@ -1,4 +1,4 @@
-defmodule OOTPUtility.Team.Record do
+defmodule OOTPUtility.Imports.Team.Record do
   use OOTPUtility.Schema
 
   @type t() :: %__MODULE__{}
@@ -33,7 +33,6 @@ defmodule OOTPUtility.Team.Record do
     belongs_to :team, Team
   end
 
-  @spec sanitize_attributes(map()) :: map()
   def sanitize_attributes(%{} = attrs) do
     attrs
     |> Utilities.rename_keys([

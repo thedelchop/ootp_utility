@@ -1,9 +1,10 @@
-defmodule OOTPUtility.League do
+defmodule OOTPUtility.Imports.League do
   @type t() :: %__MODULE__{}
 
   use OOTPUtility.Schema
 
   alias OOTPUtility.Utilities
+  alias OOTPUtility.Imports.{Conference, League}
 
   use OOTPUtility.Imports,
     attributes: [
@@ -32,15 +33,15 @@ defmodule OOTPUtility.League do
     field :season_year, :integer
     field :start_date, :date
 
-    belongs_to :parent_league, OOTPUtility.League
+    belongs_to :parent_league, League
 
-    has_many :child_leagues, OOTPUtility.League, foreign_key: :parent_league_id
+    has_many :child_leagues, League, foreign_key: :parent_league_id
 
-    has_many :conferences, OOTPUtility.Leagues.Conference
+    has_many :conferences, Conference
 
-    has_many :divisions, OOTPUtility.Leagues.Division
+    has_many :divisions, OOTPUtility.Imports.Division
 
-    has_many :teams, OOTPUtility.Team
+    has_many :teams, OOTPUtility.Imports.Team
   end
 
   def sanitize_attributes(

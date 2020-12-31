@@ -1,4 +1,4 @@
-defmodule OOTPUtility.Leagues.Conference do
+defmodule OOTPUtility.Imports.Conference do
   @type t() :: %__MODULE__{}
 
   use OOTPUtility.Schema,
