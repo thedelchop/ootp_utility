@@ -9,14 +9,13 @@ defmodule OOTPUtility.Imports.Division do
     attributes: [:id, :name, :league_id, :conference_id],
     from: "divisions.csv"
 
-  alias OOTPUtility.{Utilities}
-  alias OOTPUtility.Imports.{League, Team, Conference}
+  alias OOTPUtility.Utilities
+  alias OOTPUtility.Imports.Conference
 
   schema "divisions" do
     field :name, :string
-    belongs_to :league, League
-    belongs_to :conference, Conference
-    has_many :teams, Team
+    field :league_id, :string
+    field :conference_id, :string
   end
 
   def update_import_changeset(changeset) do

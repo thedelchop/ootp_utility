@@ -17,7 +17,7 @@ defmodule OOTPUtility.Imports.Team do
     from: "teams.csv"
 
   alias OOTPUtility.Utilities
-  alias OOTPUtility.Imports.{Conference, Division, League}
+  alias OOTPUtility.Imports.{Conference, Division}
 
   schema "teams" do
     field :abbr, :string
@@ -25,9 +25,9 @@ defmodule OOTPUtility.Imports.Team do
     field :logo_filename, :string
     field :name, :string
 
-    belongs_to :league, League
-    belongs_to :conference, Conference
-    belongs_to :division, Division
+    field :league_id, :string
+    field :conference_id, :string
+    field :division_id, :string
   end
 
   def update_import_changeset(changeset) do

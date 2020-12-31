@@ -4,7 +4,6 @@ defmodule OOTPUtility.Imports.League do
   use OOTPUtility.Schema
 
   alias OOTPUtility.Utilities
-  alias OOTPUtility.Imports.{Conference, League}
 
   use OOTPUtility.Imports,
     attributes: [
@@ -33,15 +32,7 @@ defmodule OOTPUtility.Imports.League do
     field :season_year, :integer
     field :start_date, :date
 
-    belongs_to :parent_league, League
-
-    has_many :child_leagues, League, foreign_key: :parent_league_id
-
-    has_many :conferences, Conference
-
-    has_many :divisions, OOTPUtility.Imports.Division
-
-    has_many :teams, OOTPUtility.Imports.Team
+    field :parent_league_id, :string
   end
 
   def sanitize_attributes(

@@ -18,7 +18,7 @@ defmodule OOTPUtility.Imports.Team.Record do
     ],
     from: "team_record.csv"
 
-  alias OOTPUtility.{Team, Utilities}
+  alias OOTPUtility.Utilities
 
   schema "team_records" do
     field :games, :integer
@@ -30,7 +30,7 @@ defmodule OOTPUtility.Imports.Team.Record do
     field :winning_percentage, :float
     field :wins, :integer
 
-    belongs_to :team, Team
+    field :team_id, :string
   end
 
   def sanitize_attributes(%{} = attrs) do
