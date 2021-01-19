@@ -20,22 +20,18 @@ defmodule OOTPUtility.Game.Log.Line do
   Take the Line's raw text, run it through the list of transformations
   and set the result as the Line's formatted text
   """
-  @spec format_raw_text(Line.t()) :: String.t()
-  def format_raw_text(line) do
-    {formatters, _} = Code.eval_file("priv/formatters.ex")
-
-    case Enum.any?(formatters, fn {regex, _} -> Regex.match?(regex, line.text) end) do
-      true ->
-        Enum.reduce(formatters, line.text, fn
-          formatter, formatted_text ->
-            {regex, format_fn} = formatter
-
-            Regex.replace(regex, formatted_text, format_fn)
-        end)
-
-      false ->
+  @spec format_raw_text(Line.t(), []) :: String.t()
+  def format_raw_text(line, generators) do
+    # Here we need to go through the formatters and apply the correct one.
+    Enum.find_value(generators, fn {regex, generator} ->
+      if Regex.match?(regex, line.text) do
+        regex
+        |> Regex.named_captures(line.text)
+        |> generator.()
+      else
         nil
-    end
+      end
+    end)
   end
 
   @doc """

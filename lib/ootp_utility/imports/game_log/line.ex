@@ -23,7 +23,6 @@ defmodule OOTPUtility.Imports.GameLog.Line do
   def update_import_changeset(changeset) do
     changeset
     |> put_composite_key()
-    |> put_formatted_text()
   end
 
   @doc """
@@ -38,31 +37,5 @@ defmodule OOTPUtility.Imports.GameLog.Line do
 
   def sanitize_csv_data([game_id, type, line, text | rest_of_text]) do
     sanitize_csv_data([game_id, type, line, Enum.join([text | rest_of_text], ",")])
-  end
-
-  @doc """
-  Take the Line's raw text, run it through the list of transformations
-  and set the result as the Line's formatted text
-  """
-  @spec format_raw_text(Line.t()) :: String.t()
-  def format_raw_text(line) do
-    {formatters, _} = Code.eval_file("priv/formatters.ex")
-
-    case Enum.any?(formatters, fn {regex, _} -> Regex.match?(regex, line.text) end) do
-      true ->
-        Enum.reduce(formatters, line.text, fn
-          formatter, formatted_text ->
-            {regex, format_fn} = formatter
-
-            Regex.replace(regex, formatted_text, format_fn)
-        end)
-
-      false ->
-        nil
-    end
-  end
-
-  defp put_formatted_text(%Ecto.Changeset{changes: changes} = changeset) do
-    change(changeset, %{formatted_text: format_raw_text(changes)})
   end
 end
