@@ -4,17 +4,14 @@ defmodule OOTPUtility.Imports.GameLog.Line do
   use OOTPUtility.Schema, composite_key: [:game_id, :line]
 
   use OOTPUtility.Imports,
-    attributes: [:id, :game_id, :line, :text, :type, :formatted_text],
+    attributes: [:id, :game_id, :line, :text, :type ],
     from: "game_logs.csv"
-
-  alias __MODULE__
 
   schema "game_log_lines" do
     field :game_id, :integer
     field :line, :integer
     field :text, :string
     field :type, :integer
-    field :formatted_text, :string
   end
 
   @doc """

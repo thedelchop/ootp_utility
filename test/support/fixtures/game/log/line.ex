@@ -2,14 +2,13 @@ defmodule OOTPUtility.Fixtures.Game.Log.Line do
   import Ecto.Changeset, only: [cast: 3, validate_required: 2, apply_changes: 1]
 
   alias OOTPUtility.Repo
-  alias OOTPUtility.Game.Log.Line
+  alias OOTPUtility.Imports.GameLog.Line
 
   @attrs %{
     game_id: "1",
     type: "3",
     line: "1",
-    text: "Foul Ball, location: 2F",
-    formatted_text: "2-2: Swinging Strike (Foul Ball, 2F)"
+    text: "Foul Ball, location: 2F"
   }
 
   @spec create_game_log_line(map()) :: Line.t()
@@ -68,9 +67,11 @@ defmodule OOTPUtility.Fixtures.Game.Log.Line do
   defp build_line_changeset(attrs) when is_map(attrs) do
     with line_attrs <- Enum.into(attrs, @attrs) do
       %Line{}
-      |> cast(line_attrs, [:game_id, :line, :text, :type, :formatted_text])
+      |> cast(line_attrs, [:game_id, :line, :text, :type])
       |> validate_required([:game_id, :line, :text, :type])
       |> Line.update_import_changeset()
+
+
     end
   end
 end

@@ -13,25 +13,6 @@ defmodule OOTPUtility.Game.Log.Line do
     field :line, :integer
     field :text, :string
     field :type, :integer
-    field :formatted_text, :string
-  end
-
-  @doc """
-  Take the Line's raw text, run it through the list of transformations
-  and set the result as the Line's formatted text
-  """
-  @spec format_raw_text(Line.t(), []) :: String.t()
-  def format_raw_text(line, generators) do
-    # Here we need to go through the formatters and apply the correct one.
-    Enum.find_value(generators, fn {regex, generator} ->
-      if Regex.match?(regex, line.text) do
-        regex
-        |> Regex.named_captures(line.text)
-        |> generator.()
-      else
-        nil
-      end
-    end)
   end
 
   @doc """
