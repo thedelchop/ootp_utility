@@ -12,8 +12,6 @@ defmodule OOTPUtility.Repo.Migrations.CreateLeagues do
       add :start_date, :date
 
       add :parent_league_id, :string
-
-      timestamps()
     end
   end
 end

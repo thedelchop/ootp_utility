@@ -1,9 +1,23 @@
 defmodule OOTPUtility.Leagues.League do
-  use Ecto.Schema
-  import Ecto.Changeset
+  @type t() :: %__MODULE__{}
 
-  @primary_key {:id, :string, autogenerate: false}
-  @foreign_key_type :string
+  use OOTPUtility.Schema
+
+  alias OOTPUtility.Utilities
+
+  use OOTPUtility.Imports,
+    attributes: [
+      :id,
+      :name,
+      :abbr,
+      :logo_filename,
+      :start_date,
+      :season_year,
+      :league_level,
+      :current_date,
+      :parent_league_id
+    ],
+    from: "leagues.csv"
 
   schema "leagues" do
     field :abbr, :string
@@ -16,30 +30,17 @@ defmodule OOTPUtility.Leagues.League do
 
     belongs_to :parent_league, OOTPUtility.Leagues.League
     has_many :child_leagues, OOTPUtility.Leagues.League, foreign_key: :parent_league_id
-
-    timestamps()
   end
 
-  @doc false
-  def changeset(league, attrs) do
-    league
-    |> cast(attrs, [
-      :abbr,
-      :current_date,
-      :league_level,
-      :logo_filename,
-      :name,
-      :season_year,
-      :start_date
-    ])
-    |> validate_required([
-      :abbr,
-      :current_date,
-      :league_level,
-      :logo_filename,
-      :name,
-      :season_year,
-      :start_date
-    ])
+  def sanitize_attributes(
+        %{start_date: start_date_as_string, current_date: current_date_as_string} = attrs
+      ) do
+    with {:ok, start_date} <- Timex.parse(start_date_as_string, "{YYYY}-{M}-{D}"),
+         {:ok, current_date} <- Timex.parse(current_date_as_string, "{YYYY}-{M}-{D}") do
+      attrs
+      |> Utilities.rename_keys([{:league_id, :id}])
+      |> Map.put(:start_date, NaiveDateTime.to_date(start_date))
+      |> Map.put(:current_date, NaiveDateTime.to_date(current_date))
+    end
   end
 end
