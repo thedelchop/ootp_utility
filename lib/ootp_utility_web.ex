@@ -89,6 +89,7 @@ defmodule OOTPUtilityWeb do
 
       import OOTPUtilityWeb.ErrorHelpers
       import OOTPUtilityWeb.Gettext
+      import OOTPUtilityWeb.Helpers
       alias OOTPUtilityWeb.Router.Helpers, as: Routes
     end
   end
