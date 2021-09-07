@@ -18,12 +18,12 @@
 <%= for league <- @leagues do %>
     <tr>
       <td><%= league.abbr %></td>
-      <td><%= league.current_date %></td>
+      <td><%= friendly_date(league.current_date) %></td>
       <td><%= league.league_level %></td>
       <td><%= league.logo_filename %></td>
       <td><%= league.name %></td>
       <td><%= league.season_year %></td>
-      <td><%= league.start_date %></td>
+      <td><%= friendly_date(league.start_date) %></td>
 
       <td>
         <span><%= link "Show", to: Routes.league_path(@conn, :show, league) %></span>
