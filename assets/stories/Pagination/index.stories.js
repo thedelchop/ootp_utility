@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'Pagination',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const CardFooterWithPageButtons = () => require('./card_footer_with_page_buttons.html')

@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'Tabs',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const TabsWithUnderline = () => require('./tabs_with_underline.html')

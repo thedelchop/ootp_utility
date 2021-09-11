@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'SelectMenus',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const SimpleNative = () => require('./simple_native.html')

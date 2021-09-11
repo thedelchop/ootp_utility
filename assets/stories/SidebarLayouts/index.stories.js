@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'SidebarLayouts',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const BrandSidebarWithLightHeader = () => require('./brand_sidebar_with_light_header.html')

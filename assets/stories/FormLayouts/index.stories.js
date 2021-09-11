@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'FormLayouts',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const LabelsOnLeft = () => require('./labels_on_left.html')

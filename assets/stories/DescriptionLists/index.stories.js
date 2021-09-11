@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'DescriptionLists',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const LeftAlignedInCard = () => require('./left_aligned_in_card.html')

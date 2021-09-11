@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'Panels',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const BasicCard = () => require('./basic_card.html')

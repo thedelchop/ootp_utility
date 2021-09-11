@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'ListContainers',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const SimpleWithDividers = () => require('./simple_with_dividers.html')

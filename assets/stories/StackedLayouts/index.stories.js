@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'StackedLayouts',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const LightNavWithBottomBorder = () => require('./light_nav_with_bottom_border.html')

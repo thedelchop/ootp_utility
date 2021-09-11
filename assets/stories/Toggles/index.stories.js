@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'Toggles',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const SimpleToggle = () => require('./simple_toggle.html')

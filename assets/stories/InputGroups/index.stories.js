@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'InputGroups',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const InputWithLabel = () => require('./input_with_label.html')

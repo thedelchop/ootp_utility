@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'Breadcrumbs',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const Contained = () => require('./contained.html')

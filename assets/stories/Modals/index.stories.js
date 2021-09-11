@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'Modals',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const CenteredWithSingleAction = () => require('./centered_with_single_action.html')

@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'Containers',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const FullWidthOnMobileConstrainedWithPaddedContentAbove = () => require('./full_width_on_mobile_constrained_with_padded_content_above.html')

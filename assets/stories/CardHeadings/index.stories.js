@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'CardHeadings',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const Simple = () => require('./simple.html')

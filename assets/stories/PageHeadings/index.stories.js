@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'PageHeadings',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const WithActions = () => require('./with_actions.html')

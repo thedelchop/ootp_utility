@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'Alerts',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const WithDescription = () => require('./with_description.html')

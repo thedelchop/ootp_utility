@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'SidebarNavigation',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const BrandWithIconsBadgesAndProfileSection = () => require('./brand_with_icons_badges_and_profile_section.html')

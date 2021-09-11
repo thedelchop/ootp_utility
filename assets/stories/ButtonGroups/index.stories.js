@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'ButtonGroups',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const Basic = () => require('./basic.html')

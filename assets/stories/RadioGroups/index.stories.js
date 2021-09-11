@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'RadioGroups',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const StackedCards = () => require('./stacked_cards.html')

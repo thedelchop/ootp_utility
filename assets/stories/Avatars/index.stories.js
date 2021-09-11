@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'Avatars',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const CircularAvatars = () => require('./circular_avatars.html')

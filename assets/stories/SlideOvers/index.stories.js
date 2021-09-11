@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'SlideOvers',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const Empty = () => require('./empty.html')

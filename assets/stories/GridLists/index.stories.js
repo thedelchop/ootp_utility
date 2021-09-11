@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'GridLists',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const ContactCardsWithSmallPortraits = () => require('./contact_cards_with_small_portraits.html')

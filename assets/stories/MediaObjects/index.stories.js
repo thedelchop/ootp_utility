@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'MediaObjects',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const Basic = () => require('./basic.html')

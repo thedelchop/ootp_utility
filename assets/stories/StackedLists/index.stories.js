@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'StackedLists',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const NarrowWithAvatarGroup = () => require('./narrow_with_avatar_group.html')

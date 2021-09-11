@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'Navbars',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const SimpleDarkWithMenuButtonOnLeft = () => require('./simple_dark_with_menu_button_on_left.html')

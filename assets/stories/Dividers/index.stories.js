@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'Dividers',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const WithLabel = () => require('./with_label.html')

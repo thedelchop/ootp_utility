@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'VerticalNavigation',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const OnGray = () => require('./on_gray.html')

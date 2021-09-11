@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'MultiColumnLayouts',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const FullWidthThreeColumn = () => require('./full_width_three_column.html')

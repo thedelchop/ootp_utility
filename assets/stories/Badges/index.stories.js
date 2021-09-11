@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'Badges',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const BasicBadges = () => require('./basic_badges.html')

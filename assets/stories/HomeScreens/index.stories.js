@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'HomeScreens',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const FullWidthWithSidebar = () => require('./full_width_with_sidebar.html')

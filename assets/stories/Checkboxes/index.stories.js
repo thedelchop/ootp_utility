@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'Checkboxes',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const ListWithDescription = () => require('./list_with_description.html')

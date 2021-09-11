@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'SignInAndRegistration',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const SimpleCard = () => require('./simple_card.html')

@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'SettingsScreens',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const BrandNavWithOverlapAndSidebarForm = () => require('./brand_nav_with_overlap_and_sidebar_form.html')

@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'DetailScreens',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const MultiColumnDirectory = () => require('./multi_column_directory.html')

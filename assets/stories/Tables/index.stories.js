@@ -1,9 +1,7 @@
 
-import {centerScreen} from "../../.storybook/decorators";
-
 export default {
   title: 'Tables',
-  decorators: [centerScreen]
+  decorators: []
 };
 
 export const SimpleStriped = () => require('./simple_striped.html')
