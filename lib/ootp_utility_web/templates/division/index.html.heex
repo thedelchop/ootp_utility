@@ -1,0 +1,26 @@
+<h1>Listing Divisions</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for division <- @divisions do %>
+    <tr>
+      <td><%= division.name %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.division_path(@conn, :show, division) %></span>
+        <span><%= link "Edit", to: Routes.division_path(@conn, :edit, division) %></span>
+        <span><%= link "Delete", to: Routes.division_path(@conn, :delete, division), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Division", to: Routes.division_path(@conn, :new) %></span>
