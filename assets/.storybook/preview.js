@@ -8,4 +8,4 @@ addParameters({
 });
 
 import '../css/app.css'
-import '../js/storybook'
+import '../js/app'
