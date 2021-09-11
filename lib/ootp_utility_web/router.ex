@@ -20,6 +20,7 @@ defmodule OOTPUtilityWeb.Router do
     get "/", PageController, :index
 
     resources "/leagues", LeagueController
+    resources "/conferences", ConferenceController
   end
 
   # Other scopes may use custom stacks.

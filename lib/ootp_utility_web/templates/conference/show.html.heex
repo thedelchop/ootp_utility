@@ -1,0 +1,23 @@
+<h1>Show Conference</h1>
+
+<ul>
+
+  <li>
+    <strong>Abbr:</strong>
+    <%= @conference.abbr %>
+  </li>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @conference.name %>
+  </li>
+
+  <li>
+    <strong>Designated hitter:</strong>
+    <%= @conference.designated_hitter %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.conference_path(@conn, :edit, @conference) %></span> |
+<span><%= link "Back", to: Routes.conference_path(@conn, :index) %></span>

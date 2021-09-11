@@ -6,7 +6,7 @@ defmodule OOTPUtility.Leagues do
   import Ecto.Query, warn: false
   alias OOTPUtility.Repo
 
-  alias OOTPUtility.Leagues.League
+  alias OOTPUtility.Leagues.{League, Conference}
 
   @doc """
   Returns the list of leagues.
@@ -36,4 +36,33 @@ defmodule OOTPUtility.Leagues do
 
   """
   def get_league!(id), do: Repo.get!(League, id)
+
+  @doc """
+  Returns the list of conferences for the specified league.
+
+  ## Examples
+
+      iex> list_conferences()
+      [%Conference{}, ...]
+
+  """
+  def list_conferences do
+    Repo.all(Conference)
+  end
+
+  @doc """
+  Gets a single conference.
+
+  Raises `Ecto.NoResultsError` if the Conference does not exist.
+
+  ## Examples
+
+      iex> get_conference!(123)
+      %Conference{}
+
+      iex> get_conference!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_conference!(id), do: Repo.get!(Conference, id)
 end

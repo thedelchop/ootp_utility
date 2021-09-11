@@ -1,0 +1,30 @@
+<h1>Listing Conferences</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Abbr</th>
+      <th>Name</th>
+      <th>Designated hitter</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for conference <- @conferences do %>
+    <tr>
+      <td><%= conference.abbr %></td>
+      <td><%= conference.name %></td>
+      <td><%= conference.designated_hitter %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.conference_path(@conn, :show, conference) %></span>
+        <span><%= link "Edit", to: Routes.conference_path(@conn, :edit, conference) %></span>
+        <span><%= link "Delete", to: Routes.conference_path(@conn, :delete, conference), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Conference", to: Routes.conference_path(@conn, :new) %></span>
