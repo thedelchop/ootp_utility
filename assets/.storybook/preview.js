@@ -7,5 +7,5 @@ addParameters({
     },
 });
 
-import '../css/storybook.css'
+import '../css/app.css'
 import '../js/storybook'
