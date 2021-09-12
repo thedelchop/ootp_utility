@@ -5,6 +5,7 @@ module.exports = {
   purge: [
     "./js/**/*.js",
     "../lib/*_web/**/*.*ex",
+    "../lib/*_web/**/*.*heex",
     "./stories/**/*.html"
   ],
   theme: {
