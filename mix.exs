@@ -51,7 +51,8 @@ defmodule OOTPUtility.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:timex, ">= 3.7.6"},
       {:html_sanitize_ex, "~> 1.4"},
-      {:morphix, "~> 0.8.0"}
+      {:morphix, "~> 0.8.0"},
+      {:phx_tailwind_generators, "~> 0.1.6"}
     ]
   end
 
