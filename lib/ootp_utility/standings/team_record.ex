@@ -34,17 +34,25 @@ defmodule OOTPUtility.Standings.TeamRecord do
     belongs_to :team, Team
   end
 
+  def update_import_changeset(changeset) do
+    changeset
+    |> put_id()
+  end
+
   @spec sanitize_attributes(map()) :: map()
   def sanitize_attributes(%{} = attrs) do
     attrs
     |> Utilities.rename_keys([
-      {:team_id, :id},
       {:gb, :games_behind},
       {:l, :losses},
       {:w, :wins},
-      {:winning_percentage, :pct},
-      {:games, :g},
-      {:position, :pos}
+      {:pct, :winning_percentage},
+      {:g, :games},
+      {:pos, :position}
     ])
+  end
+
+  defp put_id(%Ecto.Changeset{changes: changes} = changeset) do
+    change(changeset, %{id: changes.team_id})
   end
 end
