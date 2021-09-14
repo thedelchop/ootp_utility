@@ -1,10 +1,12 @@
 defmodule OOTPUtility.Standings.TeamRecord do
   @type t() :: %__MODULE__{}
 
-  alias OOTPUtility.{Imports, Schema, Utilities}
+  alias OOTPUtility.{Imports, Repo, Schema, Utilities}
   alias OOTPUtility.Teams.Team
 
   use Schema
+
+  import Ecto.Query, only: [from: 2]
 
   use Imports,
     attributes: [
@@ -50,6 +52,10 @@ defmodule OOTPUtility.Standings.TeamRecord do
       {:g, :games},
       {:pos, :position}
     ])
+  end
+
+  def valid_for_import?(%{team_id: team_id} = _attrs) do
+    Repo.exists?(from t in Team, where: t.id == ^team_id)
   end
 
   defp put_id(%Ecto.Changeset{changes: changes} = changeset) do

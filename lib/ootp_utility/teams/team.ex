@@ -36,7 +36,10 @@ defmodule OOTPUtility.Teams.Team do
   end
 
   def sanitize_attributes(attrs),
-    do: Utilities.rename_keys(attrs, [{:sub_league_id, :conference_id}, {:team_id, :id}])
+    do: Utilities.rename_keys(attrs, [{:sub_league_id, :conference_id}, {:team_id, :id}, {:logo_file_name, :logo_filename}])
+
+  def should_import_from_csv?(%{allstar_team: "0"} = _attrs), do: true
+  def should_import_from_csv?(_attrs), do: false
 
   defp put_division_id(%Ecto.Changeset{changes: changes} = changeset) do
     with division_id <- Division.generate_foreign_key(changes) do

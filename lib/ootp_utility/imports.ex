@@ -7,20 +7,32 @@ defmodule OOTPUtility.Imports do
   """
   defmacro __using__([{:attributes, attributes}, {:from, filename}]) do
     quote do
+      @spec sanitize_csv_data(map()) :: map()
+      def sanitize_csv_data(attrs_row),
+        do: OOTPUtility.Imports.sanitize_csv_data(__MODULE__, attrs_row)
+
+      @spec should_import_from_csv?(map()) :: boolean
+      def should_import_from_csv?(attrs_row),
+        do: OOTPUtility.Imports.should_import_from_csv?(__MODULE__, attrs_row)
+
       @spec sanitize_attributes(map()) :: map()
       def sanitize_attributes(attrs),
         do: OOTPUtility.Imports.sanitize_attributes(__MODULE__, attrs)
 
-      @spec sanitize_attributes(map()) :: map()
-      def sanitize_csv_data(attrs_row),
-        do: OOTPUtility.Imports.sanitize_csv_data(__MODULE__, attrs_row)
+      @spec valid_for_import?(Ecto.Changeset.t(__MODULE__.t())) :: boolean
+      def valid_for_import?(changeset),
+        do: OOTPUtility.Imports.valid_for_import?(__MODULE__, changeset)
 
       @spec update_import_changeset(Ecto.Changeset.t(__MODULE__.t())) :: Ecto.Changeset.t()
       def update_import_changeset(changeset) do
         OOTPUtility.Imports.update_import_changeset(__MODULE__, changeset)
       end
 
-      defoverridable sanitize_attributes: 1, sanitize_csv_data: 1, update_import_changeset: 1
+      defoverridable sanitize_attributes: 1,
+                     sanitize_csv_data: 1,
+                     update_import_changeset: 1,
+                     should_import_from_csv?: 1,
+                     valid_for_import?: 1
 
       @spec build_attributes_for_import(map()) :: map()
       def build_attributes_for_import(attrs) do
@@ -47,16 +59,9 @@ defmodule OOTPUtility.Imports do
 
   def build_attributes_for_import(module, attrs, attributes_to_import) do
     module
-    |> import_changeset(do_sanitize_attributes(module, attrs), attributes_to_import)
+    |> import_changeset(module.sanitize_attributes(attrs), attributes_to_import)
     |> apply_changes()
     |> Map.take(attributes_to_import)
-  end
-
-  def do_sanitize_attributes(module, attrs) do
-    attrs
-    |> Morphix.atomorphiform()
-    |> elem(1)
-    |> module.sanitize_attributes()
   end
 
   def import_all_from(dir_path, skipped_modules \\ []) do
@@ -78,19 +83,26 @@ defmodule OOTPUtility.Imports do
     |> Enum.member?(__MODULE__)
   end
 
-  def sanitize_attributes(_module, attrs), do: attrs
   def sanitize_csv_data(_module, attrs_row), do: attrs_row
+  def should_import_from_csv?(_module, _attrs_row), do: true
+
+  def sanitize_attributes(_module, attrs), do: attrs
+  def valid_for_import?(_module, _changeset), do: true
 
   def import_from_path(module, path) do
     path
     |> prepare_csv_file_for_import()
-    |> create_attribute_maps_from_csv_rows(&module.sanitize_csv_data/1)
+    |> create_attribute_maps_from_csv_rows(
+      &module.sanitize_csv_data/1,
+      &module.should_import_from_csv?/1
+    )
     |> import_from_attributes(module)
   end
 
   defp import_from_attributes(attributes, module) do
     attributes
     |> Stream.map(&module.build_attributes_for_import(&1))
+    |> Stream.filter(&module.valid_for_import?(&1))
     |> write_attributes_to_database(module)
   end
 
@@ -110,12 +122,15 @@ defmodule OOTPUtility.Imports do
 
   defp create_attribute_maps_from_csv_rows(
          [headers | attributes],
-         sanitize_csv_data
+         sanitize_csv_data,
+         should_import_from_csv?
        ) do
     attributes
     |> Stream.map(&sanitize_csv_data.(&1))
     |> Stream.map(&Enum.zip(headers, &1))
     |> Stream.map(&Enum.into(&1, %{}))
+    |> Stream.map(&Morphix.atomorphiform!/1)
+    |> Stream.filter(&should_import_from_csv?.(&1))
   end
 
   defp write_attributes_to_database(attribute_maps, schema) do
