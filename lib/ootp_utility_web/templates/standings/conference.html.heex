@@ -1,0 +1,9 @@
+<div class="pb-5 border-b border-gray-200">
+  <h3 class="text-md leading-6 font-medium text-gray-900">
+    <%= @standings.name %>
+  </h3>
+</div>
+<%= for division_standing <- @standings.division_standings do %>
+  <%= render "division.html", conn: @conn, standings: division_standing %>
+<% end %>
+

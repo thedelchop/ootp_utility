@@ -1,0 +1,10 @@
+<div class="pb-5 border-b border-gray-200">
+  <h3 class="text-md leading-6 font-medium text-gray-900">
+    <%= @standings.name %>
+  </h3>
+</div>
+<%= for conference_standing <- @standings.conference_standings do %>
+  <%= render "conference.html", conn: @conn, standings: conference_standing %>
+<% end %>
+
+
