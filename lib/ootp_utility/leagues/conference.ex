@@ -3,6 +3,7 @@ defmodule OOTPUtility.Leagues.Conference do
 
   alias OOTPUtility.{Imports, Schema, Utilities}
   alias OOTPUtility.Leagues.{Division, League}
+  alias OOTPUtility.Teams.Team
 
   use Schema,
     composite_key: [:league_id, :id],
@@ -25,6 +26,8 @@ defmodule OOTPUtility.Leagues.Conference do
 
     belongs_to :league, League
     has_many :divisions, Division
+
+    has_many :teams, Team
   end
 
   def update_import_changeset(changeset), do: put_composite_key(changeset)

@@ -3,6 +3,7 @@ defmodule OOTPUtility.Leagues.League do
 
   alias OOTPUtility.{Imports, Schema, Utilities}
   alias OOTPUtility.Leagues.Conference
+  alias OOTPUtility.Teams.Team
   alias __MODULE__
 
   use Schema
@@ -34,6 +35,7 @@ defmodule OOTPUtility.Leagues.League do
     has_many :child_leagues, League, foreign_key: :parent_league_id
 
     has_many :conferences, Conference
+    has_many :teams, Team
   end
 
   def sanitize_attributes(

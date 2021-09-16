@@ -1,6 +1,6 @@
 defmodule OOTPUtility.Teams.Team do
   @type t() :: %__MODULE__{}
-  alias OOTPUtility.{Imports, Schema, Utilities}
+  alias OOTPUtility.{Imports, Schema, Utilities, Standings}
   alias OOTPUtility.Leagues.{Conference, Division, League}
 
   use Schema
@@ -27,6 +27,8 @@ defmodule OOTPUtility.Teams.Team do
     belongs_to :league, League
     belongs_to :conference, Conference
     belongs_to :division, Division
+
+    has_one :record, Standings.TeamRecord
   end
 
   def update_import_changeset(changeset) do
