@@ -47,13 +47,13 @@
                   <%= team_standing.losses %>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  <%= team_standing.winning_percentage %>
+                  <%= winning_percentage(team_standing) %>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   <%= team_standing.games_behind %>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  <%= team_standing.streak %>
+                  <%= streak(team_standing) %>
                 </td>
               </tr>
             <% end %>
