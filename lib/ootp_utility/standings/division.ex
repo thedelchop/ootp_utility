@@ -26,11 +26,14 @@ defmodule OOTPUtility.Standings.Division do
           teams: teams
         } = _division
       ) do
-     %Division{
+    team_standings =
+      teams
+      |> Enum.map(&Team.new/1)
+      |> Enum.sort(&(&2.position > &1.position))
+
+    %Division{
       name: name,
-      team_standings: Enum.map(teams, fn team ->
-        Team.new(team)
-      end)
+      team_standings: team_standings
     }
   end
 end
