@@ -2,6 +2,7 @@ defmodule OOTPUtility.Teams.Team do
   @type t() :: %__MODULE__{}
   alias OOTPUtility.{Imports, Schema, Utilities, Standings}
   alias OOTPUtility.Leagues.{Conference, Division, League}
+  alias OOTPUtility.Teams.Affiliation
 
   use Schema
 
@@ -29,6 +30,11 @@ defmodule OOTPUtility.Teams.Team do
     belongs_to :division, Division
 
     has_one :record, Standings.TeamRecord
+
+    has_many :affiliations, Affiliation
+
+    has_many :affiliates, through: [:affiliations, :affiliate]
+    has_one :organization, through: [:affiliations, :team], foreign_key: :affilate_id
   end
 
   def update_import_changeset(changeset) do
@@ -38,7 +44,12 @@ defmodule OOTPUtility.Teams.Team do
   end
 
   def sanitize_attributes(attrs),
-    do: Utilities.rename_keys(attrs, [{:sub_league_id, :conference_id}, {:team_id, :id}, {:logo_file_name, :logo_filename}])
+    do:
+      Utilities.rename_keys(attrs, [
+        {:sub_league_id, :conference_id},
+        {:team_id, :id},
+        {:logo_file_name, :logo_filename}
+      ])
 
   def should_import_from_csv?(%{allstar_team: "0"} = _attrs), do: true
   def should_import_from_csv?(_attrs), do: false
