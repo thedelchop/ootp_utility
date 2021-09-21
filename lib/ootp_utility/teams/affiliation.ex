@@ -7,18 +7,12 @@ defmodule OOTPUtility.Teams.Affiliation do
 
   use Schema
 
-  use Imports,
-    attributes: [
-      :id,
-      :team_id,
-      :affiliate_id
-    ],
-    from: "team_affiliations.csv"
-
   schema "team_affiliations" do
     belongs_to :team, Team
     belongs_to :affiliate, Team
   end
+
+  use Imports, from: "team_affiliations.csv"
 
   def sanitize_attributes(attrs),
     do: Utilities.rename_keys(attrs, [{:affiliated_team_id, :affiliate_id}])
@@ -33,6 +27,8 @@ defmodule OOTPUtility.Teams.Affiliation do
     |> put_id()
   end
 
-  defp put_id(%Ecto.Changeset{changes: %{team_id: team_id, affiliate_id: affiliate_id}} = changeset),
-    do: change(changeset, %{id: Enum.join([team_id, affiliate_id], "-")})
+  defp put_id(
+         %Ecto.Changeset{changes: %{team_id: team_id, affiliate_id: affiliate_id}} = changeset
+       ),
+       do: change(changeset, %{id: Enum.join([team_id, affiliate_id], "-")})
 end

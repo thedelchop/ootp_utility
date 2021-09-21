@@ -9,10 +9,6 @@ defmodule OOTPUtility.Leagues.Division do
     composite_key: [:league_id, :conference_id, :id],
     foreign_key: [:league_id, :conference_id, :division_id]
 
-  use Imports,
-    attributes: [:id, :name, :league_id, :conference_id],
-    from: "divisions.csv"
-
   schema "divisions" do
     field :name, :string
     belongs_to :league, League
@@ -20,6 +16,8 @@ defmodule OOTPUtility.Leagues.Division do
 
     has_many :teams, Team
   end
+
+  use Imports, from: "divisions.csv"
 
   def update_import_changeset(changeset) do
     changeset

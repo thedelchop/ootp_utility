@@ -7,32 +7,6 @@ defmodule OOTPUtility.Statistics.Fielding.Team do
 
   use Schema
 
-  use Imports,
-    attributes: [
-      :year,
-      :level_id,
-      :games,
-      :games_started,
-      :total_chances,
-      :assists,
-      :put_outs,
-      :errors,
-      :double_plays,
-      :triple_plays,
-      :past_balls,
-      :stolen_base_attempts,
-      :runners_thrown_out,
-      :outs_played,
-      :fielding_percentage,
-      :range_factor,
-      :runners_thrown_out_percentage,
-      :catcher_earned_run_average,
-      :team_id,
-      :league_id,
-      :id
-    ],
-    from: "team_fielding_stats_stats.csv"
-
   schema "team_fielding_stats" do
     field :assists, :integer
     field :catcher_earned_run_average, :float
@@ -56,6 +30,8 @@ defmodule OOTPUtility.Statistics.Fielding.Team do
     belongs_to :team, Teams.Team
     belongs_to :league, Leagues.League
   end
+
+  use Imports, from: "team_fielding_stats_stats.csv"
 
   def update_import_changeset(changeset) do
     changeset

@@ -9,16 +9,6 @@ defmodule OOTPUtility.Leagues.Conference do
     composite_key: [:league_id, :id],
     foreign_key: [:league_id, :conference_id]
 
-  use Imports,
-    attributes: [
-      :id,
-      :name,
-      :abbr,
-      :designated_hitter,
-      :league_id
-    ],
-    from: "sub_leagues.csv"
-
   schema "conferences" do
     field :abbr, :string
     field :designated_hitter, :boolean, default: false
@@ -29,6 +19,8 @@ defmodule OOTPUtility.Leagues.Conference do
 
     has_many :teams, Team
   end
+
+  use Imports, from: "sub_leagues.csv"
 
   def update_import_changeset(changeset), do: put_composite_key(changeset)
 

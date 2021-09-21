@@ -7,18 +7,6 @@ defmodule OOTPUtility.Statistics.Batting.Team do
 
   use Schema
 
-  use Imports, attributes: [
-    :id, :team_id, :year, :league_id, :level_id, :split_id,
-    :plate_appearances, :at_bats, :hits, :strikeouts, :total_bases,
-    :singles, :doubles, :triples, :home_runs, :stolen_bases, :caught_stealing,
-    :runs_batted_in, :runs, :walks, :intentional_walks, :hit_by_pitch,
-    :sacrifices, :sacrifice_flys, :catchers_interference, :double_plays,
-    :games, :games_started, :extra_base_hits, :batting_average,
-    :on_base_percentage, :slugging, :runs_created, :runs_created_per_27_outs,
-    :isolated_power, :weighted_on_base_average, :on_base_plus_slugging, :stolen_base_percentage
-    ],
-    from: "team_batting_stats.csv"
-
   schema "team_batting_stats" do
     field :runs_created, :float
     field :doubles, :integer
@@ -59,6 +47,8 @@ defmodule OOTPUtility.Statistics.Batting.Team do
     belongs_to :team, Teams.Team
     belongs_to :league, Leagues.League
   end
+
+  use Imports, from: "team_batting_stats.csv"
 
   def update_import_changeset(changeset) do
     changeset

@@ -6,19 +6,6 @@ defmodule OOTPUtility.Teams.Team do
 
   use Schema
 
-  use Imports,
-    attributes: [
-      :id,
-      :abbr,
-      :name,
-      :logo_filename,
-      :level,
-      :league_id,
-      :conference_id,
-      :division_id
-    ],
-    from: "teams.csv"
-
   schema "teams" do
     field :abbr, :string
     field :level, :string
@@ -36,6 +23,8 @@ defmodule OOTPUtility.Teams.Team do
     has_many :affiliates, through: [:affiliations, :affiliate]
     has_one :organization, through: [:affiliations, :team], foreign_key: :affilate_id
   end
+
+  use Imports, from: "teams.csv"
 
   def update_import_changeset(changeset) do
     changeset

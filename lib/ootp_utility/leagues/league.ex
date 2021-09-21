@@ -8,20 +8,6 @@ defmodule OOTPUtility.Leagues.League do
 
   use Schema
 
-  use Imports,
-    attributes: [
-      :id,
-      :name,
-      :abbr,
-      :logo_filename,
-      :start_date,
-      :season_year,
-      :league_level,
-      :current_date,
-      :parent_league_id
-    ],
-    from: "leagues.csv"
-
   schema "leagues" do
     field :abbr, :string
     field :current_date, :date
@@ -37,6 +23,8 @@ defmodule OOTPUtility.Leagues.League do
     has_many :conferences, Conference
     has_many :teams, Team
   end
+
+  use Imports, from: "leagues.csv"
 
   def sanitize_attributes(
         %{start_date: start_date_as_string, current_date: current_date_as_string} = attrs

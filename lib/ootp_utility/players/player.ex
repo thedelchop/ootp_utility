@@ -6,32 +6,6 @@ defmodule OOTPUtility.Players.Player do
 
   use Schema
 
-  use Imports,
-    attributes: [
-      :id,
-      :team_id,
-      :league_id,
-      :organization_id,
-      :first_name,
-      :last_name,
-      :nickname,
-      :weight,
-      :height,
-      :age,
-      :date_of_birth,
-      :experience,
-      :uniform_number,
-      :bats,
-      :throws,
-      :position,
-      :role,
-      :free_agent,
-      :retired,
-      :local_popularity,
-      :national_popularity
-    ],
-    from: "players.csv"
-
   schema "players" do
     field :age, :integer
     field :bats, :integer
@@ -55,6 +29,8 @@ defmodule OOTPUtility.Players.Player do
     belongs_to :organization, Team
     belongs_to :team, Team
   end
+
+  use Imports, from: "players.csv"
 
   def should_import_from_csv?(%{retired: "1"} = _attrs), do: false
   def should_import_from_csv?(_attrs), do: true

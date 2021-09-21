@@ -7,77 +7,6 @@ defmodule OOTPUtility.Statistics.Pitching.Team do
 
   use Schema
 
-  use Imports, attributes: [
-    :id,
-    :year,
-    :level_id,
-    :split_id,
-    :at_bats,
-    :outs_pitched,
-    :batters_faced,
-    :total_bases,
-    :hits_allowed,
-    :strikeouts,
-    :run_support,
-    :walks,
-    :runs_allowed,
-    :earned_runs,
-    :ground_balls,
-    :fly_balls,
-    :pitches_thrown,
-    :games,
-    :wins,
-    :losses,
-    :saves,
-    :singles,
-    :doubles,
-    :triples,
-    :home_runs_allowed,
-    :sacrifices,
-    :sacrifice_flys,
-    :balks,
-    :catchers_interference,
-    :intentional_walks,
-    :wild_pitches,
-    :hit_batsmen,
-    :games_finished,
-    :double_plays,
-    :quality_starts,
-    :save_opportunities,
-    :blown_saves,
-    :relief_appearances,
-    :complete_games,
-    :shutouts,
-    :stolen_bases,
-    :caught_stealing,
-    :holds,
-    :runners_allowed_per_9,
-    :batting_average,
-    :on_base_percentage,
-    :slugging,
-    :on_base_plus_slugging,
-    :hits_allowed_per_9,
-    :strikeouts_per_9,
-    :home_runs_allowed_per_9,
-    :walks_allowed_per_9,
-    :complete_game_percentage,
-    :fielding_independent_pitching,
-    :quality_start_percentage,
-    :winning_percentage,
-    :run_support_per_start,
-    :save_percentage,
-    :blown_save_percentage,
-    :games_finished_percentage,
-    :earned_run_average,
-    :pitches_per_game,
-    :walks_hits_per_inning_pitched,
-    :ground_ball_percentage,
-    :strikeouts_to_walks_ratio,
-    :batting_average_on_balls_in_play,
-    :team_id,
-    :league_id
-  ], from: "team_pitching_stats.csv"
-
   schema "team_pitching_stats" do
     field :ground_ball_percentage, :float
     field :games_finished, :integer
@@ -149,6 +78,8 @@ defmodule OOTPUtility.Statistics.Pitching.Team do
     belongs_to :league, Leagues.League
   end
 
+  use Imports, from: "team_pitching_stats.csv"
+
   def update_import_changeset(changeset) do
     changeset
     |> put_id()
@@ -161,10 +92,11 @@ defmodule OOTPUtility.Statistics.Pitching.Team do
   end
 
   defp calculate_outs_pitched(%{ip: innings_pitched, ipf: innings_pitched_fraction} = _) do
-    (String.to_integer(innings_pitched) * 3) + String.to_integer(innings_pitched_fraction)
+    String.to_integer(innings_pitched) * 3 + String.to_integer(innings_pitched_fraction)
   end
 
-  defp rename_keys(attrs), do:
+  defp rename_keys(attrs),
+    do:
       Utilities.rename_keys(attrs, [
         {:ab, :at_bats},
         {:ip, :innings_pitched},

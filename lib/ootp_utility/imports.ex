@@ -5,7 +5,8 @@ defmodule OOTPUtility.Imports do
   This module is the set of common operations that can be taken on an import, like reading the raw CSV
   data and prepping it to be imported.
   """
-  defmacro __using__([{:attributes, attributes}, {:from, filename}]) do
+
+  defmacro __using__([{:from, filename}]) do
     quote do
       @spec sanitize_csv_data(map()) :: map()
       def sanitize_csv_data(attrs_row),
@@ -36,7 +37,7 @@ defmodule OOTPUtility.Imports do
 
       @spec build_attributes_for_import(map()) :: map()
       def build_attributes_for_import(attrs) do
-        OOTPUtility.Imports.build_attributes_for_import(__MODULE__, attrs, unquote(attributes))
+        OOTPUtility.Imports.build_attributes_for_import(__MODULE__, attrs, __MODULE__.__schema__(:fields))
       end
 
       def import_from_path(path) do

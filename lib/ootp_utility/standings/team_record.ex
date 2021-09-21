@@ -8,21 +8,6 @@ defmodule OOTPUtility.Standings.TeamRecord do
 
   import Ecto.Query, only: [from: 2]
 
-  use Imports,
-    attributes: [
-      :id,
-      :games,
-      :wins,
-      :losses,
-      :position,
-      :winning_percentage,
-      :games_behind,
-      :streak,
-      :magic_number,
-      :team_id
-    ],
-    from: "team_record.csv"
-
   schema "team_records" do
     field :games, :integer
     field :games_behind, :float
@@ -35,6 +20,8 @@ defmodule OOTPUtility.Standings.TeamRecord do
 
     belongs_to :team, Team
   end
+
+  use Imports, from: "team_record.csv"
 
   def update_import_changeset(changeset) do
     changeset
