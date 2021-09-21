@@ -1,0 +1,64 @@
+<h1>Listing Players</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Team</th>
+      <th>League</th>
+      <th>Organization</th>
+      <th>First name</th>
+      <th>Last name</th>
+      <th>Nickname</th>
+      <th>Weight</th>
+      <th>Height</th>
+      <th>Age</th>
+      <th>Date of birth</th>
+      <th>Experience</th>
+      <th>Uniform number</th>
+      <th>Bats</th>
+      <th>Throws</th>
+      <th>Position</th>
+      <th>Role</th>
+      <th>Free agent</th>
+      <th>Retired</th>
+      <th>Local popularity</th>
+      <th>National popularity</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for player <- @players do %>
+    <tr>
+      <td><%= player.team_id %></td>
+      <td><%= player.league_id %></td>
+      <td><%= player.organization_id %></td>
+      <td><%= player.first_name %></td>
+      <td><%= player.last_name %></td>
+      <td><%= player.nickname %></td>
+      <td><%= player.weight %></td>
+      <td><%= player.height %></td>
+      <td><%= player.age %></td>
+      <td><%= player.date_of_birth %></td>
+      <td><%= player.experience %></td>
+      <td><%= player.uniform_number %></td>
+      <td><%= player.bats %></td>
+      <td><%= player.throws %></td>
+      <td><%= player.position %></td>
+      <td><%= player.role %></td>
+      <td><%= player.free_agent %></td>
+      <td><%= player.retired %></td>
+      <td><%= player.local_popularity %></td>
+      <td><%= player.national_popularity %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.player_path(@conn, :show, player) %></span>
+        <span><%= link "Edit", to: Routes.player_path(@conn, :edit, player) %></span>
+        <span><%= link "Delete", to: Routes.player_path(@conn, :delete, player), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Player", to: Routes.player_path(@conn, :new) %></span>
