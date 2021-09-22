@@ -1,13 +1,11 @@
 defmodule OOTPUtility.Statistics.Pitching.Team do
-  @type t() :: %__MODULE__{}
-
-  alias OOTPUtility.{Imports, Leagues, Repo, Schema, Teams, Utilities}
+  alias OOTPUtility.{Imports, Leagues, Repo, Teams, Utilities}
 
   import Ecto.Query, only: [from: 2]
 
-  use Schema
+  use Imports.Schema, from: "team_pitching_stats.csv"
 
-  schema "team_pitching_stats" do
+  import_schema "team_pitching_stats" do
     field :ground_ball_percentage, :float
     field :games_finished, :integer
     field :run_support, :integer
@@ -77,8 +75,6 @@ defmodule OOTPUtility.Statistics.Pitching.Team do
     belongs_to :team, Teams.Team
     belongs_to :league, Leagues.League
   end
-
-  use Imports, from: "team_pitching_stats.csv"
 
   def update_import_changeset(changeset) do
     changeset

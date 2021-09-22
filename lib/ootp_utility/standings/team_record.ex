@@ -1,14 +1,10 @@
 defmodule OOTPUtility.Standings.TeamRecord do
-  @type t() :: %__MODULE__{}
-
-  alias OOTPUtility.{Imports, Repo, Schema, Utilities}
+  alias OOTPUtility.{Imports, Repo, Utilities}
   alias OOTPUtility.Teams.Team
 
-  use Schema
+  use Imports.Schema, from: "team_record.csv"
 
-  import Ecto.Query, only: [from: 2]
-
-  schema "team_records" do
+  import_schema "team_records" do
     field :games, :integer
     field :games_behind, :float
     field :losses, :integer
@@ -21,7 +17,7 @@ defmodule OOTPUtility.Standings.TeamRecord do
     belongs_to :team, Team
   end
 
-  use Imports, from: "team_record.csv"
+  import Ecto.Query, only: [from: 2]
 
   def update_import_changeset(changeset) do
     changeset

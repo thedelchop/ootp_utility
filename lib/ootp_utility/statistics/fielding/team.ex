@@ -1,13 +1,11 @@
 defmodule OOTPUtility.Statistics.Fielding.Team do
-  @type t() :: %__MODULE__{}
-
-  alias OOTPUtility.{Imports, Leagues, Repo, Schema, Teams, Utilities}
+  alias OOTPUtility.{Imports, Leagues, Repo, Teams, Utilities}
 
   import Ecto.Query, only: [from: 2]
 
-  use Schema
+  use Imports.Schema, from: "team_fielding_stats_stats.csv"
 
-  schema "team_fielding_stats" do
+  import_schema "team_fielding_stats" do
     field :assists, :integer
     field :catcher_earned_run_average, :float
     field :double_plays, :integer
@@ -30,8 +28,6 @@ defmodule OOTPUtility.Statistics.Fielding.Team do
     belongs_to :team, Teams.Team
     belongs_to :league, Leagues.League
   end
-
-  use Imports, from: "team_fielding_stats_stats.csv"
 
   def update_import_changeset(changeset) do
     changeset

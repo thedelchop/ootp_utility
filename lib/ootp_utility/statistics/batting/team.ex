@@ -1,13 +1,11 @@
 defmodule OOTPUtility.Statistics.Batting.Team do
-  @type t() :: %__MODULE__{}
-
-  alias OOTPUtility.{Imports, Leagues, Repo, Schema, Teams, Utilities}
+  alias OOTPUtility.{Imports, Leagues, Repo, Teams, Utilities}
 
   import Ecto.Query, only: [from: 2]
 
-  use Schema
+  use Imports.Schema, from: "team_batting_stats.csv"
 
-  schema "team_batting_stats" do
+  import_schema "team_batting_stats" do
     field :runs_created, :float
     field :doubles, :integer
     field :runs_created_per_27_outs, :float
@@ -48,48 +46,47 @@ defmodule OOTPUtility.Statistics.Batting.Team do
     belongs_to :league, Leagues.League
   end
 
-  use Imports, from: "team_batting_stats.csv"
-
   def update_import_changeset(changeset) do
     changeset
     |> put_id()
   end
 
   def sanitize_attributes(attrs),
-    do: Utilities.rename_keys(attrs, [
-      {:pa, :plate_appearances},
-      {:ab, :at_bats},
-      {:h, :hits},
-      {:k, :strikeouts},
-      {:tb, :total_bases},
-      {:s, :singles},
-      {:d, :doubles},
-      {:t, :triples},
-      {:hr, :home_runs},
-      {:sb, :stolen_bases},
-      {:cs, :caught_stealing},
-      {:rbi, :runs_batted_in},
-      {:r, :runs},
-      {:bb, :walks},
-      {:ibb, :intentional_walks},
-      {:hp, :hit_by_pitch},
-      {:sh, :sacrifices},
-      {:sf, :sacrifice_flys},
-      {:ci, :catchers_interference},
-      {:gdp, :double_plays},
-      {:g, :games},
-      {:gs, :games_started},
-      {:ebh, :extra_base_hits},
-      {:avg, :batting_average},
-      {:obp, :on_base_percentage},
-      {:slg, :slugging},
-      {:rc, :runs_created},
-      {:rc27, :runs_created_per_27_outs},
-      {:iso, :isolated_power},
-      {:woba, :weighted_on_base_average},
-      {:ops, :on_base_plus_slugging},
-      {:sbp, :stolen_base_percentage}
-  ])
+    do:
+      Utilities.rename_keys(attrs, [
+        {:pa, :plate_appearances},
+        {:ab, :at_bats},
+        {:h, :hits},
+        {:k, :strikeouts},
+        {:tb, :total_bases},
+        {:s, :singles},
+        {:d, :doubles},
+        {:t, :triples},
+        {:hr, :home_runs},
+        {:sb, :stolen_bases},
+        {:cs, :caught_stealing},
+        {:rbi, :runs_batted_in},
+        {:r, :runs},
+        {:bb, :walks},
+        {:ibb, :intentional_walks},
+        {:hp, :hit_by_pitch},
+        {:sh, :sacrifices},
+        {:sf, :sacrifice_flys},
+        {:ci, :catchers_interference},
+        {:gdp, :double_plays},
+        {:g, :games},
+        {:gs, :games_started},
+        {:ebh, :extra_base_hits},
+        {:avg, :batting_average},
+        {:obp, :on_base_percentage},
+        {:slg, :slugging},
+        {:rc, :runs_created},
+        {:rc27, :runs_created_per_27_outs},
+        {:iso, :isolated_power},
+        {:woba, :weighted_on_base_average},
+        {:ops, :on_base_plus_slugging},
+        {:sbp, :stolen_base_percentage}
+      ])
 
   def valid_for_import?(%{league_id: "0"} = _attrs), do: false
 

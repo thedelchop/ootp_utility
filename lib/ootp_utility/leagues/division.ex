@@ -1,23 +1,20 @@
 defmodule OOTPUtility.Leagues.Division do
-  @type t() :: %__MODULE__{}
-
-  alias OOTPUtility.{Imports, Schema, Utilities}
+  alias OOTPUtility.{Imports, Utilities}
   alias OOTPUtility.Leagues.{Conference, League}
   alias OOTPUtility.Teams.Team
 
-  use Schema,
+  use Imports.Schema,
+    from: "divisions.csv",
     composite_key: [:league_id, :conference_id, :id],
     foreign_key: [:league_id, :conference_id, :division_id]
 
-  schema "divisions" do
+  import_schema "divisions" do
     field :name, :string
     belongs_to :league, League
     belongs_to :conference, Conference
 
     has_many :teams, Team
   end
-
-  use Imports, from: "divisions.csv"
 
   def update_import_changeset(changeset) do
     changeset

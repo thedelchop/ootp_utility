@@ -1,12 +1,11 @@
 defmodule OOTPUtility.Players.Player do
-  @type t() :: %__MODULE__{}
-  alias OOTPUtility.{Imports, Schema, Utilities}
+  alias OOTPUtility.{Imports, Utilities}
   alias OOTPUtility.Teams.Team
   alias OOTPUtility.Leagues.League
 
-  use Schema
+  use Imports.Schema, from: "players.csv"
 
-  schema "players" do
+  import_schema "players" do
     field :age, :integer
     field :bats, :integer
     field :date_of_birth, :string
@@ -29,8 +28,6 @@ defmodule OOTPUtility.Players.Player do
     belongs_to :organization, Team
     belongs_to :team, Team
   end
-
-  use Imports, from: "players.csv"
 
   def should_import_from_csv?(%{retired: "1"} = _attrs), do: false
   def should_import_from_csv?(_attrs), do: true

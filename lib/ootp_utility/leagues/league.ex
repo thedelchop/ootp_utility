@@ -1,14 +1,12 @@
 defmodule OOTPUtility.Leagues.League do
-  @type t() :: %__MODULE__{}
-
-  alias OOTPUtility.{Imports, Schema, Utilities}
+  alias OOTPUtility.{Imports, Utilities}
   alias OOTPUtility.Leagues.Conference
   alias OOTPUtility.Teams.Team
   alias __MODULE__
 
-  use Schema
+  use Imports.Schema, from: "leagues.csv"
 
-  schema "leagues" do
+  import_schema "leagues" do
     field :abbr, :string
     field :current_date, :date
     field :league_level, :string
@@ -23,8 +21,6 @@ defmodule OOTPUtility.Leagues.League do
     has_many :conferences, Conference
     has_many :teams, Team
   end
-
-  use Imports, from: "leagues.csv"
 
   def sanitize_attributes(
         %{start_date: start_date_as_string, current_date: current_date_as_string} = attrs
