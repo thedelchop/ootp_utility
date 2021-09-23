@@ -37,7 +37,11 @@ defmodule OOTPUtility.Imports do
 
       @spec build_attributes_for_import(map()) :: map()
       def build_attributes_for_import(attrs) do
-        OOTPUtility.Imports.build_attributes_for_import(__MODULE__, attrs, __MODULE__.__schema__(:fields))
+        OOTPUtility.Imports.build_attributes_for_import(
+          __MODULE__,
+          attrs,
+          __MODULE__.__schema__(:fields)
+        )
       end
 
       def import_from_path(path) do
@@ -136,7 +140,7 @@ defmodule OOTPUtility.Imports do
 
   defp write_attributes_to_database(attribute_maps, schema) do
     attribute_maps
-    |> Stream.chunk_every(10_000)
+    |> Stream.chunk_every(1_000)
     |> Enum.map(&OOTPUtility.Repo.insert_all(schema, &1))
     |> Enum.reduce(0, fn {count, _}, total_count -> total_count + count end)
   end
