@@ -10,17 +10,21 @@ defmodule OOTPUtility.Schema do
       @primary_key {:id, :string, autogenerate: false}
       @foreign_key_type :string
 
-      if not is_nil(unquote(composite_key)) and not is_nil(unquote(foreign_key)) do
+      if not is_nil(unquote(composite_key)) do
         def generate_composite_key(struct),
           do: OOTPUtility.Schema.generate_composite_key(struct, unquote(composite_key))
 
-        def generate_foreign_key(struct),
-          do: OOTPUtility.Schema.generate_composite_key(struct, unquote(foreign_key))
-
-        defoverridable generate_composite_key: 1, generate_foreign_key: 1
+        defoverridable generate_composite_key: 1
 
         def put_composite_key(%Ecto.Changeset{changes: changes} = changeset),
           do: change(changeset, %{id: __MODULE__.generate_composite_key(changes)})
+      end
+
+      if not is_nil(unquote(foreign_key)) do
+        def generate_foreign_key(struct),
+          do: OOTPUtility.Schema.generate_composite_key(struct, unquote(foreign_key))
+
+        defoverridable generate_foreign_key: 1
       end
     end
   end
