@@ -32,11 +32,22 @@ defmodule OOTPUtility.Players.Player do
   def should_import_from_csv?(%{retired: "1"} = _attrs), do: false
   def should_import_from_csv?(_attrs), do: true
 
-  def sanitize_attributes(attrs),
-    do:
-      Utilities.rename_keys(attrs, [
-        {:player_id, :id},
-        {:local_pop, :local_popularity},
-        {:national_pop, :national_popularity}
-      ])
+  def sanitize_attributes(%{team_id: "0"} = attrs) do
+    sanitize_attributes(%{attrs | team_id: nil})
+  end
+
+  def sanitize_attributes(%{organization_id: "0"} = attrs) do
+    sanitize_attributes(%{attrs | organization_id: nil})
+  end
+
+  def sanitize_attributes(%{league_id: league_id} = attrs) do
+    attrs = if String.to_integer(league_id) < 1, do: %{attrs | league_id: nil}, else: attrs
+
+    attrs
+    |> Utilities.rename_keys([
+      {:player_id, :id},
+      {:local_pop, :local_popularity},
+      {:national_pop, :national_popularity}
+    ])
+  end
 end

@@ -21,9 +21,9 @@ defmodule OOTPUtility.Repo.Migrations.CreatePlayers do
       add :local_popularity, :integer
       add :national_popularity, :integer
 
-      add :team_id, references(:teams, on_delete: :delete_all)
-      add :league_id, references(:leagues, on_delete: :delete_all)
-      add :organization_id, references(:teams, on_delete: :delete_all)
+      add :team_id, references(:teams, on_delete: :delete_all), null: true
+      add :league_id, references(:leagues, on_delete: :delete_all), null: true
+      add :organization_id, references(:teams, on_delete: :delete_all), null: true
     end
 
     create index(:players, [:league_id])
