@@ -20,10 +20,6 @@ defmodule OOTPUtilityWeb.DivisionControllerTest do
   end
 
   defp create_division(_) do
-    division = league_fixture() 
-      |> conference_fixture() 
-      |> division_fixture()
-
-    %{division: division}
+    %{division: division_fixture()}
   end
 end

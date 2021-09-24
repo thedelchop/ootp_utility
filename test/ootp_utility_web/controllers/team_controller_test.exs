@@ -1,7 +1,7 @@
 defmodule OOTPUtilityWeb.TeamControllerTest do
   use OOTPUtilityWeb.ConnCase
 
-  import OOTPUtility.{LeaguesFixtures, TeamsFixtures}
+  import OOTPUtility.TeamsFixtures
 
   describe "index" do
     test "lists all teams", %{conn: conn} do
@@ -20,12 +20,6 @@ defmodule OOTPUtilityWeb.TeamControllerTest do
   end
 
   defp create_team(_) do
-    team =
-      league_fixture()
-      |> conference_fixture()
-      |> division_fixture()
-      |> team_fixture()
-
-    %{team: team}
+    %{team: team_fixture()}
   end
 end

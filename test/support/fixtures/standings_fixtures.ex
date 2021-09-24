@@ -4,6 +4,8 @@ defmodule OOTPUtility.StandingsFixtures do
   entities via the `OOTPUtility.Standings` context.
   """
   import Ecto.Changeset
+  import OOTPUtility.Fixtures.Utilities
+
   alias OOTPUtility.Repo
   alias OOTPUtility.Standings.TeamRecord
 
@@ -14,7 +16,7 @@ defmodule OOTPUtility.StandingsFixtures do
     {:ok, team_record} =
       attrs
       |> Enum.into(%{
-        id: "1",
+        id: generate_id(),
         games: 42,
         games_behind: 120.5,
         losses: 42,
@@ -32,8 +34,30 @@ defmodule OOTPUtility.StandingsFixtures do
 
   defp create_team_record(attrs) do
     %TeamRecord{}
-    |> cast(attrs, [:id, :games, :wins, :losses, :position, :winning_percentage, :games_behind, :streak, :magic_number, :team_id])
-    |> validate_required([:id, :games, :wins, :losses, :position, :winning_percentage, :games_behind, :streak, :magic_number, :team_id])
+    |> cast(attrs, [
+      :id,
+      :games,
+      :wins,
+      :losses,
+      :position,
+      :winning_percentage,
+      :games_behind,
+      :streak,
+      :magic_number,
+      :team_id
+    ])
+    |> validate_required([
+      :id,
+      :games,
+      :wins,
+      :losses,
+      :position,
+      :winning_percentage,
+      :games_behind,
+      :streak,
+      :magic_number,
+      :team_id
+    ])
     |> foreign_key_constraint(:team_id)
     |> Repo.insert()
   end

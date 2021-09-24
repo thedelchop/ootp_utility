@@ -4,13 +4,11 @@ defmodule OOTPUtility.LeaguesTest do
   alias OOTPUtility.Leagues
   import OOTPUtility.LeaguesFixtures
 
-  setup do
-    league = league_fixture()
-
-    {:ok, league: league, conference: conference_fixture(league)}
-  end
-
   describe "leagues" do
+    setup do
+      {:ok, league: league_fixture()}
+    end
+
     test "list_leagues/0 returns all leagues", %{league: league} do
       assert Leagues.list_leagues() == [league]
     end
@@ -21,6 +19,10 @@ defmodule OOTPUtility.LeaguesTest do
   end
 
   describe "conferences" do
+    setup do
+      {:ok, conference: conference_fixture()}
+    end
+
     test "list_conferences/0 returns all conferences", %{conference: conference} do
       assert Leagues.list_conferences() == [conference]
     end
@@ -31,13 +33,15 @@ defmodule OOTPUtility.LeaguesTest do
   end
 
   describe "divisions" do
-    test "list_divisions/0 returns all divisions", %{conference: conference} do
-      division = division_fixture(conference)
+    setup do
+      {:ok, division: division_fixture()}
+    end
+
+    test "list_divisions/0 returns all divisions", %{division: division} do
       assert Leagues.list_divisions() == [division]
     end
 
-    test "get_division!/1 returns the division with given id", %{conference: conference} do
-      division = division_fixture(conference)
+    test "get_division!/1 returns the division with given id", %{division: division} do
       assert Leagues.get_division!(division.id) == division
     end
   end

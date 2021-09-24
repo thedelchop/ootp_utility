@@ -20,10 +20,6 @@ defmodule OOTPUtilityWeb.ConferenceControllerTest do
   end
 
   defp create_conference(_) do
-    conference =
-      league_fixture()
-      |> conference_fixture()
-
-    %{conference: conference}
+    %{conference: conference_fixture()}
   end
 end

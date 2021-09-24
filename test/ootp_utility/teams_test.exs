@@ -1,16 +1,12 @@
 defmodule OOTPUtility.TeamsTest do
   use OOTPUtility.DataCase
 
-  import OOTPUtility.{LeaguesFixtures, TeamsFixtures}
+  import OOTPUtility.{TeamsFixtures}
 
   alias OOTPUtility.Teams
 
   describe "teams" do
-    setup do
-      team = league_fixture() |> conference_fixture() |> division_fixture() |> team_fixture()
-
-      {:ok, team: team}
-    end
+    setup do: {:ok, team: team_fixture()}
 
     test "list_teams/0 returns all teams", %{team: team} do
       assert Teams.list_teams() == [team]

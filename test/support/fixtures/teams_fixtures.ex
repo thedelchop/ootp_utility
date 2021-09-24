@@ -5,18 +5,36 @@ defmodule OOTPUtility.TeamsFixtures do
   """
 
   import Ecto.Changeset
+  import OOTPUtility.LeaguesFixtures
+  import OOTPUtility.Fixtures.Utilities
+  
 
-  alias OOTPUtility.Repo
+  alias OOTPUtility.{Leagues, Repo}
   alias OOTPUtility.Teams.Team
 
   @doc """
   Generate a team.
   """
-  def team_fixture(attrs \\ %{}, division) do
+
+  def team_fixture(attrs \\ %{}, parent \\ nil)
+
+  def team_fixture(attrs, nil) do
+    team_fixture(attrs, league_fixture())
+  end
+
+  def team_fixture(attrs, %Leagues.League{} = league) do
+    team_fixture(attrs, conference_fixture(%{}, league))
+  end
+
+  def team_fixture(attrs, %Leagues.Conference{} = conference) do
+    team_fixture(attrs, division_fixture(%{}, conference))
+  end
+
+  def team_fixture(attrs, %Leagues.Division{} = division) do
     {:ok, team} =
       attrs
       |> Enum.into(%{
-        id: "1",
+        id: generate_id(),
         abbr: "MYT",
         level: "MLB",
         logo_filename: "my_team.png",

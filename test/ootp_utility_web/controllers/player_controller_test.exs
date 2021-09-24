@@ -1,7 +1,7 @@
 defmodule OOTPUtilityWeb.PlayerControllerTest do
   use OOTPUtilityWeb.ConnCase
 
-  import OOTPUtility.{LeaguesFixtures, PlayersFixtures, TeamsFixtures}
+  import OOTPUtility.{PlayersFixtures}
 
   describe "index" do
     setup [:create_player]
@@ -22,13 +22,6 @@ defmodule OOTPUtilityWeb.PlayerControllerTest do
   end
 
   defp create_player(_) do
-    player =
-      league_fixture()
-      |> conference_fixture()
-      |> division_fixture()
-      |> team_fixture()
-      |> player_fixture()
-
-    %{player: player}
+    %{player: player_fixture()}
   end
 end

@@ -4,6 +4,7 @@ defmodule OOTPUtility.LeaguesFixtures do
   entities via the `OOTPUtility.Leagues` context.
   """
   import Ecto.Changeset
+  import OOTPUtility.Fixtures.Utilities
 
   alias OOTPUtility.Repo
   alias OOTPUtility.Leagues.{Conference, Division, League}
@@ -15,7 +16,7 @@ defmodule OOTPUtility.LeaguesFixtures do
     {:ok, league} =
       attrs
       |> Enum.into(%{
-        id: "1",
+        id: generate_id(),
         abbr: "some abbr",
         current_date: ~D[2021-09-05],
         league_level: "some league_level",
@@ -32,11 +33,17 @@ defmodule OOTPUtility.LeaguesFixtures do
   @doc """
   Generate a conference.
   """
-  def conference_fixture(attrs \\ %{}, league) do
+  def conference_fixture(attrs \\ %{}, league \\ nil)
+
+  def conference_fixture(attrs, nil) do
+    conference_fixture(attrs, league_fixture())
+  end
+
+  def conference_fixture(attrs, league) do
     {:ok, conference} =
       attrs
       |> Enum.into(%{
-        id: "1",
+        id: "#{league.id}-#{generate_id()}",
         abbr: "some abbr",
         designated_hitter: true,
         name: "My Conference",
@@ -50,11 +57,21 @@ defmodule OOTPUtility.LeaguesFixtures do
   @doc """
   Generate a division.
   """
-  def division_fixture(attrs \\ %{}, conference) do
+  def division_fixture(attrs \\ %{}, league_or_conference \\ nil)
+
+  def division_fixture(attrs, nil) do
+    division_fixture(attrs, conference_fixture())
+  end
+
+  def division_fixture(attrs, %League{} = league) do
+    division_fixture(attrs, conference_fixture(league))
+  end
+
+  def division_fixture(attrs, conference) do
     {:ok, division} =
       attrs
       |> Enum.into(%{
-        id: "1",
+        id: "#{conference.id}-#{generate_id()}",
         name: "My Division",
         conference_id: conference.id,
         league_id: conference.league_id

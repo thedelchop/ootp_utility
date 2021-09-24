@@ -4,6 +4,8 @@ defmodule OOTPUtility.PlayersFixtures do
   entities via the `OOTPUtility.Players` context.
   """
   import Ecto.Changeset
+  import OOTPUtility.TeamsFixtures
+  import OOTPUtility.Fixtures.Utilities
 
   alias OOTPUtility.Repo
   alias OOTPUtility.Players.Player
@@ -12,11 +14,16 @@ defmodule OOTPUtility.PlayersFixtures do
   @doc """
   Generate a player.
   """
-  def player_fixture(attrs \\ %{}, %Team{league_id: league_id, id: id}) do
+
+  def player_fixture(attrs \\ %{}, team \\ nil)
+
+  def player_fixture(attrs, nil), do: player_fixture(attrs, team_fixture())
+
+  def player_fixture(attrs, %Team{league_id: league_id, id: id}) do
     {:ok, player} =
       attrs
       |> Enum.into(%{
-        id: "1",
+        id: generate_id(),
         age: 42,
         bats: 42,
         date_of_birth: "some date_of_birth",
