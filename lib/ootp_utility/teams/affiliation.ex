@@ -18,8 +18,8 @@ defmodule OOTPUtility.Teams.Affiliation do
     do: Utilities.rename_keys(attrs, [{:affiliated_team_id, :affiliate_id}])
 
   def valid_for_import?(%{team_id: team_id, affiliate_id: affiliate_id} = _attrs) do
-    Repo.exists?(from t in Team, where: t.id == ^team_id)
-    Repo.exists?(from t in Team, where: t.id == ^affiliate_id)
+    Repo.exists?(from t in Team, where: t.id == ^team_id) and
+      Repo.exists?(from t in Team, where: t.id == ^affiliate_id)
   end
 
   def update_import_changeset(changeset) do
