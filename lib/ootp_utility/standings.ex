@@ -51,5 +51,5 @@ defmodule OOTPUtility.Standings do
       ** (Ecto.NoResultsError)
 
   """
-  def get_team_record!(id), do: Repo.get!(TeamRecord, id)
+  def get_team_record!(id), do: Repo.get!(Standings.TeamRecord, id)
 end
