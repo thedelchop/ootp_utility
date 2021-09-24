@@ -8,6 +8,7 @@ defmodule OOTPUtility.Games.Game do
   alias OOTPUtility.Leagues.League
   alias OOTPUtility.Players.Player
   alias OOTPUtility.Teams.Team
+  alias OOTPUtility.Games.Score
 
   import_schema "games" do
     field :attendance, :integer
@@ -34,6 +35,8 @@ defmodule OOTPUtility.Games.Game do
     belongs_to :away_team_starter, Player
     belongs_to :home_team_starter, Player
     belongs_to :save_pitcher, Player
+
+    has_many :scores, Score
   end
 
   def sanitize_attributes(%{save_pitcher: "0"} = attrs) do
@@ -59,7 +62,6 @@ defmodule OOTPUtility.Games.Game do
   def sanitize_attributes(%{date: original_date, time: original_time} = attrs) do
     with {:ok, date} <- Timex.parse(original_date, "{YYYY}-{M}-{D}"),
          {:ok, time} <- original_time |> String.pad_leading(4, "0") |> Timex.parse("{h24}{m}") do
-
       attrs
       |> Utilities.rename_keys([
         {:game_id, :id},
