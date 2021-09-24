@@ -25,6 +25,7 @@ defmodule OOTPUtilityWeb.Router do
 
     resources "/teams", TeamController
     resources "/players", PlayerController
+    resources "/games", GameController
   end
 
   # Other scopes may use custom stacks.
