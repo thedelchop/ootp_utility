@@ -3,75 +3,78 @@ defmodule OOTPUtility.Statistics.Pitching.Team.Schema do
 
   defmacro __using__([{:from, filename}, {:to, source}]) do
     quote do
-      use Imports.Schema, from: unquote(filename)
+      use Imports.Schema,
+        from: unquote(filename),
+        composite_key: [:team_id, :year],
+        foreign_key: [:id, :year]
 
       import Ecto.Query, only: [from: 2]
 
       import_schema unquote(source) do
-        field :ground_ball_percentage, :float
-        field :games_finished, :integer
-        field :run_support, :integer
-        field :strikeouts_per_9, :float
-        field :double_plays, :integer
-        field :catchers_interference, :integer
-        field :ground_balls, :integer
-        field :complete_games, :integer
+        field :at_bats, :integer
         field :balks, :integer
-        field :games_finished_percentage, :float
-        field :pitches_thrown, :integer
-        field :holds, :integer
-        field :complete_game_percentage, :float
-        field :level_id, :string
-        field :hit_batsmen, :integer
-        field :pitches_per_game, :float
-        field :walks, :integer
-        field :total_bases, :integer
-        field :earned_run_average, :float
-        field :relief_appearances, :integer
-        field :runners_allowed_per_9, :float
-        field :caught_stealing, :integer
-        field :intentional_walks, :integer
-        field :save_percentage, :float
-        field :losses, :integer
-        field :strikeouts_to_walks_ratio, :float
-        field :fly_balls, :integer
-        field :winning_percentage, :float
+        field :batters_faced, :integer
         field :batting_average, :float
+        field :batting_average_on_balls_in_play, :float
+        field :blown_save_percentage, :float
         field :blown_saves, :integer
-        field :home_runs_allowed, :integer
-        field :quality_start_percentage, :float
+        field :catchers_interference, :integer
+        field :caught_stealing, :integer
+        field :complete_game_percentage, :float
+        field :complete_games, :integer
+        field :double_plays, :integer
+        field :doubles, :integer
+        field :earned_run_average, :float
+        field :earned_runs, :integer
+        field :fielding_independent_pitching, :float
+        field :fly_balls, :integer
         field :games, :integer
-        field :wild_pitches, :integer
+        field :games_finished, :integer
+        field :games_finished_percentage, :float
+        field :ground_ball_percentage, :float
+        field :ground_balls, :integer
+        field :hit_batsmen, :integer
         field :hits_allowed, :integer
+        field :hits_allowed_per_9, :float
+        field :holds, :integer
+        field :home_runs_allowed, :integer
         field :home_runs_allowed_per_9, :float
+        field :intentional_walks, :integer
+        field :level_id, :string
+        field :losses, :integer
         field :on_base_percentage, :float
-        field :singles, :integer
-        field :run_support_per_start, :float
+        field :on_base_plus_slugging, :float
         field :outs_pitched, :integer
+        field :pitches_per_game, :float
+        field :pitches_thrown, :integer
+        field :quality_start_percentage, :float
+        field :quality_starts, :integer
+        field :relief_appearances, :integer
+        field :run_support, :integer
+        field :run_support_per_start, :float
+        field :runners_allowed_per_9, :float
+        field :runs_allowed, :integer
         field :sacrifice_flys, :integer
+        field :sacrifices, :integer
+        field :save_opportunities, :integer
+        field :save_percentage, :float
         field :saves, :integer
+        field :shutouts, :integer
+        field :singles, :integer
+        field :slugging, :float
         field :stolen_bases, :integer
         field :strikeouts, :integer
-        field :slugging, :float
-        field :batting_average_on_balls_in_play, :float
-        field :at_bats, :integer
-        field :quality_starts, :integer
-        field :runs_allowed, :integer
-        field :batters_faced, :integer
-        field :hits_allowed_per_9, :float
-        field :earned_runs, :integer
-        field :sacrifices, :integer
-        field :shutouts, :integer
-        field :on_base_plus_slugging, :float
-        field :doubles, :integer
-        field :walks_hits_per_inning_pitched, :float
-        field :year, :integer
-        field :wins, :integer
-        field :save_opportunities, :integer
+        field :strikeouts_per_9, :float
+        field :strikeouts_to_walks_ratio, :float
+        field :total_bases, :integer
         field :triples, :integer
-        field :blown_save_percentage, :float
+        field :walks, :integer
         field :walks_allowed_per_9, :float
-        field :fielding_independent_pitching, :float
+        field :walks_hits_per_inning_pitched, :float
+        field :wild_pitches, :integer
+        field :winning_percentage, :float
+        field :wins, :integer
+        field :year, :integer
 
         belongs_to :team, Teams.Team
         belongs_to :league, Leagues.League
@@ -79,7 +82,7 @@ defmodule OOTPUtility.Statistics.Pitching.Team.Schema do
 
       def update_import_changeset(changeset) do
         changeset
-        |> put_id()
+        |> put_composite_key()
       end
 
       def sanitize_attributes(attrs) do
@@ -94,75 +97,72 @@ defmodule OOTPUtility.Statistics.Pitching.Team.Schema do
         Repo.exists?(from t in Teams.Team, where: t.id == ^team_id)
       end
 
-      defp put_id(%Ecto.Changeset{changes: %{team_id: team_id}} = changeset),
-        do: change(changeset, %{id: team_id})
-
       defp rename_keys(attrs),
         do:
           Utilities.rename_keys(attrs, [
             {:ab, :at_bats},
-            {:ip, :innings_pitched},
-            {:bf, :batters_faced},
-            {:tb, :total_bases},
-            {:ha, :hits_allowed},
-            {:k, :strikeouts},
-            {:rs, :run_support},
+            {:avg, :batting_average},
+            {:babip, :batting_average_on_balls_in_play},
             {:bb, :walks},
-            {:r, :runs_allowed},
+            {:bb9, :walks_allowed_per_9},
+            {:bf, :batters_faced},
+            {:bk, :balks},
+            {:bs, :blown_saves},
+            {:bsvp, :blown_save_percentage},
+            {:cg, :complete_games},
+            {:cgp, :complete_game_percentage},
+            {:ci, :catchers_interference},
+            {:cs, :caught_stealing},
+            {:da, :doubles},
+            {:dp, :double_plays},
             {:er, :earned_runs},
-            {:gb, :ground_balls},
+            {:era, :earned_run_average},
             {:fb, :fly_balls},
-            {:pi, :pitches_thrown},
+            {:fip, :fielding_independent_pitching},
             {:g, :games},
+            {:gb, :ground_balls},
+            {:gbfbp, :ground_ball_percentage},
+            {:gf, :games_finished},
+            {:gfp, :games_finished_percentage},
             {:gs, :games_started},
-            {:w, :wins},
+            {:h9, :hits_allowed_per_9},
+            {:ha, :hits_allowed},
+            {:hld, :holds},
+            {:hp, :hit_batsmen},
+            {:hr9, :home_runs_allowed_per_9},
+            {:hra, :home_runs_allowed},
+            {:ip, :innings_pitched},
+            {:iw, :intentional_walks},
+            {:k, :strikeouts},
+            {:k9, :strikeouts_per_9},
+            {:kbb, :strikeouts_to_walks_ratio},
             {:l, :losses},
+            {:obp, :on_base_percentage},
+            {:ops, :on_base_plus_slugging},
+            {:pi, :pitches_thrown},
+            {:pig, :pitches_per_game},
+            {:qs, :quality_starts},
+            {:qsp, :quality_start_percentage},
+            {:r, :runs_allowed},
+            {:r9, :runners_allowed_per_9},
+            {:ra, :relief_appearances},
+            {:rs, :run_support},
+            {:rsg, :run_support_per_start},
             {:s, :saves},
             {:sa, :singles},
-            {:da, :doubles},
-            {:sh, :sacrifices},
-            {:sf, :sacrifice_flys},
-            {:ta, :triples},
-            {:hra, :home_runs_allowed},
-            {:bk, :balks},
-            {:ci, :catchers_interference},
-            {:iw, :intentional_walks},
-            {:wp, :wild_pitches},
-            {:hp, :hit_batsmen},
-            {:gf, :games_finished},
-            {:dp, :double_plays},
-            {:qs, :quality_starts},
-            {:svo, :save_opportunities},
-            {:bs, :blown_saves},
-            {:ra, :relief_appearances},
-            {:cg, :complete_games},
-            {:sho, :shutouts},
             {:sb, :stolen_bases},
-            {:cs, :caught_stealing},
-            {:hld, :holds},
-            {:r9, :runners_allowed_per_9},
-            {:avg, :batting_average},
-            {:obp, :on_base_percentage},
+            {:sf, :sacrifice_flys},
+            {:sh, :sacrifices},
+            {:sho, :shutouts},
             {:slg, :slugging},
-            {:ops, :on_base_plus_slugging},
-            {:h9, :hits_allowed_per_9},
-            {:k9, :strikeouts_per_9},
-            {:hr9, :home_runs_allowed_per_9},
-            {:bb9, :walks_allowed_per_9},
-            {:cgp, :complete_game_percentage},
-            {:fip, :fielding_independent_pitching},
-            {:qsp, :quality_start_percentage},
-            {:winp, :winning_percentage},
-            {:rsg, :run_support_per_start},
+            {:svo, :save_opportunities},
             {:svp, :save_percentage},
-            {:bsvp, :blown_save_percentage},
-            {:gfp, :games_finished_percentage},
-            {:era, :earned_run_average},
-            {:pig, :pitches_per_game},
+            {:ta, :triples},
+            {:tb, :total_bases},
+            {:w, :wins},
             {:whip, :walks_hits_per_inning_pitched},
-            {:gbfbp, :ground_ball_percentage},
-            {:kbb, :strikeouts_to_walks_ratio},
-            {:babip, :batting_average_on_balls_in_play}
+            {:winp, :winning_percentage},
+            {:wp, :wild_pitches}
           ])
 
       defp calculate_outs_pitched(%{ip: innings_pitched, ipf: innings_pitched_fraction} = _) do
