@@ -1,6 +1,4 @@
 defmodule OOTPUtility.Standings.Team do
-  @type t() :: %__MODULE__{}
-
   use Ecto.Schema
   use OOTPUtility.Collectable
 

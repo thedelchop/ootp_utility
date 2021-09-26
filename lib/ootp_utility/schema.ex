@@ -5,6 +5,8 @@ defmodule OOTPUtility.Schema do
     foreign_key = Keyword.get(params, :foreign_key, nil)
 
     quote do
+      @type t() :: %__MODULE__{}
+
       use Ecto.Schema
       import Ecto.Changeset
       @primary_key {:id, :string, autogenerate: false}

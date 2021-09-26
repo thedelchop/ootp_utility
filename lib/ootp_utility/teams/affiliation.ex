@@ -1,5 +1,4 @@
 defmodule OOTPUtility.Teams.Affiliation do
-  @type t() :: %__MODULE__{}
   alias OOTPUtility.{Imports, Repo, Schema, Utilities}
   alias OOTPUtility.Teams.Team
 

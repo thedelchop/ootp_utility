@@ -7,8 +7,6 @@ defmodule OOTPUtility.Imports.Schema do
     foreign_key = Keyword.get(opts, :foreign_key, nil)
 
     quote do
-      @type t() :: %__MODULE__{}
-
       use Schema, composite_key: unquote(composite_key), foreign_key: unquote(foreign_key)
 
       use Imports, from: unquote(filename)
@@ -19,7 +17,7 @@ defmodule OOTPUtility.Imports.Schema do
 
   defmacro import_schema(source, do: block) do
     quote do
-      schema unquote(source), do: unquote(block)
+      schema(unquote(source), do: unquote(block))
     end
   end
 end

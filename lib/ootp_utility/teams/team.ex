@@ -1,5 +1,4 @@
 defmodule OOTPUtility.Teams.Team do
-  @type t() :: %__MODULE__{}
   alias OOTPUtility.{Imports, Schema, Utilities, Standings}
   alias OOTPUtility.Leagues.{Conference, Division, League}
   alias OOTPUtility.Teams.Affiliation
