@@ -77,15 +77,25 @@ defmodule OOTPUtility.Imports do
     end
   end
 
-  defp implementors() do
-    for({module, _} <- :code.all_loaded(), do: module)
-    |> Enum.filter(&implemented_by?/1)
-  end
-
-  defp implemented_by?(module) do
-    module.module_info[:attributes]
-    |> Keyword.get(:behaviour, [])
-    |> Enum.member?(__MODULE__)
+  def implementors() do
+    [
+      OOTPUtility.Leagues.League,
+      OOTPUtility.Leagues.Conference,
+      OOTPUtility.Leagues.Division,
+      OOTPUtility.Teams.Team,
+      OOTPUtility.Teams.Affiliation,
+      OOTPUtility.Standings.TeamRecord,
+      OOTPUtility.Players.Player,
+      OOTPUtility.Games.Game,
+      OOTPUtility.Games.Score,
+      OOTPUtility.Statistics.Fielding.Team,
+      OOTPUtility.Statistics.Pitching.Team,
+      OOTPUtility.Statistics.Pitching.Team.Starters,
+      OOTPUtility.Statistics.Pitching.Team.Bullpen,
+      OOTPUtility.Statistics.Batting.Player,
+      OOTPUtility.Statistics.Batting.Game,
+      OOTPUtility.Statistics.Batting.Team
+    ]
   end
 
   def sanitize_csv_data(_module, attrs_row), do: attrs_row
