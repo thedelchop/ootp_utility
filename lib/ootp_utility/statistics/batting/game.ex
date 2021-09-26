@@ -9,7 +9,9 @@ defmodule OOTPUtility.Statistics.Batting.Game do
     from: "players_game_batting.csv",
     composite_key: [:game_id, :player_id]
 
-  import_player_batting_schema "players_game_batting_stats" do
+  player_batting_schema "players_game_batting_stats" do
+    field :position, :integer
+
     belongs_to :game, Game
   end
 
