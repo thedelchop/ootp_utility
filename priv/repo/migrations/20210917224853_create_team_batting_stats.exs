@@ -3,7 +3,7 @@ defmodule OOTPUtility.Repo.Migrations.CreateTeamBattingStats do
 
   def change do
     create table(:team_batting_stats) do
-      add :level_id, :string
+      add :level_id, :integer
       add :split_id, :integer
       add :year, :integer
 
