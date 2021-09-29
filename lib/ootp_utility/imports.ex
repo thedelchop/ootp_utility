@@ -150,7 +150,7 @@ defmodule OOTPUtility.Imports do
 
   defp write_attributes_to_database(attribute_maps, schema) do
     attribute_maps
-    |> Stream.chunk_every(1_000)
+    |> Stream.chunk_every(500)
     |> Enum.map(&OOTPUtility.Repo.insert_all(schema, &1))
     |> Enum.reduce(0, fn {count, _}, total_count -> total_count + count end)
   end
