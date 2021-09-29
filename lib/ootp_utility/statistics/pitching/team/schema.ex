@@ -1,5 +1,6 @@
 defmodule OOTPUtility.Statistics.Pitching.Team.Schema do
   alias OOTPUtility.{Repo, Teams, Utilities}
+
   defmacro __using__([{:from, filename}, {:to, source}]) do
     quote do
       import OOTPUtility.Statistics.Pitching.Team.Schema
@@ -17,7 +18,10 @@ defmodule OOTPUtility.Statistics.Pitching.Team.Schema do
 
       def sanitize_pitching_attributes(attrs),
         do:
-          OOTPUtility.Statistics.Pitching.Team.Schema.sanitize_pitching_attributes(__MODULE__, attrs)
+          OOTPUtility.Statistics.Pitching.Team.Schema.sanitize_pitching_attributes(
+            __MODULE__,
+            attrs
+          )
 
       def valid_for_import?(%{league_id: "0"} = _attrs), do: false
 
