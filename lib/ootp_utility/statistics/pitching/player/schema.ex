@@ -3,6 +3,7 @@ defmodule OOTPUtility.Statistics.Pitching.Player.Schema do
 
   import OOTPUtility.Statistics.Pitching.Calculations
   import Ecto.Changeset, only: [change: 2]
+  alias OOTPUtility.Players
 
   defmacro __using__(opts) do
     filename = Keyword.fetch!(opts, :from)
@@ -47,6 +48,23 @@ defmodule OOTPUtility.Statistics.Pitching.Player.Schema do
       end
 
       defoverridable sanitize_player_pitching_attributes: 1
+    end
+  end
+
+  defmacro player_pitching_schema(source, do: block) do
+    quote do
+      pitching_schema unquote(source) do
+        field :inherited_runners, :integer
+        field :inherited_runners_scored, :integer
+        field :inherited_runners_scored_percentage, :float
+        field :leverage_index, :float
+        field :win_probabilty_added, :float
+        field :wins_above_replacement, :float
+
+        belongs_to :player, Players.Player
+
+        unquote(block)
+      end
     end
   end
 
