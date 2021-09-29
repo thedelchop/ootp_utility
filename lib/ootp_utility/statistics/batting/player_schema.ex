@@ -2,6 +2,7 @@ defmodule OOTPUtility.Statistics.Batting.PlayerSchema do
   alias OOTPUtility.Players
 
   import Ecto.Changeset, only: [change: 2]
+  import OOTPUtility.Statistics.Batting.Calculations
 
   defmacro __using__(opts) do
     filename = Keyword.fetch!(opts, :from)
@@ -84,112 +85,5 @@ defmodule OOTPUtility.Statistics.Batting.PlayerSchema do
     value = if is_float(value), do: Float.round(value, 4), else: value
 
     change(changeset, %{stat_name => value})
-  end
-
-  defp calculate(%{stolen_bases: 0, caught_stealing: 0} = _attrs, :stolen_base_percentage), do: 0.0
-
-  defp calculate(%{stolen_bases: sb, caught_stealing: cs} = _attrs, :stolen_base_percentage) do
-    sb / (sb + cs)
-  end
-
-  defp calculate(%{at_bats: 0}, :isolated_power), do: 0.0
-
-  defp calculate(%{at_bats: ab} = attrs, :isolated_power) do
-    tb = calculate(attrs, :total_bases)
-    singles = calculate(attrs, :singles)
-
-    (tb - singles) / ab
-  end
-
-  defp calculate(attrs, :on_base_plus_slugging) do
-    calculate(attrs, :on_base_percentage) + calculate(attrs, :slugging)
-  end
-
-  defp calculate(%{at_bats: 0}, :slugging), do: 0.0
-
-  defp calculate(
-         %{
-           at_bats: ab
-         } = attrs,
-         :slugging
-       ) do
-    total_bases = calculate(attrs, :total_bases)
-    total_bases / ab
-  end
-
-  defp calculate(
-         %{
-           at_bats: ab,
-           hits: h,
-           walks: bb,
-           hit_by_pitch: hbp,
-           sacrifice_flys: sf
-         },
-         :on_base_percentage
-       ) do
-    on_base_attempts = ab + bb + hbp + sf
-
-    if on_base_attempts == 0, do: 0.0, else: (h + bb + hbp) / on_base_attempts
-  end
-
-  defp calculate(%{at_bats: 0}, :batting_average), do: 0.0
-
-  defp calculate(%{hits: h, at_bats: ab}, :batting_average) do
-    h / ab
-  end
-
-  defp calculate(
-         %{
-           singles: s,
-           doubles: d,
-           triples: t,
-           home_runs: hr
-         },
-         :total_bases
-       ) do
-    s + 2 * d + 3 * t + 4 * hr
-  end
-
-  defp calculate(
-         %{
-           doubles: d,
-           triples: t,
-           home_runs: hr
-         },
-         :extra_base_hits
-       ) do
-    d + t + hr
-  end
-
-  defp calculate(
-         %{
-           hits: h
-         } = attrs,
-         :singles
-       ) do
-    h - calculate(attrs, :extra_base_hits)
-  end
-
-  defp calculate(
-         %{
-           at_bats: ab,
-           hits: h,
-           walks: bb,
-           hit_by_pitch: hbp,
-           caught_stealing: cs,
-           double_plays: gdp,
-           intentional_walks: ibb,
-           sacrifices: sh,
-           sacrifice_flys: sf,
-           stolen_bases: sb
-         } = attrs,
-         :runs_created
-       ) do
-    tb = calculate(attrs, :total_bases)
-    times_on_base = h + bb + hbp - cs - gdp
-    bases_advanced = tb + 0.26 * (bb + hbp + -ibb) + 0.52 * (sh + sf + sb)
-    opportunities = ab + bb + hbp + sh + sf
-
-    if opportunities == 0, do: 0.0, else: times_on_base * bases_advanced / opportunities
   end
 end
