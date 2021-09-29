@@ -139,7 +139,6 @@ defmodule OOTPUtility.Statistics.Pitching.Schema do
         {:hld, :holds},
         {:hp, :hit_by_pitch},
         {:hra, :home_runs},
-        {:ip, :innings_pitched},
         {:iw, :intentional_walks},
         {:k, :strikeouts},
         {:l, :losses},
