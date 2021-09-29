@@ -45,7 +45,7 @@ defmodule OOTPUtility.Statistics.Pitching.Schema do
       import_schema unquote(source) do
         field :at_bats, :integer
         field :balks, :integer
-        field :batters_faced, :integer
+        field :plate_appearances, :integer
         field :batting_average, :float
         field :batting_average_on_balls_in_play, :float
         field :blown_save_percentage, :float
@@ -61,15 +61,16 @@ defmodule OOTPUtility.Statistics.Pitching.Schema do
         field :fly_balls, :integer
         field :games, :integer
         field :games_finished, :integer
+        field :games_started, :integer
         field :games_finished_percentage, :float
         field :ground_ball_percentage, :float
         field :ground_balls, :integer
-        field :hit_batsmen, :integer
-        field :hits_allowed, :integer
-        field :hits_allowed_per_9, :float
+        field :hit_by_pitch, :integer
+        field :hits, :integer
+        field :hits_per_9, :float
         field :holds, :integer
-        field :home_runs_allowed, :integer
-        field :home_runs_allowed_per_9, :float
+        field :home_runs, :integer
+        field :home_runs_per_9, :float
         field :intentional_walks, :integer
         field :level_id, :string
         field :losses, :integer
@@ -83,8 +84,8 @@ defmodule OOTPUtility.Statistics.Pitching.Schema do
         field :relief_appearances, :integer
         field :run_support, :integer
         field :run_support_per_start, :float
-        field :runners_allowed_per_9, :float
-        field :runs_allowed, :integer
+        field :runs_per_9, :float
+        field :runs, :integer
         field :sacrifice_flys, :integer
         field :sacrifices, :integer
         field :save_opportunities, :integer
@@ -100,7 +101,7 @@ defmodule OOTPUtility.Statistics.Pitching.Schema do
         field :total_bases, :integer
         field :triples, :integer
         field :walks, :integer
-        field :walks_allowed_per_9, :float
+        field :walks_per_9, :float
         field :walks_hits_per_inning_pitched, :float
         field :wild_pitches, :integer
         field :winning_percentage, :float
@@ -120,7 +121,7 @@ defmodule OOTPUtility.Statistics.Pitching.Schema do
       Utilities.rename_keys(attrs, [
         {:ab, :at_bats},
         {:bb, :walks},
-        {:bf, :batters_faced},
+        {:bf, :plate_appearances},
         {:bk, :balks},
         {:bs, :blown_saves},
         {:cg, :complete_games},
@@ -134,17 +135,17 @@ defmodule OOTPUtility.Statistics.Pitching.Schema do
         {:gb, :ground_balls},
         {:gf, :games_finished},
         {:gs, :games_started},
-        {:ha, :hits_allowed},
+        {:ha, :hits},
         {:hld, :holds},
-        {:hp, :hit_batsmen},
-        {:hra, :home_runs_allowed},
+        {:hp, :hit_by_pitch},
+        {:hra, :home_runs},
         {:ip, :innings_pitched},
         {:iw, :intentional_walks},
         {:k, :strikeouts},
         {:l, :losses},
         {:pi, :pitches_thrown},
         {:qs, :quality_starts},
-        {:r, :runs_allowed},
+        {:r, :runs},
         {:ra, :relief_appearances},
         {:rs, :run_support},
         {:s, :saves},
@@ -167,5 +168,4 @@ defmodule OOTPUtility.Statistics.Pitching.Schema do
   end
 
   def sanitize_pitching_attributes(_module, attrs), do: attrs
-
 end
