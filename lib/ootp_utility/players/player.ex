@@ -6,23 +6,29 @@ defmodule OOTPUtility.Players.Player do
   use Imports.Schema, from: "players.csv"
 
   import_schema "players" do
-    field :age, :integer
+    field :first_name, :string
+    field :last_name, :string
+    field :nickname, :string
+
+    field :height, :integer
+    field :weight, :integer
+
     field :bats, :integer
+    field :throws, :integer
+
+    field :age, :integer
     field :date_of_birth, :string
     field :experience, :integer
-    field :first_name, :string
-    field :free_agent, :boolean, default: false
-    field :height, :integer
-    field :last_name, :string
+    field :retired, :boolean, default: false
+
     field :local_popularity, :integer
     field :national_popularity, :integer
-    field :nickname, :string
+
     field :position, :integer
-    field :retired, :boolean, default: false
-    field :role, :integer
-    field :throws, :integer
     field :uniform_number, :integer
-    field :weight, :integer
+    field :role, :integer
+
+    field :free_agent, :boolean, default: false
 
     belongs_to :league, League
     belongs_to :organization, Team
