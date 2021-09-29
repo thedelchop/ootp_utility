@@ -31,7 +31,6 @@ defmodule OOTPUtility.Statistics.Pitching.Team.Schema do
     attrs
     |> Map.put(:outs_pitched, calculate_outs_pitched(attrs))
     |> rename_keys()
-    attrs
   end
 
   defp rename_keys(attrs),
