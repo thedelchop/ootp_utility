@@ -3,7 +3,7 @@ defmodule OOTPUtility.Statistics.Fielding.Player do
   alias OOTPUtility.Statistics.Fielding
 
   use Fielding.Schema,
-    composite_key: [:player_id, :team_id, :year, :position]
+    composite_key: [:year, :player_id, :team_id, :position]
 
   fielding_schema "players_career_fielding_stats" do
     field :zone_rating, :float
