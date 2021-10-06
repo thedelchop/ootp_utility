@@ -63,14 +63,14 @@ defmodule OOTPUtility.Utilities do
     if is_nil(position), do: :error, else: {:ok, position}
   end
 
-  @spec rename_keys(map(), list(tuple())) :: map()
-  def rename_keys(map, renames) do
-    renames
-    |> Enum.reduce(%{}, fn
-      {old_name, new_name}, m ->
-        Map.put(m, new_name, Map.get(map, old_name))
+  @spec rename_keys(list(), list(tuple())) :: map()
+  def rename_keys(keys, []), do: keys
+
+  def rename_keys(keys, renames) do
+    keys
+    |> Enum.map(fn
+      key ->
+        Keyword.get(renames, key, key)
     end)
-    |> Map.merge(map)
-    |> Map.drop(Keyword.keys(renames))
   end
 end

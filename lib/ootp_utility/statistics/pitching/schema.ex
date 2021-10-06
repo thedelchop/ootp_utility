@@ -1,48 +1,22 @@
 defmodule OOTPUtility.Statistics.Pitching.Schema do
-  alias OOTPUtility.{Imports, Leagues, Teams, Utilities}
+  alias OOTPUtility.{Leagues, Teams}
 
   defmacro __using__(opts) do
-    filename = Keyword.fetch!(opts, :from)
     composite_key = Keyword.get(opts, :composite_key, nil)
     foreign_key = Keyword.get(opts, :foreign_key, nil)
 
     quote do
       import OOTPUtility.Statistics.Pitching.Schema
 
-      use Imports.Schema,
-        from: unquote(filename),
+      use OOTPUtility.Schema,
         composite_key: unquote(composite_key),
         foreign_key: unquote(foreign_key)
-
-      def update_pitching_import_changeset(changeset),
-        do:
-          OOTPUtility.Statistics.Pitching.Schema.update_pitching_import_changeset(
-            __MODULE__,
-            changeset
-          )
-
-      def update_import_changeset(changeset) do
-        changeset
-        |> update_pitching_import_changeset()
-        |> put_composite_key()
-      end
-
-      def sanitize_pitching_attributes(attrs),
-        do: OOTPUtility.Statistics.Pitching.Schema.sanitize_pitching_attributes(__MODULE__, attrs)
-
-      def sanitize_attributes(attrs) do
-        attrs
-        |> OOTPUtility.Statistics.Pitching.Schema.rename_keys()
-        |> sanitize_pitching_attributes()
-      end
-
-      defoverridable sanitize_pitching_attributes: 1, update_pitching_import_changeset: 1
     end
   end
 
   defmacro pitching_schema(source, do: block) do
     quote do
-      import_schema unquote(source) do
+      schema unquote(source) do
         field :at_bats, :integer
         field :balks, :integer
         field :plate_appearances, :integer
@@ -115,56 +89,4 @@ defmodule OOTPUtility.Statistics.Pitching.Schema do
       end
     end
   end
-
-  def rename_keys(attrs),
-    do:
-      Utilities.rename_keys(attrs, [
-        {:ab, :at_bats},
-        {:bb, :walks},
-        {:bf, :plate_appearances},
-        {:bk, :balks},
-        {:bs, :blown_saves},
-        {:cg, :complete_games},
-        {:ci, :catchers_interference},
-        {:cs, :caught_stealing},
-        {:da, :doubles},
-        {:dp, :double_plays},
-        {:er, :earned_runs},
-        {:fb, :fly_balls},
-        {:g, :games},
-        {:gb, :ground_balls},
-        {:gf, :games_finished},
-        {:gs, :games_started},
-        {:ha, :hits},
-        {:hld, :holds},
-        {:hp, :hit_by_pitch},
-        {:hra, :home_runs},
-        {:iw, :intentional_walks},
-        {:k, :strikeouts},
-        {:l, :losses},
-        {:pi, :pitches_thrown},
-        {:qs, :quality_starts},
-        {:r, :runs},
-        {:ra, :relief_appearances},
-        {:rs, :run_support},
-        {:s, :saves},
-        {:sa, :singles},
-        {:sb, :stolen_bases},
-        {:sf, :sacrifice_flys},
-        {:sh, :sacrifices},
-        {:sho, :shutouts},
-        {:svo, :save_opportunities},
-        {:ta, :triples},
-        {:tb, :total_bases},
-        {:w, :wins},
-        {:wp, :wild_pitches}
-      ])
-
-  def update_pitching_import_changeset(_module, changeset), do: changeset
-
-  def update_import_changeset(module, changeset) do
-    OOTPUtility.Imports.update_import_changeset(module, changeset)
-  end
-
-  def sanitize_pitching_attributes(_module, attrs), do: attrs
 end

@@ -1,4 +1,4 @@
-defmodule OOTPUtility.Statistics.Batting.Calculations do
+defmodule OOTPUtility.Imports.Statistics.Batting.Calculations do
   def calculate(
         %{
           hits: h,

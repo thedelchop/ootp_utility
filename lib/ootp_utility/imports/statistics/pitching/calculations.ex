@@ -1,5 +1,5 @@
-defmodule OOTPUtility.Statistics.Pitching.Calculations do
-  alias OOTPUtility.Statistics.Batting
+defmodule OOTPUtility.Imports.Statistics.Pitching.Calculations do
+  alias OOTPUtility.Imports.Statistics.Batting
 
   def calculate(attrs, :batting_average),
     do: Batting.Calculations.calculate(attrs, :batting_average)
