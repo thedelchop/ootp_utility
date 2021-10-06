@@ -29,7 +29,11 @@ defmodule OOTPUtility.Imports do
 
   def import_all_from_path(path) do
     modules_to_import()
-    |> Enum.each(& &1.import_from_path(path))
+    |> Enum.each(fn
+      module ->
+        IO.puts("Importing all data from #{module}")
+        module.import_from_path(path)
+    end)
   end
 
   defp modules_to_import do
