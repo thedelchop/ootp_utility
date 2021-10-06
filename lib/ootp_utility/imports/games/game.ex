@@ -58,13 +58,17 @@ defmodule OOTPUtility.Imports.Games.Game do
     away_team_id = Map.get(changes, :away_team_id)
     home_team_starter_id = Map.get(changes, :home_team_starter_id)
     away_team_starter_id = Map.get(changes, :away_team_starter_id)
+    winning_pitcher_id = Map.get(changes, :winning_pitcher_id)
+    losing_pitcher_id = Map.get(changes, :losing_pitcher_id)
     save_pitcher_id = Map.get(changes, :save_pitcher_id)
 
     teams_and_starters_exist =
       Repo.exists?(from t in Teams.Team, where: t.id == ^home_team_id) &&
         Repo.exists?(from t in Teams.Team, where: t.id == ^away_team_id) &&
         Repo.exists?(from p in Players.Player, where: p.id == ^home_team_starter_id) &&
-        Repo.exists?(from p in Players.Player, where: p.id == ^away_team_starter_id)
+        Repo.exists?(from p in Players.Player, where: p.id == ^away_team_starter_id) &&
+        Repo.exists?(from p in Players.Player, where: p.id == ^losing_pitcher_id) &&
+        Repo.exists?(from p in Players.Player, where: p.id == ^winning_pitcher_id)
 
     if Map.has_key?(changes, :save_pitcher_id) do
       teams_and_starters_exist &&

@@ -1,5 +1,5 @@
 defmodule OOTPUtility.Imports.Statistics.Fielding.Player do
-  alias OOTPUtility.{Repo, Teams}
+  alias OOTPUtility.{Repo, Teams, Players}
   alias OOTPUtility.Statistics.Fielding
 
   import Ecto.Query, only: [from: 2]
@@ -30,11 +30,13 @@ defmodule OOTPUtility.Imports.Statistics.Fielding.Player do
   def validate_changeset(
         %Ecto.Changeset{
           changes: %{
-            team_id: team_id
+            team_id: team_id,
+            player_id: player_id
           }
         } = _changeset
       ) do
-    Repo.exists?(from t in Teams.Team, where: t.id == ^team_id)
+    Repo.exists?(from t in Teams.Team, where: t.id == ^team_id) &&
+      Repo.exists?(from p in Players.Player, where: p.id == ^player_id)
   end
 
   def add_missing_statistics(%Ecto.Changeset{} = changeset) do
