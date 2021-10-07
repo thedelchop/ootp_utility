@@ -34,7 +34,10 @@
                       <img class="h-6 lg:h-10 w-6 lg:w-10 rounded-full" src={Routes.static_path(@conn, "/images/logos/#{team_standing.logo_filename}")} alt="">
                     </div>
                     <div class="ml-4">
-                      <div class="text-sm text-left font-medium text-gray-900">
+                      <div class="lg:hidden text-sm text-left font-medium text-gray-900">
+                        <%= team_standing.abbr %>
+                      </div>
+                      <div class="hidden lg:block text-sm text-left font-medium text-gray-900">
                         <%= team_standing.name %>
                       </div>
                     </div>
