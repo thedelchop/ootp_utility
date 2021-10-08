@@ -1,13 +1,1 @@
-<h1>Show Division</h1>
-
-<ul>
-
-  <li>
-    <strong>Name:</strong>
-    <%= @division.name %>
-  </li>
-
-</ul>
-
-<span><%= link "Edit", to: Routes.division_path(@conn, :edit, @division) %></span> |
-<span><%= link "Back", to: Routes.division_path(@conn, :index) %></span>
+<%= render(OOTPUtilityWeb.StandingsView, "division.html", conn: @conn, standings: @standings) %>

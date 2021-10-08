@@ -6,7 +6,7 @@
           <thead class="bg-gray-50">
             <tr>
               <th scope="col" class="w-1/3 px-3 py-1 lg:px-6 lg:py-3 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">
-                <%= @standings.name %>
+                <%= link(@standings.name, to: Routes.division_path(@conn, :show, @standings.division_id))%>
               </th>
               <th scope="col" class="px-3 py-1 lg:px-6 lg:py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                 w

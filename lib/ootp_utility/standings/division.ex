@@ -9,6 +9,8 @@ defmodule OOTPUtility.Standings.Division do
 
   embedded_schema do
     field :name, :string
+    field :division_id, :string
+
     embeds_many :team_standings, Team
   end
 
@@ -21,7 +23,8 @@ defmodule OOTPUtility.Standings.Division do
   def new(
         %Leagues.Division{
           name: name,
-          teams: teams
+          teams: teams,
+          id: division_id
         } = _division
       ) do
     team_standings =
@@ -31,6 +34,7 @@ defmodule OOTPUtility.Standings.Division do
 
     %Division{
       name: name,
+      division_id: division_id,
       team_standings: team_standings
     }
   end

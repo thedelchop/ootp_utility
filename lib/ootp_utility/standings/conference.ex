@@ -10,6 +10,7 @@ defmodule OOTPUtility.Standings.Conference do
   embedded_schema do
     field :name, :string
     field :abbr, :string
+    field :conference_id, :string
 
     embeds_many :division_standings, Division
   end
@@ -24,12 +25,14 @@ defmodule OOTPUtility.Standings.Conference do
         %Leagues.Conference{
           name: name,
           abbr: abbr,
-          divisions: divisions
+          divisions: divisions,
+          id: conference_id
         } = _conference
       ) do
     %Conference{
       name: name,
       abbr: abbr,
+      conference_id: conference_id,
       division_standings: Enum.map(divisions, &Division.new/1)
     }
   end
