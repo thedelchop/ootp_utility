@@ -5,11 +5,14 @@ defmodule OOTPUtility.Teams.Team do
 
   use Schema
 
+  @derive {Phoenix.Param, key: :slug}
   schema "teams" do
+    field :name, :string
     field :abbr, :string
+    field :slug, :string
+
     field :level, :string
     field :logo_filename, :string
-    field :name, :string
 
     belongs_to :league, League
     belongs_to :conference, Conference

@@ -6,8 +6,10 @@ defmodule OOTPUtility.Leagues.Division do
     composite_key: [:league_id, :conference_id, :id],
     foreign_key: [:league_id, :conference_id, :division_id]
 
+  @derive {Phoenix.Param, key: :slug}
   schema "divisions" do
     field :name, :string
+    field :slug, :string
 
     belongs_to :league, League
     belongs_to :conference, Conference

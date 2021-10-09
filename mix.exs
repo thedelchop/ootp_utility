@@ -52,7 +52,8 @@ defmodule OOTPUtility.MixProject do
       {:timex, ">= 3.7.6"},
       {:html_sanitize_ex, "~> 1.4"},
       {:morphix, "~> 0.8.0"},
-      {:phx_tailwind_generators, "~> 0.1.6"}
+      {:phx_tailwind_generators, "~> 0.1.6"},
+      {:slugify, "~> 1.3"}
     ]
   end
 

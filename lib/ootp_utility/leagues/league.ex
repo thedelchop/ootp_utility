@@ -5,12 +5,15 @@ defmodule OOTPUtility.Leagues.League do
 
   use OOTPUtility.Schema
 
+  @derive {Phoenix.Param, key: :slug}
   schema "leagues" do
+    field :name, :string
     field :abbr, :string
+    field :slug, :string
+
     field :current_date, :date
     field :league_level, :string
     field :logo_filename, :string
-    field :name, :string
     field :season_year, :integer
     field :start_date, :date
 

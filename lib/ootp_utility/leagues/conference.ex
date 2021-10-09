@@ -6,10 +6,13 @@ defmodule OOTPUtility.Leagues.Conference do
     composite_key: [:league_id, :id],
     foreign_key: [:league_id, :conference_id]
 
+  @derive {Phoenix.Param, key: :slug}
   schema "conferences" do
-    field :abbr, :string
-    field :designated_hitter, :boolean, default: false
     field :name, :string
+    field :abbr, :string
+    field :slug, :string
+
+    field :designated_hitter, :boolean, default: false
 
     belongs_to :league, League
     has_many :divisions, Division

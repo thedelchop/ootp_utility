@@ -4,10 +4,13 @@ defmodule OOTPUtility.Players.Player do
 
   use OOTPUtility.Schema
 
+  @derive {Phoenix.Param, key: :slug}
   schema "players" do
     field :first_name, :string
     field :last_name, :string
     field :nickname, :string
+
+    field :slug, :string
 
     field :height, :integer
     field :weight, :integer
