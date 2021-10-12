@@ -8,6 +8,7 @@ defmodule OOTPUtility.Teams.Team do
   @derive {Phoenix.Param, key: :slug}
   schema "teams" do
     field :name, :string
+    field :nickname, :string
     field :abbr, :string
     field :slug, :string
 
