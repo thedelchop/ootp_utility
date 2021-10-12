@@ -19,19 +19,29 @@ defmodule OOTPUtility.PlayersFixtures do
 
   def player_fixture(attrs, nil), do: player_fixture(attrs, team_fixture())
 
-  def player_fixture(attrs, %Team{league_id: league_id, id: id}) do
+  def player_fixture(attrs, %Team{league_id: league_id, id: team_id}) do
+    id = generate_id()
+    first_name = Map.get(attrs, :first_name, "My")
+    last_name = Map.get(attrs, :last_name, "Player")
+
+    slug =
+      [first_name, last_name, id]
+      |> Enum.join("-")
+      |> Slug.slugify()
+
     {:ok, player} =
       attrs
+      |> Map.put(:id, id)
+      |> Map.put(:first_name, first_name)
+      |> Map.put(:last_name, last_name)
+      |> Map.put(:slug, slug)
       |> Enum.into(%{
-        id: generate_id(),
         age: 42,
         bats: 42,
         date_of_birth: "some date_of_birth",
         experience: 42,
-        first_name: "some first_name",
         free_agent: true,
         height: 42,
-        last_name: "some last_name",
         league_id: league_id,
         local_popularity: 42,
         national_popularity: 42,
@@ -40,7 +50,8 @@ defmodule OOTPUtility.PlayersFixtures do
         position: 42,
         retired: true,
         role: 42,
-        team_id: id,
+        team_id: team_id,
+        organization_id: team_id,
         throws: 42,
         uniform_number: 42,
         weight: 42
@@ -54,6 +65,7 @@ defmodule OOTPUtility.PlayersFixtures do
     %Player{}
     |> cast(attrs, [
       :id,
+      :slug,
       :team_id,
       :league_id,
       :organization_id,
@@ -77,6 +89,7 @@ defmodule OOTPUtility.PlayersFixtures do
     ])
     |> validate_required([
       :id,
+      :slug,
       :team_id,
       :league_id,
       :organization_id,
@@ -100,6 +113,7 @@ defmodule OOTPUtility.PlayersFixtures do
     ])
     |> foreign_key_constraint(:league_id)
     |> foreign_key_constraint(:team_id)
+    |> foreign_key_constraint(:organization_id)
     |> Repo.insert()
   end
 end

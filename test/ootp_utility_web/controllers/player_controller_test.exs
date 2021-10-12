@@ -16,7 +16,9 @@ defmodule OOTPUtilityWeb.PlayerControllerTest do
     setup [:create_player]
 
     test "renders the division for viewing", %{conn: conn, player: player} do
-      conn = get(conn, Routes.player_path(conn, :show, player))
+      %OOTPUtility.Players.Player{team: team} = OOTPUtility.Repo.preload(player, :team)
+
+      conn = get(conn, Routes.player_path(conn, :show, player, team_id: team.slug ))
       assert html_response(conn, 200) =~ "Show Player"
     end
   end

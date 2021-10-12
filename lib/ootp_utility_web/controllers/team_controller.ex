@@ -8,8 +8,8 @@ defmodule OOTPUtilityWeb.TeamController do
     render(conn, "index.html", teams: teams)
   end
 
-  def show(conn, %{"id" => id}) do
-    team = Teams.get_team!(id)
+  def show(conn, %{"id" => slug}) do
+    team = Teams.get_team_by_slug!(slug)
     render(conn, "show.html", team: team)
   end
 end

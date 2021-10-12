@@ -53,5 +53,10 @@ defmodule OOTPUtility.Players do
       ** (Ecto.NoResultsError)
 
   """
-  def get_player!(id), do: Repo.get!(Player, id)
+  def get_player!(slug),
+    do:
+      Repo.one!(
+        from p in Player,
+          where: p.slug == ^slug
+      )
 end

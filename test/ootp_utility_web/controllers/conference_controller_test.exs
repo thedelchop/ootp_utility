@@ -14,8 +14,11 @@ defmodule OOTPUtilityWeb.ConferenceControllerTest do
     setup [:create_conference]
 
     test "renders the conference for viewing", %{conn: conn, conference: conference} do
-      conn = get(conn, Routes.conference_path(conn, :show, conference))
-      assert html_response(conn, 200) =~ "Show Conference"
+      %OOTPUtility.Leagues.Conference{league: league} =
+        OOTPUtility.Repo.preload(conference, :league)
+
+      conn = get(conn, Routes.conference_path(conn, :show, conference, league_id: league.slug))
+      assert html_response(conn, 200) =~ conference.name
     end
   end
 

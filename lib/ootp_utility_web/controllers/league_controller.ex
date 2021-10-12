@@ -1,8 +1,7 @@
 defmodule OOTPUtilityWeb.LeagueController do
   use OOTPUtilityWeb, :controller
 
-  alias OOTPUtility.Leagues
-  alias OOTPUtility.Standings
+  alias OOTPUtility.{Leagues, Standings}
 
   def index(conn, _params) do
     leagues = Leagues.list_leagues()

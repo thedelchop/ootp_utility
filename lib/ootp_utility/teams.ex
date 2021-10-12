@@ -3,6 +3,8 @@ defmodule OOTPUtility.Teams do
   The Teams context.
   """
 
+  import Ecto.Query, only: [from: 2]
+
   alias OOTPUtility.Repo
   alias OOTPUtility.Teams.Team
 
@@ -34,4 +36,10 @@ defmodule OOTPUtility.Teams do
 
   """
   def get_team!(id), do: Repo.get!(Team, id)
+
+  def get_team_by_slug!(slug), do:
+      Repo.one!(
+        from t in Team,
+          where: t.slug == ^slug
+      )
 end

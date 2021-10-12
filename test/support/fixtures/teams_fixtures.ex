@@ -7,7 +7,6 @@ defmodule OOTPUtility.TeamsFixtures do
   import Ecto.Changeset
   import OOTPUtility.LeaguesFixtures
   import OOTPUtility.Fixtures.Utilities
-  
 
   alias OOTPUtility.{Leagues, Repo}
   alias OOTPUtility.Teams.Team
@@ -31,14 +30,19 @@ defmodule OOTPUtility.TeamsFixtures do
   end
 
   def team_fixture(attrs, %Leagues.Division{} = division) do
+    id = generate_id()
+    name = Map.get(attrs, :name, "My Team")
+    slug = Slug.slugify("#{name}-#{id}")
+
     {:ok, team} =
       attrs
+      |> Map.put(:id, id)
+      |> Map.put(:name, name)
+      |> Map.put(:slug, slug)
       |> Enum.into(%{
-        id: generate_id(),
         abbr: "MYT",
         level: "MLB",
         logo_filename: "my_team.png",
-        name: "My Team",
         league_id: division.league_id,
         conference_id: division.conference_id,
         division_id: division.id
@@ -56,6 +60,7 @@ defmodule OOTPUtility.TeamsFixtures do
       :name,
       :abbr,
       :level,
+      :slug,
       :logo_filename,
       :league_id,
       :conference_id,
@@ -66,6 +71,7 @@ defmodule OOTPUtility.TeamsFixtures do
       :name,
       :abbr,
       :level,
+      :slug,
       :logo_filename,
       :league_id,
       :conference_id,

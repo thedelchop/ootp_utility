@@ -14,8 +14,19 @@ defmodule OOTPUtilityWeb.DivisionControllerTest do
     setup [:create_division]
 
     test "renders the division for viewing", %{conn: conn, division: division} do
-      conn = get(conn, Routes.division_path(conn, :show, division))
-      assert html_response(conn, 200) =~ "Show Division"
+      %OOTPUtility.Leagues.Division{league: league, conference: conference} =
+        OOTPUtility.Repo.preload(division, [:league, :conference])
+
+      conn =
+        get(
+          conn,
+          Routes.division_path(conn, :show, division,
+            league_id: league.slug,
+            conference_id: conference.slug
+          )
+        )
+
+      assert html_response(conn, 200) =~ division.name
     end
   end
 

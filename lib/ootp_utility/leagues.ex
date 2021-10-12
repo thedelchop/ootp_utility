@@ -35,7 +35,7 @@ defmodule OOTPUtility.Leagues do
       ** (Ecto.NoResultsError)
 
   """
-  def get_league!(id), do: Repo.get!(League, id)
+  def get_league!(slug), do: Repo.one!(from l in League, where: l.slug == ^slug)
 
   @doc """
   Returns the list of conferences for the specified league.
@@ -64,7 +64,7 @@ defmodule OOTPUtility.Leagues do
       ** (Ecto.NoResultsError)
 
   """
-  def get_conference!(id), do: Repo.get!(Conference, id)
+  def get_conference!(slug), do: Repo.one!(from c in Conference, where: c.slug == ^slug)
 
   @doc """
   Returns the list of divisions.
@@ -93,5 +93,5 @@ defmodule OOTPUtility.Leagues do
       ** (Ecto.NoResultsError)
 
   """
-  def get_division!(id), do: Repo.get!(Division, id)
+  def get_division!(slug), do: Repo.one!(from d in Division, where: d.slug == ^slug)
 end

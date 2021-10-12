@@ -28,7 +28,7 @@ defmodule OOTPUtility.PlayersTest do
 
     test "get_player!/1 returns the player with given id", %{team: team} do
       player = player_fixture(%{}, team)
-      assert Players.get_player!(player.id) == player
+      assert Players.get_player!(player.slug) == player
     end
   end
 end

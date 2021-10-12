@@ -14,7 +14,7 @@ defmodule OOTPUtility.LeaguesTest do
     end
 
     test "get_league!/1 returns the league with given id", %{league: league} do
-      assert Leagues.get_league!(league.id) == league
+      assert Leagues.get_league!(league.slug).id == league.id
     end
   end
 
@@ -28,7 +28,7 @@ defmodule OOTPUtility.LeaguesTest do
     end
 
     test "get_conference!/1 returns the conference with given id", %{conference: conference} do
-      assert Leagues.get_conference!(conference.id) == conference
+      assert Leagues.get_conference!(conference.slug).id == conference.id
     end
   end
 
@@ -42,7 +42,7 @@ defmodule OOTPUtility.LeaguesTest do
     end
 
     test "get_division!/1 returns the division with given id", %{division: division} do
-      assert Leagues.get_division!(division.id) == division
+      assert Leagues.get_division!(division.slug).id == division.id
     end
   end
 end
