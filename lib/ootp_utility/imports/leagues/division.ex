@@ -1,12 +1,13 @@
 defmodule OOTPUtility.Imports.Leagues.Division do
-  alias OOTPUtility.{Leagues,Repo}
+  alias OOTPUtility.{Leagues, Repo}
 
   import Ecto.Query, only: [from: 2]
 
   use OOTPUtility.Imports,
     from: "divisions.csv",
     headers: [{:sub_league_id, :conference_id}, {:division_id, :id}],
-    schema: Leagues.Division
+    schema: Leagues.Division,
+    slug: :name
 
   def should_import?(%{name: ""}), do: false
   def should_import?(_), do: true

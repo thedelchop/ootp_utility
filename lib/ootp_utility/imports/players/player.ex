@@ -10,7 +10,8 @@ defmodule OOTPUtility.Imports.Players.Player do
       {:local_pop, :local_popularity},
       {:national_pop, :national_popularity}
     ],
-    schema: OOTPUtility.Players.Player
+    schema: OOTPUtility.Players.Player,
+    slug: [:first_name, :last_name]
 
   def should_import?(%{retired: "1"} = _attrs), do: false
   def should_import?(_attrs), do: true

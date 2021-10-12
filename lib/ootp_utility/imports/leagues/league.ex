@@ -5,7 +5,8 @@ defmodule OOTPUtility.Imports.Leagues.League do
       {:league_id, :id},
       {:logo_file_name, :logo_filename}
     ],
-    schema: OOTPUtility.Leagues.League
+    schema: OOTPUtility.Leagues.League,
+    slug: :name
 
   def sanitize_attributes(
         %{start_date: start_date_as_string, current_date: current_date_as_string} = attrs

@@ -9,6 +9,7 @@ defmodule OOTPUtility.Imports do
     filename = Keyword.get(opts, :from)
     schema = Keyword.get(opts, :schema)
     headers = Keyword.get(opts, :headers, [])
+    slug = Keyword.get(opts, :slug)
 
     quote do
       use OOTPUtility.Imports.CSV,
@@ -16,7 +17,8 @@ defmodule OOTPUtility.Imports do
         headers: unquote(headers)
 
       use OOTPUtility.Imports.Schema,
-        schema: unquote(schema)
+        schema: unquote(schema),
+        slug: unquote(slug)
 
       def import_from_path(path) do
         with full_path <- Path.join(path, unquote(filename)) do

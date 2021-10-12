@@ -12,7 +12,15 @@ defmodule OOTPUtility.Imports.Schema do
     end
   end
 
-  defmacro __using__([{:schema, schema}]) do
+  defmacro __using__(opts) do
+    schema = Keyword.get(opts, :schema)
+    slug_fields = [Keyword.get(opts, :slug)]
+
+    slug_fields =
+      slug_fields
+      |> List.flatten()
+      |> Enum.reject(&is_nil/1)
+
     if(is_nil(schema)) do
       raise OOTPUtility.Imports.CSV.MissingSourceFilename, __MODULE__
     end
@@ -36,6 +44,21 @@ defmodule OOTPUtility.Imports.Schema do
             unquote(schema),
             attributes
           )
+
+      if Enum.empty?(unquote(slug_fields)) do
+        def put_slug(%Ecto.Changeset{} = changeset), do: changeset
+      else
+        def put_slug(%Ecto.Changeset{} = changeset) do
+          slug_source =
+            unquote(slug_fields)
+            |> Enum.map(&Ecto.Changeset.get_field(changeset, &1))
+            |> Enum.join(" ")
+
+          slug = Slug.slugify(slug_source)
+
+          Ecto.Changeset.change(changeset, %{slug: slug})
+        end
+      end
     end
   end
 
@@ -58,7 +81,7 @@ defmodule OOTPUtility.Imports.Schema do
     schema.__struct__
     |> Ecto.Changeset.cast(attrs, attributes_to_import)
     |> module.update_changeset()
-    |> Ecto.Changeset.validate_required(attributes_to_import)
+    |> module.put_slug()
   end
 
   defp write_attributes_to_database(attribute_maps, schema) do
