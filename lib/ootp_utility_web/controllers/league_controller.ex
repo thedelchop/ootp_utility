@@ -8,8 +8,8 @@ defmodule OOTPUtilityWeb.LeagueController do
     render(conn, "index.html", leagues: leagues)
   end
 
-  def show(conn, %{"id" => id}) do
-    league = Leagues.get_league!(id)
+  def show(conn, %{"id" => slug}) do
+    league = Leagues.get_league!(slug)
 
     standings = Standings.for_league(league)
 
