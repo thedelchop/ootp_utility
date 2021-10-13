@@ -34,7 +34,7 @@ defmodule OOTPUtility.Standings.League do
           abbr: abbr,
           conferences: [],
           divisions: divisions,
-          id: league_id
+          slug: league_id
         } = _league
       ) do
     %League{
@@ -51,7 +51,7 @@ defmodule OOTPUtility.Standings.League do
           name: name,
           abbr: abbr,
           conferences: conferences,
-          id: league_id
+          slug: league_id
         } = _league
       ) do
     %League{

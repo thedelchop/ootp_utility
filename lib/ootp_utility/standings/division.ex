@@ -24,7 +24,7 @@ defmodule OOTPUtility.Standings.Division do
         %Leagues.Division{
           name: name,
           teams: teams,
-          id: division_id
+          slug: division_id
         } = _division
       ) do
     team_standings =

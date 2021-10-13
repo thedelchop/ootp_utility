@@ -3,7 +3,7 @@ defmodule OOTPUtility.Standings.Conference do
   use OOTPUtility.Collectable
 
   alias OOTPUtility.{Leagues, Repo}
-  alias OOTPUtility.Standings.Division
+  alias OOTPUtility.Standings.{Division, Team}
 
   alias __MODULE__
 
@@ -13,11 +13,18 @@ defmodule OOTPUtility.Standings.Conference do
     field :conference_id, :string
 
     embeds_many :division_standings, Division
+    embeds_many :team_standings, Team
   end
 
-  def new(%Leagues.Conference{divisions: nil} = conference) do
+  def new(%Leagues.Conference{divisions: %Ecto.Association.NotLoaded{}} = conference) do
     conference
     |> Repo.preload(divisions: [teams: [:record]])
+    |> new()
+  end
+
+  def new(%Leagues.Conference{divisions: [], teams: %Ecto.Association.NotLoaded{}} = conference) do
+    conference
+    |> Repo.preload(teams: [:record])
     |> new()
   end
 
@@ -25,8 +32,25 @@ defmodule OOTPUtility.Standings.Conference do
         %Leagues.Conference{
           name: name,
           abbr: abbr,
+          divisions: [],
+          teams: teams,
+          slug: conference_id
+        } = _conference
+      ) do
+    %Conference{
+      name: name,
+      abbr: abbr,
+      conference_id: conference_id,
+      team_standings: Enum.map(teams, &Team.new/1)
+    }
+  end
+
+  def new(
+        %Leagues.Conference{
+          name: name,
+          abbr: abbr,
           divisions: divisions,
-          id: conference_id
+          slug: conference_id
         } = _conference
       ) do
     %Conference{
