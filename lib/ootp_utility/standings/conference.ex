@@ -16,7 +16,6 @@ defmodule OOTPUtility.Standings.Conference do
 
   def new(%Leagues.Conference{divisions: %Ecto.Association.NotLoaded{}} = conference) do
     conference
-    |> Repo.preload(divisions: [teams: [:record]])
     |> new()
   end
 

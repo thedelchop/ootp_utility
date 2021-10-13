@@ -35,7 +35,12 @@ defmodule OOTPUtility.Leagues do
       ** (Ecto.NoResultsError)
 
   """
-  def get_league!(slug), do: Repo.one!(from l in League, where: l.slug == ^slug)
+  def get_league!(slug) do
+    Repo.one!(from l in League,
+      where: l.slug == ^slug,
+      preload: [conferences: [:league, divisions: [:league, :conference, teams: [:record]]]]
+    )
+  end
 
   @doc """
   Returns the list of conferences for the specified league.
@@ -66,6 +71,15 @@ defmodule OOTPUtility.Leagues do
   """
   def get_conference!(slug), do: Repo.one!(from c in Conference, where: c.slug == ^slug)
 
+  def get_conference!(slug, league_slug) do
+    Repo.one!(
+    from c in Conference,
+      join: l in League, on: l.id == c.league_id,
+      where: l.slug == ^league_slug and c.slug == ^slug,
+      preload: [:league, divisions: [:league, :conference, teams: [:record]]]
+    )
+  end
+
   @doc """
   Returns the list of divisions.
 
@@ -94,4 +108,23 @@ defmodule OOTPUtility.Leagues do
 
   """
   def get_division!(slug), do: Repo.one!(from d in Division, where: d.slug == ^slug)
+
+  def get_division!(slug, league_slug, conference_slug) do
+    Repo.one!(
+      from d in Division,
+        join: c in Conference, on: c.id == d.conference_id,
+        join: l in League, on: l.id == d.league_id,
+        where: l.slug == ^league_slug and c.slug == ^conference_slug and d.slug == ^slug,
+        preload: [:league, :conference, teams: [:record]]
+    )
+  end
+
+  def get_division!(slug, league_slug) do
+    Repo.one!(
+      from d in Division,
+        join: l in League, on: l.id == d.league_id,
+        where: l.slug == ^league_slug and d.slug == ^slug,
+        preload: [:league, teams: [:record]]
+    )
+  end
 end

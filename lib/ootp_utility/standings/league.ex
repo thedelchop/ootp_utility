@@ -20,13 +20,12 @@ defmodule OOTPUtility.Standings.League do
 
   def new(%Leagues.League{conferences: %Ecto.Association.NotLoaded{}} = league) do
     league
-    |> Repo.preload(conferences: [divisions: [teams: [:record]]])
     |> new()
   end
 
   def new(%Leagues.League{conferences: [], divisions: %Ecto.Association.NotLoaded{}} = league) do
     league
-    |> Repo.preload(divisions: [teams: [:record]])
+    |> Repo.preload(divisions: [:league, :conference, teams: [:record]])
     |> new()
   end
 
