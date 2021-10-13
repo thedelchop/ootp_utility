@@ -14,6 +14,17 @@ defmodule OOTPUtilityWeb.StandingsView do
 
   def streak(%Team{streak: streak} = _standing), do: "L#{abs(streak)}"
 
+  def name(%League{league: league}), do: league.name
+  def name(%Conference{conference: conference}), do: conference.name
+  def name(%Division{division: division}), do: division.name
+
+  def abbr(%League{league: league}), do: league.abbr
+  def abbr(%Conference{conference: conference}), do: conference.abbr
+
+  def parent_id(%League{league: league}), do: league.slug
+  def parent_id(%Conference{conference: conference}), do: conference.slug
+  def parent_id(%Division{division: division}), do: division.slug
+
   def league_container_classes(%League{conference_standings: conf_standings} = standings)
       when length(conf_standings) > 1 do
     league_container_classes(standings, "xl:grid-cols-2 xl:gap-4")
@@ -64,9 +75,22 @@ defmodule OOTPUtilityWeb.StandingsView do
     |> raw()
   end
 
-  def link_to_parent(%Division{} = standings, conn) do
-    link(standings.name, to: Routes.division_path(conn, :show, standings.division_id))
+  def link_to_parent(standings, conn, [do: block]) do
+    link(to: parent_path(standings, conn), do: block)
   end
+
+  defp parent_path(%League{} = standings, conn) do
+    Routes.league_path(conn, :show, parent_id(standings))
+  end
+
+  defp parent_path(%Conference{} = standings, conn) do
+    Routes.conference_path(conn, :show, parent_id(standings))
+  end
+
+  defp parent_path(%Division{} = standings, conn) do
+    Routes.division_path(conn, :show, parent_id(standings))
+  end
+
 
   def link_to_parent(_standings, _conn) do
     ""

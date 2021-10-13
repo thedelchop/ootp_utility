@@ -8,9 +8,7 @@ defmodule OOTPUtility.Standings.Conference do
   alias __MODULE__
 
   embedded_schema do
-    field :name, :string
-    field :abbr, :string
-    field :conference_id, :string
+    embeds_one :conference, Leagues.Conference
 
     embeds_many :division_standings, Division
     embeds_many :team_standings, Team
@@ -30,33 +28,19 @@ defmodule OOTPUtility.Standings.Conference do
 
   def new(
         %Leagues.Conference{
-          name: name,
-          abbr: abbr,
           divisions: [],
-          teams: teams,
-          slug: conference_id
-        } = _conference
+          teams: teams
+        } = conference
       ) do
     %Conference{
-      name: name,
-      abbr: abbr,
-      conference_id: conference_id,
+      conference: conference,
       team_standings: Enum.map(teams, &Team.new/1)
     }
   end
 
-  def new(
-        %Leagues.Conference{
-          name: name,
-          abbr: abbr,
-          divisions: divisions,
-          slug: conference_id
-        } = _conference
-      ) do
+  def new(%Leagues.Conference{divisions: divisions} = conference) do
     %Conference{
-      name: name,
-      abbr: abbr,
-      conference_id: conference_id,
+      conference: conference,
       division_standings: Enum.map(divisions, &Division.new/1)
     }
   end

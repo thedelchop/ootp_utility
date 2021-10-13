@@ -8,11 +8,13 @@ defmodule OOTPUtility.Standings.Division do
   alias __MODULE__
 
   embedded_schema do
-    field :name, :string
-    field :division_id, :string
+    embeds_one :division, Leagues.Division
 
     embeds_many :team_standings, Team
   end
+
+  def name(%Division{division: %Leagues.Division{name: name}}), do: name
+  def division_id(%Division{division: %Leagues.Division{slug: slug}}), do: slug
 
   def new(%Leagues.Division{teams: nil} = division) do
     division
@@ -22,10 +24,8 @@ defmodule OOTPUtility.Standings.Division do
 
   def new(
         %Leagues.Division{
-          name: name,
           teams: teams,
-          slug: division_id
-        } = _division
+        } = division
       ) do
     team_standings =
       teams
@@ -33,8 +33,7 @@ defmodule OOTPUtility.Standings.Division do
       |> Enum.sort(&(&2.position > &1.position))
 
     %Division{
-      name: name,
-      division_id: division_id,
+      division: division,
       team_standings: team_standings
     }
   end
