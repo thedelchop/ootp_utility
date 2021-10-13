@@ -18,23 +18,17 @@ defmodule OOTPUtility.Standings do
   """
   @spec for_league(League.t()) :: Standings.League.t()
   def for_league(league) do
-    league
-    |> Repo.preload(conferences: [divisions: [teams: [:record]]])
-    |> Standings.League.new()
+    Standings.League.new(league)
   end
 
   @spec for_conference(Conference.t()) :: Standings.Conference.t()
   def for_conference(conference) do
-    conference
-    |> Repo.preload(divisions: [teams: [:record]])
-    |> Standings.Conference.new()
+    Standings.Conference.new(conference)
   end
 
   @spec for_division(Division.t()) :: Standings.Division.t()
   def for_division(division) do
-    division
-    |> Repo.preload(teams: [:record])
-    |> Standings.Division.new()
+    Standings.Division.new(division)
   end
 
   @doc """
