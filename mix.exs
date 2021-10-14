@@ -33,27 +33,27 @@ defmodule OOTPUtility.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:ecto_sql, "~> 3.6"},
+      {:esbuild, "~> 0.2", runtime: Mix.env() == :dev},
+      {:floki, ">= 0.30.0", only: :test},
+      {:gettext, "~> 0.18"},
+      {:html_sanitize_ex, "~> 1.4"},
+      {:jason, "~> 1.2"},
+      {:morphix, "~> 0.8.0"},
       {:phoenix, "~> 1.6.0-rc.0", override: true},
       {:phoenix_ecto, "~> 4.4"},
-      {:ecto_sql, "~> 3.6"},
-      {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 3.0"},
+      {:phoenix_live_dashboard, "~> 0.5"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_view, "~> 0.16.0"},
-      {:floki, ">= 0.30.0", only: :test},
-      {:phoenix_live_dashboard, "~> 0.5"},
-      {:esbuild, "~> 0.2", runtime: Mix.env() == :dev},
+      {:phx_tailwind_generators, "~> 0.1.6"},
+      {:plug_cowboy, "~> 2.5"},
+      {:postgrex, ">= 0.0.0"},
+      {:slugify, "~> 1.3"},
       {:swoosh, "~> 1.3"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
-      {:gettext, "~> 0.18"},
-      {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.5"},
-      {:timex, ">= 3.7.6"},
-      {:html_sanitize_ex, "~> 1.4"},
-      {:morphix, "~> 0.8.0"},
-      {:phx_tailwind_generators, "~> 0.1.6"},
-      {:slugify, "~> 1.3"}
+      {:timex, ">= 3.7.6"}
     ]
   end
 
