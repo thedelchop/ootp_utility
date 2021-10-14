@@ -2,7 +2,7 @@
   <div class="-my-0 lg:-my-2 overflow-x-auto -mx-3 lg:-mx-4">
     <div class="py-0 lg:py-2 align-middle inline-block min-w-full px-3 lg:px-4">
       <div class="overflow-hidden">
-        <%= render "teams.html", conn: @conn, standings: @standings %>
+        <%= render(OOTPUtilityWeb.Standings.DivisionView, "teams.html", conn: @conn, standings: @standings) %>
       </div>
     </div>
   </div>

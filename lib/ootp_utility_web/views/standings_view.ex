@@ -1,130 +1,37 @@
 defmodule OOTPUtilityWeb.StandingsView do
-  use OOTPUtilityWeb, :view
+  defmacro __using__(_opts) do
+    quote do
+      use Phoenix.View,
+        root: "lib/ootp_utility_web/templates",
+        namespace: OOTPUtilityWeb,
+        path: "standings"
 
-  alias OOTPUtility.{Leagues, Standings}
-  alias __MODULE__
+      # Import convenience functions from controllers
+      import Phoenix.Controller,
+        only: [get_flash: 1, get_flash: 2, view_module: 1, view_template: 1]
 
-  def winning_percentage(%Standings.Team{winning_percentage: pct} = _standing) do
-    pct
-    |> :erlang.float_to_binary(decimals: 3)
-    |> String.trim_leading("0")
-  end
+      use Phoenix.HTML
+      import Phoenix.View, only: [render: 3, render_many: 4]
+      alias OOTPUtilityWeb.Router.Helpers, as: Routes
 
-  def streak(%Standings.Team{streak: streak} = _standing) when streak > 0, do: "W#{streak}"
+      alias OOTPUtilityWeb.Standings.{ConferenceView, DivisionView, LeagueView, TeamView}
+      alias OOTPUtility.{Leagues, Standings}
 
-  def streak(%Standings.Team{streak: streak} = _standing), do: "L#{abs(streak)}"
+      def child_standings(_standings, _conn), do: raw("")
+      def link_to_parent(_standings, _conn, _opts), do: raw("")
+      def league_container_classes(_standings), do: ""
+      def winning_percentage(_team), do: ""
+      def streak(_team), do: ""
+      def container_name(_standings), do: ""
+      def name(_standings), do: ""
 
-  def name(%Standings.League{league: league}), do: league.name
-  def name(%Standings.Conference{conference: conference}), do: conference.name
-  def name(%Standings.Division{division: division}), do: division.name
-  def name(%Standings.Team{}), do: ""
-
-  def abbr(%Standings.League{league: league}), do: league.abbr
-  def abbr(%Standings.Conference{conference: conference}), do: conference.abbr
-
-  def league_container_classes(
-        %Standings.League{conference_standings: conf_standings} = standings
-      )
-      when length(conf_standings) > 1 do
-    league_container_classes(standings, "xl:grid-cols-2 xl:gap-4")
-  end
-
-  def league_container_classes(%Standings.League{} = _standings, extra_classes \\ "") do
-    default_classes = "grid sm:grid-cols-1 py-6 px-3"
-
-    [class: Enum.join([default_classes, extra_classes], " ")]
-  end
-
-  def child_standings(
-        %Standings.League{conference_standings: [], division_standings: standings} = _standing,
-        conn
-      ) do
-    standings
-    |> Enum.map(&render(StandingsView, "division.html", conn: conn, standings: &1))
-    |> Enum.map(&Phoenix.HTML.Safe.to_iodata/1)
-    |> raw()
-  end
-
-  def child_standings(
-        %Standings.League{conference_standings: standings} = _standing,
-        conn
-      ) do
-    standings
-    |> Enum.map(&render(StandingsView, "conference.html", conn: conn, standings: &1))
-    |> Enum.map(&Phoenix.HTML.Safe.to_iodata/1)
-    |> raw()
-  end
-
-  def child_standings(
-        %Standings.Conference{division_standings: []} = standings,
-        conn
-      ) do
-    render(StandingsView, "teams.html", conn: conn, standings: standings)
-    |> Phoenix.HTML.Safe.to_iodata()
-    |> raw()
-  end
-
-  def child_standings(
-        %Standings.Conference{division_standings: standings} = _standing,
-        conn
-      ) do
-    standings
-    |> Enum.map(&render(StandingsView, "division.html", conn: conn, standings: &1))
-    |> Enum.map(&Phoenix.HTML.Safe.to_iodata/1)
-    |> raw()
-  end
-
-  def link_to_parent(%Standings.League{league: league} = _standings, conn, do: block) do
-    link(to: parent_path(league, conn), do: block)
-  end
-
-  def link_to_parent(%Standings.Conference{conference: conference} = _standings, conn, do: block) do
-    link(to: parent_path(conference, conn), do: block)
-  end
-
-  def link_to_parent(%Standings.Division{division: division} = _standings, conn, do: block) do
-    link(to: parent_path(division, conn), do: block)
-  end
-
-  def link_to_parent(_, _) do
-    ""
-  end
-
-  defp parent_path(%Leagues.League{slug: slug} = _league, conn) do
-    Routes.league_path(conn, :show, slug)
-  end
-
-  defp parent_path(
-         %Leagues.Conference{
-           league: %Leagues.League{
-             slug: league_slug
-           },
-           slug: slug
-         } = _conference,
-         conn
-       ) do
-    Routes.league_conference_path(conn, :show, league_slug, slug)
-  end
-
-  defp parent_path(
-         %Leagues.Division{
-           conference: nil,
-           league: %Leagues.League{slug: league_slug},
-           slug: slug
-         } = _division,
-         conn
-       ) do
-    Routes.league_division_path(conn, :show, league_slug, slug)
-  end
-
-  defp parent_path(
-         %Leagues.Division{
-           conference: %Leagues.Conference{slug: conference_slug},
-           league: %Leagues.League{slug: league_slug},
-           slug: slug
-         } = _division,
-         conn
-       ) do
-    Routes.league_conference_division_path(conn, :show, league_slug, conference_slug, slug)
+      defoverridable child_standings: 2,
+        link_to_parent: 3,
+        league_container_classes: 1,
+        winning_percentage: 1,
+        streak: 1,
+        name: 1,
+        container_name: 1
+    end
   end
 end
