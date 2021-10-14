@@ -48,6 +48,12 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+# Use Surface for LiveView Component rendering
+config :surface, :components, [
+  {Surface.Components.Form.ErrorTag,
+   default_translator: {OOTPUtilityWeb.ErrorHelpers, :translate_error}}
+]
+
 # Configure database
 import_config "db.exs"
 
