@@ -19,6 +19,8 @@ defmodule OOTPUtilityWeb.Router do
 
     get "/", PageController, :index
 
+    live "/leagues/:slug", LeagueLive.Show, :show
+
     resources "/leagues", LeagueController do
       resources "/conferences", ConferenceController do
         resources "/divisions", DivisionController
