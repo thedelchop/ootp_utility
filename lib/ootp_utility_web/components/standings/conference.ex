@@ -21,7 +21,16 @@ defmodule OOTPUtilityWeb.Components.Standings.Conference do
   def has_divisions?(%Standings.Conference{division_standings: []} = _), do: false
   def has_divisions?(_), do: true
 
-  def path_to_conference(%Standings.Conference{conference: %Leagues.Conference{slug: slug}} = _standings, socket) do
-    Routes.conference_path(socket, :show, slug)
+  def path_to_conference(
+    %Standings.Conference{
+      conference: %Leagues.Conference{
+        league: %Leagues.League{
+          slug: league_slug
+        },
+        slug: slug
+      }} = _standings,
+         socket
+       ) do
+    Routes.conference_path(socket, :show, league_slug, slug)
   end
 end

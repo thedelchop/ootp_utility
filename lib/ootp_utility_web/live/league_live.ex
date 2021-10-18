@@ -1,4 +1,4 @@
-defmodule OOTPUtilityWeb.LeagueLive.Show do
+defmodule OOTPUtilityWeb.LeagueLive do
   use Surface.LiveView
 
   alias OOTPUtility.{Leagues, Standings}

@@ -19,18 +19,12 @@ defmodule OOTPUtilityWeb.Router do
 
     get "/", PageController, :index
 
-    live "/leagues/:slug", LeagueLive.Show, :show
+    live "/leagues/:slug", LeagueLive, :show
 
-    resources "/leagues", LeagueController do
-      resources "/conferences", ConferenceController do
-        resources "/divisions", DivisionController
-      end
+    live "/leagues/:league_slug/conferences/:slug", ConferenceLive, :show
 
-      resources "/divisions", DivisionController
-    end
-
-    resources "/conferences", ConferenceController
-    resources "/divisions", DivisionController
+    live "/leagues/:league_slug/divisions/:slug", DivisionLive, :show, as: :division_league
+    live "/leagues/:league_slug/conferences/:conference_slug/divisions/:slug", DivisionLive, :show
 
     resources "/teams", TeamController
     resources "/players", PlayerController
