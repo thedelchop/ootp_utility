@@ -14,6 +14,9 @@ defmodule OOTPUtility.Standings.Conference do
     embeds_many :team_standings, Team
   end
 
+  def name(%Conference{conference: %Leagues.Conference{name: name}}), do: name
+  def slug(%Conference{conference: %Leagues.Conference{slug: slug}}), do: slug
+
   def new(%Leagues.Conference{divisions: %Ecto.Association.NotLoaded{}} = conference) do
     conference
     |> new()

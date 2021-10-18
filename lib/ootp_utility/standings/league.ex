@@ -15,7 +15,7 @@ defmodule OOTPUtility.Standings.League do
   end
 
   def name(%League{league: %Leagues.League{name: name}}), do: name
-  def abbr(%League{league: %Leagues.League{abbr: abbr}}), do: abbr
+  def slug(%League{league: %Leagues.League{slug: slug}}), do: slug
   def league_id(%League{league: %Leagues.League{slug: slug}}), do: slug
 
   def new(%Leagues.League{conferences: %Ecto.Association.NotLoaded{}} = league) do
