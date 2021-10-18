@@ -8,6 +8,31 @@ defmodule OOTPUtilityWeb.Components.Standings.League do
 
   prop standings, :struct, required: true
 
+  def render(assigns) do
+    ~F"""
+      <div>
+        <div class="pb-5 border-b border-gray-200">
+          <div class="max-w-7xl mx-auto">
+            <Link to={path_to_league(@standings, @socket)}>
+              <h1 class="text-2xl font-semibold text-gray-900">
+                {name(@standings)}
+              </h1>
+            </Link>
+          </div>
+        </div>
+        <div class={"grid", "sm:grid-cols-1", "py-6", "px-3", "xl:grid-cols-2": has_conferences?(@standings), "xl:gap-4": has_conferences?(@standings)}>
+            {#for standings <- child_standings(@standings)}
+              {#if has_conferences?(@standings) }
+                <Conference standings={standings} />
+              {#else}
+                <Division standings={standings} />
+              {/if}
+            {/for}
+        </div>
+      </div>
+    """
+  end
+
   def child_standings(%Standings.League{conference_standings: [], division_standings: standings}), do: standings
   def child_standings(%Standings.League{conference_standings: standings}), do: standings
 
