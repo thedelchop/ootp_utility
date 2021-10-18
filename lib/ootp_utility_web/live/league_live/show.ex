@@ -1,32 +1,28 @@
 defmodule OOTPUtilityWeb.LeagueLive.Show do
-  use OOTPUtilityWeb, :live_view
+  use Surface.LiveView
 
-  alias OOTPUtility.{Leagues,Standings}
+  alias OOTPUtility.{Leagues, Standings}
+  alias OOTPUtilityWeb.Components.Standings.League
 
   @impl true
-  def render(%{standings: standings, socket: socket} = _assigns) do
-    Phoenix.View.render(
-      OOTPUtilityWeb.Standings.LeagueView,
-      "league.html",
-      conn: socket,
-      standings: standings
-    ) 
+  def render(assigns) do
+    ~F"""
+      <League id={@slug} standings={@standings} />
+    """
   end
 
   @impl true
   def mount(%{"slug" => slug}, _session, socket) do
-    standings = slug
+    standings =
+      slug
       |> Leagues.get_league!()
       |> Standings.for_league()
 
-    {:ok, 
-     socket
-     |> assign(:standings, standings)
-     |> assign(:socket, socket)}
-  end
-
-  @impl true
-  def handle_params(_params, _session, socket) do
-    {:noreply, socket}
+    {
+      :ok,
+      socket
+      |> assign(:standings, standings)
+      |> assign(:slug, slug)
+    }
   end
 end
