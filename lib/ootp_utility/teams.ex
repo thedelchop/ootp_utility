@@ -3,7 +3,7 @@ defmodule OOTPUtility.Teams do
   The Teams context.
   """
 
-  import Ecto.Query, only: [from: 2]
+  import Ecto.Query, only: [where: 3]
 
   alias OOTPUtility.Repo
   alias OOTPUtility.Teams.Team
@@ -37,9 +37,12 @@ defmodule OOTPUtility.Teams do
   """
   def get_team!(id), do: Repo.get!(Team, id)
 
-  def get_team_by_slug!(slug), do:
-      Repo.one!(
-        from t in Team,
-          where: t.slug == ^slug
-      )
+  def get_team_by_slug!(slug, opts) do
+    preloads = Keyword.get(opts, :preload, [])
+
+    Team
+    |> where([t], t.slug == ^slug)
+    |> Repo.one!()
+    |> Repo.preload(preloads)
+  end
 end
