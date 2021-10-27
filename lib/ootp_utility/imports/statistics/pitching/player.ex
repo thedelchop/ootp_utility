@@ -1,9 +1,7 @@
 defmodule OOTPUtility.Imports.Statistics.Pitching.Player do
-  alias OOTPUtility.{Repo, Teams, Players}
   alias OOTPUtility.Statistics.Pitching
 
   import OOTPUtility.Imports.Statistics.Pitching, only: [add_missing_statistics: 1]
-  import Ecto.Query, only: [from: 2]
 
   use OOTPUtility.Imports.Statistics.Pitching,
     from: "players_career_pitching_stats.csv",
@@ -43,8 +41,8 @@ defmodule OOTPUtility.Imports.Statistics.Pitching.Player do
           }
         } = _changeset
       ) do
-    Repo.exists?(from t in Teams.Team, where: t.id == ^team_id) &&
-      Repo.exists?(from p in Players.Player, where: p.id == ^player_id)
+    OOTPUtility.Imports.Agent.in_cache?(:teams, team_id) &&
+      OOTPUtility.Imports.Agent.in_cache?(:players, player_id)
   end
 
   def validate_changeset(
@@ -54,7 +52,7 @@ defmodule OOTPUtility.Imports.Statistics.Pitching.Player do
           }
         } = _changeset
       ) do
-    Repo.exists?(from t in Teams.Team, where: t.id == ^team_id)
+    OOTPUtility.Imports.Agent.in_cache?(:teams, team_id)
   end
 
   def validate_changeset(
@@ -64,7 +62,7 @@ defmodule OOTPUtility.Imports.Statistics.Pitching.Player do
           }
         } = _changeset
       ) do
-    Repo.exists?(from p in Players.Player, where: p.id == ^player_id)
+    OOTPUtility.Imports.Agent.in_cache?(:players, player_id)
   end
 
   def validate_changeset(_changeset), do: true

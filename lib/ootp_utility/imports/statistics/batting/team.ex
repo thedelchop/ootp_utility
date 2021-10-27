@@ -1,8 +1,5 @@
 defmodule OOTPUtility.Imports.Statistics.Batting.Team do
-  alias OOTPUtility.{Repo, Teams}
   alias OOTPUtility.Statistics.Batting
-
-  import Ecto.Query, only: [from: 2]
 
   use OOTPUtility.Imports.Statistics.Batting,
     from: "team_batting_stats.csv",
@@ -30,13 +27,7 @@ defmodule OOTPUtility.Imports.Statistics.Batting.Team do
   def should_import?(%{league_id: "0"} = _attrs), do: false
   def should_import?(_attrs), do: true
 
-  def validate_changeset(
-        %Ecto.Changeset{
-          changes: %{
-            team_id: team_id
-          }
-        } = _changeset
-      ) do
-    Repo.exists?(from t in Teams.Team, where: t.id == ^team_id)
+  def validate_changeset(%Ecto.Changeset{changes: %{team_id: team_id}} = _) do
+    OOTPUtility.Imports.Agent.in_cache?(:teams, team_id)
   end
 end

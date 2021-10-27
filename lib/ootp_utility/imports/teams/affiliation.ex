@@ -1,8 +1,4 @@
 defmodule OOTPUtility.Imports.Teams.Affiliation do
-  alias OOTPUtility.{Repo, Teams}
-
-  import Ecto.Query, only: [from: 2]
-
   use OOTPUtility.Imports,
     from: "team_affiliations.csv",
     headers: [{:affiliated_team_id, :affiliate_id}],
@@ -14,7 +10,7 @@ defmodule OOTPUtility.Imports.Teams.Affiliation do
   def validate_changeset(
         %Ecto.Changeset{changes: %{team_id: team_id, affiliate_id: affiliate_id}} = _c
       ) do
-    Repo.exists?(from t in Teams.Team, where: t.id == ^affiliate_id) &&
-      Repo.exists?(from t in Teams.Team, where: t.id == ^team_id)
+    OOTPUtility.Imports.Agent.in_cache?(:teams, team_id) &&
+      OOTPUtility.Imports.Agent.in_cache?(:teams, affiliate_id)
   end
 end

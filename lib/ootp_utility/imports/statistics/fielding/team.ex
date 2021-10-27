@@ -1,8 +1,6 @@
 defmodule OOTPUtility.Imports.Statistics.Fielding.Team do
-  alias OOTPUtility.{Repo, Teams}
   alias OOTPUtility.Statistics.Fielding
 
-  import Ecto.Query, only: [from: 2]
   import OOTPUtility.Imports.Statistics.Fielding, only: [calculate_outs_played: 1]
 
   use OOTPUtility.Imports.Statistics.Fielding,
@@ -29,6 +27,6 @@ defmodule OOTPUtility.Imports.Statistics.Fielding.Team do
           }
         } = _changeset
       ) do
-    Repo.exists?(from t in Teams.Team, where: t.id == ^team_id)
+    OOTPUtility.Imports.Agent.in_cache?(:teams, team_id)
   end
 end

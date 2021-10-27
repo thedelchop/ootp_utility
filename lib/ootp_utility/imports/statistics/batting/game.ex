@@ -1,9 +1,7 @@
 defmodule OOTPUtility.Imports.Statistics.Batting.Game do
-  alias OOTPUtility.{Repo, Teams, Games}
   alias OOTPUtility.Statistics.Batting
 
   import OOTPUtility.Imports.Statistics.Batting, only: [add_missing_statistics: 1]
-  import Ecto.Query, only: [from: 2]
 
   use OOTPUtility.Imports.Statistics.Batting,
     from: "players_game_batting.csv",
@@ -38,7 +36,7 @@ defmodule OOTPUtility.Imports.Statistics.Batting.Game do
           }
         } = _changeset
       ) do
-    Repo.exists?(from t in Teams.Team, where: t.id == ^team_id) &&
-      Repo.exists?(from g in Games.Game, where: g.id == ^game_id)
+    OOTPUtility.Imports.Agent.in_cache?(:teams, team_id) &&
+      OOTPUtility.Imports.Agent.in_cache?(:games, game_id)
   end
 end

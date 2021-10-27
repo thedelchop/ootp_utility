@@ -1,9 +1,7 @@
 defmodule OOTPUtility.Imports.Teams.Team do
-  alias OOTPUtility.Repo
   alias OOTPUtility.Leagues.{Conference, Division}
 
   import Ecto.Changeset, only: [change: 2]
-  import Ecto.Query, only: [from: 2]
 
   use OOTPUtility.Imports,
     from: "teams.csv",
@@ -26,7 +24,7 @@ defmodule OOTPUtility.Imports.Teams.Team do
 
   defp put_division_id(%Ecto.Changeset{changes: changes} = changeset) do
     with division_id <- Division.generate_foreign_key(changes) do
-      if Repo.exists?(from d in Division, where: d.id == ^division_id) do
+      if OOTPUtility.Imports.Agent.in_cache?(:divisions, division_id) do
         change(changeset, %{division_id: division_id})
       else
         change(changeset, %{division_id: nil})
@@ -36,7 +34,7 @@ defmodule OOTPUtility.Imports.Teams.Team do
 
   defp put_conference_id(%Ecto.Changeset{changes: changes} = changeset) do
     with conference_id <- Conference.generate_foreign_key(changes) do
-      if(Repo.exists?(from c in Conference, where: c.id == ^conference_id)) do
+      if OOTPUtility.Imports.Agent.in_cache?(:conferences, conference_id) do
         change(changeset, %{conference_id: conference_id})
       else
         change(changeset, %{conference_id: nil})

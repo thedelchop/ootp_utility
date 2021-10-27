@@ -1,7 +1,5 @@
 defmodule OOTPUtility.Imports.Games.Game do
-  alias OOTPUtility.{Repo, Teams, Players}
-
-  import Ecto.Query, only: [from: 2]
+  alias OOTPUtility.Imports
 
   use OOTPUtility.Imports,
     from: "games.csv",
@@ -52,37 +50,34 @@ defmodule OOTPUtility.Imports.Games.Game do
     end
   end
 
-  def validate_changeset(%Ecto.Changeset{changes: changes} = _c)
+  def validate_changeset(%Ecto.Changeset{changes: changes} = changeset)
       when is_map_key(changes, :played) do
-    home_team_id = Map.get(changes, :home_team_id)
-    away_team_id = Map.get(changes, :away_team_id)
-    home_team_starter_id = Map.get(changes, :home_team_starter_id)
-    away_team_starter_id = Map.get(changes, :away_team_starter_id)
-    winning_pitcher_id = Map.get(changes, :winning_pitcher_id)
-    losing_pitcher_id = Map.get(changes, :losing_pitcher_id)
-    save_pitcher_id = Map.get(changes, :save_pitcher_id)
-
-    teams_and_starters_exist =
-      Repo.exists?(from t in Teams.Team, where: t.id == ^home_team_id) &&
-        Repo.exists?(from t in Teams.Team, where: t.id == ^away_team_id) &&
-        Repo.exists?(from p in Players.Player, where: p.id == ^home_team_starter_id) &&
-        Repo.exists?(from p in Players.Player, where: p.id == ^away_team_starter_id) &&
-        Repo.exists?(from p in Players.Player, where: p.id == ^losing_pitcher_id) &&
-        Repo.exists?(from p in Players.Player, where: p.id == ^winning_pitcher_id)
-
-    if Map.has_key?(changes, :save_pitcher_id) do
-      teams_and_starters_exist &&
-        Repo.exists?(from p in Players.Player, where: p.id == ^save_pitcher_id)
-    else
-      teams_and_starters_exist
-    end
+    teams_exist?(changeset) && players_exist?(changeset)
   end
 
-  def validate_changeset(%Ecto.Changeset{changes: changes}) do
-    home_team_id = Map.get(changes, :home_team_id)
-    away_team_id = Map.get(changes, :away_team_id)
+  def validate_changeset(%Ecto.Changeset{} = changeset), do: teams_exist?(changeset)
 
-    Repo.exists?(from t in Teams.Team, where: t.id == ^home_team_id) &&
-      Repo.exists?(from t in Teams.Team, where: t.id == ^away_team_id)
+  defp teams_exist?(%Ecto.Changeset{changes: changes}) do
+    team_keys = [:home_team_id, :away_team_id]
+
+    changes
+    |> Map.take(team_keys)
+    |> Map.values()
+    |> Enum.all?(&Imports.Agent.in_cache?(:teams, &1))
+  end
+
+  defp players_exist?(%Ecto.Changeset{changes: changes}) do
+    player_keys = [
+      :home_team_starter_id,
+      :away_team_starter_id,
+      :winning_pitcher_id,
+      :losing_pitcher_id,
+      :save_pitcher_id
+    ]
+
+    changes
+    |> Map.take(player_keys)
+    |> Map.values()
+    |> Enum.all?(&Imports.Agent.in_cache?(:players, &1))
   end
 end

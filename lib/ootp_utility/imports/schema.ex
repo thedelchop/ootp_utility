@@ -1,4 +1,6 @@
 defmodule OOTPUtility.Imports.Schema do
+  import Ecto.Query
+
   defmodule MissingSchema do
     alias __MODULE__
 
@@ -85,9 +87,22 @@ defmodule OOTPUtility.Imports.Schema do
   end
 
   defp write_attributes_to_database(attribute_maps, schema) do
-    attribute_maps
-    |> Stream.chunk_every(500)
-    |> Enum.map(&OOTPUtility.Repo.insert_all(schema, &1))
-    |> Enum.reduce(0, fn {count, _}, total_count -> total_count + count end)
+    table_name =
+      :source
+      |> schema.__schema__()
+      |> String.to_atom()
+
+    total_records_inserted =
+      attribute_maps
+      |> Stream.chunk_every(500)
+      |> Enum.map(&OOTPUtility.Repo.insert_all(schema, &1))
+      |> Enum.reduce(0, fn {count, _}, total_count -> total_count + count end)
+
+    new_record_ids =
+      OOTPUtility.Repo.all(schema |> select([s], map(s, [:id]))) |> Enum.map(& &1.id)
+
+    OOTPUtility.Imports.Agent.put_cache(table_name, new_record_ids)
+
+    total_records_inserted
   end
 end

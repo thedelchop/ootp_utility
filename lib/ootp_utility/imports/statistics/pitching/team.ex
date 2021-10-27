@@ -1,10 +1,6 @@
 defmodule OOTPUtility.Imports.Statistics.Pitching.Team do
   defmacro __using__([{:from, filename}, {:schema, schema}]) do
     quote do
-      alias OOTPUtility.{Repo, Teams}
-
-      import Ecto.Query, only: [from: 2]
-
       use OOTPUtility.Imports.Statistics.Pitching,
         from: unquote(filename),
         headers: [
@@ -53,7 +49,7 @@ defmodule OOTPUtility.Imports.Statistics.Pitching.Team do
               }
             } = _changeset
           ) do
-        Repo.exists?(from t in Teams.Team, where: t.id == ^team_id)
+        OOTPUtility.Imports.Agent.in_cache?(:teams, team_id)
       end
 
       defp calculate_outs_pitched(%{ip: innings_pitched, ipf: innings_pitched_fraction} = _) do

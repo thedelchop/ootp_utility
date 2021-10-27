@@ -1,9 +1,7 @@
 defmodule OOTPUtility.Imports.Players.Player do
-  alias OOTPUtility.{Repo, Teams}
+  alias OOTPUtility.Imports
 
-  import Ecto.Query, only: [from: 2]
-
-  use OOTPUtility.Imports,
+  use Imports,
     from: "players.csv",
     headers: [
       {:player_id, :id},
@@ -28,8 +26,8 @@ defmodule OOTPUtility.Imports.Players.Player do
     if String.to_integer(league_id) < 1, do: %{attrs | league_id: nil}, else: attrs
   end
 
-  def validate_changeset(%Ecto.Changeset{changes: %{team_id: team_id}} = _changeset) do
-    Repo.exists?(from t in Teams.Team, where: t.id == ^team_id)
+  def validate_changeset(%Ecto.Changeset{changes: %{team_id: team_id}} = _) do
+    Imports.Agent.in_cache?(:teams, team_id)
   end
 
   def validate_changeset(_changeset), do: true

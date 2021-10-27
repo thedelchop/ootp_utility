@@ -15,9 +15,9 @@ defmodule OOTPUtility.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: OOTPUtility.PubSub},
       # Start the Endpoint (http/https)
-      OOTPUtilityWeb.Endpoint
+      OOTPUtilityWeb.Endpoint,
       # Start a worker by calling: OOTPUtility.Worker.start_link(arg)
-      # {OOTPUtility.Worker, arg}
+      OOTPUtility.Imports.Agent
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
