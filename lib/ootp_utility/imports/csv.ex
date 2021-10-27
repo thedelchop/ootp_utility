@@ -36,6 +36,9 @@ defmodule OOTPUtility.Imports.CSV do
       defoverridable sanitize_attributes: 1,
                      should_import?: 1
 
+      def import_from_csv(path),
+        do: OOTPUtility.Imports.CSV.import_from_csv(__MODULE__, path)
+
       def rename_headers(headers),
         do: Enum.map(headers, &Keyword.get(unquote(header_renames), &1, &1))
     end

@@ -21,10 +21,10 @@ defmodule OOTPUtility.Imports do
         slug: unquote(slug)
 
       def import_from_path(path) do
-        with full_path <- Path.join(path, unquote(filename)) do
-          import_from_csv(__MODULE__, full_path)
-          |> import_from_attributes()
-        end
+        path
+        |> Path.join(unquote(filename))
+        |> import_from_csv()
+        |> import_from_attributes()
       end
     end
   end
