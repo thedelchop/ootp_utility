@@ -11,19 +11,18 @@ defmodule OOTPUtilityWeb.Components.Standings.Teams do
     "py-2",
     "lg:px-6",
     "lg:py-4",
-    "whitespace-nowrap",
+    "whitespace-nowrap"
   ]
 
   @default_header_classes [
-      "px-3",
-      "py-1",
-      "lg:px-6",
-      "lg:py-3",
-      "text-xs",
-      "uppercase",
-      "tracking-wider"
+    "px-3",
+    "py-1",
+    "lg:px-6",
+    "lg:py-3",
+    "text-xs",
+    "uppercase",
+    "tracking-wider"
   ]
-
 
   prop parent_path, :string, default: ""
   prop parent_name, :string, default: ""
@@ -68,28 +67,36 @@ defmodule OOTPUtilityWeb.Components.Standings.Teams do
           {streak(standing)}
         </Column>
       </Table>
-    """ 
+    """
   end
 
+  def header_class(_col, 0),
+    do: do_header_class(["w-1/3", "text-left", "font-bold", "text-gray-900"])
 
-  def header_class(_col, 0), do: do_header_class(["w-1/3", "text-left", "font-bold", "text-gray-900"])
-  def header_class(_col, 5), do: do_header_class(["text-right","font-medium", "text-gray-500", "hidden", "lg:table-cell"])
-  def header_class(_col, _index), do: do_header_class(["text-right","font-medium", "text-gray-500"])
+  def header_class(_col, 5),
+    do: do_header_class(["text-right", "font-medium", "text-gray-500", "hidden", "lg:table-cell"])
+
+  def header_class(_col, _index),
+    do: do_header_class(["text-right", "font-medium", "text-gray-500"])
 
   def do_header_class(extra_classes \\ []) do
     Enum.join(extra_classes ++ @default_header_classes, " ")
   end
 
   def column_class(_standing, 0), do: do_column_class()
-  def column_class(_standing, 5), do: do_column_class(["text-sm", "text-gray-500", "text-right", "hidden", "lg:table-cell"])
-  def column_class(_standing, _index), do: do_column_class(["text-sm", "text-gray-500", "text-right"])
+
+  def column_class(_standing, 5),
+    do: do_column_class(["text-sm", "text-gray-500", "text-right", "hidden", "lg:table-cell"])
+
+  def column_class(_standing, _index),
+    do: do_column_class(["text-sm", "text-gray-500", "text-right"])
 
   defp do_column_class(extra_classes \\ []) do
     Enum.join(extra_classes ++ @default_column_classes, " ")
   end
 
   def id() do
-    Integer.to_string(Enum.random(0..100000))
+    Integer.to_string(Enum.random(0..100_000))
   end
 
   def winning_percentage(%Standings.Team{winning_percentage: pct} = _standing) do

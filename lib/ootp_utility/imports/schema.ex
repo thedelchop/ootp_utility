@@ -23,7 +23,7 @@ defmodule OOTPUtility.Imports.Schema do
       |> List.flatten()
       |> Enum.reject(&is_nil/1)
 
-    if(is_nil(schema)) do
+    if is_nil(schema) do
       raise OOTPUtility.Imports.CSV.MissingSourceFilename, __MODULE__
     end
 
@@ -99,7 +99,10 @@ defmodule OOTPUtility.Imports.Schema do
       |> Enum.reduce(0, fn {count, _}, total_count -> total_count + count end)
 
     new_record_ids =
-      OOTPUtility.Repo.all(schema |> select([s], map(s, [:id]))) |> Enum.map(& &1.id)
+      schema
+      |> select([s], map(s, [:id]))
+      |> OOTPUtility.Repo.all()
+      |> Enum.map(& &1.id)
 
     OOTPUtility.Imports.Agent.put_cache(table_name, new_record_ids)
 

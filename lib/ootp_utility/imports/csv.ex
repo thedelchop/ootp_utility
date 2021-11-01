@@ -16,7 +16,7 @@ defmodule OOTPUtility.Imports.CSV do
   defmacro __using__(opts) do
     filename = Keyword.get(opts, :from)
 
-    if(is_nil(filename)) do
+    if is_nil(filename) do
       raise OOTPUtility.Imports.CSV.MissingSourceFilename, __MODULE__
     end
 

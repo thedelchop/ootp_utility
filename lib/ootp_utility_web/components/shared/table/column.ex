@@ -43,7 +43,4 @@ defmodule OOTPUtilityWeb.Components.Shared.Table.Column do
   ```
   """
   prop sort_by, :any, default: nil
-
-  # Todo, requires patching of bulma css
-  # prop width, :string, default: nil
 end

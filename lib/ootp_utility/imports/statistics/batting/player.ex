@@ -21,7 +21,7 @@ defmodule OOTPUtility.Imports.Statistics.Batting.Player do
   end
 
   def sanitize_attributes(%{league_id: league_id} = attrs) do
-    if(String.to_integer(league_id) < 1) do
+    if String.to_integer(league_id) < 1 do
       %{attrs | league_id: nil}
     else
       attrs

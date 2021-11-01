@@ -43,9 +43,9 @@ defmodule OOTPUtilityWeb.Components.Shared.Table do
   def update(assigns, socket) do
     assigns = Map.put(assigns, :updated?, assigns[:data] != socket.assigns[:data])
 
-    socket = assign(socket, assigns)
-
-    socket = assign(socket, :sorted_data, sorted_data(socket.assigns))
+    socket
+    |> assign(assigns)
+    |> assign(:sorted_data, sorted_data(socket.assigns))
 
     {:ok, socket}
   end
@@ -98,12 +98,13 @@ defmodule OOTPUtilityWeb.Components.Shared.Table do
   def handle_event(
         "sorted_click",
         %{"value" => sort_by_new},
-        socket = %{assigns: %{sorted_by: sorted_by, sort_reverse: sort_reverse}}
+        %{assigns: %{sorted_by: sorted_by, sort_reverse: sort_reverse}} = socket
       ) do
     socket =
       cond do
         sorted_by != sort_by_new ->
-          assign(socket, :sorted_by, sort_by_new)
+          socket
+          |> assign(:sorted_by, sort_by_new)
           |> assign(:sort_reverse, false)
 
         sorted_by == sort_by_new ->
@@ -114,6 +115,7 @@ defmodule OOTPUtilityWeb.Components.Shared.Table do
     {:noreply, socket}
   end
 
+  # credo:disable-for-next-line
   defp sorted_data(%{
          sorted_by: sorted_by,
          data: data,
@@ -139,6 +141,7 @@ defmodule OOTPUtilityWeb.Components.Shared.Table do
             sorter when is_binary(sorter) ->
               # We have to try to fetch both by string and atom key as
               # we don't know if the data is using string or atom keys.
+              # credo:disable-for-next-line
               Enum.sort_by(data, fn i ->
                 Map.get(i, sorter) || Map.get(i, String.to_atom(sorter))
               end)

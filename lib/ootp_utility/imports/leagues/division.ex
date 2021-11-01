@@ -18,7 +18,7 @@ defmodule OOTPUtility.Imports.Leagues.Division do
 
   defp put_conference_id(%Ecto.Changeset{changes: changes} = changeset) do
     with conference_id <- Leagues.Conference.generate_foreign_key(changes) do
-      if(Imports.Agent.in_cache?(:conferences, conference_id)) do
+      if Imports.Agent.in_cache?(:conferences, conference_id) do
         Ecto.Changeset.change(changeset, %{conference_id: conference_id})
       else
         Ecto.Changeset.change(changeset, %{conference_id: nil})
