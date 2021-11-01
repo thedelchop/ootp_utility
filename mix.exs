@@ -37,6 +37,7 @@ defmodule OOTPUtility.MixProject do
       {:ecto_sql, "~> 3.6"},
       {:esbuild, "~> 0.2", runtime: Mix.env() == :dev},
       {:floki, ">= 0.30.0", only: :test},
+      {:flow, "~> 1.0"},
       {:gettext, "~> 0.18"},
       {:html_sanitize_ex, "~> 1.4"},
       {:jason, "~> 1.2"},
