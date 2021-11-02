@@ -71,12 +71,16 @@ defmodule OOTPUtility.Imports.Schema do
     attributes_to_import = schema.__schema__(:fields)
 
     attributes
-    |> Stream.map(&import_changeset(module, schema, &1, attributes_to_import))
-    |> Stream.filter(&module.validate_changeset/1)
-    |> Stream.map(&Ecto.Changeset.apply_changes/1)
-    |> Stream.map(&Map.from_struct/1)
-    |> Stream.map(&Map.take(&1, attributes_to_import))
-    |> write_attributes_to_database(schema)
+    |> Flow.map(&import_changeset(module, schema, &1, attributes_to_import))
+    |> Flow.filter(&module.validate_changeset/1)
+    |> Flow.map(&Ecto.Changeset.apply_changes/1)
+    |> Flow.map(&Map.from_struct/1)
+    |> Flow.map(&Map.take(&1, attributes_to_import))
+    |> Flow.reduce(fn -> [] end, &[&1 | &2])
+    |> Flow.on_trigger(&do_database_insert(&1, schema))
+    |> Flow.run()
+
+    write_imported_records_to_cache(schema)
   end
 
   def import_changeset(module, schema, attrs, attributes_to_import) do
@@ -86,26 +90,25 @@ defmodule OOTPUtility.Imports.Schema do
     |> module.put_slug()
   end
 
-  defp write_attributes_to_database(attribute_maps, schema) do
-    table_name =
-      :source
-      |> schema.__schema__()
-      |> String.to_atom()
-
-    total_records_inserted =
-      attribute_maps
-      |> Stream.chunk_every(500)
-      |> Enum.map(&OOTPUtility.Repo.insert_all(schema, &1))
-      |> Enum.reduce(0, fn {count, _}, total_count -> total_count + count end)
-
+  defp write_imported_records_to_cache(schema) do
     new_record_ids =
       schema
       |> select([s], map(s, [:id]))
       |> OOTPUtility.Repo.all()
       |> Enum.map(& &1.id)
 
-    OOTPUtility.Imports.Agent.put_cache(table_name, new_record_ids)
+    schema
+    |> table_name()
+    |> OOTPUtility.Imports.Agent.put_cache(new_record_ids)
+  end
 
-    total_records_inserted
+  defp table_name(schema) do
+    :source |> schema.__schema__() |> String.to_atom()
+  end
+
+  defp do_database_insert(attrs, schema) do
+    {count, _} = OOTPUtility.Repo.insert_all(schema, attrs)
+
+    {[count], attrs}
   end
 end

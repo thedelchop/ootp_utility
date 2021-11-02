@@ -39,14 +39,25 @@ defmodule OOTPUtility.Imports.CSV do
       def import_from_csv(path),
         do: OOTPUtility.Imports.CSV.import_from_csv(__MODULE__, path)
 
-      def rename_headers(headers),
-        do: Enum.map(headers, &Keyword.get(unquote(header_renames), &1, &1))
+      def rename_headers(attributes) do
+        Enum.into(attributes, %{}, fn
+          {k, v} ->
+            header = Keyword.get(unquote(header_renames), k, k)
+            {header, v}
+        end)
+      end
     end
   end
 
   def import_from_csv(module, path) do
     path
+    |> File.stream!()
     |> prepare_csv_file_for_import()
+    |> CSV.decode!(
+      headers: true,
+      strip_fields: true,
+      workers: System.schedulers_online()
+    )
     |> create_attribute_maps_from_csv_rows(
       &module.rename_headers/1,
       &module.sanitize_attributes/1,
@@ -57,36 +68,32 @@ defmodule OOTPUtility.Imports.CSV do
   def should_import?(_module, _attrs_row), do: true
   def sanitize_attributes(_module, attrs), do: attrs
 
-  defp prepare_csv_file_for_import(path) do
-    path
-    |> File.stream!()
-    |> Stream.flat_map(&String.split(&1, "\n"))
-    |> Stream.map(&HtmlSanitizeEx.strip_tags(&1))
-    |> Stream.map(&String.replace(&1, ~r/\s+/, " "))
-    |> Stream.map(&String.replace(&1, ~s("), ""))
-    |> Stream.map(&String.split(&1, ","))
-    |> Enum.filter(fn
-      [""] -> false
+  defp prepare_csv_file_for_import(csv_file_as_stream) do
+    csv_file_as_stream
+    |> Stream.map(&sanitize_row/1)
+    |> Stream.filter(fn
+      "" -> false
       _ -> true
     end)
   end
 
+  defp sanitize_row(row) do
+    row
+    |> String.replace(~r/\s+/, " ")
+    |> String.replace(~s("), "")
+  end
+
   defp create_attribute_maps_from_csv_rows(
-         [headers | attributes],
+         attributes,
          translate_headers,
          sanitize_attributes,
          should_import?
        ) do
-    translated_headers =
-      headers
-      |> Enum.map(&String.to_atom/1)
-      |> translate_headers.()
-
     attributes
-    |> Stream.map(&Enum.zip(translated_headers, &1))
-    |> Stream.map(&Enum.into(&1, %{}))
-    |> Stream.map(&Morphix.atomorphiform!/1)
-    |> Stream.map(&sanitize_attributes.(&1))
-    |> Stream.filter(&should_import?.(&1))
+    |> Flow.from_enumerable(stages: System.schedulers_online())
+    |> Flow.map(&Morphix.atomorphiform!/1)
+    |> Flow.map(&translate_headers.(&1))
+    |> Flow.map(&sanitize_attributes.(&1))
+    |> Flow.filter(&should_import?.(&1))
   end
 end
