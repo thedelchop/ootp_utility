@@ -2,7 +2,7 @@ use Mix.Config
 
 defaults = [
   hostname: "localhost",
-  pool_size: 10,
+  pool_size: 450,
   migration_primary_key: [name: :id, type: :string]
 ]
 
@@ -29,7 +29,7 @@ db_config =
       # to provide built-in test partitioning in CI environment.
       # Run `mix help test` for more information.
       Keyword.merge(defaults,
-        database: "ootp_utility_test#{System.get_env("MIX_TEST_PARTITION")}", 
+        database: "ootp_utility_test#{System.get_env("MIX_TEST_PARTITION")}",
         pool: Ecto.Adapters.SQL.Sandbox
       )
 
@@ -49,4 +49,3 @@ db_config =
   end
 
 config :ootp_utility, OOTPUtility.Repo, Keyword.merge(db_config, auth_config)
-
