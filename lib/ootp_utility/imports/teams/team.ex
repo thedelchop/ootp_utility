@@ -4,7 +4,7 @@ defmodule OOTPUtility.Imports.Teams.Team do
   import Ecto.Changeset, only: [change: 2]
 
   use OOTPUtility.Imports,
-    from: "teams.csv",
+    from: "teams",
     headers: [
       {:sub_league_id, :conference_id},
       {:team_id, :id},

@@ -4,7 +4,7 @@ defmodule OOTPUtility.Imports.Statistics.Fielding.Team do
   import OOTPUtility.Imports.Statistics.Fielding, only: [calculate_outs_played: 1]
 
   use OOTPUtility.Imports.Statistics.Fielding,
-    from: "team_fielding_stats_stats.csv",
+    from: "team_fielding_stats_stats",
     schema: Fielding.Team
 
   def update_changeset(changeset) do

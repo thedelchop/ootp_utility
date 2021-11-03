@@ -2,7 +2,7 @@ defmodule OOTPUtility.Imports.Games.Score do
   alias OOTPUtility.{Games, Imports}
 
   use OOTPUtility.Imports,
-    from: "games_score.csv",
+    from: "games_score",
     schema: Games.Score
 
   def update_changeset(changeset),

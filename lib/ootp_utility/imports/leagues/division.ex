@@ -2,7 +2,7 @@ defmodule OOTPUtility.Imports.Leagues.Division do
   alias OOTPUtility.{Imports, Leagues}
 
   use OOTPUtility.Imports,
-    from: "divisions.csv",
+    from: "divisions",
     headers: [{:sub_league_id, :conference_id}, {:division_id, :id}],
     schema: Leagues.Division,
     slug: :name

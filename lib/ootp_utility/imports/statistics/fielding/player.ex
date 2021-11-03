@@ -4,7 +4,7 @@ defmodule OOTPUtility.Imports.Statistics.Fielding.Player do
   import OOTPUtility.Imports.Statistics.Fielding, only: [calculate_outs_played: 1]
 
   use OOTPUtility.Imports.Statistics.Fielding,
-    from: "players_career_fielding_stats.csv",
+    from: "players_career_fielding_stats",
     headers: [
       {:roe, :reached_on_error},
       {:zr, :zone_rating}

@@ -2,7 +2,7 @@ defmodule OOTPUtility.Imports.Games.Game do
   alias OOTPUtility.Imports
 
   use OOTPUtility.Imports,
-    from: "games.csv",
+    from: "games",
     headers: [
       {:game_id, :id},
       {:home_team, :home_team_id},

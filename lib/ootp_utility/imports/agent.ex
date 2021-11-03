@@ -6,8 +6,10 @@ defmodule OOTPUtility.Imports.Agent do
   end
 
   def put_cache(cache_id, items) do
-    Agent.cast(__MODULE__, fn state ->
-      Map.put(state, cache_id, items)
+    Agent.update(__MODULE__, fn state ->
+      existing_items = Map.get(state, cache_id, [])
+
+      Map.put(state, cache_id, existing_items ++ items)
     end)
   end
 

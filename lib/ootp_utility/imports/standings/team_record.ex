@@ -2,7 +2,7 @@ defmodule OOTPUtility.Imports.Standings.TeamRecord do
   alias OOTPUtility.{Standings, Imports}
 
   use OOTPUtility.Imports,
-    from: "team_record.csv",
+    from: "team_record",
     headers: [
       {:gb, :games_behind},
       {:l, :losses},

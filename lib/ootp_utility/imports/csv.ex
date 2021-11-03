@@ -36,8 +36,8 @@ defmodule OOTPUtility.Imports.CSV do
       defoverridable sanitize_attributes: 1,
                      should_import?: 1
 
-      def import_from_csv(path),
-        do: OOTPUtility.Imports.CSV.import_from_csv(__MODULE__, path)
+      def import_from_csv(attribute_as_csv_stream),
+        do: OOTPUtility.Imports.CSV.import_from_csv(__MODULE__, attribute_as_csv_stream)
 
       def rename_headers(attributes) do
         Enum.into(attributes, %{}, fn
@@ -49,51 +49,14 @@ defmodule OOTPUtility.Imports.CSV do
     end
   end
 
-  def import_from_csv(module, path) do
-    path
-    |> File.stream!()
-    |> prepare_csv_file_for_import()
-    |> CSV.decode!(
-      headers: true,
-      strip_fields: true,
-      workers: System.schedulers_online()
-    )
-    |> create_attribute_maps_from_csv_rows(
-      &module.rename_headers/1,
-      &module.sanitize_attributes/1,
-      &module.should_import?/1
-    )
+  def import_from_csv(module, attribute_stream) do
+    attribute_stream
+    |> Flow.map(&Morphix.atomorphiform!/1)
+    |> Flow.map(&module.rename_headers/1)
+    |> Flow.map(&module.sanitize_attributes/1)
+    |> Flow.filter(&module.should_import?/1)
   end
 
   def should_import?(_module, _attrs_row), do: true
   def sanitize_attributes(_module, attrs), do: attrs
-
-  defp prepare_csv_file_for_import(csv_file_as_stream) do
-    csv_file_as_stream
-    |> Stream.map(&sanitize_row/1)
-    |> Stream.filter(fn
-      "" -> false
-      _ -> true
-    end)
-  end
-
-  defp sanitize_row(row) do
-    row
-    |> String.replace(~r/\s+/, " ")
-    |> String.replace(~s("), "")
-  end
-
-  defp create_attribute_maps_from_csv_rows(
-         attributes,
-         translate_headers,
-         sanitize_attributes,
-         should_import?
-       ) do
-    attributes
-    |> Flow.from_enumerable(stages: System.schedulers_online())
-    |> Flow.map(&Morphix.atomorphiform!/1)
-    |> Flow.map(&translate_headers.(&1))
-    |> Flow.map(&sanitize_attributes.(&1))
-    |> Flow.filter(&should_import?.(&1))
-  end
 end

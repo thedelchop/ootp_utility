@@ -4,7 +4,7 @@ defmodule OOTPUtility.Imports.Statistics.Pitching.Player do
   import OOTPUtility.Imports.Statistics.Pitching, only: [add_missing_statistics: 1]
 
   use OOTPUtility.Imports.Statistics.Pitching,
-    from: "players_career_pitching_stats.csv",
+    from: "players_career_pitching_stats",
     headers: [
       {:ir, :inherited_runners},
       {:irs, :inherited_runners_scored},

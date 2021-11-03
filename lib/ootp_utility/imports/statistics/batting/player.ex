@@ -4,7 +4,7 @@ defmodule OOTPUtility.Imports.Statistics.Batting.Player do
   import OOTPUtility.Imports.Statistics.Batting, only: [add_missing_statistics: 1]
 
   use OOTPUtility.Imports.Statistics.Batting,
-    from: "players_career_batting_stats.csv",
+    from: "players_career_batting_stats",
     schema: Batting.Player
 
   def update_changeset(changeset) do

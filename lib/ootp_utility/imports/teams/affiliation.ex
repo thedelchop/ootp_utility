@@ -1,6 +1,6 @@
 defmodule OOTPUtility.Imports.Teams.Affiliation do
   use OOTPUtility.Imports,
-    from: "team_affiliations.csv",
+    from: "team_affiliations",
     headers: [{:affiliated_team_id, :affiliate_id}],
     schema: OOTPUtility.Teams.Affiliation
 

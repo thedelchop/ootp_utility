@@ -21,24 +21,80 @@ defmodule OOTPUtility.Imports do
         slug: unquote(slug)
 
       def import_from_path(path) do
-        full_path = Path.join(path, unquote(filename))
+        wildcard_path = [path, unquote(filename), "{_[1-50].csv,.csv}"] |> Enum.join()
 
-        OOTPUtility.Imports.import_from_path(__MODULE__, full_path)
+        files =
+          wildcard_path
+          |> Path.wildcard()
+          |> Enum.sort()
+
+        OOTPUtility.Imports.import_from_path(__MODULE__, files)
       end
+
+      def get_filename(), do: unquote(filename)
     end
   end
 
-  def import_from_path(module, path) do
-    path
-    |> module.import_from_csv()
-    |> module.import_from_attributes()
+  def import_from_path(module, files) do
+    IO.puts("Starting import of #{module} records")
+
+    # Find all of the files from the directory that match
+    # the file pattern for the module, sort them.
+
+    # Strip the headers from the first file and ? remove the
+    # line from the stream?
+
+    Benchmark.measure(
+      fn ->
+        files
+        |> decode_files()
+        |> module.import_from_csv()
+        |> module.import_from_attributes()
+      end,
+      module
+    )
+  end
+
+  def decode_files([file | []]) do
+    file
+    |> File.stream!(read_ahead: 100_000)
+    |> do_decode_file(true)
+    |> Flow.from_enumerable()
+  end
+
+  def decode_files([file_with_headers | rest_of_files]) do
+    [headers] =
+      file_with_headers
+      |> File.stream!()
+      |> CSV.decode!(headers: false, strip_fields: true)
+      |> Enum.take(1)
+
+    file_with_headers_stream =
+      file_with_headers
+      |> File.stream!(read_ahead: 100_000)
+      |> do_decode_file(true)
+
+    rest_of_file_streams =
+      rest_of_files
+      |> Enum.map(&File.stream!(&1, read_ahead: 100_000))
+      |> Enum.flat_map(&Stream.chunk_every(&1, 10_000))
+      |> Enum.map(&do_decode_file(&1, headers))
+
+    Flow.from_enumerables([file_with_headers_stream] ++ rest_of_file_streams)
+  end
+
+  def do_decode_file(file_to_decode, headers) do
+    file_to_decode
+    |> CSV.decode!(
+      headers: headers,
+      strip_fields: true
+    )
   end
 
   def import_all_from_path(path) do
     modules_to_import()
     |> Enum.each(fn
       module ->
-        IO.puts("Importing all data from #{module}")
         module.import_from_path(path)
     end)
   end
@@ -61,6 +117,16 @@ defmodule OOTPUtility.Imports do
 
     Task.await(team_import_task, :infinity)
 
+    IO.puts("Finished importing team records")
+
+    player_import_task =
+      Task.Supervisor.async(
+        OOTPUtility.ImportTaskSupervisor,
+        Imports.Players.Player,
+        :import_from_path,
+        [path]
+      )
+
     team_tasks =
       stream_imports(
         [
@@ -75,15 +141,17 @@ defmodule OOTPUtility.Imports do
         path
       )
 
-    player_import_task =
+    Task.await(player_import_task, :infinity)
+
+    IO.puts("Finished importing player records")
+
+    game_import_task =
       Task.Supervisor.async(
         OOTPUtility.ImportTaskSupervisor,
-        Imports.Players.Player,
+        Imports.Games.Game,
         :import_from_path,
         [path]
       )
-
-    Task.await(player_import_task, :infinity)
 
     player_tasks =
       stream_imports(
@@ -95,15 +163,9 @@ defmodule OOTPUtility.Imports do
         path
       )
 
-    game_import_task =
-      Task.Supervisor.async(
-        OOTPUtility.ImportTaskSupervisor,
-        Imports.Games.Game,
-        :import_from_path,
-        [path]
-      )
-
     Task.await(game_import_task, :infinity)
+
+    IO.puts("Finished importing game records")
 
     game_tasks =
       stream_imports(

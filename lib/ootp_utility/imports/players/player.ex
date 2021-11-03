@@ -2,7 +2,7 @@ defmodule OOTPUtility.Imports.Players.Player do
   alias OOTPUtility.Imports
 
   use Imports,
-    from: "players.csv",
+    from: "players",
     headers: [
       {:player_id, :id},
       {:local_pop, :local_popularity},

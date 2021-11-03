@@ -2,7 +2,7 @@ defmodule OOTPUtility.Imports.Statistics.Batting.Team do
   alias OOTPUtility.Statistics.Batting
 
   use OOTPUtility.Imports.Statistics.Batting,
-    from: "team_batting_stats.csv",
+    from: "team_batting_stats",
     headers: [
       {:avg, :batting_average},
       {:ebh, :extra_base_hits},

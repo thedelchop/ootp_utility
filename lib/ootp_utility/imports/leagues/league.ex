@@ -1,6 +1,6 @@
 defmodule OOTPUtility.Imports.Leagues.League do
   use OOTPUtility.Imports,
-    from: "leagues.csv",
+    from: "leagues",
     headers: [
       {:league_id, :id},
       {:logo_file_name, :logo_filename}
