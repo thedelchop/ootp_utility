@@ -11,7 +11,8 @@ defmodule OOTPUtility.Imports.Teams.Team do
       {:logo_file_name, :logo_filename}
     ],
     schema: OOTPUtility.Teams.Team,
-    slug: [:name, :nickname]
+    slug: [:name, :nickname],
+    cache: true
 
   def update_changeset(changeset) do
     changeset

@@ -17,6 +17,7 @@ defmodule OOTPUtility.Imports.Schema do
   defmacro __using__(opts) do
     schema = Keyword.get(opts, :schema)
     slug_fields = [Keyword.get(opts, :slug)]
+    cache = Keyword.get(opts, :cache, false)
 
     slug_fields =
       slug_fields
@@ -61,6 +62,22 @@ defmodule OOTPUtility.Imports.Schema do
           Ecto.Changeset.change(changeset, %{slug: slug})
         end
       end
+
+      def write_imported_records_to_cache(schema) do
+        if unquote(cache) do
+          table_name = :source |> schema.__schema__() |> String.to_atom()
+
+          new_record_ids =
+            schema
+            |> select([s], map(s, [:id]))
+            |> OOTPUtility.Repo.all()
+            |> Enum.map(& &1.id)
+
+          OOTPUtility.Imports.Agent.put_cache(table_name, new_record_ids)
+        else
+          :ok
+        end
+      end
     end
   end
 
@@ -80,7 +97,7 @@ defmodule OOTPUtility.Imports.Schema do
     |> Flow.on_trigger(&do_database_insert(&1, schema))
     |> Flow.run()
 
-    write_imported_records_to_cache(schema)
+    module.write_imported_records_to_cache(schema)
   end
 
   def import_changeset(module, schema, attrs, attributes_to_import) do
@@ -88,22 +105,6 @@ defmodule OOTPUtility.Imports.Schema do
     |> Ecto.Changeset.cast(attrs, attributes_to_import)
     |> module.update_changeset()
     |> module.put_slug()
-  end
-
-  defp write_imported_records_to_cache(schema) do
-    new_record_ids =
-      schema
-      |> select([s], map(s, [:id]))
-      |> OOTPUtility.Repo.all()
-      |> Enum.map(& &1.id)
-
-    schema
-    |> table_name()
-    |> OOTPUtility.Imports.Agent.put_cache(new_record_ids)
-  end
-
-  defp table_name(schema) do
-    :source |> schema.__schema__() |> String.to_atom()
   end
 
   defp do_database_insert(attrs, schema) do
