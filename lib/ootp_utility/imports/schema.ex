@@ -87,12 +87,15 @@ defmodule OOTPUtility.Imports.Schema do
   def import_from_attributes(module, schema, attributes) do
     attributes_to_import = schema.__schema__(:fields)
 
+    window = Flow.Window.count(500)
+
     attributes
     |> Flow.map(&import_changeset(module, schema, &1, attributes_to_import))
     |> Flow.filter(&module.validate_changeset/1)
     |> Flow.map(&Ecto.Changeset.apply_changes/1)
     |> Flow.map(&Map.from_struct/1)
     |> Flow.map(&Map.take(&1, attributes_to_import))
+    |> Flow.partition(window: window)
     |> Flow.reduce(fn -> [] end, &[&1 | &2])
     |> Flow.on_trigger(&do_database_insert(&1, schema))
     |> Flow.run()

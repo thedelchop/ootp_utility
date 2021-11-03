@@ -17,7 +17,9 @@ defmodule OOTPUtility.Application do
       # Start the Endpoint (http/https)
       OOTPUtilityWeb.Endpoint,
       # Start a worker by calling: OOTPUtility.Worker.start_link(arg)
-      OOTPUtility.Imports.Agent
+      OOTPUtility.Imports.Agent,
+      # Start a TaskSupervisor to track our import tasks
+      {Task.Supervisor, name: OOTPUtility.ImportTaskSupervisor}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
