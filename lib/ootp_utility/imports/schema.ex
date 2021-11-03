@@ -80,10 +80,14 @@ defmodule OOTPUtility.Imports.Schema do
     |> Flow.map(&Map.take(&1, attributes_to_import))
     |> Flow.partition(window: window)
     |> Flow.reduce(fn -> [] end, &[&1 | &2])
-    |> Flow.on_trigger(&do_database_insert(&1, schema))
-    |> Flow.run()
+    |> Flow.on_trigger(fn attributes ->
+      {ids, _ } = do_database_insert(attributes, schema)
 
-    write_imported_records_to_cache(schema)
+      write_imported_records_to_cache(ids, schema)
+
+      {ids, attributes}
+    end)
+    |> Flow.run()
   end
 
   def import_changeset(module, schema, attrs, attributes_to_import) do
@@ -93,13 +97,7 @@ defmodule OOTPUtility.Imports.Schema do
     |> module.put_slug()
   end
 
-  defp write_imported_records_to_cache(schema) do
-    new_record_ids =
-      schema
-      |> select([s], map(s, [:id]))
-      |> OOTPUtility.Repo.all()
-      |> Enum.map(& &1.id)
-
+  defp write_imported_records_to_cache(new_record_ids, schema) do
     schema
     |> table_name()
     |> OOTPUtility.Imports.Agent.put_cache(new_record_ids)
@@ -110,8 +108,8 @@ defmodule OOTPUtility.Imports.Schema do
   end
 
   defp do_database_insert(attrs, schema) do
-    {count, _} = OOTPUtility.Repo.insert_all(schema, attrs)
+    {_, records} = OOTPUtility.Repo.insert_all(schema, attrs, returning: [:id])
 
-    {[count], attrs}
+    {Enum.map(records, & &1.id), attrs}
   end
 end

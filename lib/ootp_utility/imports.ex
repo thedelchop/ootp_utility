@@ -29,16 +29,22 @@ defmodule OOTPUtility.Imports do
   end
 
   def import_from_path(module, path) do
-    path
-    |> module.import_from_csv()
-    |> module.import_from_attributes()
+    IO.puts("Starting import of #{module} records")
+
+    Benchmark.measure(
+      fn ->
+        path
+        |> module.import_from_csv()
+        |> module.import_from_attributes()
+      end,
+      module
+    )
   end
 
   def import_all_from_path(path) do
     modules_to_import()
     |> Enum.each(fn
       module ->
-        IO.puts("Importing all data from #{module}")
         module.import_from_path(path)
     end)
   end
@@ -61,6 +67,16 @@ defmodule OOTPUtility.Imports do
 
     Task.await(team_import_task, :infinity)
 
+    IO.puts("Finished importing team records")
+
+    player_import_task =
+      Task.Supervisor.async(
+        OOTPUtility.ImportTaskSupervisor,
+        Imports.Players.Player,
+        :import_from_path,
+        [path]
+      )
+
     team_tasks =
       stream_imports(
         [
@@ -75,15 +91,17 @@ defmodule OOTPUtility.Imports do
         path
       )
 
-    player_import_task =
+    Task.await(player_import_task, :infinity)
+
+    IO.puts("Finished importing player records")
+
+    game_import_task =
       Task.Supervisor.async(
         OOTPUtility.ImportTaskSupervisor,
-        Imports.Players.Player,
+        Imports.Games.Game,
         :import_from_path,
         [path]
       )
-
-    Task.await(player_import_task, :infinity)
 
     player_tasks =
       stream_imports(
@@ -95,15 +113,9 @@ defmodule OOTPUtility.Imports do
         path
       )
 
-    game_import_task =
-      Task.Supervisor.async(
-        OOTPUtility.ImportTaskSupervisor,
-        Imports.Games.Game,
-        :import_from_path,
-        [path]
-      )
-
     Task.await(game_import_task, :infinity)
+
+    IO.puts("Finished importing game records")
 
     game_tasks =
       stream_imports(

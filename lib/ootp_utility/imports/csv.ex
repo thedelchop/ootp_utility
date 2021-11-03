@@ -90,7 +90,7 @@ defmodule OOTPUtility.Imports.CSV do
          should_import?
        ) do
     attributes
-    |> Flow.from_enumerable(stages: System.schedulers_online())
+    |> Flow.from_enumerable(stages: 1)
     |> Flow.map(&Morphix.atomorphiform!/1)
     |> Flow.map(&translate_headers.(&1))
     |> Flow.map(&sanitize_attributes.(&1))
