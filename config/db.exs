@@ -2,7 +2,7 @@ use Mix.Config
 
 defaults = [
   hostname: "localhost",
-  pool_size: 450,
+  pool_size: 150,
   migration_primary_key: [name: :id, type: :string]
 ]
 
