@@ -21,12 +21,17 @@ defmodule OOTPUtility.Imports do
         slug: unquote(slug)
 
       def import_from_path(path) do
-        path
-        |> Path.join(unquote(filename))
-        |> import_from_csv()
-        |> import_from_attributes()
+        full_path = Path.join(path, unquote(filename))
+
+        OOTPUtility.Imports.import_from_path(__MODULE__, full_path)
       end
     end
+  end
+
+  def import_from_path(module, path) do
+    path
+    |> module.import_from_csv()
+    |> module.import_from_attributes()
   end
 
   def import_all_from_path(path) do
@@ -35,6 +40,91 @@ defmodule OOTPUtility.Imports do
       module ->
         IO.puts("Importing all data from #{module}")
         module.import_from_path(path)
+    end)
+  end
+
+  def import_all_from_path_async(path) do
+    [
+      Imports.Leagues.League,
+      Imports.Leagues.Conference,
+      Imports.Leagues.Division
+    ]
+    |> Enum.each(& &1.import_from_path(path))
+
+    team_import_task =
+      Task.Supervisor.async(
+        OOTPUtility.ImportTaskSupervisor,
+        Imports.Teams.Team,
+        :import_from_path,
+        [path]
+      )
+
+    Task.await(team_import_task, :infinity)
+
+    team_tasks =
+      stream_imports(
+        [
+          Imports.Teams.Affiliation,
+          Imports.Standings.TeamRecord,
+          Imports.Statistics.Batting.Team,
+          Imports.Statistics.Pitching.Team.Combined,
+          Imports.Statistics.Pitching.Team.Starters,
+          Imports.Statistics.Pitching.Team.Bullpen,
+          Imports.Statistics.Fielding.Team
+        ],
+        path
+      )
+
+    player_import_task =
+      Task.Supervisor.async(
+        OOTPUtility.ImportTaskSupervisor,
+        Imports.Players.Player,
+        :import_from_path,
+        [path]
+      )
+
+    Task.await(player_import_task, :infinity)
+
+    player_tasks =
+      stream_imports(
+        [
+          Imports.Statistics.Batting.Player,
+          Imports.Statistics.Pitching.Player,
+          Imports.Statistics.Fielding.Player
+        ],
+        path
+      )
+
+    game_import_task =
+      Task.Supervisor.async(
+        OOTPUtility.ImportTaskSupervisor,
+        Imports.Games.Game,
+        :import_from_path,
+        [path]
+      )
+
+    Task.await(game_import_task, :infinity)
+
+    game_tasks =
+      stream_imports(
+        [
+          Imports.Statistics.Batting.Game,
+          Imports.Statistics.Pitching.Game,
+          Imports.Games.Score
+        ],
+        path
+      )
+
+    Task.yield_many(team_tasks ++ player_tasks ++ game_tasks, :infinity)
+
+    IO.puts("Finished importing all files from #{path}")
+  end
+
+  defp stream_imports(modules, path) do
+    modules
+    |> Enum.map(fn
+      module ->
+        Task.Supervisor.async(OOTPUtility.ImportTaskSupervisor, module, :import_from_path, [path])
     end)
   end
 
