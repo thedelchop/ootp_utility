@@ -11,8 +11,8 @@ defmodule OOTPUtility.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
-      build_embedded: Mix.env == :prod,
-      start_permanent: Mix.env == :prod
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod
     ]
   end
 
@@ -55,7 +55,7 @@ defmodule OOTPUtility.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:postgrex, ">= 0.0.0"},
       {:slugify, "~> 1.3"},
-      {:surface, "~> 0.5"},
+      {:surface, "~> 0.6"},
       {:swoosh, "~> 1.3"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
