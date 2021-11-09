@@ -28,6 +28,8 @@ defmodule OOTPUtilityWeb.Router do
 
     live "/teams/:slug", TeamLive
 
+    live "/playground", PlaygroundLive
+
     resources "/teams", TeamController
     resources "/players", PlayerController
     resources "/games", GameController
