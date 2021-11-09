@@ -7,8 +7,8 @@ defmodule OOTPUtilityWeb.Components.Scoreboard do
 
   def render(assigns) do
     ~F"""
-      <div class="scoreboard flex">
-        {#for game <- @games}
+      <div class="flex bg-gray-200 p-2 justify-evenly rounded-md">
+        {#for game <- Enum.take(@games, 9)}
           <Game id={game.id} game={game} />
         {/for}
       </div>
