@@ -56,9 +56,9 @@ config :ootp_utility, OOTPUtilityWeb.Endpoint,
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/ootp_utility_web/(live|views)/.*(ex)$",
+      ~r"lib/ootp_utility_web/(live|views|components)/.*(ex)$",
       ~r"lib/ootp_utility_web/templates/.*(eex)$",
-      ~r"lib/my_app_web/live/.*(sface)$"
+      ~r"lib/ootp_utility_web/(live|components)/.*(sface)$"
     ]
   ]
 
