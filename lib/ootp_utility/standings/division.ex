@@ -24,6 +24,7 @@ defmodule OOTPUtility.Standings.Division do
       |> Enum.sort(&(&2.position > &1.position))
 
     %Division{
+      id: "#{division.slug}-standings",
       division: division,
       team_standings: team_standings
     }

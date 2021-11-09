@@ -35,6 +35,7 @@ defmodule OOTPUtility.Standings.Conference do
         } = conference
       ) do
     %Conference{
+      id: "#{conference.id}-standings",
       conference: conference,
       team_standings: Enum.map(teams, &Team.new/1)
     }

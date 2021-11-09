@@ -23,9 +23,9 @@ defmodule OOTPUtilityWeb.Components.Standings.League do
         <div class={"grid", "sm:grid-cols-1", "py-6", "px-3", "xl:grid-cols-2": has_conferences?(@standings), "xl:gap-4": has_conferences?(@standings)}>
             {#for standings <- child_standings(@standings)}
               {#if has_conferences?(@standings) }
-                <Conference standings={standings} />
+                <Conference id={standings.id} standings={standings} />
               {#else}
-                <Division standings={standings} />
+                <Division id={standings.id} standings={standings} />
               {/if}
             {/for}
         </div>
@@ -44,6 +44,6 @@ defmodule OOTPUtilityWeb.Components.Standings.League do
   def has_conferences?(_), do: true
 
   def path_to_league(%Standings.League{league: %Leagues.League{slug: slug}} = _standings, socket) do
-    Routes.league_path(socket, :show, slug)
+    Routes.live_path(socket, OOTPUtilityWeb.LeagueLive, %{slug: slug})
   end
 end

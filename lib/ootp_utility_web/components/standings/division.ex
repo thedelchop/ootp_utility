@@ -1,7 +1,8 @@
 defmodule OOTPUtilityWeb.Components.Standings.Division do
-  use Surface.Component
+  use Surface.LiveComponent
 
   alias OOTPUtility.{Leagues, Standings}
+  alias OOTPUtilityWeb.DivisionLive
   alias OOTPUtilityWeb.Components.Standings.Teams
   alias OOTPUtilityWeb.Router.Helpers, as: Routes
 
@@ -19,7 +20,7 @@ defmodule OOTPUtilityWeb.Components.Standings.Division do
         } = _division,
         socket
       ) do
-    Routes.division_league_path(socket, :show, league_slug, slug)
+    Routes.live_path(socket, DivisionLive, %{league_slug: league_slug, slug: slug})
   end
 
   def path_to_division(
@@ -32,7 +33,11 @@ defmodule OOTPUtilityWeb.Components.Standings.Division do
         } = _standings,
         socket
       ) do
-    Routes.division_path(socket, :show, league_slug, conference_slug, slug)
+    Routes.live_path(socket, DivisionLive, %{
+      league_slug: league_slug,
+      conference_slug: conference_slug,
+      slug: slug
+    })
   end
 
   @impl true
@@ -42,7 +47,7 @@ defmodule OOTPUtilityWeb.Components.Standings.Division do
         <div class="-my-0 lg:-my-2 overflow-x-auto -mx-3 lg:-mx-4">
           <div class="py-0 lg:py-2 align-middle inline-block min-w-full px-3 lg:px-4">
             <div class="overflow-hidden">
-              <Teams standings={child_standings(@standings)} parent_path={path_to_division(@standings, @socket)} parent_name={name(@standings)} />
+              <Teams id="#{@standings.id}-teams" standings={child_standings(@standings)} parent_path={path_to_division(@standings, @socket)} parent_name={name(@standings)} />
             </div>
           </div>
         </div>
