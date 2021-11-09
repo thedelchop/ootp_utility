@@ -26,6 +26,8 @@ defmodule OOTPUtilityWeb.Router do
     live "/leagues/:league_slug/divisions/:slug", DivisionLive, :show, as: :division_league
     live "/leagues/:league_slug/conferences/:conference_slug/divisions/:slug", DivisionLive, :show
 
+    live "/teams/:slug", TeamLive, :show
+
     resources "/teams", TeamController
     resources "/players", PlayerController
     resources "/games", GameController

@@ -17,10 +17,10 @@ defmodule OOTPUtility.GamesFixtures do
   Generate a game.
   """
   def game_fixture(attrs \\ %{}) do
-    league = league_fixture()
+    league = Map.get(attrs, :league, league_fixture())
 
-    home_team = team_fixture(%{}, league)
-    away_team = team_fixture(%{}, league)
+    home_team = Map.get(attrs, :home_team, team_fixture(%{}, league))
+    away_team = Map.get(attrs, :away_team, team_fixture(%{}, league))
 
     home_team_starter = player_fixture(%{}, home_team)
     away_team_starter = player_fixture(%{}, away_team)
@@ -73,7 +73,14 @@ defmodule OOTPUtility.GamesFixtures do
         :away_team_hits,
         :home_team_hits,
         :away_team_errors,
-        :home_team_errors
+        :home_team_errors,
+        :away_team_id,
+        :home_team_id,
+        :winning_pitcher_id,
+        :losing_pitcher_id,
+        :away_team_starter_id,
+        :home_team_starter_id,
+        :save_pitcher_id
       ])
       |> validate_required([
         :id,
@@ -89,7 +96,12 @@ defmodule OOTPUtility.GamesFixtures do
         :away_team_hits,
         :home_team_hits,
         :away_team_errors,
-        :home_team_errors
+        :home_team_errors,
+        :winning_pitcher_id,
+        :losing_pitcher_id,
+        :away_team_starter_id,
+        :home_team_starter_id,
+        :save_pitcher_id
       ])
       |> foreign_key_constraint(:league_id)
       |> foreign_key_constraint(:home_team_id)
