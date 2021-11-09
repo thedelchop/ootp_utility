@@ -28,6 +28,7 @@ defmodule OOTPUtility.Standings.Team do
 
   def new(
         %Teams.Team{
+          slug: slug,
           name: name,
           abbr: abbr,
           logo_filename: logo,
@@ -38,6 +39,7 @@ defmodule OOTPUtility.Standings.Team do
     |> Map.from_struct()
     |> Map.drop([:team_id])
     |> Enum.into(%Team{
+      id: "#{slug}-standings",
       name: name,
       abbr: abbr,
       logo_filename: logo

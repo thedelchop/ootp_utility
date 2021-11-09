@@ -1,7 +1,8 @@
 defmodule OOTPUtilityWeb.Components.Standings.Conference do
-  use Surface.Component
+  use Surface.LiveComponent
 
   alias OOTPUtility.{Standings, Leagues}
+  alias OOTPUtilityWeb.ConferenceLive
   alias OOTPUtilityWeb.Components.Standings.{Division, Teams}
   alias Surface.Components.LiveRedirect
   alias OOTPUtilityWeb.Router.Helpers, as: Routes
@@ -21,9 +22,9 @@ defmodule OOTPUtilityWeb.Components.Standings.Conference do
         <div class="grid grid-cols-1 gap-4 lg:gap-8">
           {#for standings <- child_standings(@standings)}
             {#if has_divisions?(@standings) }
-              <Division standings={standings} />
+              <Division id={standings.id} standings={standings} />
             {#else}
-              <Teams standings={standings} />
+              <Teams id={standings.id} standings={standings} />
             {/if}
           {/for}
         </div>
@@ -56,6 +57,6 @@ defmodule OOTPUtilityWeb.Components.Standings.Conference do
         } = _standings,
         socket
       ) do
-    Routes.conference_path(socket, :show, league_slug, slug)
+    Routes.live_path(socket, ConferenceLive, %{league_slug: league_slug, slug: slug})
   end
 end
