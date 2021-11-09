@@ -6,7 +6,9 @@ defmodule OOTPUtility.Games do
   import Ecto.Query, warn: false
   alias OOTPUtility.Repo
 
+  alias OOTPUtility.Leagues.League
   alias OOTPUtility.Games.Game
+  alias OOTPUtility.Teams.Team
 
   @doc """
   Returns the list of games.
@@ -19,6 +21,37 @@ defmodule OOTPUtility.Games do
   """
   def list_games do
     Repo.all(Game)
+  end
+
+  def for_team(team, opts \\ %{})
+
+  def for_team(%Team{id: _id, league: %Ecto.Association.NotLoaded{}} = team, opts) do
+    team
+    |> Repo.preload(:league)
+    |> for_team(opts)
+  end
+
+  def for_team(
+        %Team{id: id, league: %League{current_date: current_league_date}} = _team,
+        %{recent: days_in_past}
+      ) do
+    cutoff_date = Timex.subtract(current_league_date, Timex.Duration.from_days(days_in_past))
+
+    Game
+    |> where([g], g.away_team_id == ^id or g.home_team_id == ^id)
+    |> where([g], g.played == true)
+    |> where([g], g.date > ^cutoff_date)
+    |> order_by([g], g.date)
+    |> limit(10)
+    |> preload([g], [:away_team, :home_team])
+    |> Repo.all()
+  end
+
+  def for_team(%Team{id: id} = _team, %{}) do
+    Game
+    |> where([g], g.away_team_id == ^id or g.home_team_id == ^id)
+    |> order_by([g], g.date)
+    |> Repo.all()
   end
 
   @doc """
