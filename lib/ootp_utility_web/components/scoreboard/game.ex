@@ -9,23 +9,23 @@ defmodule OOTPUtilityWeb.Components.Scoreboard.Game do
 
   def render(assigns) do
     ~F"""
-      <div class="game-summary flex flex-column">
+      <div class="flex flex-col overflow-hidden flex-none bg-white border p-1 mx-1 rounded-lg">
         {team_summary(@socket, @game.away_team)}
         {team_summary(@socket, @game.home_team)}
         <hr />
-        <div>{start_time(@game)}</div>
+        <div class="text-xs text-gray-500 text-center tracking-tighter px-0.5 py-1">{start_time(@game)}</div>
       </div>
     """
   end
 
   def team_summary(socket, %Team{logo_filename: logo, abbr: abbr} = team) do
-    assigns = assign(%{}, logo: logo, abbr: abbr, record: team_record(team))
+    assigns = assign(%{__changed__: %{}}, logo: logo, abbr: abbr, record: team_record(team))
 
-    ~H"""
-      <div class="inline-flex justify-start">
-        <img class="h-3 w-3 rounded-full" src={Routes.static_path(socket, "/images/logos/#{logo}")} alt="">
-        <h4 class="text-base">{@abbr}</h4>
-        <h5 class="text-small text-gray-400 justify-self-end">{@record}</h5>
+    ~F"""
+      <div class="flex p-0.5">
+        <img class="h-5 w-5 mt-0.5" src={Routes.static_path(socket, "/images/logos/#{logo}")} alt="">
+        <h4 class="text-base tracking-tighter mx-1">{@abbr}</h4>
+        <h5 class="flex-grow flex-shrink-0 text-small text-gray-400 text-right ml-2">{@record}</h5>
       </div>
     """
   end
