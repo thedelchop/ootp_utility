@@ -37,7 +37,7 @@ defmodule OOTPUtility.Teams do
   """
   def get_team!(id), do: Repo.get!(Team, id)
 
-  def get_team_by_slug!(slug, opts) do
+  def get_team_by_slug!(slug, opts \\ []) do
     preloads = Keyword.get(opts, :preload, [])
 
     Team
