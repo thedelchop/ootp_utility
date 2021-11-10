@@ -43,7 +43,7 @@ defmodule OOTPUtility.Games do
     |> where([g], g.date > ^cutoff_date)
     |> order_by([g], g.date)
     |> limit(10)
-    |> preload([g], [:away_team, :home_team])
+    |> preload([g], [:away_team, :home_team, :winning_pitcher, :losing_pitcher, :save_pitcher])
     |> Repo.all()
   end
 
