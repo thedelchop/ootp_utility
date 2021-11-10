@@ -39,6 +39,18 @@ defmodule OOTPUtility.Players do
     |> Repo.all()
   end
 
+  def name(player, format \\ :full)
+
+  def name(%Player{first_name: first_name, last_name: last_name} = _player, :short) do
+    "#{String.first(first_name)}. #{last_name}"
+  end
+
+  def name(%Player{first_name: first_name, last_name: last_name} = _player, :full) do
+    first_name <> " " <> last_name
+  end
+
+  def name(nil, _format), do: nil
+
   @doc """
   Gets a single player.
 

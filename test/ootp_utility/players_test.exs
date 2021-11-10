@@ -3,32 +3,43 @@ defmodule OOTPUtility.PlayersTest do
 
   alias OOTPUtility.Players
 
-  describe "players" do
-    import OOTPUtility.{LeaguesFixtures, PlayersFixtures, TeamsFixtures}
+  import OOTPUtility.{LeaguesFixtures, PlayersFixtures, TeamsFixtures}
 
-    setup do
-      division = division_fixture()
+  test "for_team/1 returns all players associated with the specified team" do
+    division = division_fixture()
 
-      team = team_fixture(%{id: "1"}, division)
+    team = team_fixture(%{id: "1"}, division)
 
-      {:ok, team: team, division: division}
+    other_team = team_fixture(%{id: "2"}, division)
+
+    team_player = player_fixture(%{}, team)
+    _other_team_player = player_fixture(%{id: "2"}, other_team)
+
+    assert Players.for_team(team) == [team_player]
+  end
+
+  test "get_player!/1 returns the player with given id" do
+    player = player_fixture(%{})
+    assert Players.get_player!(player.slug) == player
+  end
+
+  describe "name/2" do
+    test "it returns the players full name by default if no format option is specified" do
+      player = player_fixture(%{first_name: "Test", last_name: "Player"})
+
+      assert Players.name(player) == "Test Player"
     end
 
-    test "for_team/1 returns all players associated with the specified team", %{
-      team: team,
-      division: division
-    } do
-      other_team = team_fixture(%{id: "2"}, division)
+    test "it returns the players full name if the :full option is specified" do
+      player = player_fixture(%{first_name: "Test", last_name: "Player"})
 
-      team_player = player_fixture(%{}, team)
-      _other_team_player = player_fixture(%{id: "2"}, other_team)
-
-      assert Players.for_team(team) == [team_player]
+      assert Players.name(player, :full) == "Test Player"
     end
 
-    test "get_player!/1 returns the player with given id", %{team: team} do
-      player = player_fixture(%{}, team)
-      assert Players.get_player!(player.slug) == player
+    test "it returns the players first initial and last name if the :short option is specified" do
+      player = player_fixture(%{first_name: "Test", last_name: "Player"})
+
+      assert Players.name(player, :short) == "T. Player"
     end
   end
 end
