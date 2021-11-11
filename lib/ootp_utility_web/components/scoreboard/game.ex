@@ -8,11 +8,11 @@ defmodule OOTPUtilityWeb.Components.Scoreboard.Game do
 
   def render(assigns) do
     ~F"""
-      <div class="flex flex-col overflow-hidden flex-none bg-white border p-1 mx-1 rounded-lg w-32">
+      <div class="flex flex-col flex-none bg-white border p-2 rounded-lg w-32">
         {team_summary(@socket, @game, :away_team)}
         {team_summary(@socket, @game, :home_team)}
-        <hr />
-        <div class={"text-xs", "text-gray-500", "tracking-tighter", "px-0.5", "py-1", "text-center": not(is_played?(@game))}>
+        <hr class="my-2" />
+        <div class={"text-xs", "text-gray-500", "tracking-tighter", "px-0.5", "text-center": not(is_played?(@game))}>
           { if is_played?(@game), do: results(@game), else: start_time(@game)}
         </div>
       </div>

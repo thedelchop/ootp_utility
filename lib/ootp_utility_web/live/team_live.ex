@@ -29,7 +29,7 @@ defmodule OOTPUtilityWeb.TeamLive do
         <Rankings rankings={[]} team={@team} />
       </div>
 
-      <Scoreboard games={recent_games(@team)} />
+      <Scoreboard id="#{@team.id}-scoreboard" subject={@team} />
 
       <div class="main">
         <div class="left-column">
