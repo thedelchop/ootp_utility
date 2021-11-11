@@ -39,6 +39,7 @@ defmodule OOTPUtility.MixProject do
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
       {:ecto_sql, "~> 3.6"},
       {:esbuild, "~> 0.2", runtime: Mix.env() == :dev},
+      {:ex_heroicons, "~> 0.5.0"},
       {:floki, ">= 0.30.0", only: :test},
       {:flow, "~> 1.0"},
       {:gettext, "~> 0.18"},
