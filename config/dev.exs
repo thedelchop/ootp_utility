@@ -52,11 +52,12 @@ config :ootp_utility, OOTPUtilityWeb.Endpoint,
 
 # Watch static and templates for browser reloading.
 config :ootp_utility, OOTPUtilityWeb.Endpoint,
+  reloadable_compilers: [:phoenix, :elixir, :surface],
   live_reload: [
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/ootp_utility_web/(live|views|components)/.*(ex)$",
+      ~r"lib/ootp_utility_web/(live|views|components)/.*(ex|js)$",
       ~r"lib/ootp_utility_web/templates/.*(eex)$",
       ~r"lib/ootp_utility_web/(live|components)/.*(sface)$"
     ]

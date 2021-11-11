@@ -29,6 +29,11 @@ ootp_utility-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# Ignore the output of the Elixir language server
 /.elixir_ls/
 
-/priv/csv_data/
+# Ignore any CSV files for testing placed in private
+/priv/**/*.csv
+
+# Ignore the auto generated JS hooks files created by Surface
+/assets/js/_hooks/
