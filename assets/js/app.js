@@ -28,12 +28,12 @@ import Alpine from "alpinejs";
 
 window.Alpine = Alpine;
 Alpine.start();
+import Hooks from "./_hooks";
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
-let hooks = {};
 let liveSocket = new LiveSocket("/live", Socket, {
   params: { _csrf_token: csrfToken },
-  hooks: hooks,
+  hooks: Hooks
   dom: {
     onBeforeElUpdated(from, to) {
       if (from._x_dataStack) {
