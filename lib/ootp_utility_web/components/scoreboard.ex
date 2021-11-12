@@ -1,6 +1,7 @@
 defmodule OOTPUtilityWeb.Components.Scoreboard do
   use Surface.LiveComponent
 
+  alias __MODULE__
   alias OOTPUtility.Games
   alias OOTPUtilityWeb.Components.Scoreboard.{EmptyGame, Game}
 
@@ -10,19 +11,21 @@ defmodule OOTPUtilityWeb.Components.Scoreboard do
   @xl_min_width 1280
 
   prop subject, :struct, required: true
+  prop date, :date, required: true
+
   data size, :number, default: nil
   data games, :list, default: []
 
   def update(assigns, socket) do
-    games = Games.for_team(assigns.subject, %{recent: 10})
+    games = Games.for_team(assigns.subject, %{limit: 10, start_date: assigns.date})
 
-    {:ok, assign(socket, :games, games)}
+    {:ok, assign(socket, games: games, date: assigns.date, subject: assigns.subject)}
   end
 
   def render(assigns) do
     ~F"""
       <div class="flex overflow-hidden bg-gray-100 p-5 justify-evenly rounded-md" :hook="WindowResize" id="scoreboard" phx-target={@myself}>
-        <div class={pagination_css_class("rounded-l-md")}>
+        <div class={pagination_css_class("rounded-l-md")} :on-click="decrement_date" phx-target={@myself}>
           <Heroicons.Surface.Icon name="chevron-left" type="solid" class="h-6 w-6" />
         </div>
         {#if is_nil(@size)}
@@ -30,15 +33,39 @@ defmodule OOTPUtilityWeb.Components.Scoreboard do
             <EmptyGame />
           {/for}
         {#else}
-          {#for game <- Enum.take(@games, @size)}
+          {#for game <- Enum.take(@games, @size * -1)}
             <Game id={game.id} game={game} />
           {/for}
         {/if}
-        <div class={pagination_css_class("rounded-r-md")}>
+        <div class={pagination_css_class("rounded-r-md")} :on-click="increment_date">
           <Heroicons.Surface.Icon name="chevron-right" type="solid" class="h-6 w-6" />
         </div>
       </div>
     """
+  end
+
+  def handle_event("decrement_date", _, socket) do
+    date = Timex.subtract(socket.assigns.date, Timex.Duration.from_days(1))
+
+    send_update(Scoreboard,
+      date: date,
+      id: "boston-red-sox-scoreboard",
+      subject: socket.assigns.subject
+    )
+
+    {:noreply, socket}
+  end
+
+  def handle_event("increment_date", _, socket) do
+    date = Timex.add(socket.assigns.date, Timex.Duration.from_days(1))
+
+    send_update(Scoreboard,
+      date: date,
+      id: "boston-red-sox-scoreboard",
+      subject: socket.assigns.subject
+    )
+
+    {:noreply, socket}
   end
 
   def handle_event("viewport_resize", viewport, socket) do
