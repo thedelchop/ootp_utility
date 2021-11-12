@@ -6,7 +6,6 @@ defmodule OOTPUtility.Games do
   import Ecto.Query, warn: false
   alias OOTPUtility.Repo
 
-  alias OOTPUtility.Leagues.League
   alias OOTPUtility.Games.Game
   alias OOTPUtility.Teams.Team
 
@@ -23,7 +22,7 @@ defmodule OOTPUtility.Games do
     Repo.all(Game)
   end
 
-  def for_team(team, opts \\ %{})
+  def for_team(team, opts \\ Keyword.new)
 
   def for_team(%Team{id: _id, league: %Ecto.Association.NotLoaded{}} = team, opts) do
     team
@@ -31,27 +30,37 @@ defmodule OOTPUtility.Games do
     |> for_team(opts)
   end
 
-  def for_team(
-        %Team{id: id, league: %League{current_date: current_league_date}} = _team,
-        %{recent: days_in_past}
-      ) do
-    cutoff_date = Timex.subtract(current_league_date, Timex.Duration.from_days(days_in_past))
+  def for_team(%Team{} = team, opts) do
+    games = do_for_team(team, opts)
 
-    Game
+    if Keyword.has_key?(opts, :start_date), do: Enum.reverse(games), else: games
+  end
+
+  def do_for_team(query \\ Game, team, opts)
+
+  def do_for_team(query, %Team{id: id} = _team, []) do
+    query
     |> where([g], g.away_team_id == ^id or g.home_team_id == ^id)
-    |> where([g], g.played == true)
-    |> where([g], g.date > ^cutoff_date)
-    |> order_by([g], g.date)
-    |> limit(10)
     |> preload([g], [:away_team, :home_team, :winning_pitcher, :losing_pitcher, :save_pitcher])
     |> Repo.all()
   end
 
-  def for_team(%Team{id: id} = _team, %{}) do
-    Game
-    |> where([g], g.away_team_id == ^id or g.home_team_id == ^id)
-    |> order_by([g], g.date)
-    |> Repo.all()
+  def do_for_team(query, %Team{} = team, [option | rest]) do
+    case option do
+      {:limit, limit} ->
+        query
+        |> limit(^limit)
+        |> do_for_team(team, rest)
+      {:start_date, start_date} ->
+        query
+        |> where([g], g.date >= ^start_date)
+        |> order_by([g], desc: g.date)
+        |> do_for_team(team, rest)
+
+
+      _ ->
+        do_for_team(query, team, rest)
+    end
   end
 
   @doc """
