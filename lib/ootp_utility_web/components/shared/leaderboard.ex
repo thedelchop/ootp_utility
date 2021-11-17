@@ -5,21 +5,17 @@ defmodule OOTPUtilityWeb.Components.Shared.Leaderboard do
   """
   use Surface.Component
 
-  alias OOTPUtilityWeb.Components.Shared.Leaderboard.Leaders
+  alias OOTPUtilityWeb.Components.Shared.Leaderboard.Leader
 
   prop leaders, :list, default: []
-  prop title, :string, default: "Leaderboard"
 
   def render(assigns) do
     ~F"""
-    <div class="batting-leaders">
-      <h2>{@title}</h2>
-      <div>
-        {#for category_leader <- @leaders}
-          <Leaders leaders={category_leader} />
+      <ul class="pt-4 border-b">
+        {#for {statistic, [leader| _rest]} <- @leaders}
+          <Leader leader={leader} statistic={statistic} />
         {/for}
-      </div>
-    </div>
+      </ul>
     """
   end
 end
