@@ -3,6 +3,17 @@ defmodule OOTPUtility.Teams.Team do
   alias OOTPUtility.Leagues.{Conference, Division, League}
   alias OOTPUtility.Teams.Affiliation
 
+  @derive {Inspect,
+           only: [
+             :id,
+             :name,
+             :level,
+             :league,
+             :record,
+             :affiliates,
+             :organization
+           ]}
+
   use Schema
 
   @derive {Phoenix.Param, key: :slug}

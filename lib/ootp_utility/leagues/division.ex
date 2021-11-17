@@ -2,6 +2,8 @@ defmodule OOTPUtility.Leagues.Division do
   alias OOTPUtility.Leagues.{Conference, League}
   alias OOTPUtility.Teams.Team
 
+  @derive {Inspect, only: [:id, :name, :league, :conference]}
+
   use OOTPUtility.Schema,
     composite_key: [:league_id, :conference_id, :id],
     foreign_key: [:league_id, :conference_id, :division_id]

@@ -1,6 +1,18 @@
 defmodule OOTPUtility.Standings.TeamRecord do
   alias OOTPUtility.Teams.Team
 
+  @derive {Inspect,
+           only: [
+             :id,
+             :team,
+             :games,
+             :wins,
+             :losses,
+             :winning_percentage,
+             :position,
+             :games_behind
+           ]}
+
   use OOTPUtility.Schema,
     composite_key: [:team_id]
 

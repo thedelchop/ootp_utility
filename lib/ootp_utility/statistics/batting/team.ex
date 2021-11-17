@@ -1,6 +1,18 @@
 defmodule OOTPUtility.Statistics.Batting.Team do
   alias OOTPUtility.Statistics.Batting
 
+  @derive {Inspect,
+           only: [
+             :id,
+             :team,
+             :year,
+             :runs,
+             :home_runs,
+             :stolen_bases,
+             :batting_average,
+             :on_base_plus_slugging
+           ]}
+
   use Batting.Schema,
     composite_key: [:team_id, :year]
 

@@ -7,6 +7,8 @@ defmodule OOTPUtility.Standings.Conference do
 
   alias __MODULE__
 
+  @derive {Inspect, only: [:id, :conference, :division_standings, :team_standings]}
+
   embedded_schema do
     embeds_one :conference, Leagues.Conference
 

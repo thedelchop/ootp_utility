@@ -2,6 +2,20 @@ defmodule OOTPUtility.Statistics.Fielding.Player do
   alias OOTPUtility.Players
   alias OOTPUtility.Statistics.Fielding
 
+  @derive {Inspect,
+           only: [
+             :id,
+             :player,
+             :team,
+             :year,
+             :games,
+             :outs_played,
+             :put_outs,
+             :assists,
+             :errors,
+             :fielding_percentage
+           ]}
+
   use Fielding.Schema,
     composite_key: [:year, :player_id, :team_id, :position]
 

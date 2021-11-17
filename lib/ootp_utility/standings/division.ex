@@ -7,6 +7,8 @@ defmodule OOTPUtility.Standings.Division do
 
   alias __MODULE__
 
+  @derive {Inspect, only: [:id, :division, :team_standings]}
+
   embedded_schema do
     embeds_one :division, Leagues.Division
 
@@ -15,7 +17,7 @@ defmodule OOTPUtility.Standings.Division do
 
   def new(
         %Leagues.Division{
-          teams: teams,
+          teams: teams
         } = division
       ) do
     team_standings =

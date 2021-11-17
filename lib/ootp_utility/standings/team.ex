@@ -5,6 +5,8 @@ defmodule OOTPUtility.Standings.Team do
   alias OOTPUtility.{Repo, Teams}
   alias __MODULE__
 
+  @derive {Inspect, only: [:id, :name, :games, :wins, :losses, :winning_percentage, :position, :games_behind]}
+
   embedded_schema do
     field :logo_filename, :string
     field :name, :string

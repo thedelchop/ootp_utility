@@ -2,6 +2,8 @@ defmodule OOTPUtility.Players.Player do
   alias OOTPUtility.Teams.Team
   alias OOTPUtility.Leagues.League
 
+  @derive {Inspect, only: [:id, :first_name, :last_name, :position, :role, :team]}
+
   use OOTPUtility.Schema
 
   @derive {Phoenix.Param, key: :slug}

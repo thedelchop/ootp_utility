@@ -4,6 +4,8 @@ defmodule OOTPUtility.Games.Game do
   alias OOTPUtility.Teams.Team
   alias OOTPUtility.Games.Score
 
+  @derive {Inspect, only: [:id, :date, :away_team_runs, :home_team_runs, :away_team, :home_team]}
+
   use OOTPUtility.Schema
 
   schema "games" do
