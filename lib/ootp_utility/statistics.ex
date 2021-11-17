@@ -32,16 +32,32 @@ defmodule OOTPUtility.Statistics do
     batting_leaders_for(team, year, :runs_batted_in)
   end
 
+  def leaders(team, year, :runs) do
+    batting_leaders_for(team, year, :runs)
+  end
+
+  def leaders(team, year, :stolen_bases) do
+    batting_leaders_for(team, year, :stolen_bases)
+  end
+
   def leaders(team, year, :wins) do
     pitching_leaders_for(team, year, :wins)
   end
 
+  def leaders(team, year, :saves) do
+    pitching_leaders_for(team, year, :saves)
+  end
+
   def leaders(team, year, :earned_run_average) do
-    pitching_leaders_for(:earned_run_average, team, year)
+    pitching_leaders_for(team, year, :earned_run_average)
   end
 
   def leaders(team, year, :strikeouts) do
     pitching_leaders_for(team, year, :strikeouts)
+  end
+
+  def leaders(team, year, :walks_hits_per_inning_pitched) do
+    pitching_leaders_for(team, year, :walks_hits_per_inning_pitched)
   end
 
   defp batting_leaders_for(%Teams.Team{id: team_id} = _team, year, field) do
