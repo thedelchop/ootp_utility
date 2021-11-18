@@ -15,7 +15,11 @@ module.exports = {
       },
     }
   },
-  variants: {},
+  variants: {
+    extend: {
+      borderStyle: ['last'],
+    }
+  },
   plugins: [
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),

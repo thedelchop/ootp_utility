@@ -1,7 +1,7 @@
 defmodule OOTPUtility.Utilities do
   @moduledoc """
   This module contains some pretty generic helper methods for development, like, lookups for translating positions on
-  the field, like LF, into their scoring representation (9), or words like "first", "second", and "3rd" into their respective 
+  the field, like LF, into their scoring representation (9), or words like "first", "second", and "3rd" into their respective
   bases (first -> 1B)
   """
 
@@ -29,9 +29,16 @@ defmodule OOTPUtility.Utilities do
     if is_nil(scoring_key), do: :error, else: {:ok, scoring_key}
   end
 
-  @spec position_from_scoring_key(String.t()) :: {:ok, String.t()} | :error
+  @spec position_from_scoring_key(String.t() | integer()) :: {:ok, String.t()} | :error
+
+  def position_from_scoring_key(scoring_key) when is_binary(scoring_key) do
+    scoring_key
+    |> String.to_integer()
+    |> position_from_scoring_key()
+  end
+
   def position_from_scoring_key(scoring_key) do
-    position =
+    Map.fetch(
       %{
         1 => "P",
         2 => "C",
@@ -42,9 +49,9 @@ defmodule OOTPUtility.Utilities do
         7 => "LF",
         8 => "CF",
         9 => "RF"
-      }[String.to_integer(scoring_key)]
-
-    if is_nil(position), do: :error, else: {:ok, position}
+      },
+      scoring_key
+    )
   end
 
   @spec position_from_base(String.t()) :: {:ok, String.t()} | :error

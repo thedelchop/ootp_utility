@@ -24,14 +24,21 @@ defmodule OOTPUtility.Statistics.Leaderboard do
     |> join(:inner, [stats], p in Players.Player, on: stats.player_id == p.id)
     |> order_by([stats], desc: ^field)
     |> limit(5)
-    |> select([stats, p], %Leaderboard.Leader{subject: p, value: field(stats, ^field)})
+    |> select([stats, p], %{subject: p, value: field(stats, ^field)})
     |> Repo.all()
+    |> Enum.map(&Leaderboard.Leader.new/1)
   end
 
   defmodule Leader do
     defstruct [:subject, :value]
 
     alias __MODULE__
+
+    def new(%{value: value} = attrs) when is_float(value) and value < 1 do
+      "0" <> float = value |> Float.round(3) |> Float.to_string()
+
+      new(%{attrs | value: float})
+    end
 
     def new(%{subject: subject, value: value} = _attrs) do
       %Leader{

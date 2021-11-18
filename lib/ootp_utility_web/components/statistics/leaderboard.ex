@@ -1,19 +1,20 @@
-defmodule OOTPUtilityWeb.Components.Shared.Leaderboard do
+defmodule OOTPUtilityWeb.Components.Statistics.Leaderboard do
   @moduledoc """
   A component to represent a leaderboard for a parent, which could
   be a league, conference, division, team, etc..
   """
   use Surface.Component
 
-  alias OOTPUtilityWeb.Components.Shared.Leaderboard.Leader
+  alias OOTPUtilityWeb.Components.Statistics.Leaderboard.Leader
+  alias OOTPUtility.Statistics.Leaderboard
 
   prop leaders, :list, default: []
 
   def render(assigns) do
     ~F"""
       <ul class="pt-4 border-b">
-        {#for {statistic, [leader| _rest]} <- @leaders}
-          <Leader leader={leader} statistic={statistic} />
+        {#for %Leaderboard{statistic: statistic, leaders: [leader| _rest]} <- @leaders}
+          <Leader {=leader} {=statistic} />
         {/for}
       </ul>
     """
