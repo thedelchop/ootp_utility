@@ -6,9 +6,19 @@ defmodule OOTPUtility.Statistics do
 
   alias OOTPUtility.Statistics.Batting, as: BattingStats
   alias OOTPUtility.Statistics.Pitching, as: PitchingStats
-  alias OOTPUtility.Statistics.Leaderboard
+  alias OOTPUtility.Statistics.{Leaderboard, Ranking}
 
   import Ecto.Query
+
+  def team_ranking(%Teams.Team{league: %Ecto.Association.NotLoaded{}} = team, statistic) do
+    team
+    |> Repo.preload(:league)
+    |> team_ranking(statistic)
+  end
+
+  def team_ranking(%Teams.Team{league: %Leagues.League{season_year: year}} = team, statistic) do
+    ranking(team, year, statistic)
+  end
 
   def team_leaders(%Teams.Team{league: %Ecto.Association.NotLoaded{}} = team, statistic) do
     team
@@ -18,6 +28,10 @@ defmodule OOTPUtility.Statistics do
 
   def team_leaders(%Teams.Team{league: %Leagues.League{season_year: year}} = team, statistic) do
     leaders(team, year, statistic)
+  end
+
+  defp ranking(team, year, statistic) do
+    batting_ranking_for(team, year, statistic)
   end
 
   def leaders(team, year, :batting_average) do
@@ -58,6 +72,12 @@ defmodule OOTPUtility.Statistics do
 
   def leaders(team, year, :walks_hits_per_inning_pitched) do
     pitching_leaders_for(team, year, :walks_hits_per_inning_pitched)
+  end
+
+  defp batting_ranking_for(%Teams.Team{id: team_id} = _team, year, field) do
+    scope = dynamic([stats], stats.team_id == ^team_id and stats.year == ^year)
+
+    Ranking.new(BattingStats.Team, field, scope)
   end
 
   defp batting_leaders_for(%Teams.Team{id: team_id} = _team, year, field) do

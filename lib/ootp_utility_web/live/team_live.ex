@@ -1,7 +1,7 @@
 defmodule OOTPUtilityWeb.TeamLive do
   use Surface.LiveView
 
-  alias OOTPUtility.{Statistics, Teams}
+  alias OOTPUtility.Teams
   alias OOTPUtilityWeb.Components.Team.{Leaders, Rankings}
   alias OOTPUtilityWeb.Components.Scoreboard
   alias OOTPUtilityWeb.Router.Helpers, as: Routes
@@ -26,7 +26,7 @@ defmodule OOTPUtilityWeb.TeamLive do
             </div>
           </div>
         </div>
-        <Rankings rankings={[]} team={@team} />
+        <Rankings team={@team} />
       </div>
 
       <Scoreboard id="#{@team.id}-scoreboard" subject={@team} date={@team.league.current_date} />

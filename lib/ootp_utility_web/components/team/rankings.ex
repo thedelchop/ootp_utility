@@ -1,7 +1,8 @@
 defmodule OOTPUtilityWeb.Components.Team.Rankings do
   use Surface.Component
 
-  prop rankings, :list
+  alias OOTPUtility.Teams.Team
+
   prop team, :struct
 
   def render(assigns) do
@@ -11,7 +12,7 @@ defmodule OOTPUtilityWeb.Components.Team.Rankings do
           Team Stats
         </h3>
         <dl class="mt-5 grid grid-cols-1 rounded-lg bg-white overflow-hidden shadow divide-y divide-gray-200 md:grid-cols-3 md:divide-y-0 md:divide-x">
-          {#for ranking <- @rankings}
+          {#for ranking <- rankings(@team)}
             <div class="px-4 py-5 sm:p-6">
               <dt class="text-base font-normal text-gray-900">
                 {ranking.name}
@@ -29,6 +30,9 @@ defmodule OOTPUtilityWeb.Components.Team.Rankings do
         </dl>
       </div>
     """
+  end
+
+  defp rankings(%Team{} = team) do
   end
 
   defp rank_in(_ranking) do
