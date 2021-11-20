@@ -1,6 +1,8 @@
 defmodule OOTPUtility.Imports.Players.Player do
   alias OOTPUtility.Imports
 
+  @handedness [nil, "right", "left", "switch"]
+
   use Imports,
     from: "players",
     headers: [
@@ -22,8 +24,15 @@ defmodule OOTPUtility.Imports.Players.Player do
     sanitize_attributes(%{attrs | organization_id: nil})
   end
 
-  def sanitize_attributes(%{league_id: league_id} = attrs) do
-    if String.to_integer(league_id) < 1, do: %{attrs | league_id: nil}, else: attrs
+  def sanitize_attributes(%{league_id: league_id, bats: bats, throws: throws} = attrs) do
+    league_id = if String.to_integer(league_id) < 1, do: nil, else: league_id
+
+    %{
+      attrs |
+      league_id: league_id,
+      bats: Enum.at(@handedness, String.to_integer(bats)),
+      throws: Enum.at(@handedness, String.to_integer(throws))
+    }
   end
 
   def validate_changeset(%Ecto.Changeset{changes: %{team_id: team_id}} = _) do

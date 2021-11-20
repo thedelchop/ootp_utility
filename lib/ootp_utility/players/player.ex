@@ -17,8 +17,8 @@ defmodule OOTPUtility.Players.Player do
     field :height, :integer
     field :weight, :integer
 
-    field :bats, :integer
-    field :throws, :integer
+    field :bats, :string
+    field :throws, :string
 
     field :age, :integer
     field :date_of_birth, :string
