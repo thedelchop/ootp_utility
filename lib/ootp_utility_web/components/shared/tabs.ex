@@ -2,8 +2,6 @@ defmodule OOTPUtilityWeb.Components.Shared.Tabs do
   @moduledoc """
   A simple horizontal navigation **tabs** component
   """
-  require IEx
-
   use Surface.LiveComponent
 
   @doc "The tabs to display"
