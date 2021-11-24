@@ -40,6 +40,8 @@ defmodule OOTPUtility.MixProject do
       {:ecto_sql, "~> 3.6"},
       {:esbuild, "~> 0.2", runtime: Mix.env() == :dev},
       {:ex_heroicons, "~> 0.5.0"},
+      {:ex_machina, "~> 2.7.0", only: [:dev, :test]},
+      {:faker, "~> 0.16", only: [:dev, :test]},
       {:floki, ">= 0.30.0", only: :test},
       {:flow, "~> 1.0"},
       {:gettext, "~> 0.18"},
