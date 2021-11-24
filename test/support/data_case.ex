@@ -38,6 +38,14 @@ defmodule OOTPUtility.DataCase do
   end
 
   @doc """
+    A helper to compare the results of SQL queries by just extracting their ids
+
+    assert ids_for(Games.for_team(team)) == ids_for([game, game_1])
+  """
+
+  def ids_for(resources), do: Enum.map(resources, & &1.id)
+
+  @doc """
   A helper that transforms changeset errors into a map of messages.
 
       assert {:error, changeset} = Accounts.create_user(%{password: "short"})

@@ -70,10 +70,6 @@ defmodule OOTPUtility.GamesTest do
     end
   end
 
-  defp ids_for(resources) do
-    Enum.map(resources, & &1.id)
-  end
-
   defp date_in_past(days_ago) do
     with days_ago_duration <- Timex.Duration.from_days(days_ago) do
       Timex.today()

@@ -2,15 +2,15 @@ defmodule OOTPUtility.LeaguesTest do
   use OOTPUtility.DataCase
 
   alias OOTPUtility.Leagues
-  import OOTPUtility.LeaguesFixtures
+  import OOTPUtility.Factory
 
   describe "leagues" do
     setup do
-      {:ok, league: league_fixture()}
+      {:ok, league: insert(:league)}
     end
 
     test "list_leagues/0 returns all leagues", %{league: league} do
-      assert Leagues.list_leagues() == [league]
+      assert ids_for(Leagues.list_leagues()) == ids_for([league])
     end
 
     test "get_league!/1 returns the league with given id", %{league: league} do
@@ -20,11 +20,11 @@ defmodule OOTPUtility.LeaguesTest do
 
   describe "conferences" do
     setup do
-      {:ok, conference: conference_fixture()}
+      {:ok, conference: insert(:conference)}
     end
 
     test "list_conferences/0 returns all conferences", %{conference: conference} do
-      assert Leagues.list_conferences() == [conference]
+      assert ids_for(Leagues.list_conferences()) == ids_for([conference])
     end
 
     test "get_conference!/1 returns the conference with given id", %{conference: conference} do
@@ -34,11 +34,11 @@ defmodule OOTPUtility.LeaguesTest do
 
   describe "divisions" do
     setup do
-      {:ok, division: division_fixture()}
+      {:ok, division: insert(:division)}
     end
 
     test "list_divisions/0 returns all divisions", %{division: division} do
-      assert Leagues.list_divisions() == [division]
+      assert ids_for(Leagues.list_divisions()) == ids_for([division])
     end
 
     test "get_division!/1 returns the division with given id", %{division: division} do
