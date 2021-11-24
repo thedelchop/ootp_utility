@@ -26,10 +26,7 @@ defmodule OOTPUtilityWeb.TeamLive do
             </div>
           </div>
         </div>
-        <Rankings team={@team} />
       </div>
-
-      <Scoreboard id="#{@team.id}-scoreboard" subject={@team} date={@team.league.current_date} />
 
       <div class="main">
         <div class="left-column">
@@ -56,13 +53,13 @@ defmodule OOTPUtilityWeb.TeamLive do
 
   @impl true
   def mount(%{"slug" => slug}, _session, socket) do
-    team = Teams.get_team_by_slug!(slug, [:league, :division, :conference])
+    team = Teams.get_team_by_slug!(slug, preload: [:league, :division, :conference])
 
     {:ok, assign(socket, :team, team)}
   end
 
   defp full_name(%OOTPUtility.Teams.Team{name: name, nickname: nickname} = _team) do
-    name <> " " <> nickname
+    "#{name} #{nickname}"
   end
 
   defp division_standings(_team) do

@@ -1,7 +1,7 @@
 defmodule OOTPUtilityWeb.PlayerControllerTest do
   use OOTPUtilityWeb.ConnCase
 
-  import OOTPUtility.{PlayersFixtures}
+  import OOTPUtility.Factory
 
   describe "index" do
     setup [:create_player]
@@ -18,12 +18,12 @@ defmodule OOTPUtilityWeb.PlayerControllerTest do
     test "renders the division for viewing", %{conn: conn, player: player} do
       %OOTPUtility.Players.Player{team: team} = OOTPUtility.Repo.preload(player, :team)
 
-      conn = get(conn, Routes.player_path(conn, :show, player, team_id: team.slug ))
+      conn = get(conn, Routes.player_path(conn, :show, player, team_id: team.slug))
       assert html_response(conn, 200) =~ "Show Player"
     end
   end
 
   defp create_player(_) do
-    %{player: player_fixture()}
+    %{player: insert(:player)}
   end
 end
