@@ -9,7 +9,7 @@ defmodule OOTPUtility.Repo.Migrations.CreatePlayers do
       add :weight, :integer
       add :height, :integer
       add :age, :integer
-      add :date_of_birth, :string
+      add :date_of_birth, :date
       add :experience, :integer
       add :uniform_number, :integer
       add :bats, :integer

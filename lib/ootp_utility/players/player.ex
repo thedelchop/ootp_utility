@@ -21,7 +21,7 @@ defmodule OOTPUtility.Players.Player do
     field :throws, :string
 
     field :age, :integer
-    field :date_of_birth, :string
+    field :date_of_birth, :date
     field :experience, :integer
     field :retired, :boolean, default: false
 

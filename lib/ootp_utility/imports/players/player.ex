@@ -24,15 +24,25 @@ defmodule OOTPUtility.Imports.Players.Player do
     sanitize_attributes(%{attrs | organization_id: nil})
   end
 
-  def sanitize_attributes(%{league_id: league_id, bats: bats, throws: throws} = attrs) do
-    league_id = if String.to_integer(league_id) < 1, do: nil, else: league_id
+  def sanitize_attributes(
+        %{
+          league_id: league_id,
+          bats: bats,
+          throws: throws,
+          date_of_birth: date_of_birth_as_string
+        } = attrs
+      ) do
+    with {:ok, date_of_birth} <- Timex.parse(date_of_birth_as_string, "{YYYY}-{M}-{D}") do
+      league_id = if String.to_integer(league_id) < 1, do: nil, else: league_id
 
-    %{
-      attrs |
-      league_id: league_id,
-      bats: Enum.at(@handedness, String.to_integer(bats)),
-      throws: Enum.at(@handedness, String.to_integer(throws))
-    }
+      %{
+        attrs
+        | league_id: league_id,
+          date_of_birth: date_of_birth,
+          bats: Enum.at(@handedness, String.to_integer(bats)),
+          throws: Enum.at(@handedness, String.to_integer(throws))
+      }
+    end
   end
 
   def validate_changeset(%Ecto.Changeset{changes: %{team_id: team_id}} = _) do
