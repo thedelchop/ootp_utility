@@ -8,4 +8,5 @@ defmodule OOTPUtility.Factory do
   use OOTPUtility.TeamFactory
   use OOTPUtility.PlayerFactory
   use OOTPUtility.StandingsFactory
+  use OOTPUtility.Statistics.BattingFactory
 end
