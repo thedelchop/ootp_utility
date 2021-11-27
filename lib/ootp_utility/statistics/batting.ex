@@ -5,14 +5,11 @@ defmodule OOTPUtility.Statistics.Batting do
   import Ecto.Query, warn: false
 
   alias __MODULE__
+  alias OOTPUtility.{Repo, Teams}
 
-  alias OOTPUtility.Repo
-  alias OOTPUtility.Teams
-
-  def ranking(%Teams.Team{id: team_id, league_id: league_id} = _team, statistic) do
-    partition = :league_id
-
+  def ranking(%Teams.Team{id: team_id} = _team, statistic, partition) do
     order_by = [desc: statistic]
+    partition = [String.to_atom("#{partition}_id"), :year]
 
     ranking_query =
       from s in Batting.Team,
