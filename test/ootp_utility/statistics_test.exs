@@ -1,10 +1,10 @@
-defmodule OOTPUtility.Statistics.BattingTest do
+defmodule OOTPUtility.StatisticsTest do
   use OOTPUtility.DataCase
 
-  alias OOTPUtility.Statistics.Batting
+  alias OOTPUtility.Statistics
   import OOTPUtility.Factory
 
-  describe "ranking/2" do
+  describe "team_ranking/3" do
     test "it returns a tuple representing the teams ranking in their league" do
       league = insert(:league)
 
@@ -20,9 +20,9 @@ defmodule OOTPUtility.Statistics.BattingTest do
         home_runs: Faker.random_between(200, 400)
       )
 
-      assert Batting.ranking(leader, :home_runs, :league) == {1, 5, 450}
+      assert Statistics.team_ranking(leader, :home_runs) == {1, 5, 450}
 
-      assert Batting.ranking(last_place_team, :home_runs, :league) == {5, 5, 150}
+      assert Statistics.team_ranking(last_place_team, :home_runs) == {5, 5, 150}
     end
 
     test "it correctly handles rankings when there are ties" do
@@ -50,7 +50,7 @@ defmodule OOTPUtility.Statistics.BattingTest do
         home_runs: Faker.random_between(200, 245)
       )
 
-      assert Batting.ranking(subject_team, :home_runs, :league) == {4, 6, 250}
+      assert Statistics.team_ranking(subject_team, :home_runs) == {4, 6, 250}
     end
   end
 end
