@@ -17,7 +17,7 @@ defmodule OOTPUtilityWeb.Components.Scoreboard do
   data games, :list, default: []
 
   def update(assigns, socket) do
-    games = Games.for_team(assigns.subject, %{limit: 10, start_date: assigns.date})
+    games = Games.for_team(assigns.subject, limit: 10, start_date: assigns.date)
 
     {:ok, assign(socket, games: games, date: assigns.date, subject: assigns.subject)}
   end
