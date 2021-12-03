@@ -9,38 +9,42 @@ defmodule OOTPUtilityWeb.TeamLive do
   @impl true
   def render(assigns) do
     ~F"""
-      <div id="team-banner" class="max-w-7xl mx-auto sm:px-6 lg:px-8 flex">
-
-        <div id="team-header" class="flex-none">
-          <img class="h-10 w-10 rounded-full" src={Routes.static_path(@socket, "/images/logos/#{@team.logo_filename}")} alt="">
-          <div class="flex flex-col">
-            <h1>{full_name(@team)}</h1>
-            <div class="flex flex-row">
-              <h2>{division_standings(@team)}</h2>
-              <h2>{conference_standings(@team)}</h2>
-            </div>
-            <hr />
-            <div class="flex flex-row">
-              <h3>{record(@team)}</h3>
-              <h3>{games_behind(@team)} GB</h3>
+      <div class="max-w-7xl border-2 rounded-2xl mx-auto sm:p-6 lg:p-8 flex justify-between bg-white">
+        <div class="flex space-x-4">
+          <img class="h-28 w-28 rounded-full" src={Routes.static_path(@socket, "/images/logos/#{@team.logo_filename}")} alt="">
+          <div class="flex flex-col space-y-4">
+            <h1 class="text-4xl leading-6 font-medium text-gray-900">{full_name(@team)}</h1>
+            <div>
+              <div class="flex flex-row space-x-3">
+                <h2 class="text-xl leading-6 font-medium text-gray-900">{division_standings(@team)}</h2>
+                <h2 class="text-xl leading-6 font-medium text-gray-900">{conference_standings(@team)}</h2>
+              </div>
+              <hr class="my-2"/>
+              <div class="flex flex-row space-x-2">
+                <h3 class="text-lg font-medium text-gray-900">{record(@team)}</h3>
+                <h3 class="text-lg font-medium text-gray-900">{games_behind(@team)} GB</h3>
+              </div>
             </div>
           </div>
         </div>
+        <Rankings team={@team} />
       </div>
 
-      <div class="main">
-        <div class="left-column">
+      <Scoreboard id="boston-red-sox-scoreboard" subject={@team} date={@team.league.current_date} />
+
+      <div class="flex">
+        <div class="flex flex-col w-1/4">
           <div class="next-game"></div>
           <div class="standings"></div>
         </div>
-        <div class="center-column">
+        <div class="flex flex-col w-1/2">
           <div class="starters"></div>
           <div class="bullpen"></div>
           <div class="catchers"></div>
           <div class="infielders"></div>
           <div class="outfielders"></div>
         </div>
-        <div class="right-column flex flex-row">
+        <div class="flex flex-column w-1/4">
           <Leaders id={@team.id} team={@team}/>
           <div class="streaks"></div>
           <div class="organization-summary"></div>
@@ -67,7 +71,7 @@ defmodule OOTPUtilityWeb.TeamLive do
   end
 
   defp conference_standings(_team) do
-    "5rd in American League"
+    "3rd in American League"
   end
 
   defp record(_team) do
