@@ -17,7 +17,7 @@ defmodule OOTPUtilityWeb.Components.Scoreboard do
   data games, :list, default: []
 
   def update(assigns, socket) do
-    games = Games.for_team(assigns.subject, limit: 10, start_date: assigns.date)
+    games = Games.for_team(assigns.subject, limit: socket.assigns.size, start_date: assigns.date)
 
     {:ok, assign(socket, games: games, date: assigns.date, subject: assigns.subject)}
   end
@@ -33,7 +33,7 @@ defmodule OOTPUtilityWeb.Components.Scoreboard do
             <EmptyGame />
           {/for}
         {#else}
-          {#for game <- Enum.take(@games, @size * -1)}
+          {#for game <- @games}
             <Game id={game.id} game={game} />
           {/for}
         {/if}
@@ -48,8 +48,8 @@ defmodule OOTPUtilityWeb.Components.Scoreboard do
     date = Timex.subtract(socket.assigns.date, Timex.Duration.from_days(1))
 
     send_update(Scoreboard,
-      date: date,
       id: "boston-red-sox-scoreboard",
+      date: date,
       subject: socket.assigns.subject
     )
 
@@ -60,8 +60,8 @@ defmodule OOTPUtilityWeb.Components.Scoreboard do
     date = Timex.add(socket.assigns.date, Timex.Duration.from_days(1))
 
     send_update(Scoreboard,
-      date: date,
       id: "boston-red-sox-scoreboard",
+      date: date,
       subject: socket.assigns.subject
     )
 
