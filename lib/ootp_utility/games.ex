@@ -22,7 +22,7 @@ defmodule OOTPUtility.Games do
     Repo.all(Game)
   end
 
-  def for_team(team, opts \\ Keyword.new)
+  def for_team(team, opts \\ Keyword.new())
 
   def for_team(%Team{id: _id, league: %Ecto.Association.NotLoaded{}} = team, opts) do
     team
@@ -31,9 +31,7 @@ defmodule OOTPUtility.Games do
   end
 
   def for_team(%Team{} = team, opts) do
-    games = do_for_team(team, opts)
-
-    if Keyword.has_key?(opts, :start_date), do: Enum.reverse(games), else: games
+    do_for_team(team, opts)
   end
 
   def do_for_team(query \\ Game, team, opts)
@@ -51,12 +49,12 @@ defmodule OOTPUtility.Games do
         query
         |> limit(^limit)
         |> do_for_team(team, rest)
+
       {:start_date, start_date} ->
         query
         |> where([g], g.date >= ^start_date)
-        |> order_by([g], desc: g.date)
+        |> order_by([g], asc: g.date)
         |> do_for_team(team, rest)
-
 
       _ ->
         do_for_team(query, team, rest)
