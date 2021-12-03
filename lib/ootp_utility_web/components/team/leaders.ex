@@ -17,7 +17,7 @@ defmodule OOTPUtilityWeb.Components.Team.Leaders do
 
   def render(assigns) do
     ~F"""
-      <div class="bg-white overflow-hidden shadow rounded-lg divide-y divide-gray-200 p-4">
+      <div class="bg-white overflow-hidden shadow rounded-lg divide-y divide-gray-200 p-4 flex-1">
         <h1 class="pb-4">Team Leaders</h1>
         <Tabs id="team_leaders">
           <Tab label="Hitting">
