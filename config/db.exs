@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 defaults = [
   hostname: "localhost",
