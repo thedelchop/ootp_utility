@@ -5,7 +5,7 @@ defmodule OOTPUtility.MixProject do
     [
       app: :ootp_utility,
       version: "0.1.0",
-      elixir: "~> 1.12",
+      elixir: "~> 1.13",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:gettext] ++ Mix.compilers() ++ [:surface],
       start_permanent: Mix.env() == :prod,
@@ -41,7 +41,7 @@ defmodule OOTPUtility.MixProject do
       {:esbuild, "~> 0.2", runtime: Mix.env() == :dev},
       {:ex_heroicons, "~> 0.5.0"},
       {:ex_machina, "~> 2.7.0", only: [:dev, :test]},
-      {:faker, "~> 0.16", only: [:dev, :test]},
+      {:faker, github: "elixirs/faker", only: [:dev, :test]},
       {:floki, ">= 0.30.0", only: :test},
       {:flow, "~> 1.0"},
       {:gettext, "~> 0.18"},
