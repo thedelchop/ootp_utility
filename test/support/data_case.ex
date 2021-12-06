@@ -43,7 +43,7 @@ defmodule OOTPUtility.DataCase do
     assert ids_for(Games.for_team(team)) == ids_for([game, game_1])
   """
 
-  def ids_for(resources), do: Enum.map(resources, & &1.id)
+  def ids_for(resources), do: resources |> Enum.map(& &1.id) |> Enum.sort()
 
   @doc """
   A helper that transforms changeset errors into a map of messages.

@@ -4,8 +4,8 @@ defmodule OOTPUtility.Players do
   """
 
   import Ecto.Query, warn: false
-  alias OOTPUtility.Repo
 
+  alias OOTPUtility.Repo
   alias OOTPUtility.Players.Player
   alias OOTPUtility.Teams.Team
 
@@ -18,10 +18,44 @@ defmodule OOTPUtility.Players do
       [%Player{}, ...]
 
   """
-  def for_team(%Team{id: team_id}) do
-    Player
+
+  def for_team(%Team{} = team, opts \\ Keyword.new()) do
+    do_for_team(team, opts)
+  end
+
+  def do_for_team(query \\ Player, team, options)
+
+  def do_for_team(query, %Team{id: team_id}, []) do
+    query
     |> where([p], p.team_id == ^team_id)
     |> Repo.all()
+  end
+
+  def do_for_team(query, team, [option | rest]) do
+    case option do
+      {:position, "IF"} ->
+        query
+        |> where([g], g.position in ^["1B", "2B", "3B", "SS"])
+        |> do_for_team(team, rest)
+
+      {:position, "OF"} ->
+        query
+        |> where([g], g.position in ^["LF", "CF", "RF"])
+        |> do_for_team(team, rest)
+
+      {:position, "P"} ->
+        query
+        |> where([g], g.position in ^["SP", "MR", "CL"])
+        |> do_for_team(team, rest)
+
+      {:position, position} ->
+        query
+        |> where([g], g.position == ^position)
+        |> do_for_team(team, rest)
+
+      _ ->
+        do_for_team(query, team, rest)
+    end
   end
 
   @doc """
