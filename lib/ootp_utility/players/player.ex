@@ -28,9 +28,8 @@ defmodule OOTPUtility.Players.Player do
     field :local_popularity, :integer
     field :national_popularity, :integer
 
-    field :position, :integer
+    field :position, :string
     field :uniform_number, :integer
-    field :role, :integer
 
     field :free_agent, :boolean, default: false
 

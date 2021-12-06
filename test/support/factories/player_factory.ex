@@ -1,5 +1,6 @@
 defmodule OOTPUtility.PlayerFactory do
   alias OOTPUtility.Players.Player
+  alias OOTPUtility.Utilities
 
   defmacro __using__(_opts) do
     quote do
@@ -19,9 +20,8 @@ defmodule OOTPUtility.PlayerFactory do
           retired: false,
           local_popularity: Enum.random(1..6),
           national_popularity: Enum.random(1..6),
-          position: Enum.random(1..9),
+          position: 1..13 |> Enum.random() |> Utilities.position_from_scoring_key(),
           uniform_number: Enum.random(1..99),
-          role: Enum.random(1..13),
           free_agent: false,
           league: fn -> build(:league) end,
           team: fn p -> build(:team, league: p.league) end

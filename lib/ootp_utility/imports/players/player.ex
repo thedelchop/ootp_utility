@@ -1,5 +1,6 @@
 defmodule OOTPUtility.Imports.Players.Player do
   alias OOTPUtility.Imports
+  import OOTPUtility.Utilities, only: [position_from_scoring_key: 1]
 
   @handedness [nil, "right", "left", "switch"]
 
@@ -22,6 +23,18 @@ defmodule OOTPUtility.Imports.Players.Player do
 
   def sanitize_attributes(%{organization_id: "0"} = attrs) do
     sanitize_attributes(%{attrs | organization_id: nil})
+  end
+
+  def sanitize_attributes(%{position: position, role: "0"} = attrs) do
+    {:ok, position} = position_from_scoring_key(position)
+
+    sanitize_attributes(%{attrs | position: position, role: nil})
+  end
+
+  def sanitize_attributes(%{role: role} = attrs) when not is_nil(role) do
+    {:ok, position} = position_from_scoring_key(role)
+
+    sanitize_attributes(%{attrs | position: position, role: nil})
   end
 
   def sanitize_attributes(

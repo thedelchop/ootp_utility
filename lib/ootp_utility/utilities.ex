@@ -5,50 +5,29 @@ defmodule OOTPUtility.Utilities do
   bases (first -> 1B)
   """
 
-  @doc """
-  Convert position abbreviation in their scoring key
-
-  ## Examples
-    iex> OOTPUtility.Utilities.scoring_key_from_position("3B") #-> 5
-  """
-  @spec scoring_key_from_position(String.t()) :: {:ok, String.t()} | :error
-  def scoring_key_from_position(position) do
-    scoring_key =
-      %{
-        "P" => "1",
-        "C" => "2",
-        "1B" => "3",
-        "2B" => "4",
-        "3B" => "5",
-        "SS" => "6",
-        "LF" => "7",
-        "CF" => "8",
-        "RF" => "9"
-      }[position]
-
-    if is_nil(scoring_key), do: :error, else: {:ok, scoring_key}
-  end
-
   @spec position_from_scoring_key(String.t() | integer()) :: {:ok, String.t()} | :error
-
-  def position_from_scoring_key(scoring_key) when is_binary(scoring_key) do
+  def position_from_scoring_key(scoring_key) when is_integer(scoring_key) do
     scoring_key
-    |> String.to_integer()
+    |> Integer.to_string()
     |> position_from_scoring_key()
   end
 
   def position_from_scoring_key(scoring_key) do
     Map.fetch(
       %{
-        1 => "P",
-        2 => "C",
-        3 => "1B",
-        4 => "2B",
-        5 => "3B",
-        6 => "SS",
-        7 => "LF",
-        8 => "CF",
-        9 => "RF"
+        "1" => "P",
+        "2" => "C",
+        "3" => "1B",
+        "4" => "2B",
+        "5" => "3B",
+        "6" => "SS",
+        "7" => "LF",
+        "8" => "CF",
+        "9" => "RF",
+        "10" => "DH",
+        "11" => "SP",
+        "12" => "MR",
+        "13" => "CL"
       },
       scoring_key
     )
