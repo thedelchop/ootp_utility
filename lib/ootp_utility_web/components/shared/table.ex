@@ -30,7 +30,7 @@ defmodule OOTPUtilityWeb.Components.Shared.Table do
   slot cols, args: [item: ^data], required: true
 
   @doc "Internal holder of sorted data"
-  data sorted_data, :list, default: nil
+  data sorted_data, :list, default: []
 
   @doc "Holder of what we're sorting by"
   data sorted_by, :any, default: nil
@@ -43,11 +43,11 @@ defmodule OOTPUtilityWeb.Components.Shared.Table do
   def update(assigns, socket) do
     assigns = Map.put(assigns, :updated?, assigns[:data] != socket.assigns[:data])
 
-    socket
-    |> assign(assigns)
-    |> assign(:sorted_data, sorted_data(socket.assigns))
+    socket =
+      socket
+      |> assign(assigns)
 
-    {:ok, socket}
+    { :ok, assign(socket, :sorted_data, sorted_data(socket.assigns)) }
   end
 
   def render(assigns) do
