@@ -31,7 +31,7 @@ defmodule OOTPUtilityWeb.Components.Standings.Teams do
   def render(assigns) do
     ~F"""
       <div>
-        <Table id="#{@id}-table" data={standing <- @standings} header_class={&header_class/2} column_class={&column_class/2}>
+        <Table id={"#{@id}-table"} data={standing <- @standings} header_class={&header_class/2} column_class={&column_class/2}>
           <Column label={@parent_name}>
             <div class="flex items-center">
               <div class="flex-shrink-0 h-6 lg:h-10 h-6 lg:w-10">

@@ -20,16 +20,46 @@ defmodule OOTPUtilityWeb.Components.Standings.Conference do
           </LiveRedirect>
         </div>
         <div class="grid grid-cols-1 gap-4 lg:gap-8">
-          {#for standings <- child_standings(@standings)}
+          {#for child_standings <- child_standings(@standings)}
             {#if has_divisions?(@standings) }
-              <Division id={standings.id} standings={standings} />
+              <Division id={child_id(@standings, child_standings)} standings={child_standings} />
             {#else}
-              <Teams id={standings.id} standings={standings} />
+              <Teams id={child_id(@standings, child_standings)} standings={child_standings} />
             {/if}
           {/for}
         </div>
       </div>
     """
+  end
+
+  def child_id(%Standings.Conference{
+      conference: %Leagues.Conference{
+        league: %Leagues.League{
+          slug: league_slug
+        },
+        slug: slug
+      },
+    } = _standings, %Standings.Team{} = _team_standings) do
+
+    [league_slug, slug, "teams", "standings"]
+    |> Enum.join("-")
+  end
+
+  def child_id(%Standings.Conference{
+      conference: %Leagues.Conference{
+        league: %Leagues.League{
+          slug: league_slug
+        },
+        slug: conference_slug
+      }
+      } = _standings,
+      %Standings.Division{
+        division: %Leagues.Division{
+          slug: division_slug
+        }
+      } = _division_standings) do
+    [league_slug, conference_slug, division_slug, "standings"]
+    |> Enum.join("-")
   end
 
   def name(%Standings.Conference{conference: %Leagues.Conference{name: name}} = _standings),
@@ -57,6 +87,6 @@ defmodule OOTPUtilityWeb.Components.Standings.Conference do
         } = _standings,
         socket
       ) do
-    Routes.live_path(socket, ConferenceLive, %{league_slug: league_slug, slug: slug})
+    Routes.live_path(socket, ConferenceLive, league_slug, slug)
   end
 end

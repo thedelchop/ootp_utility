@@ -38,7 +38,7 @@ defmodule OOTPUtility.Standings.League do
         } = league
       ) do
     %League{
-      id: "#{league.id}-standings",
+      id: "#{league.slug}-standings",
       league: league,
       conference_standings: [],
       division_standings: Enum.map(divisions, &Division.new/1)
@@ -47,6 +47,7 @@ defmodule OOTPUtility.Standings.League do
 
   def new(%Leagues.League{conferences: conferences} = league) do
     %League{
+      id: "#{league.slug}-standings",
       league: league,
       division_standings: [],
       conference_standings: Enum.map(conferences, &Conference.new/1)

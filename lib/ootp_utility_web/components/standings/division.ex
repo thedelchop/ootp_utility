@@ -20,7 +20,7 @@ defmodule OOTPUtilityWeb.Components.Standings.Division do
         } = _division,
         socket
       ) do
-    Routes.live_path(socket, DivisionLive, %{league_slug: league_slug, slug: slug})
+    Routes.live_path(socket, DivisionLive, league_slug, slug)
   end
 
   def path_to_division(
@@ -33,11 +33,19 @@ defmodule OOTPUtilityWeb.Components.Standings.Division do
         } = _standings,
         socket
       ) do
-    Routes.live_path(socket, DivisionLive, %{
-      league_slug: league_slug,
-      conference_slug: conference_slug,
-      slug: slug
-    })
+    Routes.live_path(socket, DivisionLive, league_slug, conference_slug, slug)
+  end
+
+  def child_id(%Standings.Division{
+      division: %Leagues.Division{
+        conference: %Leagues.Conference{slug: conference_slug},
+        league: %Leagues.League{slug: league_slug},
+        slug: slug
+      }
+    } = _standings) do
+
+    [league_slug, conference_slug, slug, "teams"]
+    |> Enum.join("-")
   end
 
   @impl true
@@ -47,7 +55,7 @@ defmodule OOTPUtilityWeb.Components.Standings.Division do
         <div class="-my-0 lg:-my-2 overflow-x-auto -mx-3 lg:-mx-4">
           <div class="py-0 lg:py-2 align-middle inline-block min-w-full px-3 lg:px-4">
             <div class="overflow-hidden">
-              <Teams id="#{@standings.id}-teams" standings={child_standings(@standings)} parent_path={path_to_division(@standings, @socket)} parent_name={name(@standings)} />
+              <Teams id={child_id(@standings)} standings={child_standings(@standings)} parent_path={path_to_division(@standings, @socket)} parent_name={name(@standings)} />
             </div>
           </div>
         </div>
