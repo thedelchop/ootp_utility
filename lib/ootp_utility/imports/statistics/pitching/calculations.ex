@@ -41,7 +41,7 @@ defmodule OOTPUtility.Imports.Statistics.Pitching.Calculations do
   def calculate(%{outs_pitched: 0} = _attrs, :earned_run_average), do: 0.0
 
   def calculate(%{earned_runs: er, outs_pitched: outs} = _attrs, :earned_run_average) do
-    er / outs / 27
+    er / outs * 27
   end
 
   def calculate(%{games: 0} = _attrs, :games_finished_percentage), do: 0.0
@@ -63,7 +63,7 @@ defmodule OOTPUtility.Imports.Statistics.Pitching.Calculations do
   def calculate(%{outs_pitched: 0} = _attrs, :hits_per_9), do: 0.0
 
   def calculate(%{hits: h, outs_pitched: outs} = _attrs, :hits_per_9) do
-    h / outs / 27
+    h / outs * 27
   end
 
   def calculate(%{games: 0} = _attrs, :pitches_per_game), do: 0.0
@@ -87,13 +87,13 @@ defmodule OOTPUtility.Imports.Statistics.Pitching.Calculations do
   def calculate(%{outs_pitched: 0} = _attrs, :runs_per_9), do: 0.0
 
   def calculate(%{runs: r, outs_pitched: outs} = _attrs, :runs_per_9) do
-    r / outs / 27
+    r / outs * 27
   end
 
   def calculate(%{outs_pitched: 0} = _attrs, :strikeouts_per_9), do: 0.0
 
   def calculate(%{strikeouts: k, outs_pitched: outs} = _attrs, :strikeouts_per_9) do
-    k / outs / 27
+    k / outs * 27
   end
 
   def calculate(%{walks: 0} = _attrs, :strikeouts_to_walks_ratio), do: 0.0
@@ -105,7 +105,7 @@ defmodule OOTPUtility.Imports.Statistics.Pitching.Calculations do
   def calculate(%{outs_pitched: 0} = _attrs, :walks_per_9), do: 0.0
 
   def calculate(%{walks: bb, outs_pitched: outs} = _attrs, :walks_per_9) do
-    bb / outs / 27
+    bb / outs * 27
   end
 
   def calculate(%{outs_pitched: 0} = _attrs, :walks_hits_per_inning_pitched), do: 0.0
@@ -114,7 +114,7 @@ defmodule OOTPUtility.Imports.Statistics.Pitching.Calculations do
         %{walks: bb, hits: h, outs_pitched: outs} = _attrs,
         :walks_hits_per_inning_pitched
       ) do
-    (bb + h) / outs / 27
+    (bb + h) / outs * 3
   end
 
   def calculate(%{games_started: 0} = _attrs, :winning_percentage), do: 0.0
@@ -136,6 +136,6 @@ defmodule OOTPUtility.Imports.Statistics.Pitching.Calculations do
     do: 0.0
 
   def calculate(%{walks: bb, outs_pitched: outs} = _attrs, :walks_per_9) do
-    bb / outs / 27
+    bb / outs * 27
   end
 end
