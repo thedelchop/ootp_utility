@@ -68,7 +68,7 @@ defmodule OOTPUtility.Repo.Migrations.CreatePlayerGamePitchingStats do
       add :walks_hits_per_inning_pitched, :float
       add :walks_per_9, :float
       add :wild_pitches, :integer
-      add :win_probabilty_added, :float
+      add :win_probability_added, :float
       add :winning_percentage, :float
       add :wins, :integer
       add :wins_above_replacement, :float

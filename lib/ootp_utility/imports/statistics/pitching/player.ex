@@ -15,10 +15,15 @@ defmodule OOTPUtility.Imports.Statistics.Pitching.Player do
     ],
     schema: Pitching.Player
 
-  def update_changeset(changeset) do
+  def update_changeset(%Ecto.Changeset{changes: %{wins_above_replacement: war, win_probability_added: wpa, leverage_index: li}} = changeset) do
     changeset
     |> Pitching.Player.put_composite_key()
     |> add_missing_statistics()
+    |> Ecto.Changeset.change(%{
+      wins_above_replacement: Float.round(war, 2),
+      win_probability_added: Float.round(wpa, 2),
+      leverage_index: Float.round(li, 2)
+    })
   end
 
   def sanitize_attributes(%{team_id: "0"} = attrs) do
@@ -26,11 +31,9 @@ defmodule OOTPUtility.Imports.Statistics.Pitching.Player do
   end
 
   def sanitize_attributes(%{league_id: league_id} = attrs) do
-    if String.to_integer(league_id) < 1 do
-      %{attrs | league_id: nil}
-    else
-      attrs
-    end
+    league_id = if String.to_integer(league_id) < 1, do: nil, else: league_id
+
+    %{ attrs | league_id: league_id }
   end
 
   def validate_changeset(

@@ -9,16 +9,23 @@ defmodule OOTPUtility.Imports.Statistics.Pitching.Game do
       {:ir, :inherited_runners},
       {:irs, :inherited_runners_scored},
       {:li, :leverage_index},
-      {:war, :wins_above_replacement},
       {:wpa, :win_probability_added},
       {:outs, :outs_pitched}
     ],
     schema: Pitching.Game
 
-  def update_changeset(changeset) do
+  def update_changeset(
+        %Ecto.Changeset{
+          changes: %{win_probability_added: wpa, leverage_index: li}
+        } = changeset
+      ) do
     changeset
     |> Pitching.Game.put_composite_key()
     |> add_missing_statistics()
+    |> Ecto.Changeset.change(%{
+      win_probability_added: Float.round(wpa, 2),
+      leverage_index: Float.round(li, 2)
+    })
   end
 
   def sanitize_attributes(%{team_id: "0"} = attrs) do
@@ -26,11 +33,9 @@ defmodule OOTPUtility.Imports.Statistics.Pitching.Game do
   end
 
   def sanitize_attributes(%{league_id: league_id} = attrs) do
-    if String.to_integer(league_id) < 1 do
-      %{attrs | league_id: nil}
-    else
-      attrs
-    end
+    league_id = if String.to_integer(league_id) < 1, do: nil, else: league_id
+
+    %{attrs | league_id: league_id}
   end
 
   def validate_changeset(

@@ -21,6 +21,7 @@ defmodule OOTPUtility.Repo.Migrations.AddRateStatsToPlayerSchemas do
       add :slugging, :float
       add :on_base_plus_slugging, :float
       add :isolated_power, :float
+      add :batting_average_on_balls_in_play, :float
 
       add :runs_created, :float
 

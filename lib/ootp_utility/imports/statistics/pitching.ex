@@ -87,9 +87,56 @@ defmodule OOTPUtility.Imports.Statistics.Pitching do
   end
 
   defp add_statistic(%Ecto.Changeset{changes: attrs} = changeset, stat_name) do
-    value = calculate(attrs, stat_name)
-    value = if is_float(value), do: Float.round(value, 4), else: value
+    value =
+      attrs
+      |> calculate(stat_name)
+      |> round(stat_name)
 
     Ecto.Changeset.change(changeset, %{stat_name => value})
+  end
+
+  @one_digit_precision [
+    :pitches_per_game,
+    :hits_per_9,
+    :run_support_per_start,
+    :runs_per_9,
+    :strikeouts_per_9,
+    :walks_per_9,
+    :inherited_runners_scored_percentage
+  ]
+
+  @two_digit_precision [
+    :earned_run_average,
+    :walks_hits_per_inning_pitched,
+    :save_percentage,
+    :blown_save_percentage,
+    :games_finished_percentage,
+    :ground_ball_percentage,
+    :quality_start_percentage,
+    :winning_percentage
+  ]
+
+  @three_digit_precision [
+    :batting_average,
+    :batting_average_on_balls_in_play,
+    :on_base_percentage,
+    :on_base_plus_slugging,
+    :slugging
+  ]
+
+  defp round(value, stat) when stat in @one_digit_precision do
+    Float.round(value, 1)
+  end
+
+  defp round(value, stat) when stat in @two_digit_precision do
+    Float.round(value, 2)
+  end
+
+  defp round(value, stat) when stat in @three_digit_precision do
+    Float.round(value, 3)
+  end
+
+  defp round(value, _stat_name) do
+    value
   end
 end

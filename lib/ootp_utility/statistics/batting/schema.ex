@@ -50,6 +50,7 @@ defmodule OOTPUtility.Statistics.Batting.Schema do
         field :caught_stealing, :integer
 
         field :batting_average, :float
+        field :batting_average_on_balls_in_play, :float
         field :isolated_power, :float
         field :on_base_percentage, :float
         field :on_base_plus_slugging, :float

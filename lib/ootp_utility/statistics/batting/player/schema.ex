@@ -18,8 +18,7 @@ defmodule OOTPUtility.Statistics.Batting.Player.Schema do
     quote do
       batting_schema unquote(source) do
         field :ubr, :float
-        field :war, :float
-        field :wpa, :float
+        field :win_probability_added, :float
 
         belongs_to :player, Players.Player
 

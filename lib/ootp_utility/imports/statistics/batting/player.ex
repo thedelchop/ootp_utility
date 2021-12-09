@@ -5,12 +5,27 @@ defmodule OOTPUtility.Imports.Statistics.Batting.Player do
 
   use OOTPUtility.Imports.Statistics.Batting,
     from: "players_career_batting_stats",
+    headers: [
+      {:war, :wins_above_replacement},
+      {:wpa, :win_probability_added}
+    ],
     schema: Batting.Player
 
-  def update_changeset(changeset) do
+  def update_changeset(
+        %Ecto.Changeset{
+          changes: %{
+            wins_above_replacement: war,
+            win_probability_added: wpa
+          }
+        } = changeset
+      ) do
     changeset
     |> Batting.Player.put_composite_key()
     |> add_missing_statistics()
+    |> Ecto.Changeset.change(%{
+      wins_above_replacement: Float.round(war, 2),
+      win_probability_added: Float.round(wpa, 2)
+    })
   end
 
   def should_import?(%{league_id: "0"} = _attrs), do: false
@@ -21,11 +36,9 @@ defmodule OOTPUtility.Imports.Statistics.Batting.Player do
   end
 
   def sanitize_attributes(%{league_id: league_id} = attrs) do
-    if String.to_integer(league_id) < 1 do
-      %{attrs | league_id: nil}
-    else
-      attrs
-    end
+    league_id = if String.to_integer(league_id) < 1, do: nil, else: league_id
+
+    %{attrs | league_id: league_id}
   end
 
   def validate_changeset(

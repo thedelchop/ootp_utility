@@ -24,6 +24,7 @@ defmodule OOTPUtility.Statistics.Pitching.Player do
     composite_key: [:year, :team_id, :player_id, :split_id]
 
   player_pitching_schema "players_career_pitching_stats" do
+    field :wins_above_replacement, :float
     field :split_id, :integer
   end
 end
