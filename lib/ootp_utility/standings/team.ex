@@ -5,7 +5,17 @@ defmodule OOTPUtility.Standings.Team do
   alias OOTPUtility.{Repo, Teams}
   alias __MODULE__
 
-  @derive {Inspect, only: [:id, :name, :games, :wins, :losses, :winning_percentage, :position, :games_behind]}
+  @derive {Inspect,
+           only: [
+             :id,
+             :name,
+             :games,
+             :wins,
+             :losses,
+             :winning_percentage,
+             :position,
+             :games_behind
+           ]}
 
   embedded_schema do
     field :logo_filename, :string
@@ -22,7 +32,7 @@ defmodule OOTPUtility.Standings.Team do
     field :wins, :integer
   end
 
-  def new(%Teams.Team{record: nil} = team) do
+  def new(%Teams.Team{record: %Ecto.Association.NotLoaded{}} = team) do
     team
     |> Repo.preload(:record)
     |> new()

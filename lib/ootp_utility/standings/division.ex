@@ -2,7 +2,7 @@ defmodule OOTPUtility.Standings.Division do
   use Ecto.Schema
   use OOTPUtility.Collectable
 
-  alias OOTPUtility.Leagues
+  alias OOTPUtility.{Leagues, Repo}
   alias OOTPUtility.Standings.Team
 
   alias __MODULE__
@@ -13,6 +13,16 @@ defmodule OOTPUtility.Standings.Division do
     embeds_one :division, Leagues.Division
 
     embeds_many :team_standings, Team
+  end
+
+  def new(
+        %Leagues.Division{
+          teams: %Ecto.Association.NotLoaded{}
+        } = division
+      ) do
+      division
+      |> Repo.preload([:teams, :league, :conference])
+      |> new()
   end
 
   def new(
