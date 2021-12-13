@@ -32,22 +32,22 @@ defmodule OOTPUtility.Statistics.BattingFactory do
       # a Team's batting statistics
 
       def batting_stats_factory(module, num_of_players \\ 1) do
-        at_bats = Faker.random_between(520, 550)
-        singles = Faker.random_between(85, 90)
-        doubles = Faker.random_between(20, 35)
-        triples = Faker.random_between(1, 10)
-        home_runs = Faker.random_between(10, 45)
+        at_bats = Faker.random_between(520, 550) * num_of_players
+        singles = Faker.random_between(85, 90) * num_of_players
+        doubles = Faker.random_between(20, 35) * num_of_players
+        triples = Faker.random_between(1, 10) * num_of_players
+        home_runs = Faker.random_between(10, 45) * num_of_players
 
-        runs = Faker.random_between(60, 120)
+        runs = Faker.random_between(60, 120) * num_of_players
 
-        stolen_bases = Faker.random_between(0, 40)
+        stolen_bases = Faker.random_between(0, 40) * num_of_players
         stolen_base_percentage = Faker.random_uniform()
 
-        walks = Faker.random_between(20, 150)
-        intentional_walks = Faker.random_between(0, 10)
-        hit_by_pitch = Faker.random_between(2, 10)
+        walks = Faker.random_between(20, 150) * num_of_players
+        intentional_walks = Faker.random_between(0, 10) * num_of_players
+        hit_by_pitch = Faker.random_between(2, 10) * num_of_players
 
-        sacrifice_flys = Faker.random_between(2, 16)
+        sacrifice_flys = Faker.random_between(2, 16) * num_of_players
 
         struct!(module, %{
           id: sequence(:id, &"#{&1}"),
@@ -64,16 +64,16 @@ defmodule OOTPUtility.Statistics.BattingFactory do
           home_runs: home_runs,
           extra_base_hits: fn s -> s.doubles + s.triples + s.home_runs end,
           total_bases: fn s -> total_bases(s) end,
-          strikeouts: Faker.random_between(1200, 1600),
+          strikeouts: Faker.random_between(75, 160) * num_of_players,
           walks: walks,
           intentional_walks: intentional_walks,
           hit_by_pitch: hit_by_pitch,
-          catchers_interference: Faker.random_between(1, 10),
+          catchers_interference: Faker.random_between(0, 2) * num_of_players,
           runs: runs,
           runs_batted_in: fn s -> ceil(s.runs * 0.955) end,
-          double_plays: Faker.random_between(75, 150),
+          double_plays: Faker.random_between(5, 15) * num_of_players,
           sacrifice_flys: sacrifice_flys,
-          sacrifices: Faker.random_between(5, 50),
+          sacrifices: Faker.random_between(2, 5) * num_of_players,
           stolen_bases: stolen_bases,
           stolen_base_percentage: stolen_base_percentage,
           caught_stealing: fn s ->
