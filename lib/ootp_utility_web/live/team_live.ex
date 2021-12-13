@@ -1,9 +1,10 @@
 defmodule OOTPUtilityWeb.TeamLive do
   use Surface.LiveView
 
-  alias OOTPUtility.Teams
-  alias OOTPUtilityWeb.Components.Team.{Leaders, Rankings}
-  alias OOTPUtilityWeb.Components.Scoreboard
+  alias OOTPUtility.{Teams, Standings}
+  alias OOTPUtilityWeb.Components.Team.{Leaders, Rankings, Roster}
+  alias OOTPUtilityWeb.Components.{Scoreboard}
+  alias OOTPUtilityWeb.Components.Standings.Division, as: DivisionStandings
   alias OOTPUtilityWeb.Router.Helpers, as: Routes
 
   @impl true
@@ -35,17 +36,15 @@ defmodule OOTPUtilityWeb.TeamLive do
       <div class="flex">
         <div class="flex flex-col w-1/4">
           <div class="next-game"></div>
-          <div class="standings"></div>
+          <div class="standings">
+            <DivisionStandings id={"#{@team.slug}-standings"} standings={@standings} />
+          </div>
         </div>
         <div class="flex flex-col w-1/2">
-          <div class="starters"></div>
-          <div class="bullpen"></div>
-          <div class="catchers"></div>
-          <div class="infielders"></div>
-          <div class="outfielders"></div>
+          <Roster id={"#{@team.slug}-roster"} team={@team} year={@team.league.season_year}/>
         </div>
         <div class="flex flex-column w-1/4">
-          <Leaders id={@team.id} team={@team}/>
+          <Leaders id={"#{@team.slug}-leaders"} team={@team}/>
           <div class="streaks"></div>
           <div class="organization-summary"></div>
         </div>
@@ -58,8 +57,14 @@ defmodule OOTPUtilityWeb.TeamLive do
   @impl true
   def mount(%{"slug" => slug}, _session, socket) do
     team = Teams.get_team_by_slug!(slug, preload: [:league, :division, :conference])
+    standings = Standings.for_division(team.division)
 
-    {:ok, assign(socket, :team, team)}
+    {
+      :ok,
+      socket
+      |> assign(:team, team)
+      |> assign(:standings, standings)
+    }
   end
 
   defp full_name(%OOTPUtility.Teams.Team{name: name, nickname: nickname} = _team) do
