@@ -31,7 +31,7 @@ defmodule OOTPUtility.Statistics.BattingFactory do
       # provide a "num_of_players" parameter that defaults to 1, but could be passed something like 10 to approixmate
       # a Team's batting statistics
 
-      def batting_stats_factory(module, num_of_players \\ 1) do
+      defp batting_stats_factory(module, num_of_players \\ 1) do
         at_bats = Faker.random_between(520, 550) * num_of_players
         singles = Faker.random_between(85, 90) * num_of_players
         doubles = Faker.random_between(20, 35) * num_of_players
@@ -77,7 +77,7 @@ defmodule OOTPUtility.Statistics.BattingFactory do
           stolen_bases: stolen_bases,
           stolen_base_percentage: stolen_base_percentage,
           caught_stealing: fn s ->
-            s.stolen_bases / stolen_base_percentage |> round() |> trunc()
+            (s.stolen_bases / stolen_base_percentage) |> round() |> trunc()
           end,
           batting_average: fn s -> batting_average(s) end,
           batting_average_on_balls_in_play: 0.300,
@@ -114,9 +114,7 @@ defmodule OOTPUtility.Statistics.BattingFactory do
         singles + 2 * doubles + 3 * triples + 4 * home_runs
       end
 
-      def obp(
-            %{walks: bb, hit_by_pitch: hbp, at_bats: ab, sacrifice_flys: sf} = stats
-          ) do
+      def obp(%{walks: bb, hit_by_pitch: hbp, at_bats: ab, sacrifice_flys: sf} = stats) do
         do_round((hits(stats) + bb + hbp) / (ab + bb + hbp + sf))
       end
 

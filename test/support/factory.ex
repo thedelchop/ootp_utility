@@ -9,4 +9,5 @@ defmodule OOTPUtility.Factory do
   use OOTPUtility.PlayerFactory
   use OOTPUtility.StandingsFactory
   use OOTPUtility.Statistics.BattingFactory
+  use OOTPUtility.Statistics.PitchingFactory
 end
