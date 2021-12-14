@@ -103,8 +103,8 @@ defmodule OOTPUtility.StandingsFactory do
         total_games_played = number_of_teams * games_per_team
 
         # Everybody wins 1/3 and losses 1/3, its the other 1/3 that matter
-        minimum_wins = games_per_team / 3
-        maximum_wins = games_per_team * 2 / 3
+        minimum_wins = (games_per_team / 3) |> round() |> trunc()
+        maximum_wins = (games_per_team * 2 / 3) |> round() |> trunc()
 
         {win_totals, _} =
           Enum.map_reduce(1..number_of_teams, total_games_played, fn
