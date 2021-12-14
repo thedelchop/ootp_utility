@@ -1,16 +1,18 @@
 defmodule OOTPUtility.Imports.Statistics.Pitching.Team do
   defmacro __using__([{:from, filename}, {:schema, schema}]) do
     quote do
+      import OOTPUtility.Imports.Statistics, only: [round_statistic: 2]
+
       use OOTPUtility.Imports.Statistics.Pitching,
         from: unquote(filename),
         headers: [
           {:avg, :batting_average},
           {:babip, :batting_average_on_balls_in_play},
-          {:bb9, :walks_per_9},
+          {:bb9,  :walks_per_9},
           {:bsvp, :blown_save_percentage},
-          {:cgp, :complete_game_percentage},
-          {:era, :earned_run_average},
-          {:fip, :fielding_independent_pitching},
+          {:cgp,  :complete_game_percentage},
+          {:era,  :earned_run_average},
+          {:fip,  :fielding_independent_pitching},
           {:gbfbp, :ground_ball_percentage},
           {:gfp, :games_finished_percentage},
           {:h9, :hits_per_9},
@@ -37,6 +39,29 @@ defmodule OOTPUtility.Imports.Statistics.Pitching.Team do
       def update_changeset(changeset) do
         changeset
         |> unquote(schema).put_composite_key()
+        |> round_statistic(:batting_average)
+        |> round_statistic(:batting_average_on_balls_in_play)
+        |> round_statistic(:walks_per_9)
+        |> round_statistic(:blown_save_percentage)
+        |> round_statistic(:complete_game_percentage)
+        |> round_statistic(:earned_run_average)
+        |> round_statistic(:fielding_independent_pitching)
+        |> round_statistic(:ground_ball_percentage)
+        |> round_statistic(:games_finished_percentage)
+        |> round_statistic(:hits_per_9)
+        |> round_statistic(:home_runs_per_9)
+        |> round_statistic(:strikeouts_per_9)
+        |> round_statistic(:strikeouts_to_walks_ratio)
+        |> round_statistic(:on_base_percentage)
+        |> round_statistic(:on_base_plus_slugging)
+        |> round_statistic(:pitches_per_game)
+        |> round_statistic(:quality_start_percentage)
+        |> round_statistic(:runs_per_9)
+        |> round_statistic(:run_support_per_start)
+        |> round_statistic(:slugging)
+        |> round_statistic(:save_percentage)
+        |> round_statistic(:walks_hits_per_inning_pitched)
+        |> round_statistic(:winning_percentage)
       end
 
       def should_import?(%{league_id: "0"} = _attrs), do: false

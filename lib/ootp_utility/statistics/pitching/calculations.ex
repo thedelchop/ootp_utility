@@ -1,25 +1,4 @@
-defmodule OOTPUtility.Imports.Statistics.Pitching.Calculations do
-  alias OOTPUtility.Imports.Statistics.Batting
-
-  def calculate(attrs, :batting_average),
-    do: Batting.Calculations.calculate(attrs, :batting_average)
-
-  def calculate(attrs, :batting_average_on_balls_in_play),
-    do: Batting.Calculations.calculate(attrs, :batting_average_on_balls_in_play)
-
-  def calculate(attrs, :on_base_percentage) do
-    Batting.Calculations.calculate(attrs, :on_base_percentage)
-  end
-
-  def calculate(attrs, :slugging),
-    do: Batting.Calculations.calculate(attrs, :slugging)
-
-  def calculate(attrs, :total_bases),
-    do: Batting.Calculations.calculate(attrs, :total_bases)
-
-  def calculate(attrs, :on_base_plus_slugging),
-    do: Batting.Calculations.calculate(attrs, :on_base_plus_slugging)
-
+defmodule OOTPUtility.Statistics.Pitching.Calculations do
   def calculate(%{save_opportunities: 0} = _attrs, :blown_save_percentage), do: 0.0
 
   def calculate(%{blown_saves: bs, save_opportunities: svo} = _attrs, :blown_save_percentage) do
@@ -130,12 +109,5 @@ defmodule OOTPUtility.Imports.Statistics.Pitching.Calculations do
         :inherited_runners_scored_percentage
       ) do
     irs / ir
-  end
-
-  def calculate(%{outs_pitched: 0} = _attrs, :walks_per_9),
-    do: 0.0
-
-  def calculate(%{walks: bb, outs_pitched: outs} = _attrs, :walks_per_9) do
-    bb / outs * 27
   end
 end

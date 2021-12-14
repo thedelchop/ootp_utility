@@ -1,26 +1,21 @@
 defmodule OOTPUtility.Imports.Statistics.Batting.Game do
   alias OOTPUtility.Statistics.Batting
 
+  import OOTPUtility.Imports.Statistics, only: [round_statistic: 2]
   import OOTPUtility.Imports.Statistics.Batting, only: [add_missing_statistics: 1]
 
   use OOTPUtility.Imports.Statistics.Batting,
     from: "players_game_batting",
     headers: [
-      {:wpa, :win_probability_added},
+      {:wpa, :win_probability_added}
     ],
     schema: Batting.Game
 
-  def update_changeset(%Ecto.Changeset{
-      changes: %{
-        win_probability_added: wpa
-      }
-    } = changeset) do
+  def update_changeset(%Ecto.Changeset{} = changeset) do
     changeset
     |> Batting.Game.put_composite_key()
     |> add_missing_statistics()
-    |> Ecto.Changeset.change(%{
-      win_probability_added: Float.round(wpa, 2)
-    })
+    |> round_statistic(:win_probability_added)
   end
 
   def should_import?(%{league_id: "0"} = _attrs), do: false

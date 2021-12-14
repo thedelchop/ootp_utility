@@ -23,7 +23,7 @@ defmodule OOTPUtility.Statistics.Pitching do
   def for_player(%Players.Player{id: player_id} = _player, year) do
     Player
     |> where([bs], bs.year == ^year and bs.player_id == ^player_id)
-    |> Repo.all()
+    |> Repo.one()
   end
 
   @doc """

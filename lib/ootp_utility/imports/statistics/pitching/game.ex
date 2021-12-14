@@ -2,6 +2,7 @@ defmodule OOTPUtility.Imports.Statistics.Pitching.Game do
   alias OOTPUtility.Statistics.Pitching
 
   import OOTPUtility.Imports.Statistics.Pitching, only: [add_missing_statistics: 1]
+  import OOTPUtility.Imports.Statistics, only: [round_statistic: 2]
 
   use OOTPUtility.Imports.Statistics.Pitching,
     from: "players_game_pitching_stats",
@@ -14,18 +15,12 @@ defmodule OOTPUtility.Imports.Statistics.Pitching.Game do
     ],
     schema: Pitching.Game
 
-  def update_changeset(
-        %Ecto.Changeset{
-          changes: %{win_probability_added: wpa, leverage_index: li}
-        } = changeset
-      ) do
+  def update_changeset(%Ecto.Changeset{} = changeset) do
     changeset
     |> Pitching.Game.put_composite_key()
     |> add_missing_statistics()
-    |> Ecto.Changeset.change(%{
-      win_probability_added: Float.round(wpa, 2),
-      leverage_index: Float.round(li, 2)
-    })
+    |> round_statistic(:win_probability_added)
+    |> round_statistic(:leverage_index)
   end
 
   def sanitize_attributes(%{team_id: "0"} = attrs) do

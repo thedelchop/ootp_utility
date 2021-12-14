@@ -1,5 +1,5 @@
 defmodule OOTPUtility.Imports.Statistics.Batting do
-  import OOTPUtility.Imports.Statistics.Batting.Calculations
+  import OOTPUtility.Imports.Statistics, only: [add_statistic: 2]
 
   defmacro __using__(opts) do
     header_renames = Keyword.get(opts, :headers, [])
@@ -54,39 +54,5 @@ defmodule OOTPUtility.Imports.Statistics.Batting do
     |> add_statistic(:isolated_power)
     |> add_statistic(:stolen_base_percentage)
     |> add_statistic(:batting_average_on_balls_in_play)
-  end
-
-  defp add_statistic(%Ecto.Changeset{changes: attrs} = changeset, stat_name) do
-    value =
-      attrs
-      |> calculate(stat_name)
-      |> round(stat_name)
-
-    Ecto.Changeset.change(changeset, %{stat_name => value})
-  end
-
-  defp round(value, stat) when stat == :ubr do
-    Float.round(value, 1)
-  end
-
-  defp round(value, stat) when stat == :win_probability_added do
-    Float.round(value, 2)
-  end
-
-  defp round(value, stat) when stat in [
-    :batting_average,
-    :batting_average_on_balls_in_play,
-    :isolated_power,
-    :on_base_percentage,
-    :on_base_plus_slugging,
-    :slugging,
-    :stolen_base_percentage,
-    :runs_created
-  ] do
-    Float.round(value, 3)
-  end
-
-  defp round(value, _stat_name) do
-    value
   end
 end

@@ -1,5 +1,6 @@
 defmodule OOTPUtility.Imports.Statistics.Batting.Team do
   alias OOTPUtility.Statistics.Batting
+  import OOTPUtility.Imports.Statistics, only: [round_statistic: 2]
 
   use OOTPUtility.Imports.Statistics.Batting,
     from: "team_batting_stats",
@@ -9,8 +10,8 @@ defmodule OOTPUtility.Imports.Statistics.Batting.Team do
       {:iso, :isolated_power},
       {:obp, :on_base_percentage},
       {:ops, :on_base_plus_slugging},
-      {:rc, :runs_created},
-      {:rc27, :runs_created_per_27_outs},
+      {:rc,  :runs_created},
+      {:rc27,:runs_created_per_27_outs},
       {:s, :singles},
       {:sbp, :stolen_base_percentage},
       {:slg, :slugging},
@@ -22,6 +23,15 @@ defmodule OOTPUtility.Imports.Statistics.Batting.Team do
   def update_changeset(changeset) do
     changeset
     |> Batting.Team.put_composite_key()
+    |> round_statistic(:batting_average)
+    |> round_statistic(:isolated_power)
+    |> round_statistic(:on_base_percentage)
+    |> round_statistic(:on_base_plus_slugging)
+    |> round_statistic(:runs_created)
+    |> round_statistic(:runs_created_per_27_outs)
+    |> round_statistic(:stolen_base_percentage)
+    |> round_statistic(:slugging)
+    |> round_statistic(:weighted_on_base_average)
   end
 
   def should_import?(%{league_id: "0"} = _attrs), do: false

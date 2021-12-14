@@ -1,5 +1,5 @@
 defmodule OOTPUtility.Imports.Statistics.Pitching do
-  import OOTPUtility.Imports.Statistics.Pitching.Calculations
+  import OOTPUtility.Imports.Statistics, only: [add_statistic: 2]
 
   defmacro __using__(opts) do
     header_renames = Keyword.get(opts, :headers, [])
@@ -84,59 +84,5 @@ defmodule OOTPUtility.Imports.Statistics.Pitching do
     |> add_statistic(:walks_hits_per_inning_pitched)
     |> add_statistic(:winning_percentage)
     |> add_statistic(:inherited_runners_scored_percentage)
-  end
-
-  defp add_statistic(%Ecto.Changeset{changes: attrs} = changeset, stat_name) do
-    value =
-      attrs
-      |> calculate(stat_name)
-      |> round(stat_name)
-
-    Ecto.Changeset.change(changeset, %{stat_name => value})
-  end
-
-  @one_digit_precision [
-    :pitches_per_game,
-    :hits_per_9,
-    :run_support_per_start,
-    :runs_per_9,
-    :strikeouts_per_9,
-    :walks_per_9,
-    :inherited_runners_scored_percentage
-  ]
-
-  @two_digit_precision [
-    :earned_run_average,
-    :walks_hits_per_inning_pitched,
-    :save_percentage,
-    :blown_save_percentage,
-    :games_finished_percentage,
-    :ground_ball_percentage,
-    :quality_start_percentage,
-    :winning_percentage
-  ]
-
-  @three_digit_precision [
-    :batting_average,
-    :batting_average_on_balls_in_play,
-    :on_base_percentage,
-    :on_base_plus_slugging,
-    :slugging
-  ]
-
-  defp round(value, stat) when stat in @one_digit_precision do
-    Float.round(value, 1)
-  end
-
-  defp round(value, stat) when stat in @two_digit_precision do
-    Float.round(value, 2)
-  end
-
-  defp round(value, stat) when stat in @three_digit_precision do
-    Float.round(value, 3)
-  end
-
-  defp round(value, _stat_name) do
-    value
   end
 end

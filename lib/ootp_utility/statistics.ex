@@ -32,6 +32,9 @@ defmodule OOTPUtility.Statistics do
 
   import Ecto.Query
 
+  defdelegate calculate(attrs, stat), to: OOTPUtility.Statistics.Calculations
+  defdelegate round(attrs, stat), to: OOTPUtility.Statistics.Calculations
+
   def team_ranking(%Teams.Team{league: %NotLoaded{}} = team, statistic) do
     team
     |> Repo.preload(:league)

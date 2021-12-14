@@ -19,7 +19,6 @@ defmodule OOTPUtility.Statistics.Pitching.Schema do
       schema unquote(source) do
         field :at_bats, :integer
         field :balks, :integer
-        field :plate_appearances, :integer
         field :batting_average, :float
         field :batting_average_on_balls_in_play, :float
         field :blown_save_percentage, :float
@@ -53,6 +52,7 @@ defmodule OOTPUtility.Statistics.Pitching.Schema do
         field :outs_pitched, :integer
         field :pitches_per_game, :float
         field :pitches_thrown, :integer
+        field :plate_appearances, :integer
         field :quality_start_percentage, :float
         field :quality_starts, :integer
         field :relief_appearances, :integer
