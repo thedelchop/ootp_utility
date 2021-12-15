@@ -45,6 +45,12 @@ defmodule OOTPUtility.Statistics.Pitching.Calculations do
     h / outs * 27
   end
 
+  def calculate(%{outs_pitched: 0} = _attrs, :home_runs_per_9), do: 0.0
+
+  def calculate(%{home_runs: hr, outs_pitched: outs} = _attrs, :home_runs_per_9) do
+    hr / outs * 27
+  end
+
   def calculate(%{games: 0} = _attrs, :pitches_per_game), do: 0.0
 
   def calculate(%{pitches_thrown: pi, games: g} = _attrs, :pitches_per_game) do

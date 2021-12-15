@@ -16,6 +16,7 @@ defmodule OOTPUtility.Statistics.Calculations do
     :games_finished_percentage,
     :ground_ball_percentage,
     :hits_per_9,
+    :home_runs_per_9,
     :inherited_runners_scored_percentage,
     :pitches_per_game,
     :quality_start_percentage,
