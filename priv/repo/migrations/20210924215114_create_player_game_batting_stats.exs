@@ -29,7 +29,6 @@ defmodule OOTPUtility.Repo.Migrations.CreatePlayerGameBattingStats do
       add :ubr, :float
       add :war, :float
       add :wpa, :float
-      add :pitches_seen, :integer
 
       add :player_id, references(:players, on_delete: :delete_all)
       add :team_id, references(:teams, on_delete: :nothing)
