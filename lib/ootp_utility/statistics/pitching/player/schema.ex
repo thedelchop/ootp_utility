@@ -21,6 +21,7 @@ defmodule OOTPUtility.Statistics.Pitching.Player.Schema do
         field :inherited_runners_scored, :integer
         field :inherited_runners_scored_percentage, :float
         field :leverage_index, :float
+        field :split_id, :integer
         field :win_probability_added, :float
 
         belongs_to :player, Players.Player

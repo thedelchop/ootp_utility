@@ -6,8 +6,8 @@ defmodule OOTPUtility.Repo.Migrations.AddRateStatsToPlayerSchemas do
     add_missing_columns_for_player_stats(table(:players_game_batting_stats))
 
     alter table(:team_batting_stats), do: remove(:split_id, :integer)
+    alter table(:team_pitching_stats), do: remove(:split_id, :integer)
     alter table(:players_career_batting_stats), do: remove(:position, :integer)
-    alter table(:players_game_batting_stats), do: remove(:pitches_seen, :integer)
   end
 
   def add_missing_columns_for_player_stats(table) do

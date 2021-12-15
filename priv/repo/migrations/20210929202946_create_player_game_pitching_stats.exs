@@ -58,6 +58,7 @@ defmodule OOTPUtility.Repo.Migrations.CreatePlayerGamePitchingStats do
       add :shutouts, :integer
       add :singles, :integer
       add :slugging, :float
+      add :split_id, :integer
       add :stolen_bases, :integer
       add :strikeouts, :integer
       add :strikeouts_per_9, :float

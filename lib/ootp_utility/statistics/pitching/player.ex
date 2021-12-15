@@ -25,6 +25,5 @@ defmodule OOTPUtility.Statistics.Pitching.Player do
 
   player_pitching_schema "players_career_pitching_stats" do
     field :wins_above_replacement, :float
-    field :split_id, :integer
   end
 end
