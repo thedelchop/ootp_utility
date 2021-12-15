@@ -34,7 +34,7 @@ defmodule OOTPUtility.Repo.Migrations.CreatePlayersCareerPitchingStats do
       add :inherited_runners_scored, :integer
       add :inherited_runners_scored_percentage, :float
       add :intentional_walks, :integer
-      add :level_id, :string
+      add :level_id, :integer
       add :leverage_index, :float
       add :losses, :integer
       add :on_base_percentage, :float

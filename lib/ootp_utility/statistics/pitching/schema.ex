@@ -45,7 +45,7 @@ defmodule OOTPUtility.Statistics.Pitching.Schema do
         field :home_runs, :integer
         field :home_runs_per_9, :float
         field :intentional_walks, :integer
-        field :level_id, :string
+        field :level_id, :integer
         field :losses, :integer
         field :on_base_percentage, :float
         field :on_base_plus_slugging, :float

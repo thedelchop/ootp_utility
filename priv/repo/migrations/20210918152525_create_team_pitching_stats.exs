@@ -4,7 +4,7 @@ defmodule OOTPUtility.Repo.Migrations.CreateTeamPitchingStats do
   def change do
     create table(:team_pitching_stats) do
       add :year, :integer
-      add :level_id, :string
+      add :level_id, :integer
       add :split_id, :string
       add :at_bats, :integer
       add :outs_pitched, :integer

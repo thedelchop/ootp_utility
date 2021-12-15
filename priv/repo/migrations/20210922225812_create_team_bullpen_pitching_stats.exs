@@ -4,7 +4,7 @@ defmodule OOTPUtility.Repo.Migrations.CreateTeamBullpenPitchingStats do
   def change do
     create table(:team_bullpen_pitching_stats) do
       add :year, :integer
-      add :level_id, :string
+      add :level_id, :integer
       add :at_bats, :integer
       add :outs_pitched, :integer
       add :batters_faced, :integer
