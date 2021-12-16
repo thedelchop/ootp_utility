@@ -27,6 +27,7 @@ defmodule OOTPUtilityWeb.Components.Standings.Teams do
   prop parent_path, :string, default: ""
   prop parent_name, :string, default: ""
   prop standings, :struct
+  prop compact, :boolean
 
   def render(assigns) do
     ~F"""

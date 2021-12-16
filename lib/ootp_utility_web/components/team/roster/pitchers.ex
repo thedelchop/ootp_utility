@@ -16,22 +16,18 @@ defmodule OOTPUtilityWeb.Components.Team.Roster.Pitchers do
   data players_with_statistics, :list, default: []
 
   @default_column_classes [
-    "px-3",
+    "px-1",
     "py-2",
-    "lg:px-6",
-    "lg:py-4",
     "whitespace-nowrap"
   ]
 
   @default_header_classes [
-    "px-3",
-    "py-1",
-    "lg:px-6",
-    "lg:py-3",
+    "px-1",
+    "py-2",
     "text-xs",
-    "uppercase",
-    "tracking-wider"
+    "uppercase"
   ]
+
   def update(assigns, socket) do
     statistics = Statistics.Pitching.for_player(assigns.players, assigns.year)
 
@@ -59,18 +55,13 @@ defmodule OOTPUtilityWeb.Components.Team.Roster.Pitchers do
 
   def render(assigns) do
     ~F"""
-      <div class="p-8 border-b border-gray-200">
-        <h2 class={"mb-4"}>{@title}</h2>
-        <Table id={table_id(@title)} data={{pitcher, stats} <- @players_with_statistics} header_class={&header_class/2} column_class={&column_class/2}>
-          <Column label="#">
-            {pitcher.uniform_number}
-          </Column>
-
-          <Column label="Name">
+      <div class="p-4 border-b border-gray-200">
+        <Table id={table_id(@title)} data={{pitcher, stats} <- @players_with_statistics} class={"px-3 py-1 lg:px-6 lg:py-3"} header_class={&header_class/2} column_class={&column_class/2}>
+          <Column label={@title}>
             {Players.name(pitcher, :full)}
           </Column>
 
-          <Column label="Role">
+         <Column label="Role">
             {pitcher.position}
           </Column>
 
@@ -109,8 +100,6 @@ defmodule OOTPUtilityWeb.Components.Team.Roster.Pitchers do
       </div>
     """
   end
-
-  def row_class(_col, _index), do: {'kkj'}
 
   def header_class(_col, _index),
     do: do_header_class(["text-left", "font-medium", "text-gray-500"])

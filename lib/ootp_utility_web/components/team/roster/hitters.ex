@@ -16,21 +16,16 @@ defmodule OOTPUtilityWeb.Components.Team.Roster.Hitters do
   data players_with_statistics, :list, default: []
 
   @default_column_classes [
-    "px-3",
-    "py-2",
-    "lg:px-6",
-    "lg:py-4",
+    "px-2",
+    "py-1",
     "whitespace-nowrap"
   ]
 
   @default_header_classes [
-    "px-3",
+    "px-2",
     "py-1",
-    "lg:px-6",
-    "lg:py-3",
     "text-xs",
-    "uppercase",
-    "tracking-wider"
+    "uppercase"
   ]
 
   def update(assigns, socket) do
@@ -56,14 +51,9 @@ defmodule OOTPUtilityWeb.Components.Team.Roster.Hitters do
 
   def render(assigns) do
     ~F"""
-      <div class="p-8 border-b border-gray-200">
-        <h2 class={"mb-4"}>{@title}</h2>
-        <Table id={table_id(@title)} data={ {hitter, stats} <- @players_with_statistics } header_class={&header_class/2} column_class={&column_class/2}>
-          <Column label="#">
-            {hitter.uniform_number}
-          </Column>
-
-          <Column label="Name">
+      <div class="p-4 border-b border-gray-200">
+        <Table id={table_id(@title)} data={ {hitter, stats} <- @players_with_statistics } class={"px-3 py-1 lg:px-6 lg:py-3"} header_class={&header_class/2} column_class={&column_class/2}>
+          <Column label={@title}>
             {Players.name(hitter, :full)}
           </Column>
 
@@ -124,14 +114,14 @@ defmodule OOTPUtilityWeb.Components.Team.Roster.Hitters do
   end
 
   def header_class(_col, _index),
-    do: do_header_class(["text-right", "font-medium", "text-gray-500"])
+    do: do_header_class(["text-left", "font-medium", "text-gray-500"])
 
   def do_header_class(extra_classes \\ []) do
     Enum.join(extra_classes ++ @default_header_classes, " ")
   end
 
   def column_class(_standing, _index),
-    do: do_column_class(["text-sm", "text-gray-500", "text-right"])
+    do: do_column_class(["text-sm", "text-gray-500", "text-left"])
 
   defp do_column_class(extra_classes \\ []) do
     Enum.join(extra_classes ++ @default_column_classes, " ")

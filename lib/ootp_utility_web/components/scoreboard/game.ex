@@ -8,7 +8,7 @@ defmodule OOTPUtilityWeb.Components.Scoreboard.Game do
 
   def render(assigns) do
     ~F"""
-      <div class="flex flex-col flex-none bg-white border p-2 rounded-lg w-32">
+      <div class="flex flex-col flex-none bg-white border border-gray-200 p-2 rounded-lg w-32 shadow">
         {team_summary(@socket, @game, :away_team)}
         {team_summary(@socket, @game, :home_team)}
         <hr class="my-2" />

@@ -7,7 +7,7 @@ defmodule OOTPUtilityWeb.Components.Team.Leaders do
   use Surface.LiveComponent
 
   alias OOTPUtility.Statistics
-  alias OOTPUtilityWeb.Components.Shared.Tabs
+  alias OOTPUtilityWeb.Components.Shared.{SectionHeader, Tabs}
   alias OOTPUtilityWeb.Components.Shared.Tabs.Tab
   alias OOTPUtilityWeb.Components.Statistics.Leaderboard
 
@@ -17,8 +17,8 @@ defmodule OOTPUtilityWeb.Components.Team.Leaders do
 
   def render(assigns) do
     ~F"""
-      <div class="bg-white overflow-hidden shadow rounded-lg divide-y divide-gray-200 p-4 flex-1">
-        <h1 class="pb-4">Team Leaders</h1>
+      <div class="bg-white overflow-hidden shadow rounded-lg divide-y divide-gray-200 p-4">
+        <SectionHeader>Team Leaders</SectionHeader>
         <Tabs id="team_leaders">
           <Tab label="Hitting">
             <Leaderboard leaders={batting_leaders(@team)} />

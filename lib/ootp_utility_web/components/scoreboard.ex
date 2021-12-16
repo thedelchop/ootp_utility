@@ -24,7 +24,7 @@ defmodule OOTPUtilityWeb.Components.Scoreboard do
 
   def render(assigns) do
     ~F"""
-      <div class="flex overflow-hidden bg-gray-100 p-5 justify-evenly rounded-md" :hook="WindowResize" id="scoreboard" phx-target={@myself}>
+      <div class="flex overflow-hidden justify-between rounded-md" :hook="WindowResize" id="scoreboard" phx-target={@myself}>
         <div class={pagination_css_class("rounded-l-md")} :on-click="decrement_date" phx-target={@myself}>
           <Heroicons.Surface.Icon name="chevron-left" type="solid" class="h-6 w-6" />
         </div>
@@ -98,12 +98,13 @@ defmodule OOTPUtilityWeb.Components.Scoreboard do
       "p-2",
       "cursor-pointer",
       "border",
-      "border-gray-300",
+      "border-gray-200",
       "bg-white",
       "text-sm",
       "font-medium",
       "text-gray-500",
-      "hover:bg-gray-200"
+      "hover:bg-gray-200",
+      "shadow"
     ] ++ extra
   end
 

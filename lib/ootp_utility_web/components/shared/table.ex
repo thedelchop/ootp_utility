@@ -56,6 +56,7 @@ defmodule OOTPUtilityWeb.Components.Shared.Table do
         "divide-y",
         "divide-gray-200",
         "table-fixed",
+        "overflow-hidden",
         "min-w-full": @expanded
       }>
         <thead class={"bg-gray-50"}>
