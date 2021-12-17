@@ -6,7 +6,7 @@ defmodule OOTPUtilityWeb.Components.Team.Roster.Pitchers do
 
   use Surface.LiveComponent
 
-  alias OOTPUtilityWeb.Components.Shared.Table
+  alias OOTPUtilityWeb.Components.Shared.{SectionHeader,Table}
   alias OOTPUtilityWeb.Components.Shared.Table.Column
   alias OOTPUtility.{Players, Statistics}
 
@@ -55,9 +55,10 @@ defmodule OOTPUtilityWeb.Components.Team.Roster.Pitchers do
 
   def render(assigns) do
     ~F"""
-      <div class="p-4 border-b border-gray-200">
+      <div class="flex flex-col bg-white p-4 border-b border-gray-200 rounded-md shadow">
+        <SectionHeader>{@title}</SectionHeader>
         <Table id={table_id(@title)} data={{pitcher, stats} <- @players_with_statistics} class={"px-3 py-1 lg:px-6 lg:py-3"} header_class={&header_class/2} column_class={&column_class/2}>
-          <Column label={@title}>
+          <Column label={""}>
             {Players.name(pitcher, :full)}
           </Column>
 
@@ -101,17 +102,23 @@ defmodule OOTPUtilityWeb.Components.Team.Roster.Pitchers do
     """
   end
 
-  def header_class(_col, _index),
+  def header_class(_col, 0),
     do: do_header_class(["text-left", "font-medium", "text-gray-500"])
+
+  def header_class(_col, _index),
+    do: do_header_class(["text-center", "font-medium", "text-gray-500"])
 
   def do_header_class(extra_classes \\ []) do
     Enum.join(extra_classes ++ @default_header_classes, " ")
   end
 
-  def column_class(_standing, _index),
+  def column_class(_standing, 0),
     do: do_column_class(["text-sm", "text-gray-500", "text-left"])
 
-  defp do_column_class(extra_classes \\ []) do
+  def column_class(_standing, _index),
+    do: do_column_class(["text-sm", "text-gray-500", "text-center"])
+
+  defp do_column_class(extra_classes) do
     Enum.join(extra_classes ++ @default_column_classes, " ")
   end
 end

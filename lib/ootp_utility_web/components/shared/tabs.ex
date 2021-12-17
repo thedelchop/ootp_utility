@@ -7,6 +7,8 @@ defmodule OOTPUtilityWeb.Components.Shared.Tabs do
   @doc "The tabs to display"
   slot tabs, required: true
 
+  prop class, :css_class, default: []
+
   data active_tab, :integer, default: 0
 
   def update(assigns, socket) do
@@ -22,7 +24,7 @@ defmodule OOTPUtilityWeb.Components.Shared.Tabs do
 
   def render(assigns) do
     ~F"""
-    <div>
+    <div class={@class}>
       <div class={"border-b", "border-gray-200"}>
         <nav class={"-mb-px", "flex", "space-x-8"} aria-label="Tabs">
           {#for {tab, index} <- Enum.with_index(@tabs)}

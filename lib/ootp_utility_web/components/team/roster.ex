@@ -7,7 +7,6 @@ defmodule OOTPUtilityWeb.Components.Team.Roster do
   use Surface.LiveComponent
 
   alias OOTPUtilityWeb.Components.Team.Roster
-  alias OOTPUtilityWeb.Components.Shared.SectionHeader
   alias OOTPUtility.Players
 
   prop team, :struct
@@ -37,19 +36,16 @@ defmodule OOTPUtilityWeb.Components.Team.Roster do
   end
 
   def container_class(extra_classes) do
-    ["flex", "flex-col"] ++ extra_classes
+    ["flex", "flex-col", "space-y-8"] ++ extra_classes
   end
 
   def render(assigns) do
     ~F"""
       <div class={container_class(@class)}>
-        <SectionHeader>Team Roster</SectionHeader>
-        <div class={"flex flex-col space-y-8"}>
-          <Roster.Pitchers id="pitchers-roster" players={@pitchers} year={@year} title="Pitchers"/>
-          <Roster.Hitters id="catchers-roster" players={@catchers} year={@year} title="Catchers"/>
-          <Roster.Hitters id="infielders-roster" players={@infielders} year={@year} title="Infielders"/>
-          <Roster.Hitters id="outfielders-roster" players={@outfielders} year={@year} title="Outfielders"/>
-        </div>
+        <Roster.Pitchers id="pitchers-roster" players={@pitchers} year={@year} title="Pitchers"/>
+        <Roster.Hitters id="catchers-roster" players={@catchers} year={@year} title="Catchers"/>
+        <Roster.Hitters id="infielders-roster" players={@infielders} year={@year} title="Infielders"/>
+        <Roster.Hitters id="outfielders-roster" players={@outfielders} year={@year} title="Outfielders"/>
       </div>
     """
   end

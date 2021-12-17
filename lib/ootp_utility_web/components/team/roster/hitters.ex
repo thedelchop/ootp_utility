@@ -6,7 +6,7 @@ defmodule OOTPUtilityWeb.Components.Team.Roster.Hitters do
 
   use Surface.LiveComponent
 
-  alias OOTPUtilityWeb.Components.Shared.Table
+  alias OOTPUtilityWeb.Components.Shared.{SectionHeader, Table}
   alias OOTPUtilityWeb.Components.Shared.Table.Column
   alias OOTPUtility.{Players, Statistics}
 
@@ -16,14 +16,14 @@ defmodule OOTPUtilityWeb.Components.Team.Roster.Hitters do
   data players_with_statistics, :list, default: []
 
   @default_column_classes [
-    "px-2",
-    "py-1",
+    "px-1",
+    "py-2",
     "whitespace-nowrap"
   ]
 
   @default_header_classes [
-    "px-2",
-    "py-1",
+    "px-1",
+    "py-2",
     "text-xs",
     "uppercase"
   ]
@@ -51,7 +51,8 @@ defmodule OOTPUtilityWeb.Components.Team.Roster.Hitters do
 
   def render(assigns) do
     ~F"""
-      <div class="p-4 border-b border-gray-200">
+      <div class="flex flex-col bg-white p-4 border-b border-gray-200 rounded-md shadow">
+        <SectionHeader>{@title}</SectionHeader>
         <Table id={table_id(@title)} data={ {hitter, stats} <- @players_with_statistics } class={"px-3 py-1 lg:px-6 lg:py-3"} header_class={&header_class/2} column_class={&column_class/2}>
           <Column label={@title}>
             {Players.name(hitter, :full)}

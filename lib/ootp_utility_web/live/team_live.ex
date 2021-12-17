@@ -38,7 +38,7 @@ defmodule OOTPUtilityWeb.TeamLive do
         </div>
 
         <div class="flex space-x-4">
-          <Roster id={"#{@team.slug}-roster"} team={@team} year={@team.league.season_year} class={"rounded-lg", "shadow", "bg-white", "p-4 grow"}/>
+          <Roster id={"#{@team.slug}-roster"} team={@team} year={@team.league.season_year} class="grow" />
           <div class="flex flex-col w-1/3 space-y-4">
             <div class="flex flex-col rounded-lg shadow bg-white p-4">
               <SectionHeader>Standings</SectionHeader>
