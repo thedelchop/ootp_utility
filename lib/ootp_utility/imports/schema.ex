@@ -26,7 +26,7 @@ defmodule OOTPUtility.Imports.Schema do
     end
 
     quote do
-      @spec validate_changeset(Ecto.Changeset.t()) :: Ecto.Changeset.t()
+      @spec validate_changeset(Ecto.Changeset.t()) :: boolean()
       def validate_changeset(%Ecto.Changeset{} = changeset),
         do: OOTPUtility.Imports.Schema.validate_changeset(__MODULE__, changeset)
 
