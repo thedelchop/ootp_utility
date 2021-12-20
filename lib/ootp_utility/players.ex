@@ -36,22 +36,22 @@ defmodule OOTPUtility.Players do
     case option do
       {:position, "IF"} ->
         query
-        |> where([g], g.position in ^["1B", "2B", "3B", "SS"])
+        |> where([p], p.position in ^["1B", "2B", "3B", "SS"])
         |> do_for_team(team, rest)
 
       {:position, "OF"} ->
         query
-        |> where([g], g.position in ^["LF", "CF", "RF"])
+        |> where([p], p.position in ^["LF", "CF", "RF"])
         |> do_for_team(team, rest)
 
       {:position, "P"} ->
         query
-        |> where([g], g.position in ^["SP", "MR", "CL"])
+        |> where([p], p.position in ^["SP", "MR", "CL"])
         |> do_for_team(team, rest)
 
       {:position, position} ->
         query
-        |> where([g], g.position == ^position)
+        |> where([p], p.position == ^position)
         |> do_for_team(team, rest)
 
       _ ->

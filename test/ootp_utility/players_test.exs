@@ -4,71 +4,74 @@ defmodule OOTPUtility.PlayersTest do
   alias OOTPUtility.Players
   import OOTPUtility.Factory
 
-  test "for_team/1 returns all players associated with the specified team" do
-    division = insert(:division)
+  describe "for_team/2" do
 
-    team = insert(:team, id: "1", division: division)
+    test "for_team/1 returns all players associated with the specified team" do
+      division = insert(:division)
 
-    other_team = insert(:team, id: "2", division: division)
+      team = insert(:team, id: "1", division: division)
 
-    team_player = insert(:player, team: team)
-    _other_team_player = insert(:player, id: "2", team: other_team)
+      other_team = insert(:team, id: "2", division: division)
 
-    assert ids_for(Players.for_team(team)) == ids_for([team_player])
-  end
+      team_player = insert(:player, team: team)
+      _other_team_player = insert(:player, id: "2", team: other_team)
 
-  test "it returns all pitchers for the specified team, when the `position` 'P' is specified" do
-    team = insert(:team, id: "1")
+      assert ids_for(Players.for_team(team)) == ids_for([team_player])
+    end
 
-    starting_pitchers = insert_pair(:player, team: team, position: "SP")
-    relievers = insert_pair(:player, team: team, position: "MR")
-    closer = insert(:player, team: team, position: "CL")
-    catchers = insert_pair(:player, team: team, position: "C")
+    test "it returns all pitchers for the specified team, when the `position` 'P' is specified" do
+      team = insert(:team, id: "1")
 
-    pitchers = Players.for_team(team, position: "P")
+      starting_pitchers = insert_pair(:player, team: team, position: "SP")
+      relievers = insert_pair(:player, team: team, position: "MR")
+      closer = insert(:player, team: team, position: "CL")
+      catchers = insert_pair(:player, team: team, position: "C")
 
-    assert ids_for(pitchers) == ids_for(starting_pitchers ++ relievers ++ [closer])
+      pitchers = Players.for_team(team, position: "P")
 
-    refute Enum.any?(ids_for(catchers), &Enum.member?(ids_for(pitchers), &1))
-  end
+      assert ids_for(pitchers) == ids_for(starting_pitchers ++ relievers ++ [closer])
 
-  test "it returns all infielders for the specified team, when the `position` 'IF' is specified" do
-    team = insert(:team, id: "1")
+      refute Enum.any?(ids_for(catchers), &Enum.member?(ids_for(pitchers), &1))
+    end
 
-    infielders = Enum.map(["1B", "2B", "3B", "SS"], &insert(:player, team: team, position: &1))
-    catchers = insert_pair(:player, team: team, position: "C")
+    test "it returns all infielders for the specified team, when the `position` 'IF' is specified" do
+      team = insert(:team, id: "1")
 
-    players = Players.for_team(team, position: "IF")
+      infielders = Enum.map(["1B", "2B", "3B", "SS"], &insert(:player, team: team, position: &1))
+      catchers = insert_pair(:player, team: team, position: "C")
 
-    assert ids_for(players) == ids_for(infielders)
+      players = Players.for_team(team, position: "IF")
 
-    refute Enum.any?(ids_for(catchers), &Enum.member?(ids_for(players), &1))
-  end
+      assert ids_for(players) == ids_for(infielders)
 
-  test "it returns all outfielders for the specified team, when the `position` 'OF' is specified" do
-    team = insert(:team, id: "1")
+      refute Enum.any?(ids_for(catchers), &Enum.member?(ids_for(players), &1))
+    end
 
-    outfielders = Enum.map(["LF", "CF", "RF"], &insert(:player, team: team, position: &1))
-    catchers = insert_pair(:player, team: team, position: "C")
+    test "it returns all outfielders for the specified team, when the `position` 'OF' is specified" do
+      team = insert(:team, id: "1")
 
-    players = Players.for_team(team, position: "OF")
+      outfielders = Enum.map(["LF", "CF", "RF"], &insert(:player, team: team, position: &1))
+      catchers = insert_pair(:player, team: team, position: "C")
 
-    assert ids_for(players) == ids_for(outfielders)
+      players = Players.for_team(team, position: "OF")
 
-    refute Enum.any?(ids_for(catchers), &Enum.member?(ids_for(players), &1))
-  end
+      assert ids_for(players) == ids_for(outfielders)
 
-  test "it returns all players for the specified position if a single position is specified" do
-    team = insert(:team, id: "1")
+      refute Enum.any?(ids_for(catchers), &Enum.member?(ids_for(players), &1))
+    end
 
-    third_basemen = insert_pair(:player, team: team, position: "3B")
-    catchers = insert_pair(:player, team: team, position: "C")
+    test "it returns all players for the specified position if a single position is specified" do
+      team = insert(:team, id: "1")
 
-    players = Players.for_team(team, position: "3B")
+      third_basemen = insert_pair(:player, team: team, position: "3B")
+      catchers = insert_pair(:player, team: team, position: "C")
 
-    assert ids_for(players) == ids_for(third_basemen)
+      players = Players.for_team(team, position: "3B")
 
-    refute Enum.any?(ids_for(catchers), &Enum.member?(ids_for(players), &1))
+      assert ids_for(players) == ids_for(third_basemen)
+
+      refute Enum.any?(ids_for(catchers), &Enum.member?(ids_for(players), &1))
+    end
   end
 
   test "get_player!/1 returns the player with given id" do
