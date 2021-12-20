@@ -36,6 +36,10 @@ defmodule OOTPUtility.Teams do
     }
   end
 
+  @spec get_full_name(Team.t()) :: String.t()
+  def get_full_name(%Team{name: name, nickname: nil}), do: name
+  def get_full_name(%Team{name: name, nickname: nickname}), do: "#{name} #{nickname}"
+
   @doc """
   Gets a single team.
 

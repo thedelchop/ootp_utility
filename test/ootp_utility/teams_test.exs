@@ -60,4 +60,18 @@ defmodule OOTPUtility.TeamsTest do
       refute ids_for(queried_roster.players) == ids_for(active_roster.players)
     end
   end
+
+  describe "get_full_name/1" do
+    test "returns the name and the nickname of the team, seperated by a space when the team has a nickname" do
+      team = insert(:team, name: "Test Town", nickname: "Exceptions")
+
+      assert Teams.get_full_name(team) == "Test Town Exceptions"
+    end
+
+    test "returns the name of the team, if the team does not have a nickname" do
+      team = insert(:team, name: "Test Town", nickname: nil)
+
+      assert Teams.get_full_name(team) == "Test Town"
+    end
+  end
 end
