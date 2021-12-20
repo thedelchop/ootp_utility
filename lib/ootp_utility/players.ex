@@ -7,7 +7,7 @@ defmodule OOTPUtility.Players do
 
   alias OOTPUtility.Repo
   alias OOTPUtility.Players.Player
-  alias OOTPUtility.Teams.Team
+  alias OOTPUtility.Teams.{Roster, Team}
 
   @doc """
   Returns all players assoicated with a specified team
@@ -32,7 +32,7 @@ defmodule OOTPUtility.Players do
     |> Repo.all()
   end
 
-  def do_for_team(query, team, [option | rest]) do
+  def do_for_team(query, %Team{id: team_id} = team, [option | rest]) do
     case option do
       {:position, "IF"} ->
         query
@@ -52,6 +52,12 @@ defmodule OOTPUtility.Players do
       {:position, position} ->
         query
         |> where([p], p.position == ^position)
+        |> do_for_team(team, rest)
+
+      {:roster, roster_type} ->
+        query
+        |> join(:inner, [p], membership in Roster.Membership, on: membership.player_id == p.id)
+        |> where([p, m], m.team_id == ^team_id and m.type == ^roster_type)
         |> do_for_team(team, rest)
 
       _ ->
