@@ -3,10 +3,10 @@ defmodule OOTPUtility.Teams do
   The Teams context.
   """
 
-  import Ecto.Query, only: [where: 3]
+  import Ecto.Query
 
-  alias OOTPUtility.Repo
-  alias OOTPUtility.Teams.Team
+  alias OOTPUtility.{Players, Repo}
+  alias OOTPUtility.Teams.{Roster, Team}
 
   @doc """
   Returns the list of teams.
@@ -19,6 +19,21 @@ defmodule OOTPUtility.Teams do
   """
   def list_teams do
     Repo.all(Team)
+  end
+
+  @spec get_roster(Team.t(), Roster.roster_type()) :: Roster.t()
+  def get_roster(%Team{id: team_id} = team, type \\ :active) do
+    players =
+      Players.Player
+      |> join(:inner, [p], membership in Roster.Membership, on: membership.player_id == p.id)
+      |> where([p, m], m.team_id == ^team_id and m.type == ^type)
+      |> Repo.all()
+
+    %Roster{
+      team: team,
+      players: players,
+      type: type
+    }
   end
 
   @doc """

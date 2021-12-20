@@ -16,4 +16,40 @@ defmodule OOTPUtility.TeamsTest do
       assert Teams.get_team!(team.id).id == team.id
     end
   end
+
+  describe "get_roster/2" do
+    setup do
+      team = insert(:team)
+
+      {
+        :ok,
+        team: team,
+        active_roster: build(:team_roster, team: team)
+      }
+    end
+
+    test "it returns the active roster for the team by default", %{team: team, active_roster: active_roster} do
+      queried_roster = Teams.get_roster(team)
+
+      assert ids_for(queried_roster.players) == ids_for(active_roster.players)
+    end
+
+    test "it returns the expanded roster for the team when the `:expanded` type is provided", %{team: team, active_roster: active_roster} do
+      expanded_roster = build(:team_roster, team: team, type: :expanded)
+
+      queried_roster = Teams.get_roster(team, :expanded)
+
+      assert ids_for(queried_roster.players) == ids_for(expanded_roster.players)
+      refute ids_for(queried_roster.players) == ids_for(active_roster.players)
+    end
+
+    test "it returns the injured roster for the team when the `:injured` type is provided", %{team: team, active_roster: active_roster} do
+      injured_roster = build(:team_roster, team: team, type: :injured)
+
+      queried_roster = Teams.get_roster(team, :injured)
+
+      assert ids_for(queried_roster.players) == ids_for(injured_roster.players)
+      refute ids_for(queried_roster.players) == ids_for(active_roster.players)
+    end
+  end
 end
