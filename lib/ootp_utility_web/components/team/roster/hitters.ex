@@ -54,7 +54,7 @@ defmodule OOTPUtilityWeb.Components.Team.Roster.Hitters do
       <div class="flex flex-col bg-white p-4 border-b border-gray-200 rounded-md shadow">
         <SectionHeader>{@title}</SectionHeader>
         <Table id={table_id(@title)} data={ {hitter, stats} <- @players_with_statistics } class={"px-3 py-1 lg:px-6 lg:py-3"} header_class={&header_class/2} column_class={&column_class/2}>
-          <Column label={@title}>
+          <Column>
             {Players.name(hitter, :full)}
           </Column>
 
