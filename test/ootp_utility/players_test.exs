@@ -72,6 +72,19 @@ defmodule OOTPUtility.PlayersTest do
 
       refute Enum.any?(ids_for(catchers), &Enum.member?(ids_for(players), &1))
     end
+
+    test "it returns only players from the specified roster if the `roster` option is specified" do
+      team = insert(:team)
+
+      active_roster = build(:team_roster, team: team)
+
+      expanded_roster = build(:team_roster, team: team, type: :expanded)
+
+      players = Players.for_team(team, roster: :active)
+
+      assert ids_for(players) == ids_for(active_roster.players)
+      refute ids_for(players) == ids_for(expanded_roster.players)
+    end
   end
 
   test "get_player!/1 returns the player with given id" do
