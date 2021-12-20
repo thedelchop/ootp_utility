@@ -14,7 +14,20 @@ defmodule OOTPUtility.Leagues.League do
     field :slug, :string
 
     field :current_date, :date
-    field :league_level, :string
+
+    field :league_level, Ecto.Enum,
+      values: [
+        :major,
+        :triple_a,
+        :double_a,
+        :single_a,
+        :low_a,
+        :rookie,
+        :international,
+        :college,
+        :high_school
+      ]
+
     field :logo_filename, :string
     field :season_year, :integer
     field :start_date, :date
