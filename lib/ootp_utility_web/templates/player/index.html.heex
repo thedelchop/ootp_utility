@@ -30,7 +30,7 @@
 <%= for player <- @players do %>
     <tr>
       <td><%= player.team_id %></td>
-      <td><%= player.league_id %></td>
+      <td><%= player.league.id %></td>
       <td><%= player.organization_id %></td>
       <td><%= player.first_name %></td>
       <td><%= player.last_name %></td>

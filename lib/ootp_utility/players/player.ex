@@ -1,6 +1,5 @@
 defmodule OOTPUtility.Players.Player do
   alias OOTPUtility.Teams.Team
-  alias OOTPUtility.Leagues.League
 
   @derive {Inspect, only: [:id, :first_name, :last_name, :position, :role, :team]}
 
@@ -33,8 +32,9 @@ defmodule OOTPUtility.Players.Player do
 
     field :free_agent, :boolean, default: false
 
-    belongs_to :league, League
     belongs_to :organization, Team
     belongs_to :team, Team
+
+    has_one :league, through: [:team, :league]
   end
 end

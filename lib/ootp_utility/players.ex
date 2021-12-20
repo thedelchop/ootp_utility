@@ -28,6 +28,7 @@ defmodule OOTPUtility.Players do
   def do_for_team(query, %Team{id: team_id}, []) do
     query
     |> where([p], p.team_id == ^team_id)
+    |> preload([:league, :team])
     |> Repo.all()
   end
 
@@ -101,8 +102,8 @@ defmodule OOTPUtility.Players do
   """
   def get_player!(slug),
     do:
-      Repo.one!(
-        from p in Player,
-          where: p.slug == ^slug
-      )
+      Player
+      |> where([p], p.slug == ^slug)
+      |> preload([p], [:team, :league])
+      |> Repo.one!()
 end

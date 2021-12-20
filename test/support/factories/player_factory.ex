@@ -25,8 +25,7 @@ defmodule OOTPUtility.PlayerFactory do
           position: position,
           uniform_number: Enum.random(1..99),
           free_agent: false,
-          league: fn -> build(:league) end,
-          team: fn p -> build(:team, league: p.league) end
+          team: build(:team)
         }
       end
     end
