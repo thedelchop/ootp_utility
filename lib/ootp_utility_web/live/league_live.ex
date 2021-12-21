@@ -15,7 +15,7 @@ defmodule OOTPUtilityWeb.LeagueLive do
   def mount(%{"slug" => slug}, _session, socket) do
     standings =
       slug
-      |> Leagues.get_league!()
+      |> Leagues.get_league_by_slug!()
       |> Standings.for_league()
 
     {

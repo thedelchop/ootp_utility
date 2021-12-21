@@ -35,12 +35,26 @@ defmodule OOTPUtility.Leagues do
       ** (Ecto.NoResultsError)
 
   """
-  def get_league!(slug) do
-    Repo.one!(
-      from l in League,
-        where: l.slug == ^slug,
-        preload: [conferences: [:league, divisions: [:league, :conference, teams: [:record]]]]
-    )
+  def get_league!(id, opts \\ []) do
+    dynamic([l], l.id == ^id)
+    |> do_get_league(opts)
+  end
+
+  def get_league_by_slug!(
+        slug,
+        opts \\ []
+      ) do
+      dynamic([l], l.slug == ^slug)
+      |> do_get_league(opts)
+  end
+
+  def do_get_league(where_clause, opts \\ []) do
+    preloads = Keyword.get(opts, :preload, [conferences: [:league, divisions: [:league, :conference, teams: [:record]]]])
+
+    League
+    |> where(^where_clause)
+    |> preload(^preloads)
+    |> Repo.one!()
   end
 
   @doc """

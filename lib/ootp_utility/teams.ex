@@ -61,7 +61,7 @@ defmodule OOTPUtility.Teams do
 
     Team
     |> where([t], t.slug == ^slug)
+    |> preload(^preloads)
     |> Repo.one!()
-    |> Repo.preload(preloads)
   end
 end

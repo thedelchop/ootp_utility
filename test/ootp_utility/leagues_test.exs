@@ -13,8 +13,12 @@ defmodule OOTPUtility.LeaguesTest do
       assert ids_for(Leagues.list_leagues()) == ids_for([league])
     end
 
+    test "get_league_by_slug!/1 returns the league with given slug", %{league: league} do
+      assert Leagues.get_league_by_slug!(league.slug).id == league.id
+    end
+
     test "get_league!/1 returns the league with given id", %{league: league} do
-      assert Leagues.get_league!(league.slug).id == league.id
+      assert Leagues.get_league!(league.id).id == league.id
     end
 
     test "get_league_level/1 returns a %League.Leve{}, when given a League or a Leagues.Level ID",
