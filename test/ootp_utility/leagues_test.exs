@@ -16,6 +16,19 @@ defmodule OOTPUtility.LeaguesTest do
     test "get_league!/1 returns the league with given id", %{league: league} do
       assert Leagues.get_league!(league.slug).id == league.id
     end
+
+    test "get_league_level/1 returns a %League.Leve{}, when given a League or a Leagues.Level ID",
+         %{league: league} do
+      major_league_level = %Leagues.Level{
+        id: :major,
+        abbr: "ML",
+        name: "Major League"
+      }
+
+      assert Leagues.get_league_level(league) == major_league_level
+      assert Leagues.get_league_level("major") == major_league_level
+      assert Leagues.get_league_level(:major) == major_league_level
+    end
   end
 
   describe "conferences" do

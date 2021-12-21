@@ -6,7 +6,7 @@ defmodule OOTPUtility.Leagues do
   import Ecto.Query, warn: false
   alias OOTPUtility.Repo
 
-  alias OOTPUtility.Leagues.{League, Conference, Division}
+  alias OOTPUtility.Leagues.{League, Level, Conference, Division}
 
   @doc """
   Returns the list of leagues.
@@ -42,6 +42,27 @@ defmodule OOTPUtility.Leagues do
         preload: [conferences: [:league, divisions: [:league, :conference, teams: [:record]]]]
     )
   end
+
+  @doc """
+  Returns a Leagues.Level struct for the specified league level
+
+  ## Examples
+
+    iex> get_league_level(:major)
+    %Level{
+      id: :major,
+      abbr: "MLB",
+      name: "Major League"
+    }
+  """
+  @spec get_league_level(League.t() | atom() | binary()) :: Level.t()
+  def get_league_level(%League{league_level: league_level}), do: get_league_level(league_level)
+
+  def get_league_level(league_level) when is_binary(league_level) do
+    league_level |> String.to_atom() |> get_league_level()
+  end
+
+  def get_league_level(league_level), do: Level.new(league_level)
 
   @doc """
   Returns the list of conferences for the specified league.
