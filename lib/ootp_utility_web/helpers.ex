@@ -12,7 +12,7 @@ defmodule OOTPUtilityWeb.Helpers do
     whip: "whip"
   }
 
-  @type suffix :: <<_::2>>
+  @type suffix :: <<_::16>>
 
   def friendly_date(date) do
     Timex.format!(date, "{0M}/{D}/{YYYY}")
