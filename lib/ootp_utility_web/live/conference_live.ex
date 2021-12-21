@@ -13,7 +13,7 @@ defmodule OOTPUtilityWeb.ConferenceLive do
 
   @impl true
   def mount(%{"league_slug" => league_slug, "slug" => slug}, _session, socket) do
-    conference = Leagues.get_conference!(slug, league_slug)
+    conference = Leagues.get_conference_by_slug!(slug, league_slug)
     standings = Standings.for_conference(conference)
 
     {

@@ -45,7 +45,7 @@ defmodule OOTPUtility.LeaguesTest do
     end
 
     test "get_conference!/1 returns the conference with given id", %{conference: conference} do
-      assert Leagues.get_conference!(conference.slug).id == conference.id
+      assert Leagues.get_conference_by_slug!(conference.slug).id == conference.id
     end
   end
 

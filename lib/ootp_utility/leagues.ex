@@ -44,12 +44,15 @@ defmodule OOTPUtility.Leagues do
         slug,
         opts \\ []
       ) do
-      dynamic([l], l.slug == ^slug)
-      |> do_get_league(opts)
+    dynamic([l], l.slug == ^slug)
+    |> do_get_league(opts)
   end
 
   def do_get_league(where_clause, opts \\ []) do
-    preloads = Keyword.get(opts, :preload, [conferences: [:league, divisions: [:league, :conference, teams: [:record]]]])
+    preloads =
+      Keyword.get(opts, :preload,
+        conferences: [:league, divisions: [:league, :conference, teams: [:record]]]
+      )
 
     League
     |> where(^where_clause)
@@ -105,16 +108,25 @@ defmodule OOTPUtility.Leagues do
       ** (Ecto.NoResultsError)
 
   """
-  def get_conference!(slug), do: Repo.one!(from c in Conference, where: c.slug == ^slug)
+  def get_conference!(id, opts \\ []) do
+    dynamic([c], c.id == ^id)
+    |> do_get_conference!(opts)
+  end
 
-  def get_conference!(slug, league_slug) do
-    Repo.one!(
-      from c in Conference,
-        join: l in League,
-        on: l.id == c.league_id,
-        where: l.slug == ^league_slug and c.slug == ^slug,
-        preload: [:league, divisions: [:league, :conference, teams: [:record]]]
-    )
+  def get_conference_by_slug!(slug, opts \\ []) do
+    dynamic([c], c.slug == ^slug)
+    |> do_get_conference!(opts)
+  end
+
+  defp do_get_conference!(where_clause, opts) do
+    preloads =
+      Keyword.get(opts, :preload, [:league, divisions: [:league, :conference, teams: [:record]]])
+
+    Conference
+    |> join(:inner, [c], l in League, on: l.id == c.league_id)
+    |> where(^where_clause)
+    |> preload(^preloads)
+    |> Repo.one!()
   end
 
   @doc """
