@@ -20,9 +20,9 @@ defmodule OOTPUtility.Standings.Division do
           teams: %Ecto.Association.NotLoaded{}
         } = division
       ) do
-      division
-      |> Repo.preload([:teams, :league, :conference])
-      |> new()
+    division
+    |> Repo.preload([:league, :conference, teams: [:record]])
+    |> new()
   end
 
   def new(

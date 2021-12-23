@@ -56,7 +56,11 @@ defmodule OOTPUtilityWeb.TeamLive do
 
   @impl true
   def mount(%{"slug" => slug}, _session, socket) do
-    team = Teams.get_team_by_slug!(slug, preload: [:league, :division, :conference])
+    team =
+      Teams.get_team_by_slug!(slug,
+        preload: [:league, :division, :conference, affiliates: [:record]]
+      )
+
     standings = Standings.for_division(team.division)
 
     {

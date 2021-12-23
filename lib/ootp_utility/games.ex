@@ -39,7 +39,13 @@ defmodule OOTPUtility.Games do
   def do_for_team(query, %Team{id: id} = _team, []) do
     query
     |> where([g], g.away_team_id == ^id or g.home_team_id == ^id)
-    |> preload([g], [:away_team, :home_team, :winning_pitcher, :losing_pitcher, :save_pitcher])
+    |> preload([g], [
+      :winning_pitcher,
+      :losing_pitcher,
+      :save_pitcher,
+      away_team: [:record],
+      home_team: [:record]
+    ])
     |> Repo.all()
   end
 
