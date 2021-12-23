@@ -21,6 +21,7 @@ defmodule OOTPUtility.Standings.Team do
     field :logo_filename, :string
     field :name, :string
     field :abbr, :string
+    field :slug, :string
 
     field :games, :integer
     field :games_behind, :float
@@ -52,6 +53,7 @@ defmodule OOTPUtility.Standings.Team do
     |> Map.drop([:team_id])
     |> Enum.into(%Team{
       id: "#{slug}-standings",
+      slug: slug,
       name: name,
       abbr: abbr,
       logo_filename: logo

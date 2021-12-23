@@ -4,8 +4,10 @@ defmodule OOTPUtility.Standings do
   """
   alias OOTPUtility.Repo
 
-  alias OOTPUtility.Standings
+  alias OOTPUtility.{Standings, Teams}
   alias OOTPUtility.Leagues.{Conference, Division, League}
+
+  import Ecto.Query, only: [where: 3]
 
   @doc """
   Returns the list of team_records.
@@ -30,6 +32,14 @@ defmodule OOTPUtility.Standings do
   def for_division(division) do
     Standings.Division.new(division)
   end
+
+  @spec for_team(Teams.Team.t()) :: Standings.TeamRecord.t()
+  def for_team(%Teams.Team{id: id, record: %Ecto.Association.NotLoaded{}} = _team) do
+    Standings.TeamRecord
+    |> where([tr], tr.team_id == ^id)
+    |> Repo.one!()
+  end
+  def for_team(%Teams.Team{record: team_record} = _team), do: team_record
 
   @doc """
   Gets a single team_record.

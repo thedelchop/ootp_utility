@@ -2,7 +2,7 @@ defmodule OOTPUtilityWeb.TeamLive do
   use Surface.LiveView
 
   alias OOTPUtility.{Teams, Standings}
-  alias OOTPUtilityWeb.Components.Team.{Leaders, Rankings, Roster}
+  alias OOTPUtilityWeb.Components.Team.{Leaders, Rankings, Roster, Organization}
   alias OOTPUtilityWeb.Components.{Scoreboard}
   alias OOTPUtilityWeb.Components.Shared.SectionHeader
   alias OOTPUtilityWeb.Components.Standings.Division, as: DivisionStandings
@@ -45,7 +45,7 @@ defmodule OOTPUtilityWeb.TeamLive do
               <DivisionStandings id={"#{@team.slug}-standings"} compact={true} standings={@standings} />
             </div>
             <Leaders id={"#{@team.slug}-leaders"} team={@team}/>
-            <div class="organization-summary"></div>
+            <Organization id={"#{@team.slug}-organization"} team={@team} />
           </div>
         </div>
       </div>

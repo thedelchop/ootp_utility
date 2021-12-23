@@ -8,6 +8,8 @@ defmodule OOTPUtility.Teams do
   alias OOTPUtility.{Players, Repo}
   alias OOTPUtility.Teams.{Roster, Team}
 
+  @team_abbreviation_regex ~r/(?<name>[\w\s]+)\s\([a-zA-z]{3}\)/
+
   @doc """
   Returns the list of teams.
 
@@ -38,7 +40,16 @@ defmodule OOTPUtility.Teams do
 
   @spec get_full_name(Team.t()) :: String.t()
   def get_full_name(%Team{name: name, nickname: nil}), do: name
-  def get_full_name(%Team{name: name, nickname: nickname}), do: "#{name} #{nickname}"
+
+  def get_full_name(%Team{name: name, nickname: nickname}) do
+    name = if Regex.match?(@team_abbreviation_regex, name) do
+      %{"name" => name_without_team_abbr} = Regex.named_captures(@team_abbreviation_regex, name)
+
+      name_without_team_abbr
+    end
+
+    "#{name} #{nickname}"
+  end
 
   @doc """
   Gets a single team.
