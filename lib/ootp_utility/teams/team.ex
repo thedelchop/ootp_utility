@@ -23,7 +23,19 @@ defmodule OOTPUtility.Teams.Team do
     field :abbr, :string
     field :slug, :string
 
-    field :level, :string
+    field :level, Ecto.Enum,
+      values: [
+        major: 1,
+        triple_a: 2,
+        double_a: 3,
+        single_a: 4,
+        low_a: 5,
+        rookie: 6,
+        international: 8,
+        college: 10,
+        high_school: 11
+      ]
+
     field :logo_filename, :string
 
     belongs_to :league, League

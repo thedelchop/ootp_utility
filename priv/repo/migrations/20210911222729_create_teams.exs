@@ -5,7 +5,7 @@ defmodule OOTPUtility.Repo.Migrations.CreateTeams do
     create table(:teams) do
       add :name, :string
       add :abbr, :string
-      add :level, :string
+      add :level, :integer
       add :logo_filename, :string
       add :league_id, references(:leagues, on_delete: :delete_all)
       add :conference_id, references(:conferences, on_delete: :delete_all)

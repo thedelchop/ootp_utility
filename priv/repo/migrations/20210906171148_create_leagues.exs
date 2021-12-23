@@ -5,7 +5,7 @@ defmodule OOTPUtility.Repo.Migrations.CreateLeagues do
     create table(:leagues) do
       add :abbr, :string
       add :current_date, :date
-      add :league_level, :string
+      add :league_level, :integer
       add :logo_filename, :string
       add :name, :string
       add :season_year, :integer

@@ -1,6 +1,8 @@
 defmodule OOTPUtility.Imports.Leagues.League do
   alias OOTPUtility.Leagues
 
+  import OOTPUtility.Imports.Helpers, only: [convert_league_level: 1]
+
   use OOTPUtility.Imports,
     from: "leagues",
     headers: [
@@ -10,20 +12,8 @@ defmodule OOTPUtility.Imports.Leagues.League do
     schema: Leagues.League,
     slug: :name
 
-  @league_level_mappings %{
-    "1" => :major,
-    "2" => :triple_a,
-    "3" => :double_a,
-    "4" => :single_a,
-    "5" => :low_a,
-    "6" => :rookie,
-    "8" => :international,
-    "10" => :college,
-    "11" => :high_school
-  }
-
   def sanitize_attributes(%{league_level: league_level} = attrs) when is_binary(league_level) do
-    sanitize_attributes(%{attrs | league_level: Map.get(@league_level_mappings, league_level)})
+    sanitize_attributes(%{attrs | league_level: convert_league_level(league_level)})
   end
 
   def sanitize_attributes(

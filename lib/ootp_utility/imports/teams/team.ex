@@ -2,6 +2,7 @@ defmodule OOTPUtility.Imports.Teams.Team do
   alias OOTPUtility.Leagues.{Conference, Division}
 
   import Ecto.Changeset, only: [change: 2]
+  import OOTPUtility.Imports.Helpers, only: [convert_league_level: 1]
 
   use OOTPUtility.Imports,
     from: "teams",
@@ -12,6 +13,10 @@ defmodule OOTPUtility.Imports.Teams.Team do
     ],
     schema: OOTPUtility.Teams.Team,
     slug: [:name, :nickname]
+
+  def sanitize_attributes(%{level: league_level} = attrs) when is_binary(league_level) do
+    %{attrs | level: convert_league_level(league_level)}
+  end
 
   def update_changeset(changeset) do
     changeset

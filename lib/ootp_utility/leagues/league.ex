@@ -17,15 +17,15 @@ defmodule OOTPUtility.Leagues.League do
 
     field :league_level, Ecto.Enum,
       values: [
-        :major,
-        :triple_a,
-        :double_a,
-        :single_a,
-        :low_a,
-        :rookie,
-        :international,
-        :college,
-        :high_school
+        major: 1,
+        triple_a: 2,
+        double_a: 3,
+        single_a: 4,
+        low_a: 5,
+        rookie: 6,
+        international: 8,
+        college: 10,
+        high_school: 11
       ]
 
     field :logo_filename, :string
