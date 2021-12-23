@@ -8,6 +8,8 @@ defmodule OOTPUtilityWeb.TeamLive do
   alias OOTPUtilityWeb.Components.Standings.Division, as: DivisionStandings
   alias OOTPUtilityWeb.Router.Helpers, as: Routes
 
+  import OOTPUtilityWeb.Components.Team.Helpers
+
   @impl true
   def render(assigns) do
     ~F"""
@@ -24,8 +26,8 @@ defmodule OOTPUtilityWeb.TeamLive do
                 </div>
                 <hr class="my-2"/>
                 <div class="flex flex-row space-x-2">
-                  <h3 class="text-lg font-medium text-gray-900">{record(@team)}</h3>
-                  <h3 class="text-lg font-medium text-gray-900">{games_behind(@team)} GB</h3>
+                  <h3 class="text-lg font-medium text-gray-900">{team_record(@team)}</h3>
+                  <h3 class="text-lg font-medium text-gray-900">{games_behind(@team)}</h3>
                 </div>
               </div>
             </div>
@@ -81,13 +83,5 @@ defmodule OOTPUtilityWeb.TeamLive do
 
   defp conference_standings(_team) do
     "3rd in American League"
-  end
-
-  defp record(_team) do
-    "90-72"
-  end
-
-  defp games_behind(_team) do
-    "5.5"
   end
 end
