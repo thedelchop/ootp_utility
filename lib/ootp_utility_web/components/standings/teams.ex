@@ -5,6 +5,8 @@ defmodule OOTPUtilityWeb.Components.Standings.Teams do
   alias OOTPUtilityWeb.Components.Shared.Table.Column
   alias OOTPUtility.Standings
   alias OOTPUtilityWeb.Router.Helpers, as: Routes
+  alias OOTPUtilityWeb.TeamLive
+  alias Surface.Components.LiveRedirect
 
   @default_column_classes [
     "px-3",
@@ -40,10 +42,14 @@ defmodule OOTPUtilityWeb.Components.Standings.Teams do
               </div>
               <div class="ml-4">
                 <div class="lg:hidden text-sm text-left font-medium text-gray-900">
-                  {standing.abbr}
+                  <LiveRedirect to={path_to_team(standing, @socket)}>
+                    {standing.abbr}
+                  </LiveRedirect>
                 </div>
                 <div class="hidden lg:block text-sm text-left font-medium text-gray-900">
-                  {standing.name}
+                  <LiveRedirect to={path_to_team(standing, @socket)}>
+                    {standing.name}
+                  </LiveRedirect>
                 </div>
               </div>
             </div>
@@ -111,4 +117,13 @@ defmodule OOTPUtilityWeb.Components.Standings.Teams do
   def streak(%Standings.Team{streak: streak} = _standing) when streak > 0, do: "W#{streak}"
 
   def streak(%Standings.Team{streak: streak} = _standing), do: "L#{abs(streak)}"
+
+  def path_to_team(
+        %Standings.Team{
+          slug: slug
+        } = _standings,
+        socket
+      ) do
+    Routes.live_path(socket, TeamLive, slug)
+  end
 end
