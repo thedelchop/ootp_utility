@@ -10,7 +10,6 @@ defmodule OOTPUtility.Teams.Team do
              :level,
              :league,
              :record,
-             :affiliates,
              :organization
            ]}
 
@@ -46,7 +45,6 @@ defmodule OOTPUtility.Teams.Team do
 
     has_many :affiliations, Affiliation
 
-    has_many :affiliates, through: [:affiliations, :affiliate]
     has_one :organization, through: [:affiliations, :team], foreign_key: :affilate_id
   end
 end

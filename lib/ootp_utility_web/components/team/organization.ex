@@ -17,7 +17,7 @@ defmodule OOTPUtilityWeb.Components.Team.Organization do
       <div class="flex flex-col rounded-lg shadow bg-white p-4">
         <SectionHeader>Organization</SectionHeader>
         <ul role="list" class="divide-y divide-gray-200">
-          {#for affiliate <- @team.affiliates }
+          {#for affiliate <- team_affiliates(@team) }
             <li class="py-4 flex justify-between relative">
               <div class="flex space-x-4 items-center">
                 <img class="h-6 lg:h-10 w-6 lg:w-10 rounded-full" src={path_to_logo(@socket, affiliate)} alt="">
@@ -35,6 +35,8 @@ defmodule OOTPUtilityWeb.Components.Team.Organization do
       </div>
     """
   end
+
+  def team_affiliates(team), do: Teams.get_affiliates(team, [:record])
 
   def name_with_league_level(team) do
     "#{Teams.get_full_name(team)} (#{league_level(team)})"

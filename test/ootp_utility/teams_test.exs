@@ -1,9 +1,9 @@
 defmodule OOTPUtility.TeamsTest do
-  use OOTPUtility.DataCase
+  use OOTPUtility.DataCase, async: true
 
   import OOTPUtility.Factory
 
-  alias OOTPUtility.Teams
+  alias OOTPUtility.{Repo, Teams}
 
   describe "teams" do
     setup do: {:ok, team: insert(:team)}
@@ -72,6 +72,28 @@ defmodule OOTPUtility.TeamsTest do
       team = insert(:team, name: "Test Town", nickname: nil)
 
       assert Teams.get_full_name(team) == "Test Town"
+    end
+  end
+
+  describe "get_affiliates/2" do
+    test "returns all affiliates for the specified team" do
+      team =
+        insert(:team)
+        |> as_organization()
+        |> with_affiliates()
+        |> Repo.preload(affiliations: [:affiliate])
+
+      affiliates = Enum.map(team.affiliations, & &1.affiliate)
+
+      assert ids_for(Teams.get_affiliates(team)) == ids_for(affiliates)
+    end
+
+    test "returns an empty list if the team has no affiliates" do
+      team = insert(:team) |> Repo.preload(affiliations: [:affiliate])
+
+      Enum.map(team.affiliations, & &1.affiliate)
+
+      assert Teams.get_affiliates(team) == []
     end
   end
 end

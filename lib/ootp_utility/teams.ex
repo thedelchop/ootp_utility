@@ -6,7 +6,7 @@ defmodule OOTPUtility.Teams do
   import Ecto.Query
 
   alias OOTPUtility.{Players, Repo}
-  alias OOTPUtility.Teams.{Roster, Team}
+  alias OOTPUtility.Teams.{Affiliation, Roster, Team}
 
   @team_abbreviation_regex ~r/(?<name>[\w\s]+)\s\([a-zA-z]{3}\)/
 
@@ -36,6 +36,16 @@ defmodule OOTPUtility.Teams do
       players: players,
       type: type
     }
+  end
+
+  @spec get_affiliates(Team.t(), Keyword.t()) :: [Team.t()]
+  def get_affiliates(team, preloads \\ []) do
+    Team
+    |> join(:inner, [t], a in Affiliation, on: a.affiliate_id == t.id)
+    |> where([t, a], a.team_id == ^team.id)
+    |> order_by([t, _a], t.level)
+    |> preload(^preloads)
+    |> Repo.all()
   end
 
   @spec get_full_name(Team.t()) :: String.t()
