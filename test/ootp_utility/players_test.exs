@@ -7,11 +7,9 @@ defmodule OOTPUtility.PlayersTest do
   describe "for_team/2" do
 
     test "for_team/1 returns all players associated with the specified team" do
-      division = insert(:division)
+      team = insert(:team, id: "1")
 
-      team = insert(:team, id: "1", division: division)
-
-      other_team = insert(:team, id: "2", division: division)
+      other_team = insert(:team, id: "2")
 
       team_player = insert(:player, team: team)
       _other_team_player = insert(:player, id: "2", team: other_team)
