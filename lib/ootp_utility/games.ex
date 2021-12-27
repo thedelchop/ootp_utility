@@ -1,6 +1,7 @@
 defmodule OOTPUtility.Games do
   @moduledoc """
-  The Games context.
+  The Games context, includes functions that returns a Game or Games
+  related to other resources in the application, like a Team.
   """
 
   import Ecto.Query, warn: false
@@ -18,10 +19,28 @@ defmodule OOTPUtility.Games do
       [%Game{}, ...]
 
   """
+  @spec list_games() :: [Game.t()]
   def list_games do
     Repo.all(Game)
   end
 
+  @doc """
+  Returns the list of games related to the specified Team.
+
+  It accepts the following options:
+
+    * `:limit` - The number of games returned by the query
+    * `:start_date` - The earliest date for which to include games
+
+  ## Examples
+
+      iex> for_team(%Team{}, limit: 10)
+      [%Game{}, ...]
+
+      iex> for_team(%Team{}, start_date: ~D[2020-07-03])
+      [%Game{}, ...]
+  """
+  @spec for_team(Team.t(), Keyword.t()) :: [Game.t()]
   def for_team(team, opts \\ Keyword.new())
 
   def for_team(%Team{id: _id, league: %Ecto.Association.NotLoaded{}} = team, opts) do
