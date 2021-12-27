@@ -1,5 +1,5 @@
 defmodule OOTPUtility.StatisticsTest do
-  use OOTPUtility.DataCase
+  use OOTPUtility.DataCase, async: true
 
   alias OOTPUtility.Statistics
   import OOTPUtility.Factory

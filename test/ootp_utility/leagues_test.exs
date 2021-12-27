@@ -1,5 +1,5 @@
 defmodule OOTPUtility.LeaguesTest do
-  use OOTPUtility.DataCase
+  use OOTPUtility.DataCase, async: true
 
   alias OOTPUtility.Leagues
   import OOTPUtility.Factory

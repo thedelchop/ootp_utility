@@ -1,5 +1,5 @@
 defmodule OOTPUtility.UtilitiesTest do
-  use OOTPUtility.DataCase
+  use OOTPUtility.DataCase, async: true
 
   alias OOTPUtility.Utilities
 

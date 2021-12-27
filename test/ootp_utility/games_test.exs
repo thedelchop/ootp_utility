@@ -1,5 +1,5 @@
 defmodule OOTPUtility.GamesTest do
-  use OOTPUtility.DataCase
+  use OOTPUtility.DataCase, async: true
 
   import OOTPUtility.Factory
 

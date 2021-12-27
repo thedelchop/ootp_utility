@@ -1,5 +1,5 @@
 defmodule OOTPUtilityWeb.PlayerControllerTest do
-  use OOTPUtilityWeb.ConnCase
+  use OOTPUtilityWeb.ConnCase, async: true
 
   import OOTPUtility.Factory
 

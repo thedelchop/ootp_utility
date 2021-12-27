@@ -1,5 +1,5 @@
 defmodule OOTPUtility.StandingsTest do
-  use OOTPUtility.DataCase
+  use OOTPUtility.DataCase, async: true
 
   alias OOTPUtility.Standings
   import OOTPUtility.Factory

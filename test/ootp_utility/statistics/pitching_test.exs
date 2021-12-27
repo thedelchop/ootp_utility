@@ -1,5 +1,5 @@
 defmodule OOTPUtility.Statistics.PitchingTest do
-  use OOTPUtility.DataCase
+  use OOTPUtility.DataCase, async: true
 
   import OOTPUtility.Factory
   alias OOTPUtility.Statistics.Pitching

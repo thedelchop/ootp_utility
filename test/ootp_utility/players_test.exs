@@ -1,11 +1,10 @@
 defmodule OOTPUtility.PlayersTest do
-  use OOTPUtility.DataCase
+  use OOTPUtility.DataCase, async: true
 
   alias OOTPUtility.Players
   import OOTPUtility.Factory
 
   describe "for_team/2" do
-
     test "for_team/1 returns all players associated with the specified team" do
       team = insert(:team, id: "1")
 
