@@ -42,7 +42,7 @@ defmodule OOTPUtilityWeb.Components.Scoreboard do
     date = Timex.subtract(socket.assigns.date, Timex.Duration.from_days(1))
 
     send_update(Scoreboard,
-      id: "boston-red-sox-scoreboard",
+      id: socket.assigns.id,
       date: date
     )
 
@@ -53,7 +53,7 @@ defmodule OOTPUtilityWeb.Components.Scoreboard do
     date = Timex.add(socket.assigns.date, Timex.Duration.from_days(1))
 
     send_update(Scoreboard,
-      id: "boston-red-sox-scoreboard",
+      id: socket.assigns.id,
       date: date
     )
 
@@ -75,7 +75,7 @@ defmodule OOTPUtilityWeb.Components.Scoreboard do
     games = Games.for_team(socket.assigns.subject, limit: size, start_date: socket.assigns.date)
 
     send_update(Scoreboard,
-      id: "boston-red-sox-scoreboard",
+      id: socket.assigns.id,
       games: games
     )
 
