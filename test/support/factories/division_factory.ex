@@ -4,14 +4,23 @@ defmodule OOTPUtility.DivisionFactory do
 
   defmacro __using__(_opts) do
     quote do
-      def division_factory do
-        %Division{
+      def division_factory(attrs) do
+        league = Map.get_lazy(attrs, :league, fn -> insert(:league) end)
+
+        conference =
+          Map.get_lazy(attrs, :conference, fn -> build(:conference, league: league) end)
+
+        division = %Division{
           id: sequence(:id, &"#{&1}"),
           name: sequence("Test Division"),
-          slug: &generate_slug_from_name/1,
-          league: fn -> build(:league) end,
-          conference: fn division -> build(:conference, league: division.league) end
+          slug: fn d -> generate_slug_from_name(d) end,
+          league: league,
+          conference: conference
         }
+
+        division
+        |> merge_attributes(Map.delete(attrs, [:league, :conference]))
+        |> evaluate_lazy_attributes()
       end
 
       def with_teams(%Division{league: league, conference: nil} = division) do
