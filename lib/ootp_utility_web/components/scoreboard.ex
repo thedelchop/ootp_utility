@@ -16,19 +16,13 @@ defmodule OOTPUtilityWeb.Components.Scoreboard do
   data size, :number, default: nil
   data games, :list, default: []
 
-  def update(assigns, socket) do
-    games = Games.for_team(assigns.subject, limit: socket.assigns.size, start_date: assigns.date)
-
-    {:ok, assign(socket, games: games, date: assigns.date, subject: assigns.subject)}
-  end
-
   def render(assigns) do
     ~F"""
       <div class="flex overflow-hidden justify-between rounded-md" :hook="WindowResize" id="scoreboard" phx-target={@myself}>
         <div class={pagination_css_class("rounded-l-md")} :on-click="decrement_date" phx-target={@myself}>
           <Heroicons.Surface.Icon name="chevron-left" type="solid" class="h-6 w-6" />
         </div>
-        {#if is_nil(@size)}
+        {#if Enum.empty?(@games)}
           {#for _n <- 1..8}
             <EmptyGame />
           {/for}
@@ -49,8 +43,7 @@ defmodule OOTPUtilityWeb.Components.Scoreboard do
 
     send_update(Scoreboard,
       id: "boston-red-sox-scoreboard",
-      date: date,
-      subject: socket.assigns.subject
+      date: date
     )
 
     {:noreply, socket}
@@ -61,8 +54,7 @@ defmodule OOTPUtilityWeb.Components.Scoreboard do
 
     send_update(Scoreboard,
       id: "boston-red-sox-scoreboard",
-      date: date,
-      subject: socket.assigns.subject
+      date: date
     )
 
     {:noreply, socket}
@@ -71,18 +63,21 @@ defmodule OOTPUtilityWeb.Components.Scoreboard do
   def handle_event("viewport_resize", viewport, socket) do
     width = Map.get(viewport, "width")
 
-    socket =
-      socket
-      |> assign(
-        :size,
-        case display_size(width) do
-          :xsmall -> 2
-          :small -> 4
-          :medium -> 5
-          :large -> 6
-          _ -> 8
-        end
-      )
+    size =
+      case display_size(width) do
+        :xsmall -> 2
+        :small -> 4
+        :medium -> 5
+        :large -> 6
+        _ -> 8
+      end
+
+    games = Games.for_team(socket.assigns.subject, limit: size, start_date: socket.assigns.date)
+
+    send_update(Scoreboard,
+      id: "boston-red-sox-scoreboard",
+      games: games
+    )
 
     {:noreply, socket}
   end
