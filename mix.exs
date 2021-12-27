@@ -60,6 +60,7 @@ defmodule OOTPUtility.MixProject do
       {:slugify, "~> 1.3"},
       {:surface, "~> 0.6"},
       {:swoosh, "~> 1.3"},
+      {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
       {:timex, ">= 3.7.6"}
