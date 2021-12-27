@@ -17,22 +17,19 @@ defmodule OOTPUtility.Imports.Leagues.Division do
     |> put_name()
   end
 
-  defp put_name(
-         %Ecto.Changeset{changes: %{name: name, league_id: league_id}} =
-           changeset
-       ) do
-    %Leagues.League{abbr: league_abbr} = Leagues.get_league!(league_id, preload: [])
-
-    Ecto.Changeset.change(changeset, %{name: "#{league_abbr} #{get_short_name(name)}"})
-  end
-
   defp put_name(%Ecto.Changeset{changes: %{name: name, conference_id: conference_id}} = changeset) do
     %Leagues.Conference{abbr: conference_abbr} = Leagues.get_conference!(conference_id)
 
     Ecto.Changeset.change(changeset, %{name: "#{conference_abbr} #{get_short_name(name)}"})
   end
 
-  def get_short_name(name) do
+  defp put_name(%Ecto.Changeset{changes: %{name: name, league_id: league_id}} = changeset) do
+    %Leagues.League{abbr: league_abbr} = Leagues.get_league!(league_id, preload: [])
+
+    Ecto.Changeset.change(changeset, %{name: "#{league_abbr} #{get_short_name(name)}"})
+  end
+
+  defp get_short_name(name) do
     regex = ~r/(?<short_name>\w+)\sDivision/
 
     if Regex.match?(regex, name) do
