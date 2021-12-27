@@ -36,18 +36,18 @@ defmodule OOTPUtilityWeb.TeamLive do
         </div>
 
         <div class="rounded-lg shadow bg-white p-4">
-          <Scoreboard id="boston-red-sox-scoreboard" subject={@team} date={@team.league.current_date} />
+          <Scoreboard id={component_id_for(@team, "scoreboard")} subject={@team} date={@team.league.current_date} />
         </div>
 
         <div class="flex space-x-4">
-          <Roster id={"#{@team.slug}-roster"} team={@team} year={@team.league.season_year} class="grow" />
+          <Roster id={component_id_for(@team, "roster")} team={@team} year={@team.league.season_year} class="grow" />
           <div class="flex flex-col w-1/3 space-y-4">
             <div class="flex flex-col rounded-lg shadow bg-white p-4">
               <SectionHeader>Standings</SectionHeader>
-              <DivisionStandings id={"#{@team.slug}-standings"} compact={true} standings={@standings} />
+              <DivisionStandings id={component_id_for(@team, "standings")} compact={true} standings={@standings} />
             </div>
-            <Leaders id={"#{@team.slug}-leaders"} team={@team}/>
-            <Organization id={"#{@team.slug}-organization"} team={@team} />
+            <Leaders id={component_id_for(@team, "leaders")} team={@team}/>
+            <Organization id={component_id_for(@team, "organization")} team={@team} />
           </div>
         </div>
       </div>
@@ -75,6 +75,10 @@ defmodule OOTPUtilityWeb.TeamLive do
 
   defp full_name(%OOTPUtility.Teams.Team{name: name, nickname: nickname} = _team) do
     "#{name} #{nickname}"
+  end
+
+  defp component_id_for(%Teams.Team{slug: slug}, component_name) do
+    slug <> "-" <> component_name
   end
 
   defp division_standings(_team) do
