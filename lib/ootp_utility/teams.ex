@@ -52,11 +52,14 @@ defmodule OOTPUtility.Teams do
   def get_full_name(%Team{name: name, nickname: nil}), do: name
 
   def get_full_name(%Team{name: name, nickname: nickname}) do
-    name = if Regex.match?(@team_abbreviation_regex, name) do
-      %{"name" => name_without_team_abbr} = Regex.named_captures(@team_abbreviation_regex, name)
+    name =
+      if Regex.match?(@team_abbreviation_regex, name) do
+        %{"name" => name_without_team_abbr} = Regex.named_captures(@team_abbreviation_regex, name)
 
-      name_without_team_abbr
-    end
+        name_without_team_abbr
+      else
+        name
+      end
 
     "#{name} #{nickname}"
   end
