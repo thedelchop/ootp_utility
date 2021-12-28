@@ -17,13 +17,25 @@ defmodule OOTPUtility.Statistics.Fielding.Schema do
   defmacro fielding_schema(source, do: block) do
     quote do
       schema unquote(source) do
+        field :level, Ecto.Enum,
+          values: [
+            major: 1,
+            triple_a: 2,
+            double_a: 3,
+            single_a: 4,
+            low_a: 5,
+            rookie: 6,
+            international: 8,
+            college: 10,
+            high_school: 11
+          ]
+
         field :assists, :integer
         field :double_plays, :integer
         field :errors, :integer
         field :fielding_percentage, :float
         field :games, :integer
         field :games_started, :integer
-        field :level_id, :integer
         field :outs_played, :integer
         field :past_balls, :integer
         field :put_outs, :integer

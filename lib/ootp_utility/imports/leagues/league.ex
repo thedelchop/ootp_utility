@@ -7,13 +7,14 @@ defmodule OOTPUtility.Imports.Leagues.League do
     from: "leagues",
     headers: [
       {:league_id, :id},
+      {:league_level, :level},
       {:logo_file_name, :logo_filename}
     ],
     schema: Leagues.League,
     slug: :name
 
-  def sanitize_attributes(%{league_level: league_level} = attrs) when is_binary(league_level) do
-    sanitize_attributes(%{attrs | league_level: convert_league_level(league_level)})
+  def sanitize_attributes(%{level: league_level} = attrs) when is_binary(league_level) do
+    sanitize_attributes(%{attrs | level: convert_league_level(league_level)})
   end
 
   def sanitize_attributes(

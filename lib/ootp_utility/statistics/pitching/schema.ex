@@ -17,6 +17,19 @@ defmodule OOTPUtility.Statistics.Pitching.Schema do
   defmacro pitching_schema(source, do: block) do
     quote do
       schema unquote(source) do
+        field :level, Ecto.Enum,
+          values: [
+            major: 1,
+            triple_a: 2,
+            double_a: 3,
+            single_a: 4,
+            low_a: 5,
+            rookie: 6,
+            international: 8,
+            college: 10,
+            high_school: 11
+          ]
+
         field :at_bats, :integer
         field :balks, :integer
         field :batting_average, :float
@@ -45,7 +58,6 @@ defmodule OOTPUtility.Statistics.Pitching.Schema do
         field :home_runs, :integer
         field :home_runs_per_9, :float
         field :intentional_walks, :integer
-        field :level_id, :integer
         field :losses, :integer
         field :on_base_percentage, :float
         field :on_base_plus_slugging, :float

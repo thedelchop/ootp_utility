@@ -13,7 +13,7 @@ defmodule OOTPUtility.LeaguesTest do
       assert Leagues.get_league!(league.id).id == league.id
     end
 
-    test "returns an Ecto.NoResultsError if the league with given id can not be found"  do
+    test "returns an Ecto.NoResultsError if the league with given id can not be found" do
       assert_raise Ecto.NoResultsError, fn -> Leagues.get_league!("no-id") end
     end
   end
@@ -40,10 +40,14 @@ defmodule OOTPUtility.LeaguesTest do
         name: "Major League"
       }
 
-      {:ok, league: insert(:league, league_level: major_league_level.id), league_level: major_league_level}
+      {:ok,
+       league: insert(:league, level: major_league_level.id), league_level: major_league_level}
     end
 
-    test "returns a %League.Leve{}, when given a %League{}", %{league: league, league_level: major_league_level} do
+    test "returns a %League.Leve{}, when given a %League{}", %{
+      league: league,
+      league_level: major_league_level
+    } do
       assert Leagues.get_league_level(league) == major_league_level
     end
 
@@ -61,7 +65,9 @@ defmodule OOTPUtility.LeaguesTest do
       {:ok, conference: insert(:conference)}
     end
 
-    test "returns the %Conference{} which is associated with the specified ID", %{conference: conference} do
+    test "returns the %Conference{} which is associated with the specified ID", %{
+      conference: conference
+    } do
       assert Leagues.get_conference!(conference.id).id == conference.id
     end
 

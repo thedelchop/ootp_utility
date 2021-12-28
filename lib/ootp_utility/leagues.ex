@@ -76,7 +76,7 @@ defmodule OOTPUtility.Leagues do
     }
   """
   @spec get_league_level(League.t() | atom() | binary()) :: Level.t()
-  def get_league_level(%League{league_level: league_level}), do: get_league_level(league_level)
+  def get_league_level(%League{level: league_level}), do: get_league_level(league_level)
 
   def get_league_level(league_level) when is_binary(league_level) do
     league_level |> String.to_atom() |> get_league_level()

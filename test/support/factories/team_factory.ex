@@ -8,7 +8,7 @@ defmodule OOTPUtility.TeamFactory do
     quote do
       def team_factory(attrs) do
         level = Map.get(attrs, :level, :major)
-        league = Map.get_lazy(attrs, :league, fn -> insert(:league, league_level: level) end)
+        league = Map.get_lazy(attrs, :league, fn -> insert(:league, level: level) end)
 
         conference =
           Map.get_lazy(attrs, :conference, fn -> insert(:conference, league: league) end)

@@ -59,7 +59,7 @@ defmodule OOTPUtility.Statistics.PitchingFactory do
 
         struct!(module, %{
           id: sequence(:id, &"#{&1}"),
-          level_id: 1,
+          level: :major,
           at_bats: at_bats,
           balks: Faker.random_between(0, 2) * num_of_players,
           batting_average: fn s -> calculate(s, :batting_average) end,

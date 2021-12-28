@@ -54,7 +54,7 @@ defmodule OOTPUtility.Statistics.BattingFactory do
 
         struct!(module, %{
           id: sequence(:id, &"#{&1}"),
-          level_id: 1,
+          level: :major,
           at_bats: at_bats,
           batting_average: fn s -> calculate(s, :batting_average) end,
           batting_average_on_balls_in_play: fn s ->

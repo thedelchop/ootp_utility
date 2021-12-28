@@ -11,7 +11,7 @@ defmodule OOTPUtility.LeagueFactory do
           slug: &generate_slug_from_name/1,
           abbr: "TL",
           current_date: ~D[2021-09-05],
-          league_level: :major,
+          level: :major,
           logo_filename: "test_league.png",
           season_year: 2021,
           start_date: ~D[2021-09-05]

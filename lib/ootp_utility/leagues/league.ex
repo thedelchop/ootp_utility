@@ -15,7 +15,7 @@ defmodule OOTPUtility.Leagues.League do
 
     field :current_date, :date
 
-    field :league_level, Ecto.Enum,
+    field :level, Ecto.Enum,
       values: [
         major: 1,
         triple_a: 2,
