@@ -12,23 +12,9 @@ defmodule OOTPUtilityWeb.DivisionLive do
   end
 
   @impl true
-  def mount(
-        %{"league_slug" => league_slug, "conference_slug" => conference_slug, "slug" => slug},
-        _session,
-        socket
-      ) do
-    division = Leagues.get_division!(slug, league_slug, conference_slug)
+  def mount(%{"slug" => slug}, _session, socket) do
+    division = Leagues.get_division_by_slug!(slug)
 
-    do_mount(division, slug, socket)
-  end
-
-  def mount(%{"league_slug" => league_slug, "slug" => slug}, _session, socket) do
-    division = Leagues.get_division!(slug, league_slug)
-
-    do_mount(division, slug, socket)
-  end
-
-  def do_mount(division, slug, socket) do
     standings = Standings.for_division(division)
 
     {

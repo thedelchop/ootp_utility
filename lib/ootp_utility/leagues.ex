@@ -138,45 +138,25 @@ defmodule OOTPUtility.Leagues do
       [%Division{}, ...]
 
   """
+  @spec list_divisions() :: [Division.t()]
   def list_divisions do
     Repo.all(Division)
   end
 
   @doc """
-  Gets a single division.
+  Gets a single division using its slug.
 
   Raises `Ecto.NoResultsError` if the Division does not exist.
 
   ## Examples
 
-      iex> get_division!(123)
+      iex> get_division_by_slug!("al-east")
       %Division{}
 
-      iex> get_division!(456)
+      iex> get_division_by_slug!("made-up-division")
       ** (Ecto.NoResultsError)
 
   """
-  def get_division!(slug), do: Repo.one!(from d in Division, where: d.slug == ^slug)
-
-  def get_division!(slug, league_slug, conference_slug) do
-    Repo.one!(
-      from d in Division,
-        join: c in Conference,
-        on: c.id == d.conference_id,
-        join: l in League,
-        on: l.id == d.league_id,
-        where: l.slug == ^league_slug and c.slug == ^conference_slug and d.slug == ^slug,
-        preload: [:league, :conference, teams: [:record]]
-    )
-  end
-
-  def get_division!(slug, league_slug) do
-    Repo.one!(
-      from d in Division,
-        join: l in League,
-        on: l.id == d.league_id,
-        where: l.slug == ^league_slug and d.slug == ^slug,
-        preload: [:league, teams: [:record]]
-    )
-  end
+  @spec get_division_by_slug!(String.t()) :: Division.t()
+  def get_division_by_slug!(slug), do: Repo.one!(from d in Division, where: d.slug == ^slug)
 end
