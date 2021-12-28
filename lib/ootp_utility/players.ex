@@ -1,6 +1,8 @@
 defmodule OOTPUtility.Players do
   @moduledoc """
-  The Players context.
+  The Players context, which contains the public API for retreiving
+  players, whether a single Player by its slug or all the players
+  for a specific team.
   """
 
   import Ecto.Query, warn: false
@@ -10,29 +12,36 @@ defmodule OOTPUtility.Players do
   alias OOTPUtility.Teams.{Roster, Team}
 
   @doc """
-  Returns all players assoicated with a specified team
+  Returns all players assoicated with a specified team, providing
+  the following options:
+
+    * `position` - The position of the players that should be
+      returned, besides the traditional positions, also accepts,
+      `IF`, `OF`, `SP`, `MR`, `CL`
+    * `roster` - The roster type that should be returned, one of
+      `:preseason`, `:active`, `:extended`, `:injured`
 
   ## Examples
 
       iex> for_team(%Team{})
       [%Player{}, ...]
-
   """
 
+  @spec for_team(Team.t(), Keyword.t()) :: [Player.t()]
   def for_team(%Team{} = team, opts \\ Keyword.new()) do
     do_for_team(team, opts)
   end
 
-  def do_for_team(query \\ Player, team, options)
+  defp do_for_team(query \\ Player, team, options)
 
-  def do_for_team(query, %Team{id: team_id}, []) do
+  defp do_for_team(query, %Team{id: team_id}, []) do
     query
     |> where([p], p.team_id == ^team_id)
     |> preload([:league, :team])
     |> Repo.all()
   end
 
-  def do_for_team(query, %Team{id: team_id} = team, [option | rest]) do
+  defp do_for_team(query, %Team{id: team_id} = team, [option | rest]) do
     case option do
       {:position, "IF"} ->
         query
@@ -74,12 +83,36 @@ defmodule OOTPUtility.Players do
       [%Player{}, ...]
 
   """
-  def for_organization(%Team{id: organization_id}) do
+  @spec for_organization(Team.t()) :: [Player.t()]
+  def for_organization(%Team{organization: %Ecto.Association.NotLoaded{}} = team) do
+    team
+    |> Repo.preload(:organization)
+    |> for_organization()
+  end
+
+  def for_organization(%Team{organization: %Team{id: organization_id}}) do
     Player
     |> where([p], p.organization_id == ^organization_id)
     |> Repo.all()
   end
 
+  @doc """
+  Returns the player's full name in various formats, which are currently:
+    * `full` - The player's full first and last name
+    * `short` - The player's first initial and last name
+
+    iex> name(%Player{first_name: "Test", last_name: "Player"})
+    "Test Player"
+
+    iex> name(%Player{first_name: "Test", last_name: "Player"}, :full)
+    "Test Player"
+
+    iex> name(%Player{first_name: "Test", last_name: "Player"}, :short)
+    "T. Player"
+  """
+  @type name_format :: :full | :short
+
+  @spec name(Player.t(), name_format()) :: String.t()
   def name(player, format \\ :full)
 
   def name(%Player{first_name: first_name, last_name: last_name} = _player, :short) do

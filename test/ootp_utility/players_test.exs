@@ -84,9 +84,34 @@ defmodule OOTPUtility.PlayersTest do
     end
   end
 
-  test "get_player!/1 returns the player with given id" do
-    player = insert(:player)
-    assert Players.get_player!(player.slug).id == player.id
+  describe "for_organization/1" do
+    test "it returns all players in the specified team's organization" do
+      organization = insert(:team)
+      team = insert(:team, organization: organization)
+
+      organization_members = insert_list(4, :player, team: team, organization: organization)
+      non_org_members = insert_pair(:player)
+
+      players = Players.for_organization(team)
+
+      assert ids_for(players) == ids_for(organization_members)
+
+      refute Enum.any?(players, &Enum.member?(non_org_members, &1))
+    end
+  end
+
+  describe "get_player_by_slug!/1" do
+    setup do
+      {:ok, player: insert(:player)}
+    end
+
+    test "returns the player with the given slug", %{player: player} do
+      assert Players.get_player_by_slug!(player.slug).id == player.id
+    end
+
+    test "returns an Ecto.NoResultsError if the player with given slug can not be found" do
+      assert_raise Ecto.NoResultsError, fn -> Players.get_player_by_slug!("missing-player") end
+    end
   end
 
   describe "name/2" do
