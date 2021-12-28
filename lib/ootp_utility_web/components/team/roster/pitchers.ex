@@ -78,6 +78,10 @@ defmodule OOTPUtilityWeb.Components.Team.Roster.Pitchers do
             {stats.games_started}
           </Column>
 
+          <Column label="IP">
+            {stats.losses}
+          </Column>
+
           <Column label="W">
             {stats.wins}
           </Column>
@@ -90,12 +94,28 @@ defmodule OOTPUtilityWeb.Components.Team.Roster.Pitchers do
             {stats.saves}
           </Column>
 
+          <Column label="K">
+            {stats.strikeouts}
+          </Column>
+
+          <Column label="BB">
+            {stats.walks}
+          </Column>
+
+          <Column label="R">
+            {stats.runs}
+          </Column>
+
           <Column label="ERA">
             {stats.earned_run_average |> :erlang.float_to_binary(decimals: 2)}
           </Column>
 
           <Column label="WHIP">
             {stats.walks_hits_per_inning_pitched |> :erlang.float_to_binary(decimals: 2)}
+          </Column>
+
+          <Column label="WAR">
+            {stats.wins_above_replacement}
           </Column>
         </Table>
       </div>

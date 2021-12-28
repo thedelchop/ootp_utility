@@ -58,6 +58,10 @@ defmodule OOTPUtilityWeb.Components.Team.Roster.Hitters do
             {Players.name(hitter, :full)}
           </Column>
 
+          <Column label="POS">
+            {hitter.position}
+          </Column>
+
           <Column label="B">
             {hitter.bats |> String.first() |> String.capitalize()}
           </Column>
