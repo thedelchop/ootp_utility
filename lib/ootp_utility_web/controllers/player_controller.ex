@@ -12,8 +12,8 @@ defmodule OOTPUtilityWeb.PlayerController do
     render(conn, "index.html", players: players)
   end
 
-  def show(conn, %{"id" => id}) do
-    player = Players.get_player!(id)
+  def show(conn, %{"slug" => slug}) do
+    player = Players.get_player_by_slug!(slug)
     render(conn, "show.html", player: player)
   end
 end

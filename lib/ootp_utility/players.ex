@@ -93,20 +93,21 @@ defmodule OOTPUtility.Players do
   def name(nil, _format), do: nil
 
   @doc """
-  Gets a single player.
+  Gets a single player using its slug.
 
   Raises `Ecto.NoResultsError` if the Player does not exist.
 
   ## Examples
 
-      iex> get_player!(123)
+      iex> get_player_by_slug!("babe-ruth")
       %Player{}
 
-      iex> get_player!(456)
+      iex> get_player_by_slug!("missing-player")
       ** (Ecto.NoResultsError)
 
   """
-  def get_player!(slug),
+  @spec get_player_by_slug!(String.t()) :: Player.t()
+  def get_player_by_slug!(slug),
     do:
       Player
       |> where([p], p.slug == ^slug)
