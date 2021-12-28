@@ -13,14 +13,25 @@ defmodule OOTPUtility.Imports.Leagues.Conference do
   def update_changeset(changeset) do
     changeset
     |> Leagues.Conference.put_composite_key()
-    |> put_name()
+    |> update_name_and_abberviation()
   end
 
-  defp put_name(%Ecto.Changeset{changes: %{name: name, league_id: league_id}} = changeset) do
-    %Leagues.League{abbr: league_abbr} = Leagues.get_league!(league_id, preload: [])
+  defp update_name_and_abberviation(
+         %Ecto.Changeset{changes: %{name: name, abbr: abbr, league_id: league_id}} = changeset
+       ) do
+    if generic_conference_name?(name) do
+      %Leagues.League{abbr: league_abbr} = Leagues.get_league!(league_id, preload: [])
 
-    name = if Regex.match?(~r/Conference\s[1-9]/, name), do: "#{league_abbr} #{name}", else: name
+      Ecto.Changeset.change(changeset, %{
+        name: "#{league_abbr} #{name}",
+        abbr: "#{league_abbr}-#{abbr}"
+      })
+    else
+      changeset
+    end
+  end
 
-    Ecto.Changeset.change(changeset, %{name: name})
+  defp generic_conference_name?(name) do
+    Regex.match?(~r/Conference\s[1-9]/, name)
   end
 end
