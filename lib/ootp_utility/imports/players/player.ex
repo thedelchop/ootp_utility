@@ -14,7 +14,6 @@ defmodule OOTPUtility.Imports.Players.Player do
     schema: OOTPUtility.Players.Player,
     slug: [:first_name, :last_name]
 
-  def should_import?(%{retired: "1"} = _attrs), do: false
   def should_import?(_attrs), do: true
 
   def sanitize_attributes(%{team_id: "0"} = attrs) do
