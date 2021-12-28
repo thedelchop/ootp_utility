@@ -9,20 +9,6 @@ defmodule OOTPUtility.Leagues do
   alias OOTPUtility.Leagues.{League, Level, Conference, Division}
 
   @doc """
-  Returns the list of leagues.
-
-  ## Examples
-
-      iex> list_leagues()
-      [%League{}, ...]
-
-  """
-  @spec list_leagues() :: [League.t()]
-  def list_leagues do
-    Repo.all(League)
-  end
-
-  @doc """
   Gets a single league.
 
   Raises `Ecto.NoResultsError` if the League does not exist.
@@ -99,20 +85,6 @@ defmodule OOTPUtility.Leagues do
   def get_league_level(league_level), do: Level.new(league_level)
 
   @doc """
-  Returns the list of conferences for the specified league.
-
-  ## Examples
-
-      iex> list_conferences()
-      [%Conference{}, ...]
-
-  """
-  @spec list_conferences() :: [Conference.t()]
-  def list_conferences do
-    Repo.all(Conference)
-  end
-
-  @doc """
   Gets a single conference.
 
   Raises `Ecto.NoResultsError` if the Conference does not exist.
@@ -173,20 +145,6 @@ defmodule OOTPUtility.Leagues do
     |> where(^where_clause)
     |> preload(^preloads)
     |> Repo.one!()
-  end
-
-  @doc """
-  Returns the list of divisions.
-
-  ## Examples
-
-      iex> list_divisions()
-      [%Division{}, ...]
-
-  """
-  @spec list_divisions() :: [Division.t()]
-  def list_divisions do
-    Repo.all(Division)
   end
 
   @doc """
