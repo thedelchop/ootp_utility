@@ -17,6 +17,7 @@ defmodule OOTPUtility.Leagues do
       [%League{}, ...]
 
   """
+  @spec list_leagues() :: [League.t()]
   def list_leagues do
     Repo.all(League)
   end
@@ -28,18 +29,34 @@ defmodule OOTPUtility.Leagues do
 
   ## Examples
 
-      iex> get_league!(123)
+      iex> get_league!("123")
       %League{}
 
-      iex> get_league!(456)
+      iex> get_league!("456")
       ** (Ecto.NoResultsError)
 
   """
+  @spec get_league!(String.t(), Keyword.t()) :: League.t()
   def get_league!(id, opts \\ []) do
     dynamic([l], l.id == ^id)
     |> do_get_league(opts)
   end
 
+  @doc """
+  Gets a single league using its slug.
+
+  Raises `Ecto.NoResultsError` if the League does not exist.
+
+  ## Examples
+
+      iex> get_league_by_slug!("boston-red-sox")
+      %League{}
+
+      iex> get_league!("made-up-slug")
+      ** (Ecto.NoResultsError)
+
+  """
+  @spec get_league_by_slug!(String.t(), Keyword.t()) :: Team.t()
   def get_league_by_slug!(
         slug,
         opts \\ []
@@ -90,6 +107,7 @@ defmodule OOTPUtility.Leagues do
       [%Conference{}, ...]
 
   """
+  @spec list_conferences() :: [Conference.t()]
   def list_conferences do
     Repo.all(Conference)
   end
@@ -99,20 +117,48 @@ defmodule OOTPUtility.Leagues do
 
   Raises `Ecto.NoResultsError` if the Conference does not exist.
 
+  Options:
+  * `preload` - A Keyword list of resources to preload with the Conference.
+
   ## Examples
 
       iex> get_conference!(123)
+      %Conference{}
+
+      iex> get_conference!(123, preload: [:divisions])
       %Conference{}
 
       iex> get_conference!(456)
       ** (Ecto.NoResultsError)
 
   """
+  @spec get_conference!(String.t(), Keyword.t()) :: Conference.t()
   def get_conference!(id, opts \\ []) do
     dynamic([c], c.id == ^id)
     |> do_get_conference!(opts)
   end
 
+  @doc """
+  Gets a single conference using its slug.
+
+  Raises `Ecto.NoResultsError` if the Conference does not exist.
+
+  Options:
+  * `preload` - A Keyword list of resources to preload with the Conference.
+
+  ## Examples
+
+      iex> get_conference!("american-league")
+      %Conference{}
+
+      iex> get_conference!("national-league", preload: [:divisions])
+      %Conference{divisions: [%Division{}, ...]}
+
+      iex> get_conference!("made-up-conference")
+      ** (Ecto.NoResultsError)
+
+  """
+  @spec get_conference_by_slug!(String.t(), Keyword.t()) :: Conference.t()
   def get_conference_by_slug!(slug, opts \\ []) do
     dynamic([c], c.slug == ^slug)
     |> do_get_conference!(opts)
