@@ -5,6 +5,7 @@ defmodule OOTPUtility.Imports.Games.Game do
     from: "games",
     headers: [
       {:game_id, :id},
+      {:game_type, :type},
       {:home_team, :home_team_id},
       {:away_team, :away_team_id},
       {:runs0, :away_team_runs},

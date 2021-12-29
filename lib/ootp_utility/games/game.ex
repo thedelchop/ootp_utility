@@ -15,13 +15,14 @@ defmodule OOTPUtility.Games.Game do
     field :away_team_runs, :integer
     field :date, :date
     field :dh, :boolean, default: false
-    field :game_type, :integer
     field :home_team_errors, :integer
     field :home_team_hits, :integer
     field :home_team_runs, :integer
     field :innings, :integer
     field :played, :boolean, default: false
     field :time, :time
+
+    field :type, Ecto.Enum, values: [season: 0, preseason: 2, postseason: 3]
 
     belongs_to :league, League
     belongs_to :home_team, Team
