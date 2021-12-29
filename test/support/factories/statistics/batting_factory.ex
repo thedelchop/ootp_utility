@@ -14,18 +14,24 @@ defmodule OOTPUtility.Statistics.BattingFactory do
         )
       end
 
-      def player_batting_stats_factory do
+      def player_batting_stats_factory(attrs) do
+        player = Map.get_lazy(attrs, :player, fn -> insert(:player) end)
+        team = Map.get(attrs, :team, player.team)
+        league = Map.get(attrs, :league, team.league)
+
         struct!(
           batting_stats_factory(Batting.Player),
           %{
-            wins_above_replacement: 1.00,
-            split: :all,
+            league: league,
             pitches_seen: 1000,
-            player: fn s ->
-              build(:player, team: s.team, league: s.league)
-            end
+            player: player,
+            split: :all,
+            team: team,
+            wins_above_replacement: 1.00
           }
         )
+        |> merge_attributes(attrs)
+        |> evaluate_lazy_attributes()
       end
 
       # As a quick way to generate reasonable batting statistiscs for both a team's season and player's season,
@@ -54,7 +60,6 @@ defmodule OOTPUtility.Statistics.BattingFactory do
 
         struct!(module, %{
           id: sequence(:id, &"#{&1}"),
-          level: :major,
           at_bats: at_bats,
           batting_average: fn s -> calculate(s, :batting_average) end,
           batting_average_on_balls_in_play: fn s ->
@@ -72,6 +77,8 @@ defmodule OOTPUtility.Statistics.BattingFactory do
           home_runs: home_runs,
           intentional_walks: intentional_walks,
           isolated_power: fn s -> calculate(s, :isolated_power) end,
+          league: build(:league),
+          level: fn bs -> bs.league.level end,
           on_base_percentage: fn s -> calculate(s, :on_base_percentage) end,
           on_base_plus_slugging: fn s -> calculate(s, :on_base_plus_slugging) end,
           plate_appearances: fn s -> ceil(s.at_bats * 1.124) end,
@@ -89,8 +96,7 @@ defmodule OOTPUtility.Statistics.BattingFactory do
           total_bases: fn s -> calculate(s, :total_bases) end,
           triples: triples,
           walks: walks,
-          year: fn s -> s.league.season_year end,
-          league: fn -> build(:league) end
+          year: fn s -> s.league.season_year end
         })
       end
     end

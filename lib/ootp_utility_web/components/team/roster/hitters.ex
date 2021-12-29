@@ -29,7 +29,7 @@ defmodule OOTPUtilityWeb.Components.Team.Roster.Hitters do
   ]
 
   def update(assigns, socket) do
-    statistics = Statistics.Batting.for_player(assigns.players, assigns.year)
+    statistics = Statistics.Batting.for_player(assigns.players, year: assigns.year)
 
     players_with_statistics =
       assigns.players
