@@ -35,7 +35,13 @@ defmodule OOTPUtility.Statistics.Leaderboard do
     alias __MODULE__
 
     def new(%{value: value} = attrs) when is_float(value) and value < 1 do
-      "0" <> float = value |> Float.round(3) |> Float.to_string()
+      "0" <> float = value |> :erlang.float_to_binary(decimals: 3)
+
+      new(%{attrs | value: float})
+    end
+
+    def new(%{value: value} = attrs) when is_float(value) do
+      float = value |> :erlang.float_to_binary(decimals: 3)
 
       new(%{attrs | value: float})
     end
