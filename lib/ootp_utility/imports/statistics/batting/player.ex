@@ -8,7 +8,8 @@ defmodule OOTPUtility.Imports.Statistics.Batting.Player do
     from: "players_career_batting_stats",
     headers: [
       {:war, :wins_above_replacement},
-      {:wpa, :win_probability_added}
+      {:wpa, :win_probability_added},
+      {:split_id, :split}
     ],
     schema: Batting.Player
 

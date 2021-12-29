@@ -12,7 +12,8 @@ defmodule OOTPUtility.Imports.Statistics.Pitching.Player do
       {:li, :leverage_index},
       {:war, :wins_above_replacement},
       {:wpa, :win_probability_added},
-      {:outs, :outs_pitched}
+      {:outs, :outs_pitched},
+      {:split_id, :split}
     ],
     schema: Pitching.Player
 

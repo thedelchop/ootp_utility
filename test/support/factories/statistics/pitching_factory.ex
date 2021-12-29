@@ -18,6 +18,7 @@ defmodule OOTPUtility.Statistics.PitchingFactory do
         struct!(
           pitching_stats_factory(Pitching.Player),
           %{
+            split: :all,
             inherited_runners: 0,
             inherited_runners_scored: 0,
             inherited_runners_scored_percentage: 0,

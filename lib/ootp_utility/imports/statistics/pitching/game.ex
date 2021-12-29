@@ -11,7 +11,8 @@ defmodule OOTPUtility.Imports.Statistics.Pitching.Game do
       {:irs, :inherited_runners_scored},
       {:li, :leverage_index},
       {:wpa, :win_probability_added},
-      {:outs, :outs_pitched}
+      {:outs, :outs_pitched},
+      {:split_id, :split}
     ],
     schema: Pitching.Game
 

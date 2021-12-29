@@ -19,7 +19,7 @@ defmodule OOTPUtility.Statistics.BattingFactory do
           batting_stats_factory(Batting.Player),
           %{
             wins_above_replacement: 1.00,
-            split_id: 1,
+            split: :all,
             pitches_seen: 1000,
             player: fn s ->
               build(:player, team: s.team, league: s.league)

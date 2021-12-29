@@ -21,7 +21,7 @@ defmodule OOTPUtility.Statistics.Pitching.Player.Schema do
         field :inherited_runners_scored, :integer
         field :inherited_runners_scored_percentage, :float
         field :leverage_index, :float
-        field :split_id, :integer
+        field :split, Ecto.Enum, values: [all: 1, left: 2, right: 3, preseason: 19, postseason: 21]
         field :win_probability_added, :float
 
         belongs_to :player, Players.Player
