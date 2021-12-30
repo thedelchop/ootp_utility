@@ -53,8 +53,8 @@ defmodule OOTPUtility.Imports.CSV do
     attribute_stream
     |> Flow.map(&Morphix.atomorphiform!/1)
     |> Flow.map(&module.rename_headers/1)
-    |> Flow.map(&module.sanitize_attributes/1)
     |> Flow.filter(&module.should_import?/1)
+    |> Flow.map(&module.sanitize_attributes/1)
   end
 
   def should_import?(_module, _attrs_row), do: true
