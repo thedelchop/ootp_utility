@@ -2,10 +2,12 @@ defmodule OOTPUtility.Imports.Statistics.Fielding.Player do
   alias OOTPUtility.Statistics.Fielding
 
   import OOTPUtility.Imports.Statistics.Fielding, only: [calculate_outs_played: 1]
+  import OOTPUtility.Utilities, only: [position_from_scoring_key: 1, league_level_from_id: 1]
 
   use OOTPUtility.Imports.Statistics.Fielding,
     from: "players_career_fielding_stats",
     headers: [
+      {:level_id, :level},
       {:roe, :reached_on_error},
       {:zr, :zone_rating}
     ],
@@ -17,9 +19,11 @@ defmodule OOTPUtility.Imports.Statistics.Fielding.Player do
     |> add_missing_statistics()
   end
 
-  def sanitize_attributes(attrs) do
+  def sanitize_attributes(%{position: position, level: level_id} = attrs) do
     attrs
     |> Map.put(:outs_played, calculate_outs_played(attrs))
+    |> Map.put(:level, league_level_from_id(level_id))
+    |> Map.put(:position, position_from_scoring_key(position))
   end
 
   def should_import?(%{league_id: "0"} = _attrs), do: false

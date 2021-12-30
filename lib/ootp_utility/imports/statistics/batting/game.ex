@@ -1,5 +1,6 @@
 defmodule OOTPUtility.Imports.Statistics.Batting.Game do
   alias OOTPUtility.Statistics.Batting
+  import OOTPUtility.Utilities, only: [position_from_scoring_key: 1, league_level_from_id: 1]
 
   import OOTPUtility.Imports.Statistics, only: [round_statistic: 2]
   import OOTPUtility.Imports.Statistics.Batting, only: [add_missing_statistics: 1]
@@ -7,7 +8,8 @@ defmodule OOTPUtility.Imports.Statistics.Batting.Game do
   use OOTPUtility.Imports.Statistics.Batting,
     from: "players_game_batting",
     headers: [
-      {:wpa, :win_probability_added}
+      {:wpa, :win_probability_added},
+      {:level_id, :level}
     ],
     schema: Batting.Game
 
@@ -25,10 +27,10 @@ defmodule OOTPUtility.Imports.Statistics.Batting.Game do
     sanitize_attributes(%{attrs | team_id: nil})
   end
 
-  def sanitize_attributes(%{league_id: league_id} = attrs) do
+  def sanitize_attributes(%{league_id: league_id, level: level_id, position: position} = attrs) do
     league_id = if String.to_integer(league_id) < 1, do: nil, else: league_id
 
-    %{attrs | league_id: league_id}
+    %{attrs | league_id: league_id, position: position_from_scoring_key(position), level: league_level_from_id(level_id)}
   end
 
   def validate_changeset(

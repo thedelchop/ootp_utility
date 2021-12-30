@@ -5,8 +5,6 @@ defmodule OOTPUtility.PlayerFactory do
   defmacro __using__(_opts) do
     quote do
       def player_factory do
-        {:ok, position} = 1..13 |> Enum.random() |> Utilities.position_from_scoring_key()
-
         %Player{
           id: sequence(:id, &"#{&1}"),
           first_name: Faker.Person.first_name(),
@@ -22,7 +20,7 @@ defmodule OOTPUtility.PlayerFactory do
           retired: false,
           local_popularity: Enum.random(1..6),
           national_popularity: Enum.random(1..6),
-          position: position,
+          position: 1..13 |> Enum.random() |> Utilities.position_from_scoring_key(),
           uniform_number: Enum.random(1..99),
           free_agent: false,
           team: build(:team)

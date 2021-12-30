@@ -2,23 +2,25 @@ defmodule OOTPUtility.Imports.Statistics.Pitching.Team do
   defmacro __using__([{:from, filename}, {:schema, schema}]) do
     quote do
       import OOTPUtility.Imports.Statistics, only: [round_statistic: 2]
+      import OOTPUtility.Utilities, only: [league_level_from_id: 1]
 
       use OOTPUtility.Imports.Statistics.Pitching,
         from: unquote(filename),
         headers: [
           {:avg, :batting_average},
           {:babip, :batting_average_on_balls_in_play},
-          {:bb9,  :walks_per_9},
+          {:bb9, :walks_per_9},
           {:bsvp, :blown_save_percentage},
-          {:cgp,  :complete_game_percentage},
-          {:era,  :earned_run_average},
-          {:fip,  :fielding_independent_pitching},
+          {:cgp, :complete_game_percentage},
+          {:era, :earned_run_average},
+          {:fip, :fielding_independent_pitching},
           {:gbfbp, :ground_ball_percentage},
           {:gfp, :games_finished_percentage},
           {:h9, :hits_per_9},
           {:hr9, :home_runs_per_9},
           {:k9, :strikeouts_per_9},
           {:kbb, :strikeouts_to_walks_ratio},
+          {:level_id, :level},
           {:obp, :on_base_percentage},
           {:ops, :on_base_plus_slugging},
           {:pig, :pitches_per_game},
@@ -32,8 +34,10 @@ defmodule OOTPUtility.Imports.Statistics.Pitching.Team do
         ],
         schema: unquote(schema)
 
-      def sanitize_attributes(attrs) do
-        Map.put(attrs, :outs_pitched, calculate_outs_pitched(attrs))
+      def sanitize_attributes(%{level: level_id} = attrs) do
+        attrs
+        |> Map.put(:outs_pitched, calculate_outs_pitched(attrs))
+        |> Map.put(:level, league_level_from_id(level_id))
       end
 
       def update_changeset(changeset) do

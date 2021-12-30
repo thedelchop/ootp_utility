@@ -25,15 +25,11 @@ defmodule OOTPUtility.Imports.Players.Player do
   end
 
   def sanitize_attributes(%{position: position, role: "0"} = attrs) do
-    {:ok, position} = position_from_scoring_key(position)
-
-    sanitize_attributes(%{attrs | position: position, role: nil})
+    sanitize_attributes(%{attrs | position: position_from_scoring_key(position), role: nil})
   end
 
   def sanitize_attributes(%{role: role} = attrs) when not is_nil(role) do
-    {:ok, position} = position_from_scoring_key(role)
-
-    sanitize_attributes(%{attrs | position: position, role: nil})
+    sanitize_attributes(%{attrs | position: position_from_scoring_key(role), role: nil})
   end
 
   def sanitize_attributes(

@@ -27,7 +27,22 @@ defmodule OOTPUtility.Players.Player do
     field :local_popularity, :integer
     field :national_popularity, :integer
 
-    field :position, :string
+    field :position, Ecto.Enum, values: [
+      pitcher: 1,
+      catcher: 2,
+      first_base: 3,
+      second_base: 4,
+      third_base: 5,
+      shortstop: 6,
+      left_field: 7,
+      center_field: 8,
+      right_field: 9,
+      designated_hitter: 10,
+      starting_pitcher: 11,
+      middle_reliever: 12,
+      closer: 13
+    ]
+
     field :uniform_number, :integer
 
     field :free_agent, :boolean, default: false

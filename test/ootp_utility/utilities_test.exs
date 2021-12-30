@@ -1,34 +1,15 @@
 defmodule OOTPUtility.UtilitiesTest do
   use OOTPUtility.DataCase, async: true
 
-  alias OOTPUtility.Utilities
-
-  @positions %{
-    "P" => 1,
-    "C" => 2,
-    "1B" => 3,
-    "2B" => 4,
-    "3B" => 5,
-    "SS" => 6,
-    "LF" => 7,
-    "CF" => 8,
-    "RF" => 9,
-    "DH" => 10,
-    "SP" => 11,
-    "MR" => 12,
-    "CL" => 13
-  }
+  alias OOTPUtility.{Utilities, Players}
 
   describe "position_from_scoring_key" do
     test "returns the correct position for the specified scoring key" do
-      for {position, scoring_key} <- @positions do
-        assert {:ok, position} ==
-                 Utilities.position_from_scoring_key(Integer.to_string(scoring_key))
-      end
-    end
+      positions = Ecto.Enum.mappings(Players.Player, :position)
 
-    test "returns `:error` if a non-recognizable position is passed in" do
-      assert Utilities.position_from_scoring_key("14") == :error
+      for {position, scoring_key} <- positions do
+        assert position == Utilities.position_from_scoring_key(scoring_key)
+      end
     end
   end
 

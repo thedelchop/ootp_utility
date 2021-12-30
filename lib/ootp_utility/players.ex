@@ -11,6 +11,8 @@ defmodule OOTPUtility.Players do
   alias OOTPUtility.Players.Player
   alias OOTPUtility.Teams.{Roster, Team}
 
+  import OOTPUtility.Utilities, only: [expand_position_key: 1]
+
   @doc """
   Returns all players assoicated with a specified team, providing
   the following options:
@@ -45,22 +47,22 @@ defmodule OOTPUtility.Players do
     case option do
       {:position, "IF"} ->
         query
-        |> where([p], p.position in ^["1B", "2B", "3B", "SS"])
+        |> where([p], p.position in ^[:first_base, :second_base, :third_base, :shortstop])
         |> do_for_team(team, rest)
 
       {:position, "OF"} ->
         query
-        |> where([p], p.position in ^["LF", "CF", "RF"])
+        |> where([p], p.position in ^[:left_field, :center_field, :right_field])
         |> do_for_team(team, rest)
 
       {:position, "P"} ->
         query
-        |> where([p], p.position in ^["SP", "MR", "CL"])
+        |> where([p], p.position in ^[:starting_pitcher, :middle_reliever, :closer])
         |> do_for_team(team, rest)
 
       {:position, position} ->
         query
-        |> where([p], p.position == ^position)
+        |> where([p], p.position == ^expand_position_key(position))
         |> do_for_team(team, rest)
 
       {:roster, roster_type} ->

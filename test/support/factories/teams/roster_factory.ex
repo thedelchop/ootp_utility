@@ -33,18 +33,18 @@ defmodule OOTPUtility.Teams.RosterFactory do
 
       defp do_create_players_for_active_roster(team, type \\ :active) do
         [
-          insert_list(5, :player, position: "SP", team: team),
-          insert_list(6, :player, position: "MR", team: team),
-          insert(:player, position: "CL", team: team),
-          insert_pair(:player, position: "C", team: team),
-          insert_pair(:player, position: "1B", team: team),
-          insert_pair(:player, position: "2B", team: team),
-          insert(:player, position: "SS", team: team),
-          insert(:player, position: "3B", team: team),
-          insert_pair(:player, position: "LF", team: team),
-          insert(:player, position: "CF", team: team),
-          insert(:player, position: "RF", team: team),
-          insert(:player, position: "DH", team: team)
+          insert_list(5, :player, position: :starting_pitcher, team: team),
+          insert_list(6, :player, position: :middle_reliever, team: team),
+          insert(:player, position: :closer, team: team),
+          insert_pair(:player, position: :catcher, team: team),
+          insert_pair(:player, position: :first_base, team: team),
+          insert_pair(:player, position: :second_base, team: team),
+          insert(:player, position: :shortstop, team: team),
+          insert(:player, position: :third_base, team: team),
+          insert_pair(:player, position: :left_field, team: team),
+          insert(:player, position: :center_field, team: team),
+          insert(:player, position: :right_field, team: team),
+          insert(:player, position: :designated_hitter, team: team)
         ]
       end
 
@@ -52,15 +52,15 @@ defmodule OOTPUtility.Teams.RosterFactory do
         players =
           [
             do_create_players_for_active_roster(team, :expanded),
-            insert_pair(:player, position: "C", team: team),
-            insert(:player, position: "1B", team: team),
-            insert_pair(:player, position: "SS", team: team),
-            insert(:player, position: "3B", team: team),
-            insert(:player, position: "LF", team: team),
-            insert(:player, position: "CF", team: team),
-            insert(:player, position: "RF", team: team),
-            insert_list(3, :player, position: "SP", team: team),
-            insert_list(3, :player, position: "MR", team: team)
+            insert_pair(:player, position: :catcher, team: team),
+            insert(:player, position: :first_base, team: team),
+            insert_pair(:player, position: :shortstop, team: team),
+            insert(:player, position: :third_base, team: team),
+            insert(:player, position: :left_field, team: team),
+            insert(:player, position: :center_field, team: team),
+            insert(:player, position: :right_field, team: team),
+            insert_list(3, :player, position: :starting_pitcher, team: team),
+            insert_list(3, :player, position: :middle_reliever, team: team)
           ]
           |> List.flatten()
 
@@ -72,9 +72,9 @@ defmodule OOTPUtility.Teams.RosterFactory do
       defp create_players_for_roster(%Roster{team: team, type: :injured}) do
         players =
           [
-            insert_list(2, :player, position: "SP", team: team),
-            insert(:player, position: "1B", team: team),
-            insert(:player, position: "LF", team: team)
+            insert_list(2, :player, position: :starting_pitcher, team: team),
+            insert(:player, position: :first_base, team: team),
+            insert(:player, position: :left_field, team: team)
           ]
           |> List.flatten()
 

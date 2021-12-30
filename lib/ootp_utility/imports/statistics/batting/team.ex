@@ -1,6 +1,7 @@
 defmodule OOTPUtility.Imports.Statistics.Batting.Team do
   alias OOTPUtility.Statistics.Batting
   import OOTPUtility.Imports.Statistics, only: [round_statistic: 2]
+  import OOTPUtility.Imports.Helpers, only: [convert_league_level: 1]
 
   use OOTPUtility.Imports.Statistics.Batting,
     from: "team_batting_stats",
@@ -8,10 +9,11 @@ defmodule OOTPUtility.Imports.Statistics.Batting.Team do
       {:avg, :batting_average},
       {:ebh, :extra_base_hits},
       {:iso, :isolated_power},
+      {:level_id, :level},
       {:obp, :on_base_percentage},
       {:ops, :on_base_plus_slugging},
-      {:rc,  :runs_created},
-      {:rc27,:runs_created_per_27_outs},
+      {:rc, :runs_created},
+      {:rc27, :runs_created_per_27_outs},
       {:s, :singles},
       {:sbp, :stolen_base_percentage},
       {:slg, :slugging},
@@ -19,6 +21,10 @@ defmodule OOTPUtility.Imports.Statistics.Batting.Team do
       {:woba, :weighted_on_base_average}
     ],
     schema: Batting.Team
+
+  def sanitize_attributes(%{level: league_level} = attrs) do
+    sanitize_attributes(%{attrs | level: convert_league_level(league_level)})
+  end
 
   def update_changeset(changeset) do
     changeset

@@ -5,7 +5,7 @@ defmodule OOTPUtility.Utilities do
   bases (first -> 1B)
   """
 
-  @spec position_from_scoring_key(String.t() | integer()) :: {:ok, String.t()} | :error
+  @spec position_from_scoring_key(String.t() | integer()) :: atom()
   def position_from_scoring_key(scoring_key) when is_integer(scoring_key) do
     scoring_key
     |> Integer.to_string()
@@ -13,23 +13,90 @@ defmodule OOTPUtility.Utilities do
   end
 
   def position_from_scoring_key(scoring_key) do
-    Map.fetch(
+    Map.fetch!(
       %{
-        "1" => "P",
-        "2" => "C",
-        "3" => "1B",
-        "4" => "2B",
-        "5" => "3B",
-        "6" => "SS",
-        "7" => "LF",
-        "8" => "CF",
-        "9" => "RF",
-        "10" => "DH",
-        "11" => "SP",
-        "12" => "MR",
-        "13" => "CL"
+        "0" => :pinch_hitter,
+        "1" => :pitcher,
+        "2" => :catcher,
+        "3" => :first_base,
+        "4" => :second_base,
+        "5" => :third_base,
+        "6" => :shortstop,
+        "7" => :left_field,
+        "8" => :center_field,
+        "9" => :right_field,
+        "10" => :designated_hitter,
+        "11" => :starting_pitcher,
+        "12" => :middle_reliever,
+        "13" => :closer
       },
       scoring_key
+    )
+  end
+
+  @spec expand_position_key(String.t()) :: atom()
+  def expand_position_key(position_key) do
+    Map.fetch!(
+      %{
+        "P" => :pitcher,
+        "C" => :catcher,
+        "1B" => :first_base,
+        "2B" => :second_base,
+        "3B" => :third_base,
+        "SS" => :shortstop,
+        "LF" => :left_field,
+        "CF" => :center_field,
+        "RF" => :right_field,
+        "DH" => :designated_hitter,
+        "SP" => :starting_pitcher,
+        "MR" => :middle_reliever,
+        "CL" => :closer
+      },
+      position_key
+    )
+  end
+
+  @spec split_from_id(String.t() | integer()) :: atom()
+  def split_from_id(split_id) when is_integer(split_id) do
+    split_id
+    |> Integer.to_string()
+    |> split_from_id()
+  end
+
+  def split_from_id(split_id) do
+    Map.fetch!(
+      %{
+        "1" => :all,
+        "2" => :left,
+        "3" => :right,
+        "19" => :preseason,
+        "21" => :postseason
+      },
+      split_id
+    )
+  end
+
+  @spec league_level_from_id(String.t() | integer()) :: atom()
+  def league_level_from_id(level_id) when is_integer(level_id) do
+    level_id
+    |> Integer.to_string()
+    |> league_level_from_id()
+  end
+
+  def league_level_from_id(level_id) do
+    Map.fetch!(
+      %{
+        "1" => :major,
+        "2" => :triple_a,
+        "3" => :double_a,
+        "4" => :single_a,
+        "5" => :low_a,
+        "6" => :rookie,
+        "8" => :international,
+        "10" => :college,
+        "11" => :high_school
+      },
+      level_id
     )
   end
 

@@ -19,10 +19,10 @@ defmodule OOTPUtility.PlayersTest do
     test "it returns all pitchers for the specified team, when the `position` 'P' is specified" do
       team = insert(:team, id: "1")
 
-      starting_pitchers = insert_pair(:player, team: team, position: "SP")
-      relievers = insert_pair(:player, team: team, position: "MR")
-      closer = insert(:player, team: team, position: "CL")
-      catchers = insert_pair(:player, team: team, position: "C")
+      starting_pitchers = insert_pair(:player, team: team, position: :starting_pitcher)
+      relievers = insert_pair(:player, team: team, position: :middle_reliever)
+      closer = insert(:player, team: team, position: :closer)
+      catchers = insert_pair(:player, team: team, position: :catcher)
 
       pitchers = Players.for_team(team, position: "P")
 
@@ -34,8 +34,13 @@ defmodule OOTPUtility.PlayersTest do
     test "it returns all infielders for the specified team, when the `position` 'IF' is specified" do
       team = insert(:team, id: "1")
 
-      infielders = Enum.map(["1B", "2B", "3B", "SS"], &insert(:player, team: team, position: &1))
-      catchers = insert_pair(:player, team: team, position: "C")
+      infielders =
+        Enum.map(
+          [:first_base, :second_base, :third_base, :shortstop],
+          &insert(:player, team: team, position: &1)
+        )
+
+      catchers = insert_pair(:player, team: team, position: :catcher)
 
       players = Players.for_team(team, position: "IF")
 
@@ -47,8 +52,8 @@ defmodule OOTPUtility.PlayersTest do
     test "it returns all outfielders for the specified team, when the `position` 'OF' is specified" do
       team = insert(:team, id: "1")
 
-      outfielders = Enum.map(["LF", "CF", "RF"], &insert(:player, team: team, position: &1))
-      catchers = insert_pair(:player, team: team, position: "C")
+      outfielders = Enum.map([:left_field, :center_field, :right_field], &insert(:player, team: team, position: &1))
+      catchers = insert_pair(:player, team: team, position: :catcher)
 
       players = Players.for_team(team, position: "OF")
 
@@ -60,8 +65,8 @@ defmodule OOTPUtility.PlayersTest do
     test "it returns all players for the specified position if a single position is specified" do
       team = insert(:team, id: "1")
 
-      third_basemen = insert_pair(:player, team: team, position: "3B")
-      catchers = insert_pair(:player, team: team, position: "C")
+      third_basemen = insert_pair(:player, team: team, position: :third_base)
+      catchers = insert_pair(:player, team: team, position: :catcher)
 
       players = Players.for_team(team, position: "3B")
 

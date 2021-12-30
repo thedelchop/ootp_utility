@@ -14,7 +14,7 @@ defmodule OOTPUtility.Imports.Teams.Team do
     schema: OOTPUtility.Teams.Team,
     slug: [:name, :nickname]
 
-  def sanitize_attributes(%{level: league_level} = attrs) when is_binary(league_level) do
+  def sanitize_attributes(%{level: league_level} = attrs) do
     %{attrs | level: convert_league_level(league_level)}
   end
 
