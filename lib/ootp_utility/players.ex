@@ -22,6 +22,8 @@ defmodule OOTPUtility.Players do
       `IF`, `OF`, `SP`, `MR`, `CL`
     * `roster` - The roster type that should be returned, one of
       `:preseason`, `:active`, `:extended`, `:injured`
+    * `order_by` - The field by which to order the players
+      returned for the team.
 
   ## Examples
 
@@ -29,7 +31,7 @@ defmodule OOTPUtility.Players do
       [%Player{}, ...]
   """
 
-  @spec for_team(Team.t(), Keyword.t()) :: [Player.t()]
+  @spec for_team(Team.t(), [position: String.t(), roster: Roster.type(), order_by: :atom | String.t()]) :: [Player.t()]
   def for_team(%Team{} = team, opts \\ Keyword.new()) do
     do_for_team(team, opts)
   end
@@ -69,6 +71,11 @@ defmodule OOTPUtility.Players do
         query
         |> join(:inner, [p], membership in Roster.Membership, on: membership.player_id == p.id)
         |> where([p, m], m.team_id == ^team_id and m.type == ^roster_type)
+        |> do_for_team(team, rest)
+
+      {:order_by, order_by_field} ->
+        query
+        |> order_by([p], field(p, ^order_by_field))
         |> do_for_team(team, rest)
 
       _ ->

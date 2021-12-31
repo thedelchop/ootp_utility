@@ -20,7 +20,7 @@ defmodule OOTPUtility.Teams.Roster do
   alias OOTPUtility.Teams.Team
   alias OOTPUtility.Players.Player
 
-  @type roster_type :: :preseason | :active | :expanded | :injured
+  @type type :: :preseason | :active | :expanded | :injured
 
   @derive {Inspect,
            only: [

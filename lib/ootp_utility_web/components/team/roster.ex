@@ -19,10 +19,10 @@ defmodule OOTPUtilityWeb.Components.Team.Roster do
   data outfielders, :list, default: []
 
   def update(assigns, socket) do
-    pitchers = Players.for_team(assigns.team, position: "P", roster: :active)
-    catchers = Players.for_team(assigns.team, position: "C", roster: :active)
-    infielders = Players.for_team(assigns.team, position: "IF", roster: :active)
-    outfielders = Players.for_team(assigns.team, position: "OF", roster: :active)
+    pitchers = Players.for_team(assigns.team, position: "P", roster: :active, order_by: :position)
+    catchers = Players.for_team(assigns.team, position: "C", roster: :active, order_by: :position)
+    infielders = Players.for_team(assigns.team, position: "IF", roster: :active, order_by: :position)
+    outfielders = Players.for_team(assigns.team, position: "OF", roster: :active, order_by: :position)
 
     {:ok,
      assign(socket,

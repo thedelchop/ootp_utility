@@ -52,7 +52,12 @@ defmodule OOTPUtility.PlayersTest do
     test "it returns all outfielders for the specified team, when the `position` 'OF' is specified" do
       team = insert(:team, id: "1")
 
-      outfielders = Enum.map([:left_field, :center_field, :right_field], &insert(:player, team: team, position: &1))
+      outfielders =
+        Enum.map(
+          [:left_field, :center_field, :right_field],
+          &insert(:player, team: team, position: &1)
+        )
+
       catchers = insert_pair(:player, team: team, position: :catcher)
 
       players = Players.for_team(team, position: "OF")
@@ -86,6 +91,18 @@ defmodule OOTPUtility.PlayersTest do
 
       assert ids_for(players) == ids_for(active_roster.players)
       refute ids_for(players) == ids_for(expanded_roster.players)
+    end
+
+    test "it orders the players returned for the team by the specified field if the `order_by` option is specified" do
+      team = insert(:team)
+
+      third_baseman = insert(:player, team: team, position: :third_base)
+      catcher = insert(:player, team: team, position: :catcher)
+      left_fielder = insert(:player, team: team, position: :left_field)
+
+      players = Players.for_team(team, order_by: :position)
+
+      assert ids_for(players) == ids_for([catcher, third_baseman, left_fielder])
     end
   end
 
