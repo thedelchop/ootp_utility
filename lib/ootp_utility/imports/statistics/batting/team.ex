@@ -23,7 +23,7 @@ defmodule OOTPUtility.Imports.Statistics.Batting.Team do
     schema: Batting.Team
 
   def sanitize_attributes(%{level: league_level} = attrs) do
-    sanitize_attributes(%{attrs | level: convert_league_level(league_level)})
+    %{attrs | level: convert_league_level(league_level)}
   end
 
   def update_changeset(changeset) do

@@ -10,6 +10,8 @@ defmodule OOTPUtilityWeb.Components.Team.Roster.Hitters do
   alias OOTPUtilityWeb.Components.Shared.Table.Column
   alias OOTPUtility.{Players, Statistics}
 
+  import OOTPUtility.Utilities, only: [get_position_key: 1]
+
   prop title, :string, required: true
   prop players, :list, required: true
   prop year, :integer, required: true
@@ -59,7 +61,7 @@ defmodule OOTPUtilityWeb.Components.Team.Roster.Hitters do
           </Column>
 
           <Column label="POS">
-            {hitter.position}
+            {get_position_key(hitter.position)}
           </Column>
 
           <Column label="B">

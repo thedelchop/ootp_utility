@@ -56,6 +56,28 @@ defmodule OOTPUtility.Utilities do
     )
   end
 
+  @spec get_position_key(atom()) :: String.t()
+  def get_position_key(position) do
+    Map.fetch!(
+      %{
+       pitcher:           "P",
+       catcher:           "C",
+       first_base:        "1B",
+       second_base:       "2B",
+       third_base:        "3B",
+       shortstop:         "SS",
+       left_field:        "LF",
+       center_field:      "CF",
+       right_field:       "RF",
+       designated_hitter: "DH",
+       starting_pitcher:  "SP",
+       middle_reliever:   "MR",
+       closer:             "CL"
+      },
+      position
+    )
+  end
+
   @spec split_from_id(String.t() | integer()) :: atom()
   def split_from_id(split_id) when is_integer(split_id) do
     split_id

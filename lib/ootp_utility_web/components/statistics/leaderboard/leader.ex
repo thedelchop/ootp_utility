@@ -5,6 +5,7 @@ defmodule OOTPUtilityWeb.Components.Statistics.Leaderboard.Leader do
   """
 
   import OOTPUtilityWeb.Helpers, only: [statistic_abbreviation: 1]
+  import OOTPUtility.Utilities, only: [get_position_key: 1]
 
   alias OOTPUtility.Statistics.Leaderboard.Leader
 
@@ -17,7 +18,7 @@ defmodule OOTPUtilityWeb.Components.Statistics.Leaderboard.Leader do
     "#{String.slice(subject.first_name, 0, 1)}. #{subject.last_name}"
   end
 
-  def position(%Leader{subject: subject} = _leader), do: subject.position
+  def position(%Leader{subject: subject} = _leader), do: get_position_key(subject.position)
 
   def stat_abbreviation(statistic) do
     case statistic_abbreviation(statistic) do
