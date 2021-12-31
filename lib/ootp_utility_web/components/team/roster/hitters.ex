@@ -100,6 +100,10 @@ defmodule OOTPUtilityWeb.Components.Team.Roster.Hitters do
             {stats.strikeouts}
           </Column>
 
+          <Column label="SB">
+            {stats.stolen_bases}
+          </Column>
+
           <Column label="AVG">
             {stats.batting_average |> :erlang.float_to_binary(decimals: 3) |> String.trim_leading("0")}
           </Column>
