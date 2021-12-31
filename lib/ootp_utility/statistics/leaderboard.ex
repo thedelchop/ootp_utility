@@ -11,16 +11,15 @@ defmodule OOTPUtility.Statistics.Leaderboard do
   alias __MODULE__
   alias OOTPUtility.{Players, Repo}
 
-  def new(schema, statistic, scope) do
+  def new(query, statistic) do
     %Leaderboard{
       statistic: statistic,
-      leaders: leaders_for(schema, statistic, scope)
+      leaders: leaders_for(query, statistic)
     }
   end
 
-  defp leaders_for(schema, field, scope) do
-    schema
-    |> where(^scope)
+  defp leaders_for(query, field) do
+    query
     |> join(:inner, [stats], p in Players.Player, on: stats.player_id == p.id)
     |> order_by([stats], desc: ^field)
     |> limit(5)

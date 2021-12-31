@@ -23,11 +23,11 @@ defmodule OOTPUtility.Statistics.Batting do
   """
 
   @type for_player_options :: [
-      year: integer(),
-      team: Teams.Team.t() | String.t(),
-      level: Leagues.Level.t() | atom(),
-      split: :all | :left | :right
-    ]
+          year: integer(),
+          team: Teams.Team.t() | String.t(),
+          level: Leagues.Level.t() | atom(),
+          split: :all | :left | :right
+        ]
 
   @spec for_player(Players.Player.t() | [Players.Player.t()], for_player_options()) ::
           Statistics.Batting.Player.t() | [Statistics.Batting.Player.t()]
@@ -37,7 +37,7 @@ defmodule OOTPUtility.Statistics.Batting do
   def for_player([player | _] = players, opts) when is_list(players) do
     player_ids = Enum.map(players, & &1.id)
 
-    build_player_query(
+    do_for_player(
       dynamic([bs], bs.player_id in ^player_ids),
       options_for_player(player, opts)
     )
@@ -46,7 +46,7 @@ defmodule OOTPUtility.Statistics.Batting do
 
   def for_player(player, opts) do
     stats =
-      build_player_query(
+      do_for_player(
         dynamic([bs], bs.player_id == ^player.id),
         options_for_player(player, opts)
       )
@@ -64,59 +64,85 @@ defmodule OOTPUtility.Statistics.Batting do
     end
   end
 
-  defp build_player_query(query \\ Batting.Player, player_clause, opts)
-
-  defp build_player_query(query, player_clause, []) do
-    where(query, ^player_clause)
+  @spec team_leaders(Teams.Team.t(), atom()) :: Statistics.Leaderboard.t()
+  def team_leaders(%Teams.Team{league: %Ecto.Association.NotLoaded{}} = team, statistic) do
+    team
+    |> Repo.preload(:league)
+    |> team_leaders(statistic)
   end
 
-  defp build_player_query(query, player_clause, [option | rest]) do
+  def team_leaders(
+        %Teams.Team{
+          league: %Leagues.League{
+            season_year: year,
+            level: level
+          }
+        } = team,
+        statistic
+      ) do
+    [level: level, year: year, team: team, split: :all]
+    |> build_player_query()
+    |> Statistics.Leaderboard.new(statistic)
+  end
+
+  defp do_for_player(query \\ Batting.Player, player_clause, opts) do
+    query
+    |> build_player_query(opts)
+    |> where(^player_clause)
+    |> order_by([bs], bs.player_id)
+  end
+
+  defp build_player_query(query \\ Batting.Player, opts)
+
+  defp build_player_query(query, []), do: query
+
+  defp build_player_query(query, [option | rest]) do
     case option do
       {_, :any} ->
-        build_player_query(query, player_clause, rest)
+        build_player_query(query, rest)
 
       {:year, year} ->
         query
         |> where([bs], bs.year == ^year)
-        |> build_player_query(player_clause, rest)
+        |> build_player_query(rest)
 
       {:team, %Teams.Team{id: team_id}} ->
         query
         |> where([bs], bs.team_id == ^team_id)
-        |> build_player_query(player_clause, rest)
+        |> build_player_query(rest)
 
       {:team, team_id} ->
         query
         |> where([bs], bs.team_id == ^team_id)
-        |> build_player_query(player_clause, rest)
+        |> build_player_query(rest)
 
       {:split, split} ->
         query
         |> where([bs], bs.split == ^split)
-        |> build_player_query(player_clause, rest)
+        |> build_player_query(rest)
 
       {:league, %Leagues.League{id: league_id}} ->
         query
         |> where([bs], bs.league_id == ^league_id)
-        |> build_player_query(player_clause, rest)
+        |> build_player_query(rest)
 
       {:league, league_id} ->
         query
         |> where([bs], bs.league_id == ^league_id)
-        |> build_player_query(player_clause, rest)
+        |> build_player_query(rest)
 
       {:level, %Leagues.Level{id: level} = _level} ->
         query
         |> where([bs], bs.level == ^level)
-        |> build_player_query(player_clause, rest)
+        |> build_player_query(rest)
 
       {:level, level} ->
         query
         |> where([bs], bs.level == ^level)
-        |> build_player_query(player_clause, rest)
+        |> build_player_query(rest)
 
       _ ->
-        build_player_query(query, player_clause, rest)
+        build_player_query(query, rest)
     end
   end
 

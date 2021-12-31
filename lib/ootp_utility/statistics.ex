@@ -51,25 +51,8 @@ defmodule OOTPUtility.Statistics do
     do_team_ranking(team, stat, :league, PitchingStats.Team)
   end
 
-  def team_leaders(%Teams.Team{league: %NotLoaded{}} = team, statistic) do
-    team
-    |> Repo.preload(:league)
-    |> team_leaders(statistic)
-  end
-
-  def team_leaders(
-        %Teams.Team{
-          id: team_id,
-          league: %Leagues.League{
-            season_year: year
-          }
-        } = _team,
-        stat
-      )
-      when is_batting_stat(stat) do
-    scope = dynamic([stats], stats.team_id == ^team_id and stats.year == ^year)
-
-    Leaderboard.new(BattingStats.Player, stat, scope)
+  def team_leaders(team, stat) when is_batting_stat(stat) do
+    BattingStats.team_leaders(team, stat)
   end
 
   def team_leaders(
@@ -82,9 +65,9 @@ defmodule OOTPUtility.Statistics do
         stat
       )
       when is_pitching_stat(stat) do
-    scope = dynamic([stats], stats.team_id == ^team_id and stats.year == ^year)
-
-    Leaderboard.new(PitchingStats.Player, stat, scope)
+    PitchingStats.Player
+    |> where([stats], stats.team_id == ^team_id and stats.year == ^year)
+    |> Leaderboard.new(stat)
   end
 
   defp do_team_ranking(%Teams.Team{id: team_id} = _team, statistic, partition, schema) do
