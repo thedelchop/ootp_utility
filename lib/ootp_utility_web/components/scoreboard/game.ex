@@ -96,7 +96,7 @@ defmodule OOTPUtilityWeb.Components.Scoreboard.Game do
   defp start_time(%Games.Game{date: date, time: time} = _game) do
     gametime = DateTime.new!(date, time)
 
-    Timex.format!(gametime, "{0M}/{D} {0h12}:{0m} {AM}")
+    Timex.format!(gametime, "{0M}/{0D} {0h12}:{0m} {AM}")
   end
 
   def team_record(%Teams.Team{record: %Ecto.Association.NotLoaded{}} = team) do
