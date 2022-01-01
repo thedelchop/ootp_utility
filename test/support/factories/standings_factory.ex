@@ -1,26 +1,9 @@
 defmodule OOTPUtility.StandingsFactory do
-  alias OOTPUtility.{Leagues, Repo, Standings}
+  alias OOTPUtility.{Leagues, Standings}
+  import OOTPUtility.Factories.Utilities, only: [distribute_wins_amongst_teams: 2]
 
   defmacro __using__(_opts) do
     quote do
-      def team_record_factory do
-        games = Faker.random_between(1, 162)
-        wins = Faker.random_between(1, games)
-
-        %Standings.TeamRecord{
-          id: sequence(:id, &"#{&1}"),
-          games: games,
-          games_behind: 3.0,
-          losses: games - wins,
-          magic_number: 1,
-          position: 1,
-          streak: 3,
-          winning_percentage: wins / games,
-          wins: wins,
-          team: fn -> build(:team) end
-        }
-      end
-
       def team_standings_factory(%{team: team} = attrs) do
         attrs
         |> Map.put_new(:name, team.name)
@@ -80,9 +63,7 @@ defmodule OOTPUtility.StandingsFactory do
 
       def division_standings_factory(attrs) do
         games = Map.get(attrs, :games, Faker.random_between(1, 162))
-        division = attrs
-          |> Map.get_lazy(:division, fn -> insert(:division) end)
-          |> Repo.preload(:conference, :league)
+        division = Map.get_lazy(attrs, :division, fn -> insert(:division) end)
 
         %Standings.Division{
           id: fn ds -> "#{ds.division.slug}-standings" end,
@@ -94,7 +75,12 @@ defmodule OOTPUtility.StandingsFactory do
                 &insert(:team_standings,
                   wins: &1,
                   games: games,
-                  team: insert(:team, division: division, conference: division.conference, league: division.league)
+                  team:
+                    insert(:team,
+                      division: division,
+                      conference: division.conference,
+                      league: division.league
+                    )
                 )
               )
           end
@@ -178,24 +164,6 @@ defmodule OOTPUtility.StandingsFactory do
               end
             )
         }
-      end
-
-      defp distribute_wins_amongst_teams(number_of_teams, games_per_team) do
-        total_games_played = number_of_teams * games_per_team
-
-        # Everybody wins 1/3 and losses 1/3, its the other 1/3 that matter
-        minimum_wins = (games_per_team / 3) |> round() |> trunc()
-        maximum_wins = (games_per_team * 2 / 3) |> round() |> trunc()
-
-        {win_totals, _} =
-          Enum.map_reduce(1..number_of_teams, total_games_played, fn
-            team, games_left ->
-              wins = Faker.random_between(minimum_wins, maximum_wins)
-
-              {wins, games_left - wins}
-          end)
-
-        win_totals
       end
     end
   end

@@ -1,6 +1,5 @@
 defmodule OOTPUtility.TeamFactory do
-  alias OOTPUtility.Repo
-  alias OOTPUtility.Teams.{Affiliation, Team}
+  alias OOTPUtility.{Leagues, Repo, Teams}
 
   import OOTPUtility.Factories.Utilities, only: [generate_slug_from_name: 1]
 
@@ -18,7 +17,7 @@ defmodule OOTPUtility.TeamFactory do
             build(:division, conference: conference, league: league)
           end)
 
-        team = %Team{
+        team = %Teams.Team{
           id: sequence(:id, &"#{&1}"),
           name: sequence("Test Team"),
           slug: fn t -> generate_slug_from_name(t) end,
@@ -36,21 +35,147 @@ defmodule OOTPUtility.TeamFactory do
         |> evaluate_lazy_attributes()
       end
 
-      def with_record(%Team{} = team) do
-        insert(:team_record, team: team)
+      def with_teams(league_conference_or_division, number_of_teams \\ 4)
 
-        Repo.preload(team, :record)
+      def with_teams(
+            %Leagues.League{conferences: %Ecto.Association.NotLoaded{}} = league,
+            number_of_teams
+          ) do
+        league
+        |> preload_teams_associations()
+        |> with_teams(number_of_teams)
       end
 
-      def as_organization(%Team{organization: %Ecto.Association.NotLoaded{}} = team) do
+      def with_teams(
+            %Leagues.League{divisions: %Ecto.Association.NotLoaded{}} = league,
+            number_of_teams
+          ) do
+        league
+        |> preload_teams_associations()
+        |> with_teams(number_of_teams)
+      end
+
+      def with_teams(%Leagues.League{conferences: [], divisions: []} = league, number_of_teams) do
+        insert_list(number_of_teams, :team, league: league)
+
+        Repo.preload(league, :teams)
+      end
+
+      def with_teams(
+            %Leagues.League{conferences: [], divisions: divisions} = league,
+            number_of_teams
+          ) do
+        Enum.each(divisions, &with_teams(&1, number_of_teams))
+
+        Repo.preload(league, divisions: [:teams])
+      end
+
+      def with_teams(%Leagues.League{conferences: conferences} = league, number_of_teams) do
+        Enum.each(conferences, &with_teams(&1, number_of_teams))
+
+        Repo.preload(league, conferences: [:teams])
+      end
+
+      def with_teams(
+            %Leagues.Conference{divisions: %Ecto.Association.NotLoaded{}} = conference,
+            number_of_teams
+          ) do
+        conference
+        |> preload_teams_associations()
+        |> with_teams(number_of_teams)
+      end
+
+      def with_teams(
+            %Leagues.Conference{league: %Ecto.Association.NotLoaded{}} = conference,
+            number_of_teams
+          ) do
+        conference
+        |> preload_teams_associations()
+        |> with_teams(number_of_teams)
+      end
+
+      def with_teams(
+            %Leagues.Conference{divisions: [], league: league} = conference,
+            number_of_teams
+          ) do
+        insert_list(number_of_teams, :team, league: league, conference: conference, division: nil)
+
+        Repo.preload(conference, :teams)
+      end
+
+      def with_teams(
+            %Leagues.Conference{divisions: divisions, league: league} = conference,
+            number_of_teams
+          ) do
+        Enum.each(
+          divisions,
+          &insert_list(number_of_teams, :team, division: &1, conference: conference, league: league)
+        )
+
+        Repo.preload(conference, divisions: [:teams])
+      end
+
+      def with_teams(
+            %Leagues.Division{league: %Ecto.Association.NotLoaded{}} = division,
+            number_of_teams
+          ) do
+        division
+        |> preload_teams_associations()
+        |> with_teams(number_of_teams)
+      end
+
+      def with_teams(
+            %Leagues.Division{conference: %Ecto.Association.NotLoaded{}} = division,
+            number_of_teams
+          ) do
+        division
+        |> preload_teams_associations()
+        |> with_teams(number_of_teams)
+      end
+
+      def with_teams(
+            %Leagues.Division{league: league, conference: nil} = division,
+            number_of_teams
+          ) do
+        insert_list(number_of_teams, :team, division: division, league: league)
+
+        Repo.preload(division, :teams)
+      end
+
+      def with_teams(
+            %Leagues.Division{league: league, conference: conference} = division,
+            number_of_teams
+          ) do
+        insert_list(number_of_teams, :team,
+          league: league,
+          conference: conference,
+          division: division
+        )
+
+        Repo.preload(division, :teams)
+      end
+
+      defp preload_teams_associations(%Leagues.League{} = league) do
+        Repo.preload(league, :divisions, conferences: [:divisions])
+      end
+
+      defp preload_teams_associations(%Leagues.Conference{} = conference) do
+        Repo.preload(conference, [:divisions, :league])
+      end
+
+      defp preload_teams_associations(%Leagues.Division{} = division) do
+        Repo.preload(division, [:conference, :league])
+      end
+
+      def as_organization(%Teams.Team{organization: %Ecto.Association.NotLoaded{}} = team) do
         Repo.preload(team, :organization)
       end
 
-      def as_organization(%Team{organization: nil} = team) do
+      def as_organization(%Teams.Team{organization: nil} = team) do
         %{team | organization: team}
       end
 
-      def with_affiliates(%Team{} = team, opts \\ []) do
+      def with_affiliates(%Teams.Team{} = team, opts \\ []) do
         levels =
           Keyword.get(opts, :levels, [:major, :triple_a, :double_a, :single_a, :low_a, :rookie])
 
@@ -64,7 +189,7 @@ defmodule OOTPUtility.TeamFactory do
         team = Map.get_lazy(attrs, :team, fn -> build(:team) end)
         affiliate = Map.get_lazy(attrs, :affiliate, fn -> build(:team, level: level) end)
 
-        affiliation = %Affiliation{
+        affiliation = %Teams.Affiliation{
           id: sequence(:id, &"#{&1}"),
           team: team,
           affiliate: affiliate

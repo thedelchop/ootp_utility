@@ -1,6 +1,8 @@
 defmodule OOTPUtility.Factory do
   use ExMachina.Ecto, repo: OOTPUtility.Repo
 
+  import OOTPUtility.Factories.Utilities
+
   use OOTPUtility.GameFactory
   use OOTPUtility.LeagueFactory
   use OOTPUtility.ConferenceFactory
@@ -11,4 +13,5 @@ defmodule OOTPUtility.Factory do
   use OOTPUtility.Statistics.BattingFactory
   use OOTPUtility.Statistics.PitchingFactory
   use OOTPUtility.Teams.RosterFactory
+  use OOTPUtility.Standings.TeamRecordFactory
 end

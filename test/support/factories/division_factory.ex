@@ -23,16 +23,35 @@ defmodule OOTPUtility.DivisionFactory do
         |> evaluate_lazy_attributes()
       end
 
-      def with_teams(%Leagues.Division{league: league, conference: nil} = division) do
-        build_list(4, :team, division: division, league: league)
-
-        Repo.preload(division, :teams)
+      def with_divisions(conference_or_league, number_of_divisions \\ 2)
+      def with_divisions(%Leagues.League{conferences: %Ecto.Association.NotLoaded{}} = league, number_of_divisions) do
+        league
+        |> Repo.preload(:conferences)
+        |> with_divisions(number_of_divisions)
       end
 
-      def with_teams(%Leagues.Division{league: league, conference: conference} = division) do
-        build_list(4, :team, league: league, conference: conference, division: division)
+      def with_divisions(%Leagues.League{conferences: []} = league, number_of_divisions) do
+        insert_list(number_of_divisions, :division, league: league, conference: nil)
 
-        Repo.preload(division, :teams)
+        Repo.preload(league, [divisions: [:league, :conference]])
+      end
+
+      def with_divisions(%Leagues.League{conferences: conferences} = league, number_of_divisions) do
+        Enum.each(conferences, &insert_list(number_of_divisions, :division, conference: &1, league: league))
+
+        Repo.preload(league, [conferences: [divisions: [:league, :conference]]])
+      end
+
+      def with_divisions(%Leagues.Conference{league: %Ecto.Association.NotLoaded{}} = conference, number_of_divisions) do
+        conference
+        |> Repo.preload(:league)
+        |> with_divisions(number_of_divisions)
+      end
+
+      def with_divisions(%Leagues.Conference{league: league} = conference, number_of_divisions) do
+        insert_list(number_of_divisions, :division, league: league, conference: conference)
+
+        Repo.preload(conference, divisions: [:league, :conference])
       end
     end
   end
