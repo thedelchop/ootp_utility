@@ -36,6 +36,12 @@ defmodule OOTPUtility.TeamFactory do
         |> evaluate_lazy_attributes()
       end
 
+      def with_record(%Team{} = team) do
+        insert(:team_record, team: team)
+
+        Repo.preload(team, :record)
+      end
+
       def as_organization(%Team{organization: %Ecto.Association.NotLoaded{}} = team) do
         Repo.preload(team, :organization)
       end

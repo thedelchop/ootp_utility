@@ -1,5 +1,5 @@
 defmodule OOTPUtility.DivisionFactory do
-  alias OOTPUtility.Leagues.Division
+  alias OOTPUtility.{Leagues, Repo}
   import OOTPUtility.Factories.Utilities, only: [generate_slug_from_name: 1]
 
   defmacro __using__(_opts) do
@@ -10,7 +10,7 @@ defmodule OOTPUtility.DivisionFactory do
         conference =
           Map.get_lazy(attrs, :conference, fn -> build(:conference, league: league) end)
 
-        division = %Division{
+        division = %Leagues.Division{
           id: sequence(:id, &"#{&1}"),
           name: sequence("Test Division"),
           slug: fn d -> generate_slug_from_name(d) end,
@@ -23,16 +23,16 @@ defmodule OOTPUtility.DivisionFactory do
         |> evaluate_lazy_attributes()
       end
 
-      def with_teams(%Division{league: league, conference: nil} = division) do
+      def with_teams(%Leagues.Division{league: league, conference: nil} = division) do
         build_list(4, :team, division: division, league: league)
 
-        division
+        Repo.preload(division, :teams)
       end
 
-      def with_teams(%Division{league: league, conference: conference} = division) do
+      def with_teams(%Leagues.Division{league: league, conference: conference} = division) do
         build_list(4, :team, league: league, conference: conference, division: division)
 
-        division
+        Repo.preload(division, :teams)
       end
     end
   end

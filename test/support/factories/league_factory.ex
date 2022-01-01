@@ -1,11 +1,11 @@
 defmodule OOTPUtility.LeagueFactory do
-  alias OOTPUtility.Leagues.League
+  alias OOTPUtility.{Leagues, Repo}
   import OOTPUtility.Factories.Utilities, only: [generate_slug_from_name: 1]
 
   defmacro __using__(_opts) do
     quote do
       def league_factory do
-        %League{
+        %Leagues.League{
           id: sequence(:id, &"#{&1}"),
           name: sequence(:name, &"Test League #{&1}"),
           slug: &generate_slug_from_name/1,
@@ -18,34 +18,34 @@ defmodule OOTPUtility.LeagueFactory do
         }
       end
 
-      def with_divisions(%League{} = league) do
-        insert_pair(:division, league: league)
-
-        league
-      end
-
-      def with_conferences(%League{} = league) do
+      def with_conferences(%Leagues.League{} = league) do
         insert_pair(:conference, league: league)
 
-        league
+        Repo.preload(league, [conferences: [divisions: [:league, :conference]]])
       end
 
-      def with_teams(%League{conferences: [], divisions: []} = league) do
+      def with_divisions(%Leagues.League{} = league) do
+        insert_pair(:division, league: league, conference: nil)
+
+        Repo.preload(league, [:conferences, divisions: [:league, :conference]])
+      end
+
+      def with_teams(%Leagues.League{conferences: [], divisions: []} = league) do
         build_list(4, :team, league: league)
 
-        league
+        Repo.preload(league, :teams)
       end
 
-      def with_teams(%League{conferences: [], divisions: divisions} = league) do
-        Enum.each(divisions, &build_list(4, :team, division: &1, league: league))
+      def with_teams(%Leagues.League{conferences: [], divisions: divisions} = league) do
+        Enum.each(divisions, &with_teams(&1))
 
-        league
+        Repo.preload(league, divisions: [:teams])
       end
 
-      def with_teams(%League{conferences: conferences, divisions: []} = league) do
+      def with_teams(%Leagues.League{conferences: conferences} = league) do
         Enum.each(conferences, &with_teams(&1))
 
-        league
+        Repo.preload(league, conferences: [:teams])
       end
     end
   end
