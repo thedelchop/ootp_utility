@@ -2,20 +2,19 @@ defmodule OOTPUtility.Standings.Team do
   use Ecto.Schema
   use OOTPUtility.Collectable
 
-  alias OOTPUtility.{Repo, Teams}
-  alias __MODULE__
+  alias OOTPUtility.{Standings, Teams}
 
-  @derive {Inspect,
-           only: [
-             :id,
-             :name,
-             :games,
-             :wins,
-             :losses,
-             :winning_percentage,
-             :position,
-             :games_behind
-           ]}
+  # @derive {Inspect,
+  #          only: [
+  #            :id,
+  #            :name,
+  #            :games,
+  #            :wins,
+  #            :losses,
+  #            :winning_percentage,
+  #            :position,
+  #            :games_behind
+  #          ]}
 
   embedded_schema do
     field :logo_filename, :string
@@ -33,30 +32,39 @@ defmodule OOTPUtility.Standings.Team do
     field :wins, :integer
   end
 
-  def new(%Teams.Team{record: %Ecto.Association.NotLoaded{}} = team) do
-    team
-    |> Repo.preload(:record)
-    |> new()
-  end
-
   def new(
         %Teams.Team{
           slug: slug,
           name: name,
           abbr: abbr,
           logo_filename: logo,
-          record: team_record
+          record: %Standings.TeamRecord{
+            games: games,
+            games_behind: games_behind,
+            losses: losses,
+            magic_number: magic_number,
+            position: position,
+            streak: streak,
+            winning_percentage: winning_percentage,
+            wins: wins
+          } = _team_record
         } = _team
       ) do
-    team_record
-    |> Map.from_struct()
-    |> Map.drop([:team_id])
-    |> Enum.into(%Team{
+    %Standings.Team{
       id: "#{slug}-standings",
-      slug: slug,
       name: name,
       abbr: abbr,
-      logo_filename: logo
-    })
+      slug: slug,
+      logo_filename: logo,
+
+      games: games,
+      wins: wins,
+      losses: losses,
+      games_behind: games_behind,
+      winning_percentage: winning_percentage,
+      position: position,
+      streak: streak,
+      magic_number: magic_number
+    }
   end
 end

@@ -10,6 +10,7 @@ defmodule OOTPUtility.StandingsTest do
         insert(:league)
         |> with_conferences()
         |> with_teams()
+        |> with_records()
 
       league_standings = Standings.for_league(league)
 
@@ -26,6 +27,7 @@ defmodule OOTPUtility.StandingsTest do
         insert(:league)
         |> with_divisions()
         |> with_teams()
+        |> with_records()
 
       league_standings = Standings.for_league(league)
 
@@ -44,6 +46,7 @@ defmodule OOTPUtility.StandingsTest do
         insert(:conference)
         |> with_divisions()
         |> with_teams()
+        |> with_records()
 
       conference_standings = Standings.for_conference(conference)
 
@@ -59,6 +62,7 @@ defmodule OOTPUtility.StandingsTest do
       conference =
         insert(:conference)
         |> with_teams()
+        |> with_records()
 
       conference_standings = Standings.for_conference(conference)
 
@@ -76,6 +80,7 @@ defmodule OOTPUtility.StandingsTest do
       division =
         insert(:division)
         |> with_teams()
+        |> with_records()
 
       division_standings = Standings.for_division(division)
 
@@ -84,6 +89,44 @@ defmodule OOTPUtility.StandingsTest do
 
       division_standings.team_standings
       |> Enum.each(&assert(is_struct(&1, Standings.Team)))
+    end
+  end
+
+  describe "for_team/1" do
+    test "it returns the standings for the specified team" do
+      team =
+        insert(:team,
+          name: "Bad News Bears",
+          slug: "bad-news-bears",
+          abbr: "BNB",
+          logo_filename: "/logos/bad_news_bears.png"
+        )
+        |> with_record(%{
+          games: 6,
+          games_behind: 1.0,
+          losses: 3,
+          magic_number: 150,
+          position: 3,
+          streak: 2,
+          winning_percentage: 0.500,
+          wins: 3
+        })
+
+      assert Standings.for_team(team) == %Standings.Team{
+               id: "bad-news-bears-standings",
+               name: "Bad News Bears",
+               abbr: "BNB",
+               slug: "bad-news-bears",
+               logo_filename: "/logos/bad_news_bears.png",
+               games: 6,
+               wins: 3,
+               losses: 3,
+               games_behind: 1.0,
+               winning_percentage: 0.5,
+               position: 3,
+               streak: 2,
+               magic_number: 150
+             }
     end
   end
 end

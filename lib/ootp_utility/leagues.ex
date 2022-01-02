@@ -8,6 +8,8 @@ defmodule OOTPUtility.Leagues do
 
   alias OOTPUtility.Leagues.{League, Level, Conference, Division}
 
+  @type t() :: League | Conference | Division
+
   @doc """
   Gets a single league.
 

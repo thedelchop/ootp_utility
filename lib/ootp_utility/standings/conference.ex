@@ -2,22 +2,19 @@ defmodule OOTPUtility.Standings.Conference do
   use Ecto.Schema
   use OOTPUtility.Collectable
 
-  alias OOTPUtility.{Leagues, Repo}
-  alias OOTPUtility.Standings.{Division, Team}
-
-  alias __MODULE__
+  alias OOTPUtility.{Leagues, Standings}
 
   @derive {Inspect, only: [:id, :conference, :division_standings, :team_standings]}
 
   embedded_schema do
     embeds_one :conference, Leagues.Conference
 
-    embeds_many :division_standings, Division
-    embeds_many :team_standings, Team
+    embeds_many :division_standings, Standings.Division
+    embeds_many :team_standings, Standings.Team
   end
 
-  def name(%Conference{conference: %Leagues.Conference{name: name}}), do: name
-  def slug(%Conference{conference: %Leagues.Conference{slug: slug}}), do: slug
+  def name(%Standings.Conference{conference: %Leagues.Conference{name: name}}), do: name
+  def slug(%Standings.Conference{conference: %Leagues.Conference{slug: slug}}), do: slug
 
   def new(
         %Leagues.Conference{
@@ -25,18 +22,18 @@ defmodule OOTPUtility.Standings.Conference do
           teams: teams
         } = conference
       ) do
-    %Conference{
+    %Standings.Conference{
       id: "#{conference.slug}-standings",
       conference: conference,
-      team_standings: Enum.map(teams, &Team.new/1)
+      team_standings: Enum.map(teams, &Standings.for_team/1)
     }
   end
 
   def new(%Leagues.Conference{divisions: divisions} = conference) do
-    %Conference{
+    %Standings.Conference{
       id: "#{conference.slug}-standings",
       conference: conference,
-      division_standings: Enum.map(divisions, &Division.new/1)
+      division_standings: Enum.map(divisions, &Standings.for_division/1)
     }
   end
 end

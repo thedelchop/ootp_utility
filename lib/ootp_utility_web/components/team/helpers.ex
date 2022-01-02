@@ -22,16 +22,19 @@ defmodule OOTPUtilityWeb.Components.Team.Helpers do
     iex>  team_record(%Team{})
     "90-72"
   """
-  @spec team_record(%Teams.Team{}) :: String.t()
+  @spec team_record(Teams.Team.t()) :: String.t()
   def team_record(%Teams.Team{} = team) do
-    %Standings.TeamRecord{wins: wins, losses: losses} = Standings.for_team(team)
+    %Standings.Team{
+      wins: wins,
+      losses: losses
+    } = Standings.for_team(team)
 
     "#{wins}-#{losses}"
   end
 
-  @spec games_behind(%Teams.Team{}) :: String.t()
+  @spec games_behind(Teams.Team.t()) :: String.t()
   def games_behind(%Teams.Team{} = team) do
-    %Standings.TeamRecord{games_behind: games_behind} = Standings.for_team(team)
+    %Standings.Team{games_behind: games_behind} = Standings.for_team(team)
 
     "#{games_behind} GB"
   end

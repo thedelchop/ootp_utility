@@ -2,8 +2,7 @@ defmodule OOTPUtility.Standings.Division do
   use Ecto.Schema
   use OOTPUtility.Collectable
 
-  alias OOTPUtility.Leagues
-  alias OOTPUtility.Standings.Team
+  alias OOTPUtility.{Leagues, Standings}
 
   alias __MODULE__
 
@@ -12,7 +11,7 @@ defmodule OOTPUtility.Standings.Division do
   embedded_schema do
     embeds_one :division, Leagues.Division
 
-    embeds_many :team_standings, Team
+    embeds_many :team_standings, Standings.Team
   end
 
   def new(
@@ -22,7 +21,7 @@ defmodule OOTPUtility.Standings.Division do
       ) do
     team_standings =
       teams
-      |> Enum.map(&Team.new/1)
+      |> Enum.map(&Standings.for_team/1)
       |> Enum.sort(&(&2.position > &1.position))
 
     %Division{
