@@ -5,6 +5,14 @@ defmodule OOTPUtility.TeamFactory do
 
   defmacro __using__(_opts) do
     quote do
+      @doc """
+      Create a team using ExMachina, which will attempt to be smart about inserting the
+      team in the correct parent based on the attributes passed in.
+
+      iex> insert(:team, league: league)
+      %Teams.Team{}
+
+      """
       def team_factory(attrs) do
         level = Map.get(attrs, :level, :major)
         league = Map.get_lazy(attrs, :league, fn -> insert(:league, level: level) end)
@@ -35,6 +43,22 @@ defmodule OOTPUtility.TeamFactory do
         |> evaluate_lazy_attributes()
       end
 
+      @doc """
+      Adds the specified number of teams to the specified parent.  It attempts to be smart
+      about where the teams are added, adding the teams to the most granular child of the parent
+      passed in to the function.
+
+      For example, if `with_teams/2` is called with a League that has conferences, but those conferences
+      have no divisions, then the teams will be added to the conferences.  If a league with no conferences
+      or divisions is passed in then the teams are added directly to the league
+
+      ## Parameters
+
+      parent - A League, Conference or Division to which the teams will be added
+      number_of_teams - The number of teams to add to the parent
+
+      """
+      @spec with_teams(Leagues.t(), integer()) :: Leagues.t()
       def with_teams(league_conference_or_division, number_of_teams \\ 4)
 
       def with_teams(
@@ -109,7 +133,11 @@ defmodule OOTPUtility.TeamFactory do
           ) do
         Enum.each(
           divisions,
-          &insert_list(number_of_teams, :team, division: &1, conference: conference, league: league)
+          &insert_list(number_of_teams, :team,
+            division: &1,
+            conference: conference,
+            league: league
+          )
         )
 
         Repo.preload(conference, divisions: [:teams])
@@ -167,6 +195,12 @@ defmodule OOTPUtility.TeamFactory do
         Repo.preload(division, [:conference, :league])
       end
 
+      @doc """
+      Updates the team to make that team itself the organization for the team.
+
+      """
+
+      @spec as_organization(Teams.Team.t()) :: Teams.Team.t()
       def as_organization(%Teams.Team{organization: %Ecto.Association.NotLoaded{}} = team) do
         Repo.preload(team, :organization)
       end
@@ -175,6 +209,12 @@ defmodule OOTPUtility.TeamFactory do
         %{team | organization: team}
       end
 
+      @doc """
+        Insert a set of affiliates for the specified team, by default a full set of affiliates
+        are created, but that can be changed with the `affilates` option
+
+      """
+      @spec with_affiliates(Teams.Team.t(), Keyword.t()) :: Teams.Team.t()
       def with_affiliates(%Teams.Team{} = team, opts \\ []) do
         levels =
           Keyword.get(opts, :levels, [:major, :triple_a, :double_a, :single_a, :low_a, :rookie])

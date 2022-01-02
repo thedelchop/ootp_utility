@@ -23,33 +23,86 @@ defmodule OOTPUtility.DivisionFactory do
         |> evaluate_lazy_attributes()
       end
 
-      def with_divisions(conference_or_league, number_of_divisions \\ 2)
-      def with_divisions(%Leagues.League{conferences: %Ecto.Association.NotLoaded{}} = league, number_of_divisions) do
+      @doc """
+        Create the specified number of divisions for the league or conference,
+        using the division attributes passed into the function.
+
+        iex> insert(:league) |> with_divisions()
+        %Leagues.League{}
+
+        iex> insert(:conference) |> with_divisions()
+        %Leagues.Conference{}
+      """
+      @spec with_divisions(Leagues.League.t() | Leagues.Conference.t(), integer(), map()) ::
+              Leagues.League.t() | Leagues.Conference.t()
+      def with_divisions(conference_or_league, number_of_divisions \\ 2, attrs \\ %{})
+
+      def with_divisions(
+            %Leagues.League{conferences: %Ecto.Association.NotLoaded{}} = league,
+            number_of_divisions,
+            division_attrs
+          ) do
         league
         |> Repo.preload(:conferences)
-        |> with_divisions(number_of_divisions)
+        |> with_divisions(number_of_divisions, division_attrs)
       end
 
-      def with_divisions(%Leagues.League{conferences: []} = league, number_of_divisions) do
-        insert_list(number_of_divisions, :division, league: league, conference: nil)
+      def with_divisions(
+            %Leagues.League{conferences: []} = league,
+            number_of_divisions,
+            division_attrs
+          ) do
+        attrs =
+          division_attrs
+          |> Map.put(:league, league)
+          |> Map.put(:conference, nil)
 
-        Repo.preload(league, [divisions: [:league, :conference]])
+        insert_list(number_of_divisions, :division, attrs)
+
+        Repo.preload(league, divisions: [:league, :conference])
       end
 
-      def with_divisions(%Leagues.League{conferences: conferences} = league, number_of_divisions) do
-        Enum.each(conferences, &insert_list(number_of_divisions, :division, conference: &1, league: league))
+      def with_divisions(
+            %Leagues.League{conferences: conferences} = league,
+            number_of_divisions,
+            division_attrs
+          ) do
+        Enum.each(
+          conferences,
+          fn conference ->
+            attrs =
+              division_attrs
+              |> Map.put(:league, league)
+              |> Map.put(:conference, conference)
 
-        Repo.preload(league, [conferences: [divisions: [:league, :conference]]])
+            insert_list(number_of_divisions, :division, attrs)
+          end
+        )
+
+        Repo.preload(league, conferences: [divisions: [:league, :conference]])
       end
 
-      def with_divisions(%Leagues.Conference{league: %Ecto.Association.NotLoaded{}} = conference, number_of_divisions) do
+      def with_divisions(
+            %Leagues.Conference{league: %Ecto.Association.NotLoaded{}} = conference,
+            number_of_divisions,
+            division_attrs
+          ) do
         conference
         |> Repo.preload(:league)
-        |> with_divisions(number_of_divisions)
+        |> with_divisions(number_of_divisions, division_attrs)
       end
 
-      def with_divisions(%Leagues.Conference{league: league} = conference, number_of_divisions) do
-        insert_list(number_of_divisions, :division, league: league, conference: conference)
+      def with_divisions(
+            %Leagues.Conference{league: league} = conference,
+            number_of_divisions,
+            division_attrs
+          ) do
+        attrs =
+          division_attrs
+          |> Map.put(:league, league)
+          |> Map.put(:conference, conference)
+
+        insert_list(number_of_divisions, :division, attrs)
 
         Repo.preload(conference, divisions: [:league, :conference])
       end
