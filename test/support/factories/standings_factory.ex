@@ -9,10 +9,12 @@ defmodule OOTPUtility.StandingsFactory do
         |> Map.put_new(:name, team.name)
         |> Map.put_new(:abbr, team.abbr)
         |> Map.put_new(:logo_filename, team.logo_filename)
-        |> team_standings_factory()
+        |> do_team_standings_factory()
       end
 
-      def team_standings_factory(attrs) do
+      def team_standings_factory(attrs), do: do_team_standings_factory(attrs)
+
+      def do_team_standings_factory(attrs) do
         games = Map.get(attrs, :games, Faker.random_between(1, 162))
         wins = Map.get(attrs, :wins, Faker.random_between(1, games))
 
