@@ -2,6 +2,10 @@ defmodule OOTPUtility.Statistics do
   @moduledoc """
   This module provides an interface for dealing with statistics
   """
+  @type batting_statistic :: :batting_average | :home_runs | :runs_batted_in | :runs | :stolen_bases
+  @type pitching_statistic :: :runs_allowed | :wins | :saves | :earned_run_average | :strikeouts | :walks_hits_per_inning_pitched
+
+  @type statistic :: batting_statistic() | pitching_statistic()
 
   @batting_statistics [
     :batting_average,
@@ -35,6 +39,24 @@ defmodule OOTPUtility.Statistics do
   defdelegate calculate(attrs, stat), to: OOTPUtility.Statistics.Calculations
   defdelegate round(attrs, stat), to: OOTPUtility.Statistics.Calculations
 
+  @doc """
+    Retuns the ranking for the specified %Teams.Team{} in the specified scope,
+    as a tuple of `{rank, value, statistic_name}`
+
+    * The rank of the team compared to the entire population
+    * The value for the team with the statistic
+    * The name of the statistic that the team is being ranked for
+
+    The `scope` attribute can be any :league, :conference, :division
+
+    iex> Statistics.team_ranking(%Team{}, :home_runs, :league)
+    {1, 256, :home_runs}
+
+    iex> Statistics.team_ranking(%Team{}, :batting_average, :division)
+    {3, 0.283, :batting_average}
+
+  """
+  @spec team_ranking(Teams.Team.t(), statistic()) :: {integer(), number(), atom()}
   def team_ranking(%Teams.Team{league: %NotLoaded{}} = team, statistic) do
     team
     |> Repo.preload(:league)
@@ -51,6 +73,13 @@ defmodule OOTPUtility.Statistics do
     do_team_ranking(team, stat, :league, PitchingStats.Team)
   end
 
+  @doc """
+  Returns a %Statistics.Leaderboard{} for the specified team and statistic
+
+  iex> Statistics.team_leaders(%Teams.Team{}, :batting_average)
+  %Statistics.Leaderboard{}
+  """
+  @spec team_leaders(Teams.Team.t(), statistic()) :: Statistics.Leaderboard.t()
   def team_leaders(team, stat) when is_batting_stat(stat) do
     BattingStats.team_leaders(team, stat)
   end
