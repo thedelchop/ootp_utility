@@ -1,7 +1,7 @@
 defmodule OOTPUtilityWeb.TeamLive do
   use Surface.LiveView
 
-  alias OOTPUtility.{Teams, Standings}
+  alias OOTPUtility.Teams
   alias OOTPUtilityWeb.Components.Team.{Leaders, Rankings, Roster, Organization}
   alias OOTPUtilityWeb.Components.{Scoreboard}
   alias OOTPUtilityWeb.Components.Shared.SectionHeader
@@ -44,7 +44,7 @@ defmodule OOTPUtilityWeb.TeamLive do
           <div class="flex flex-col w-1/3 space-y-4">
             <div class="flex flex-col rounded-lg shadow bg-white p-4">
               <SectionHeader>Standings</SectionHeader>
-              <DivisionStandings id={component_id_for(@team, "standings")} compact={true} standings={@standings} />
+              <DivisionStandings id={component_id_for(@team, "standings")} compact={true} division={@team.division} />
             </div>
             <Leaders id={component_id_for(@team, "leaders")} team={@team}/>
             <Organization id={component_id_for(@team, "organization")} team={@team} />
@@ -63,13 +63,10 @@ defmodule OOTPUtilityWeb.TeamLive do
         preload: [:league, division: [:league, :conference]]
       )
 
-    standings = Standings.for_division(team.division)
-
     {
       :ok,
       socket
       |> assign(:team, team)
-      |> assign(:standings, standings)
     }
   end
 

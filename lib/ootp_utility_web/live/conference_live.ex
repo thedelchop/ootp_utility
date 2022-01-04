@@ -1,26 +1,20 @@
 defmodule OOTPUtilityWeb.ConferenceLive do
   use Surface.LiveView
 
-  alias OOTPUtility.{Leagues, Standings}
+  alias OOTPUtility.Leagues
   alias OOTPUtilityWeb.Components.Standings.Conference
 
   @impl true
   def render(assigns) do
     ~F"""
-      <Conference id={@standings.id} standings={@standings} />
+      <Conference id={"#{@conference.slug}-standinhgs"} conference={@conference} />
     """
   end
 
   @impl true
-  def mount(%{"league_slug" => league_slug, "slug" => slug}, _session, socket) do
-    conference = Leagues.get_conference_by_slug!(slug, league_slug)
-    standings = Standings.for_conference(conference)
+  def mount(%{"slug" => slug}, _session, socket) do
+    conference = Leagues.get_conference_by_slug!(slug)
 
-    {
-      :ok,
-      socket
-      |> assign(:standings, standings)
-      |> assign(:slug, slug)
-    }
+    {:ok, assign(socket, :conference, conference)}
   end
 end

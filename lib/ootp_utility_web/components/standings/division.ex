@@ -6,27 +6,39 @@ defmodule OOTPUtilityWeb.Components.Standings.Division do
   alias OOTPUtilityWeb.Components.Standings.Teams
   alias OOTPUtilityWeb.Router.Helpers, as: Routes
 
-  prop standings, :struct, required: true
+  prop division, :struct, required: true
   prop compact, :boolean, default: false
+
+  data standings, :struct
+
+  def update(assigns, socket) do
+    standings = Standings.for_division(assigns.division)
+
+    {
+      :ok,
+      socket
+      |> assign(:standings, standings)
+      |> assign(:division, assigns.division)
+      |> assign(:compact, assigns.compact)
+    }
+  end
 
   @impl true
   def render(assigns) do
     ~F"""
       <div class="flex flex-col overflow-hidden">
         <Teams
-          id={child_id(@standings.division)}
-          standings={child_standings(@standings)}
-          parent_path={path_to_division(@standings.division, @socket)}
-          parent_name={name(@standings)}
+          id={child_id(@division)}
+          standings={@standings.team_standings}
+          parent_path={path_to_division(@division, @socket)}
+          parent_name={name(@division)}
           {=@compact}
         />
       </div>
     """
   end
 
-  def name(%Standings.Division{division: %Leagues.Division{name: name}} = _standings), do: name
-
-  def child_standings(%Standings.Division{team_standings: standings}), do: standings
+  def name(%Leagues.Division{name: name}), do: name
 
   def path_to_division(
     %Leagues.Division{

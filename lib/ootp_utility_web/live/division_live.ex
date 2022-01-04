@@ -1,13 +1,13 @@
 defmodule OOTPUtilityWeb.DivisionLive do
   use Surface.LiveView
 
-  alias OOTPUtility.{Leagues, Standings}
+  alias OOTPUtility.Leagues
   alias OOTPUtilityWeb.Components.Standings.Division
 
   @impl true
   def render(assigns) do
     ~F"""
-      <Division id={@standings.id} standings={@standings} />
+      <Division id={"#{@slug}-standings"} division={@division} />
     """
   end
 
@@ -15,12 +15,10 @@ defmodule OOTPUtilityWeb.DivisionLive do
   def mount(%{"slug" => slug}, _session, socket) do
     division = Leagues.get_division_by_slug!(slug)
 
-    standings = Standings.for_division(division)
-
     {
       :ok,
       socket
-      |> assign(:standings, standings)
+      |> assign(:division, division)
       |> assign(:slug, slug)
     }
   end
