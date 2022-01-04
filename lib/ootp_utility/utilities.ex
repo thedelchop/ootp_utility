@@ -5,6 +5,34 @@ defmodule OOTPUtility.Utilities do
   bases (first -> 1B)
   """
 
+  def position_name_to_position_key() do
+    %{
+      pitcher: "P",
+      catcher: "C",
+      first_base: "1B",
+      second_base: "2B",
+      third_base: "3B",
+      shortstop: "SS",
+      left_field: "LF",
+      center_field: "CF",
+      right_field: "RF",
+      designated_hitter: "DH",
+      starting_pitcher: "SP",
+      middle_reliever: "MR",
+      closer: "CL"
+    }
+  end
+
+  def position_key_to_position_name() do
+    position_name_to_position_key()
+    |> Map.to_list()
+    |> Enum.map(fn {k, v} -> {v, k} end)
+    |> Enum.into(%{})
+  end
+
+  def position_names(), do: Map.keys(position_name_to_position_key())
+  def position_keys(), do: Map.values(position_name_to_position_key())
+
   @spec position_from_scoring_key(String.t() | integer()) :: atom()
   def position_from_scoring_key(scoring_key) when is_integer(scoring_key) do
     scoring_key
@@ -36,46 +64,12 @@ defmodule OOTPUtility.Utilities do
 
   @spec expand_position_key(String.t()) :: atom()
   def expand_position_key(position_key) do
-    Map.fetch!(
-      %{
-        "P" => :pitcher,
-        "C" => :catcher,
-        "1B" => :first_base,
-        "2B" => :second_base,
-        "3B" => :third_base,
-        "SS" => :shortstop,
-        "LF" => :left_field,
-        "CF" => :center_field,
-        "RF" => :right_field,
-        "DH" => :designated_hitter,
-        "SP" => :starting_pitcher,
-        "MR" => :middle_reliever,
-        "CL" => :closer
-      },
-      position_key
-    )
+    Map.fetch!(position_key_to_position_name(), position_key)
   end
 
   @spec get_position_key(atom()) :: String.t()
   def get_position_key(position) do
-    Map.fetch!(
-      %{
-       pitcher:           "P",
-       catcher:           "C",
-       first_base:        "1B",
-       second_base:       "2B",
-       third_base:        "3B",
-       shortstop:         "SS",
-       left_field:        "LF",
-       center_field:      "CF",
-       right_field:       "RF",
-       designated_hitter: "DH",
-       starting_pitcher:  "SP",
-       middle_reliever:   "MR",
-       closer:             "CL"
-      },
-      position
-    )
+    Map.fetch!(position_name_to_position_key(), position)
   end
 
   @spec split_from_id(String.t() | integer()) :: atom()
