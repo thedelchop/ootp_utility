@@ -41,9 +41,12 @@ defmodule OOTPUtilityWeb.Components.Scoreboard do
   def handle_event("decrement_date", _, socket) do
     date = Timex.subtract(socket.assigns.date, Timex.Duration.from_days(1))
 
+    games = Games.for_team(socket.assigns.subject, limit: socket.assigns.size, start_date: date)
+
     send_update(Scoreboard,
       id: socket.assigns.id,
-      date: date
+      date: date,
+      games: games
     )
 
     {:noreply, socket}
@@ -52,9 +55,12 @@ defmodule OOTPUtilityWeb.Components.Scoreboard do
   def handle_event("increment_date", _, socket) do
     date = Timex.add(socket.assigns.date, Timex.Duration.from_days(1))
 
+    games = Games.for_team(socket.assigns.subject, limit: socket.assigns.size, start_date: date)
+
     send_update(Scoreboard,
       id: socket.assigns.id,
-      date: date
+      date: date,
+      games: games
     )
 
     {:noreply, socket}
@@ -76,6 +82,7 @@ defmodule OOTPUtilityWeb.Components.Scoreboard do
 
     send_update(Scoreboard,
       id: socket.assigns.id,
+      size: size,
       games: games
     )
 
