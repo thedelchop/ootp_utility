@@ -58,6 +58,7 @@ defmodule OOTPUtility.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:postgrex, ">= 0.0.0"},
       {:slugify, "~> 1.3"},
+      {:snapshy, "~> 0.2.4", only: :test},
       {:surface, "~> 0.6"},
       {:swoosh, "~> 1.3"},
       {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
