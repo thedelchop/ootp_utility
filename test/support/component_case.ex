@@ -24,6 +24,7 @@ defmodule OOTPUtilityWeb.ComponentCase do
 
       alias OOTPUtilityWeb.Router.Helpers, as: Routes
 
+      use Snapshy
       use Surface.LiveViewTest
 
       # The default endpoint for testing
