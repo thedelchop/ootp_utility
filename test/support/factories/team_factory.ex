@@ -25,21 +25,19 @@ defmodule OOTPUtility.TeamFactory do
             build(:division, conference: conference, league: league)
           end)
 
-        team = %Teams.Team{
+        %Teams.Team{
           id: sequence(:id, &"#{&1}"),
           name: sequence("Test Team"),
           slug: fn t -> generate_slug_from_name(t) end,
           abbr: "TT",
-          level: :major,
+          level: level,
           logo_filename: "my_team.png",
           organization: nil,
           league: league,
           conference: conference,
           division: division
         }
-
-        team
-        |> merge_attributes(attrs)
+        |> merge_attributes(Map.drop(attrs, [:level, :league, :conference, :division]))
         |> evaluate_lazy_attributes()
       end
 
@@ -58,7 +56,7 @@ defmodule OOTPUtility.TeamFactory do
       number_of_teams - The number of teams to add to the parent
 
       """
-      @spec with_teams(Leagues.t(), integer()) :: Leagues.t()
+      @spec with_teams(Leagues.t(), integer()) :: Leagues.t() | [Leagues.t()] | nil
       def with_teams(league_conference_or_division, number_of_teams \\ 4)
 
       def with_teams(
@@ -168,6 +166,8 @@ defmodule OOTPUtility.TeamFactory do
         insert_list(number_of_teams, :team, division: division, league: league)
 
         Repo.preload(division, :teams)
+
+        division
       end
 
       def with_teams(
@@ -181,6 +181,8 @@ defmodule OOTPUtility.TeamFactory do
         )
 
         Repo.preload(division, :teams)
+
+        division
       end
 
       defp preload_teams_associations(%Leagues.League{} = league) do
