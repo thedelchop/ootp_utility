@@ -41,14 +41,16 @@ defmodule OOTPUtility.GamesTest do
       league: league
     } do
       past_date = date_in_past(20)
-      old_game = insert(:completed_game, league: league, date: past_date)
+      old_game = insert(:game, league: league, date: past_date) |> complete_game()
 
       recent_games =
         1..10
         |> Enum.take(3)
-        |> Enum.map(
-          &insert(:completed_game, home_team: team, league: league, date: date_in_past(&1))
-        )
+        |> Enum.map(fn
+          date ->
+            insert(:game, home_team: team, league: league, date: date_in_past(date))
+            |> complete_game()
+        end)
 
       games_in_past_ten_days = Games.for_team(team, start_date: date_in_past(10))
 

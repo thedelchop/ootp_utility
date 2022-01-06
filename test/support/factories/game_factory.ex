@@ -3,7 +3,7 @@ defmodule OOTPUtility.GameFactory do
 
   defmacro __using__(_opts) do
     quote do
-      def game_factory do
+      def game_factory(attrs) do
         %Game{
           id: sequence(:id, &"#{&1}"),
           attendance: 25_000,
@@ -16,13 +16,16 @@ defmodule OOTPUtility.GameFactory do
           home_team: fn game -> build(:team, league: game.league) end,
           away_team: fn game -> build(:team, league: game.league) end
         }
+        |> merge_attributes(attrs)
+        |> evaluate_lazy_attributes()
       end
 
-      def completed(%Game{played: true} = game), do: game
+      def complete_game(game, attrs \\ %{})
+      def complete_game(%Game{played: true} = game, attrs), do: game
 
-      def completed_game_factory do
+      def complete_game(%Game{} = game, attrs) do
         struct!(
-          game_factory(),
+          game,
           %{
             away_team_errors: Enum.random(0..3),
             away_team_hits: Enum.random(0..10),
@@ -39,6 +42,8 @@ defmodule OOTPUtility.GameFactory do
             save_pitcher: fn game -> build(:player, team: game.home_team) end
           }
         )
+        |> merge_attributes(attrs)
+        |> evaluate_lazy_attributes()
       end
     end
   end
