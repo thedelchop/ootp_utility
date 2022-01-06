@@ -41,12 +41,4 @@ defmodule OOTPUtilityWeb.ComponentCase do
 
     :ok
   end
-
-  @doc """
-    A helper to compare the results of SQL queries by just extracting their ids
-
-    assert ids_for(Games.for_team(team)) == ids_for([game, game_1])
-  """
-
-  def ids_for(resources), do: resources |> Enum.map(& &1.id) |> Enum.sort()
 end
