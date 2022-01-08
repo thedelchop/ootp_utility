@@ -9,7 +9,7 @@ defmodule OOTPUtilityWeb.Components.Shared.Table.Column do
   use Surface.Component, slot: "cols"
 
   @doc "Column header text"
-  prop label, :string, required: true
+  prop label, :string, default: ""
 
   @doc """
   This prop takes a sort field, the following values are valid:
