@@ -4,6 +4,8 @@ defmodule OOTPUtility.GameFactory do
   defmacro __using__(_opts) do
     quote do
       def game_factory(attrs) do
+        league = Map.get_lazy(attrs, :league, fn -> insert(:league) end)
+
         %Game{
           id: sequence(:id, &"#{&1}"),
           attendance: 25_000,
@@ -12,9 +14,9 @@ defmodule OOTPUtility.GameFactory do
           type: :season,
           played: false,
           time: ~T[14:00:00],
-          league: fn -> build(:league) end,
-          home_team: fn game -> build(:team, league: game.league) end,
-          away_team: fn game -> build(:team, league: game.league) end
+          league: league,
+          home_team: fn game -> build(:team, league: league) end,
+          away_team: fn game -> build(:team, league: league) end
         }
         |> merge_attributes(attrs)
         |> evaluate_lazy_attributes()
