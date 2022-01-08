@@ -25,7 +25,8 @@ defmodule OOTPUtility.TeamFactory do
 
         league = Map.get_lazy(attrs, :league, fn -> insert(:league) end)
 
-        conference = Map.get_lazy(attrs, :conference, fn -> insert(:conference, league: league) end)
+        conference =
+          Map.get_lazy(attrs, :conference, fn -> insert(:conference, league: league) end)
 
         division =
           Map.get_lazy(attrs, :division, fn ->
@@ -63,7 +64,7 @@ defmodule OOTPUtility.TeamFactory do
       number_of_teams - The number of teams to add to the parent
 
       """
-      @spec with_teams(Leagues.t(), integer()) :: Leagues.t() | [Leagues.t()] | nil
+      @spec with_teams(Leagues.t(), integer()) :: Leagues.t()
       def with_teams(league_conference_or_division, number_of_teams \\ 4)
 
       def with_teams(
@@ -85,27 +86,29 @@ defmodule OOTPUtility.TeamFactory do
       end
 
       def with_teams(%Leagues.League{divisions: [], conferences: []} = league, number_of_teams) do
-        insert_list(number_of_teams, :team, league: league, division: nil, conference: nil)
-
-        Repo.preload(league, :teams)
+        %{
+          league
+          | teams:
+              insert_list(number_of_teams, :team, league: league, division: nil, conference: nil)
+        }
       end
 
       def with_teams(
             %Leagues.League{divisions: [], conferences: conferences} = league,
             number_of_teams
           ) do
-        Enum.each(conferences, &with_teams(&1, number_of_teams))
+        conferences = Enum.map(conferences, &with_teams(&1, number_of_teams))
 
-        Repo.preload(league, conferences: [:teams])
+        %{league | conferences: conferences, teams: Enum.flat_map(conferences, & &1.teams)}
       end
 
       def with_teams(
             %Leagues.League{divisions: divisions} = league,
             number_of_teams
           ) do
-        Enum.each(divisions, &with_teams(&1, number_of_teams))
+        divisions = Enum.map(divisions, &with_teams(&1, number_of_teams))
 
-        Repo.preload(league, divisions: [:teams])
+        %{league | divisions: divisions, teams: Enum.flat_map(divisions, & &1.teams)}
       end
 
       def with_teams(
@@ -130,18 +133,23 @@ defmodule OOTPUtility.TeamFactory do
             %Leagues.Conference{divisions: [], league: league} = conference,
             number_of_teams
           ) do
-        insert_list(number_of_teams, :team, league: league, conference: conference, division: nil)
-
-        Repo.preload(conference, :teams)
+        %{
+          conference
+          | teams:
+              insert_list(number_of_teams, :team,
+                league: league,
+                conference: conference,
+                division: nil
+              )
+        }
       end
 
       def with_teams(
             %Leagues.Conference{divisions: divisions, league: league} = conference,
             number_of_teams
           ) do
-        Enum.each(divisions, &with_teams(&1, number_of_teams))
-
-        Repo.preload(conference, divisions: [:teams])
+        divisions = Enum.map(divisions, &with_teams(&1, number_of_teams))
+        %{conference | divisions: divisions, teams: Enum.flat_map(divisions, & &1.teams)}
       end
 
       def with_teams(
@@ -166,30 +174,34 @@ defmodule OOTPUtility.TeamFactory do
             %Leagues.Division{league: league, conference: nil} = division,
             number_of_teams
           ) do
-        insert_list(number_of_teams, :team, division: division, conference: nil, league: league)
-
-        Repo.preload(division, :teams)
-
-        division
+        %{
+          division
+          | teams:
+              insert_list(number_of_teams, :team,
+                division: division,
+                conference: nil,
+                league: league
+              )
+        }
       end
 
       def with_teams(
             %Leagues.Division{league: league, conference: conference} = division,
             number_of_teams
           ) do
-        insert_list(number_of_teams, :team,
-          league: league,
-          conference: conference,
-          division: division
-        )
-
-        Repo.preload(division, :teams)
-
-        division
+        %{
+          division
+          | teams:
+              insert_list(number_of_teams, :team,
+                league: league,
+                conference: conference,
+                division: division
+              )
+        }
       end
 
       defp preload_teams_associations(%Leagues.League{} = league) do
-        Repo.preload(league, :divisions, conferences: [:divisions])
+        Repo.preload(league, [:divisions, :conferences])
       end
 
       defp preload_teams_associations(%Leagues.Conference{} = conference) do
@@ -224,9 +236,7 @@ defmodule OOTPUtility.TeamFactory do
         levels =
           Keyword.get(opts, :levels, [:major, :triple_a, :double_a, :single_a, :low_a, :rookie])
 
-        Enum.map(levels, &insert(:affiliation, team: team, level: &1))
-
-        team
+        %{team | affiliations: Enum.map(levels, &insert(:affiliation, team: team, level: &1))}
       end
 
       def affiliation_factory(attrs) do

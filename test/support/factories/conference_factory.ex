@@ -1,5 +1,5 @@
 defmodule OOTPUtility.ConferenceFactory do
-  alias OOTPUtility.{Leagues, Repo}
+  alias OOTPUtility.Leagues
 
   defmacro __using__(_opts) do
     quote do
@@ -32,9 +32,10 @@ defmodule OOTPUtility.ConferenceFactory do
           ) do
         conference_attributes = conference_attrs |> Map.put(:league, league)
 
-        insert_list(number_of_conferences, :conference, conference_attributes)
-
-        Repo.preload(league, conferences: [divisions: [:league, :conference]])
+        %{
+          league
+          | conferences: insert_list(number_of_conferences, :conference, conference_attributes)
+        }
       end
     end
   end

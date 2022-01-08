@@ -57,9 +57,7 @@ defmodule OOTPUtility.DivisionFactory do
           |> Map.put(:league, league)
           |> Map.put(:conference, nil)
 
-        insert_list(number_of_divisions, :division, attrs)
-
-        Repo.preload(league, divisions: [:league, :conference])
+        %{league | divisions: insert_list(number_of_divisions, :division, attrs)}
       end
 
       def with_divisions(
@@ -67,19 +65,14 @@ defmodule OOTPUtility.DivisionFactory do
             number_of_divisions,
             division_attrs
           ) do
-        Enum.each(
-          conferences,
-          fn conference ->
-            attrs =
-              division_attrs
-              |> Map.put(:league, league)
-              |> Map.put(:conference, conference)
+        conferences =
+          Enum.map(conferences, &with_divisions(&1, number_of_divisions, division_attrs))
 
-            insert_list(number_of_divisions, :division, attrs)
-          end
-        )
-
-        Repo.preload(league, conferences: [divisions: [:league, :conference]])
+        %{
+          league
+          | conferences: conferences,
+            divisions: Enum.flat_map(conferences, & &1.divisions)
+        }
       end
 
       def with_divisions(
@@ -102,9 +95,7 @@ defmodule OOTPUtility.DivisionFactory do
           |> Map.put(:league, league)
           |> Map.put(:conference, conference)
 
-        insert_list(number_of_divisions, :division, attrs)
-
-        Repo.preload(conference, divisions: [:league, :conference])
+        %{conference | divisions: insert_list(number_of_divisions, :division, attrs)}
       end
     end
   end

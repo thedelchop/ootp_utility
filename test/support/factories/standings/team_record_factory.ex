@@ -33,7 +33,7 @@ defmodule OOTPUtility.Standings.TeamRecordFactory do
       attrs - Attributes for the TeamRecords being created.
 
       """
-      @spec with_records(Leagues.t() | Teams.Team.t(), map()) :: Leagues.t() | Teams.Team.t()
+      @spec with_records(Leagues.t(), map()) :: Leagues.t()
       def with_records(parent, record_attributes \\ %{})
 
       def with_records(
@@ -69,40 +69,21 @@ defmodule OOTPUtility.Standings.TeamRecordFactory do
           ) do
         games_played_per_team = Map.get(record_attributes, :games, 5)
 
-        team_win_totals =
-          teams
-          |> Enum.count()
-          |> distribute_wins_amongst_teams(games_played_per_team)
+        teams_with_records =
+          create_records_for_teams(teams, games_played_per_team, record_attributes)
 
-        teams
-        |> Enum.zip(team_win_totals)
-        |> Enum.each(fn
-          {team, wins} ->
-            attrs =
-              record_attributes
-              |> Map.put(:team, team)
-              |> Map.put(:games, games_played_per_team)
-              |> Map.put(:wins, wins)
-
-            insert(:team_record, attrs)
-        end)
-
-        Repo.preload(league, teams: [:record])
+        %{league | teams: teams_with_records}
       end
 
       def with_records(
             %Leagues.League{conferences: [], divisions: divisions} = league,
             record_attributes
           ) do
-        Enum.each(divisions, &with_records(&1, record_attributes))
-
-        Repo.preload(league, divisions: [teams: [:record]])
+        %{league | divisions: Enum.map(divisions, &with_records(&1, record_attributes))}
       end
 
       def with_records(%Leagues.League{conferences: conferences} = league, record_attributes) do
-        Enum.each(conferences, &with_records(&1, record_attributes))
-
-        Repo.preload(league, conferences: [divisions: [teams: [:record]]])
+        %{league | conferences: Enum.map(conferences, &with_records(&1, record_attributes))}
       end
 
       def with_records(
@@ -129,34 +110,17 @@ defmodule OOTPUtility.Standings.TeamRecordFactory do
           ) do
         games_played_per_team = Map.get(record_attributes, :games, 5)
 
-        team_win_totals =
-          teams
-          |> Enum.count()
-          |> distribute_wins_amongst_teams(games_played_per_team)
+        teams_with_records =
+          create_records_for_teams(teams, games_played_per_team, record_attributes)
 
-        teams
-        |> Enum.zip(team_win_totals)
-        |> Enum.each(fn
-          {team, wins} ->
-            attrs =
-              record_attributes
-              |> Map.put(:team, team)
-              |> Map.put(:games, games_played_per_team)
-              |> Map.put(:wins, wins)
-
-            insert(:team_record, attrs)
-        end)
-
-        Repo.preload(conference, teams: [:record])
+        %{conference | teams: teams_with_records}
       end
 
       def with_records(
             %Leagues.Conference{divisions: divisions} = conference,
             record_attributes
           ) do
-        Enum.each(divisions, &with_records(&1, record_attributes))
-
-        Repo.preload(conference, divisions: [teams: [:record]])
+        %{conference | divisions: Enum.map(divisions, &with_records(&1, record_attributes))}
       end
 
       def with_records(
@@ -171,6 +135,13 @@ defmodule OOTPUtility.Standings.TeamRecordFactory do
       def with_records(%Leagues.Division{teams: teams} = division, record_attributes) do
         games_played_per_team = Map.get(record_attributes, :games, 5)
 
+        teams_with_records =
+          create_records_for_teams(teams, games_played_per_team, record_attributes)
+
+        %{division | teams: teams_with_records}
+      end
+
+      defp create_records_for_teams(teams, games_played_per_team, record_attributes) do
         team_win_totals =
           teams
           |> Enum.count()
@@ -178,7 +149,7 @@ defmodule OOTPUtility.Standings.TeamRecordFactory do
 
         teams
         |> Enum.zip(team_win_totals)
-        |> Enum.each(fn
+        |> Enum.map(fn
           {team, wins} ->
             attrs =
               record_attributes
@@ -186,16 +157,12 @@ defmodule OOTPUtility.Standings.TeamRecordFactory do
               |> Map.put(:games, games_played_per_team)
               |> Map.put(:wins, wins)
 
-            insert(:team_record, attrs)
+            %{team | record: insert(:team_record, attrs)}
         end)
-
-        Repo.preload(division, :teams)
       end
 
-      def with_record(%Teams.Team{} = team, attrs) do
-        insert(:team_record, Map.put(attrs, :team, team))
-
-        Repo.preload(team, :record)
+      def with_record(%Teams.Team{} = team, attrs \\ %{}) do
+        %{team | record: insert(:team_record, Map.put(attrs, :team, team))}
       end
 
       defp preload_records_associations(%Leagues.League{} = league) do
