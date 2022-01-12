@@ -32,41 +32,51 @@ defmodule OOTPUtility.DivisionFactory do
 
         iex> insert(:conference) |> with_divisions()
         %Leagues.Conference{}
+
+        iex> insert(:league, name: "My League") |> with_divisions([%{name: "East Division"}, %{name: "West Divisions"}])
+        %Leagues.League{}
       """
-      @spec with_divisions(Leagues.League.t() | Leagues.Conference.t(), integer(), map()) ::
+      @spec with_divisions(Leagues.League.t() | Leagues.Conference.t(), [map()] | map()) ::
               Leagues.League.t() | Leagues.Conference.t()
-      def with_divisions(conference_or_league, number_of_divisions \\ 2, attrs \\ %{})
+      def with_divisions(conference_or_league, divisions_attrs \\ [%{}, %{}])
+
+      def with_divisions(conference_or_league, []), do: %{conference_or_league | divisions: []}
 
       def with_divisions(
             %Leagues.League{conferences: %Ecto.Association.NotLoaded{}} = league,
-            number_of_divisions,
-            division_attrs
+            divisions_attrs
           ) do
         league
         |> Repo.preload(:conferences)
-        |> with_divisions(number_of_divisions, division_attrs)
+        |> with_divisions(divisions_attrs)
+      end
+
+      def with_divisions(%Leagues.League{conferences: []} = league, []) do
+        %{league | divisions: []}
+      end
+
+      def with_divisions(%Leagues.League{conferences: []} = league, [%{}, %{}]) do
+        %{league | divisions: insert_pair(:division, league: league, conference: nil)}
       end
 
       def with_divisions(
             %Leagues.League{conferences: []} = league,
-            number_of_divisions,
-            division_attrs
+            divisions_attrs
           ) do
-        attrs =
-          division_attrs
-          |> Map.put(:league, league)
-          |> Map.put(:conference, nil)
+        divisions =
+          Enum.map(
+            divisions_attrs,
+            &insert(:division, Map.merge(&1, %{league: league, conference: nil}))
+          )
 
-        %{league | divisions: insert_list(number_of_divisions, :division, attrs)}
+        %{league | divisions: divisions}
       end
 
       def with_divisions(
             %Leagues.League{conferences: conferences} = league,
-            number_of_divisions,
-            division_attrs
+            divisions_attrs
           ) do
-        conferences =
-          Enum.map(conferences, &with_divisions(&1, number_of_divisions, division_attrs))
+        conferences = Enum.map(conferences, &with_divisions(&1, divisions_attrs))
 
         %{
           league
@@ -77,25 +87,32 @@ defmodule OOTPUtility.DivisionFactory do
 
       def with_divisions(
             %Leagues.Conference{league: %Ecto.Association.NotLoaded{}} = conference,
-            number_of_divisions,
-            division_attrs
+            divisions_attrs
           ) do
         conference
         |> Repo.preload(:league)
-        |> with_divisions(number_of_divisions, division_attrs)
+        |> with_divisions(divisions_attrs)
+      end
+
+      def with_divisions(%Leagues.Conference{league: league} = conference, []) do
+        %{conference | divisions: []}
+      end
+
+      def with_divisions(%Leagues.Conference{league: league} = conference, [%{}, %{}]) do
+        %{conference | divisions: insert_pair(:division, league: league, conference: conference)}
       end
 
       def with_divisions(
             %Leagues.Conference{league: league} = conference,
-            number_of_divisions,
-            division_attrs
+            divisions_attrs
           ) do
-        attrs =
-          division_attrs
-          |> Map.put(:league, league)
-          |> Map.put(:conference, conference)
+        divisions =
+          Enum.map(
+            divisions_attrs,
+            &insert(:division, Map.merge(&1, %{league: league, conference: conference}))
+          )
 
-        %{conference | divisions: insert_list(number_of_divisions, :division, attrs)}
+        %{conference | divisions: divisions}
       end
     end
   end
