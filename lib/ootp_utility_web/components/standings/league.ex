@@ -68,6 +68,16 @@ defmodule OOTPUtilityWeb.Components.Standings.League do
     |> Enum.join("-")
   end
 
+  def child_id(
+    %Leagues.League{
+      slug: league_slug
+    },
+    _team_standings
+    )do
+    [league_slug, "standings"]
+    |> Enum.join("-")
+  end
+
   def render_child(%Leagues.Conference{} = conference, league) do
     assigns = %{league: league, conference: conference}
 

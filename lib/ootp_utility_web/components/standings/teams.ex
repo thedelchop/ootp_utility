@@ -26,10 +26,9 @@ defmodule OOTPUtilityWeb.Components.Standings.Teams do
     "tracking-wider"
   ]
 
-  prop parent_path, :string, default: ""
   prop parent_name, :string, default: ""
   prop standings, :struct, required: true
-  prop compact, :boolean
+  prop compact, :boolean, default: false
 
   def render(assigns) do
     ~F"""

@@ -1,14 +1,15 @@
 defmodule OOTPUtility.StandingsFactory do
   alias OOTPUtility.{Leagues, Standings}
-  import OOTPUtility.Factories.Utilities, only: [distribute_wins_amongst_teams: 2]
+  import OOTPUtility.Factories.Utilities, only: [distribute_wins_amongst_teams: 2, generate_slug_from_name: 1]
 
   defmacro __using__(_opts) do
     quote do
       def team_standings_factory(%{team: team} = attrs) do
         attrs
-        |> Map.put_new(:name, team.name)
-        |> Map.put_new(:abbr, team.abbr)
-        |> Map.put_new(:logo_filename, team.logo_filename)
+        |> Map.put(:name, team.name)
+        |> Map.put(:abbr, team.abbr)
+        |> Map.put(:logo_filename, team.logo_filename)
+        |> Map.put(:slug, team.slug)
         |> do_team_standings_factory()
       end
 
@@ -21,13 +22,15 @@ defmodule OOTPUtility.StandingsFactory do
         standings =
           %Standings.Team{
             name: sequence("Test Team"),
+            slug: fn s -> generate_slug_from_name(s) end,
             abbr: "TT",
             logo_filename: "my_team.png",
             games: games,
             wins: wins,
             losses: games - wins,
             winning_percentage: wins / games,
-            magic_number: 3.0,
+            games_behind: 3,
+            magic_number: 3,
             position: 1,
             streak: 3
           }
@@ -39,9 +42,14 @@ defmodule OOTPUtility.StandingsFactory do
             insert(:team,
               name: standings.name,
               abbr: standings.abbr,
-              logo_filename: standings.logo_filename
+              logo_filename: standings.logo_filename,
+              slug: standings.slug
             )
           end)
+
+        standings =
+          standings
+          |> Map.put(:team, team)
 
         team_record_options =
           standings
@@ -55,7 +63,6 @@ defmodule OOTPUtility.StandingsFactory do
             :position,
             :streak
           ])
-          |> Map.put(:team, team)
           |> Map.to_list()
 
         insert(:team_record, team_record_options)

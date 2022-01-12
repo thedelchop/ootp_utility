@@ -49,10 +49,12 @@ defmodule OOTPUtilityWeb.Components.Standings.Conference do
       league: %Leagues.League{
         slug: league_slug
       },
-      slug: slug
+      slug: conference_slug
     },
-    %Standings.Team{}) do
-    [league_slug, slug, "teams", "standings"]
+    %Leagues.Division{
+      slug: division_slug
+    }) do
+    [league_slug, conference_slug, division_slug, "standings"]
     |> Enum.join("-")
   end
 
@@ -61,13 +63,10 @@ defmodule OOTPUtilityWeb.Components.Standings.Conference do
       league: %Leagues.League{
         slug: league_slug
       },
-      slug: conference_slug
+      slug: slug
     },
-    %Leagues.Division{
-      slug: division_slug
-    }) do
-
-    [league_slug, conference_slug, division_slug, "standings"]
+    _team_standings) do
+    [league_slug, slug, "teams", "standings"]
     |> Enum.join("-")
   end
 
