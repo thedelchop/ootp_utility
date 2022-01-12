@@ -31,7 +31,7 @@ defmodule OOTPUtility.Players do
       [%Player{}, ...]
   """
 
-  @spec for_team(Team.t(), [position: String.t(), roster: Roster.type(), order_by: :atom | String.t()]) :: [Player.t()]
+  @spec for_team(Team.t(), [position: String.t(), roster: Roster.type(), order_by: :atom | String.t()]) :: [Ecto.Schema.t()]
   def for_team(%Team{} = team, opts \\ Keyword.new()) do
     do_for_team(team, opts)
   end
@@ -43,6 +43,7 @@ defmodule OOTPUtility.Players do
     |> where([p], p.team_id == ^team_id)
     |> preload([:league, :team])
     |> Repo.all()
+    end
   end
 
   defp do_for_team(query, %Team{id: team_id} = team, [option | rest]) do
