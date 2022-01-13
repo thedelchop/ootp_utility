@@ -29,6 +29,8 @@ defmodule OOTPUtilityWeb.Router do
 
     live "/teams/:slug", TeamLive
 
+    live "/players/:slug", PlayerLive
+
     live "/playground", PlaygroundLive
   end
 
