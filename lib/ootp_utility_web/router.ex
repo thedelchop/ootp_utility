@@ -30,8 +30,6 @@ defmodule OOTPUtilityWeb.Router do
     live "/teams/:slug", TeamLive
 
     live "/playground", PlaygroundLive
-
-    resources "/players", PlayerController, param: "slug"
   end
 
   # Other scopes may use custom stacks.
