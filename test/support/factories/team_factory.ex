@@ -231,12 +231,23 @@ defmodule OOTPUtility.TeamFactory do
         are created, but that can be changed with the `affilates` option
 
       """
-      @spec with_affiliates(Teams.Team.t(), Keyword.t()) :: Teams.Team.t()
-      def with_affiliates(%Teams.Team{} = team, opts \\ []) do
-        levels =
-          Keyword.get(opts, :levels, [:major, :triple_a, :double_a, :single_a, :low_a, :rookie])
+      @spec with_affiliates(Teams.Team.t(), [Teams.Team.t()]) :: Teams.Team.t()
+      def with_affiliates(team, opts \\ [])
 
-        %{team | affiliations: Enum.map(levels, &insert(:affiliation, team: team, level: &1))}
+      def with_affiliates(%Teams.Team{} = team, []) do
+        affiliates =
+          [:major, :triple_a, :double_a, :single_a, :low_a, :rookie]
+          |> Enum.map(&insert(:team, level: &1))
+
+        with_affiliates(team, affiliates)
+      end
+
+      def with_affiliates(%Teams.Team{} = team, affiliates) do
+        affiliations =
+          affiliates
+          |> Enum.map(&insert(:affiliation, team: team, affiliate: &1))
+
+        %{team | affiliations: affiliations}
       end
 
       def affiliation_factory(attrs) do
@@ -244,14 +255,12 @@ defmodule OOTPUtility.TeamFactory do
         team = Map.get_lazy(attrs, :team, fn -> build(:team) end)
         affiliate = Map.get_lazy(attrs, :affiliate, fn -> build(:team, level: level) end)
 
-        affiliation = %Teams.Affiliation{
+        %Teams.Affiliation{
           id: sequence(:id, &"#{&1}"),
           team: team,
           affiliate: affiliate
         }
-
-        affiliation
-        |> merge_attributes(Map.delete(attrs, :level))
+        |> merge_attributes(Map.drop(attrs, [:level, :team, :affiliate]))
         |> evaluate_lazy_attributes()
       end
 

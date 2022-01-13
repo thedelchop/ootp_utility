@@ -20,7 +20,7 @@ defmodule OOTPUtilityWeb.Components.Team.Organization do
           {#for affiliate <- team_affiliates(@team) }
             <li class="py-4 flex justify-between relative">
               <div class="flex space-x-4 items-center">
-                <img class="h-6 lg:h-10 w-6 lg:w-10 rounded-full" src={path_to_logo(@socket, affiliate)} alt="">
+                <img class="h-6 lg:h-10 w-6 lg:w-10 rounded-full" src={path_to_logo(@socket, affiliate)} alt="" />
                 <LiveRedirect class="text-base text-left text-gray-700" to={path_to_team(affiliate, @socket)}>
                   {name_with_league_level(affiliate)}
                 </LiveRedirect>
@@ -36,7 +36,7 @@ defmodule OOTPUtilityWeb.Components.Team.Organization do
     """
   end
 
-  def team_affiliates(team), do: Teams.get_affiliates(team, [:record])
+  def team_affiliates(%Teams.Team{} = team), do: Teams.get_affiliates(team, [:record])
 
   def name_with_league_level(team) do
     "#{Teams.get_full_name(team)} (#{league_level(team)})"
