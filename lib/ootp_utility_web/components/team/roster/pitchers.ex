@@ -6,8 +6,13 @@ defmodule OOTPUtilityWeb.Components.Team.Roster.Pitchers do
 
   use Surface.LiveComponent
 
+  alias Surface.Components.LiveRedirect
+
   alias OOTPUtilityWeb.Components.Shared.{SectionHeader, Table}
   alias OOTPUtilityWeb.Components.Shared.Table.Column
+  alias OOTPUtilityWeb.PlayerLive
+  alias OOTPUtilityWeb.Router.Helpers, as: Routes
+
   alias OOTPUtility.{Players, Statistics}
 
   import OOTPUtility.Utilities, only: [get_position_key: 1]
@@ -61,7 +66,9 @@ defmodule OOTPUtilityWeb.Components.Team.Roster.Pitchers do
         <SectionHeader>{@title}</SectionHeader>
         <Table id={table_id(@title)} data={{pitcher, stats} <- @players_with_statistics} class={"px-2 py-1 lg:px-4 lg:py-2"} header_class={&header_class/2} column_class={&column_class/2}>
           <Column label={""}>
-            {Players.name(pitcher, :full)}
+            <LiveRedirect to={path_to_player(pitcher, @socket)}>
+              {Players.name(pitcher, :full)}
+            </LiveRedirect>
           </Column>
 
          <Column label="Role">
@@ -143,4 +150,7 @@ defmodule OOTPUtilityWeb.Components.Team.Roster.Pitchers do
   defp do_column_class(extra_classes) do
     Enum.join(extra_classes ++ @default_column_classes, " ")
   end
+
+  defp path_to_player(%Players.Player{slug: slug} = _player, socket),
+    do: Routes.live_path(socket, PlayerLive, slug)
 end
