@@ -122,17 +122,23 @@ defmodule OOTPUtility.PlayersTest do
     end
   end
 
-  describe "get_player_by_slug!/1" do
+  describe "get_player_by_slug/1" do
     setup do
       {:ok, player: insert(:player)}
     end
 
-    test "returns the player with the given slug", %{player: player} do
-      assert Players.get_player_by_slug!(player.slug).id == player.id
+    test "returns the player with the given slug when the slug is unique", %{player: player} do
+      assert Players.get_player_by_slug(player.slug).id == player.id
     end
 
-    test "returns an Ecto.NoResultsError if the player with given slug can not be found" do
-      assert_raise Ecto.NoResultsError, fn -> Players.get_player_by_slug!("missing-player") end
+    test "returns a list of players if the given slug is not unique", %{player: player} do
+      duplicate_player = insert(:player, first_name: player.first_name, last_name: player.last_name)
+
+      assert ids_for(Players.get_player_by_slug(player.slug)) == ids_for([player, duplicate_player])
+    end
+
+    test "returns nil if the given slug does not exist" do
+      assert is_nil(Players.get_player_by_slug("made-up-slug"))
     end
   end
 

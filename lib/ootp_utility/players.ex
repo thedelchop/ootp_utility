@@ -135,24 +135,42 @@ defmodule OOTPUtility.Players do
   def name(nil, _format), do: nil
 
   @doc """
-  Gets a single player using its slug.
+  Attempt to fetch a player by their slug
 
-  Raises `Ecto.NoResultsError` if the Player does not exist.
+  Since player slugs are not guarenteed to be unique, will return:
+    * `Player.t()` if the slug is exists and is unique
+    * `[Player.t()]` if the slug exists but is not unique
+    * `nil` if the slug does not exist
 
   ## Examples
 
-      iex> get_player_by_slug!("babe-ruth")
+      iex> get_player_by_slug("babe-ruth")
       %Player{}
 
-      iex> get_player_by_slug!("missing-player")
-      ** (Ecto.NoResultsError)
+      iex> get_player_by_slug("john-doe")
+      [%Player{}, %Player{}]
+
+      iex> get_player_by_slug("missing-player")
+      ni
 
   """
-  @spec get_player_by_slug!(String.t()) :: Player.t()
-  def get_player_by_slug!(slug),
-    do:
+  @spec get_player_by_slug(String.t()) :: Ecto.Schema.t() | [Ecto.Schema.t()] | nil
+  def get_player_by_slug(slug) do
+    players =
       Player
       |> where([p], p.slug == ^slug)
       |> preload([p], [:team, :league])
-      |> Repo.one!()
+      |> Repo.all()
+
+    case players do
+      [] ->
+        nil
+
+      [player] ->
+        player
+
+      players ->
+        players
+    end
+  end
 end
