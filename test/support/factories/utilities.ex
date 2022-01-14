@@ -1,6 +1,12 @@
 defmodule OOTPUtility.Factories.Utilities do
   def generate_id(), do: Integer.to_string(Enum.random(0..1000))
 
+  def generate_slug_from_name(%{name: name, nickname: nickname}),
+    do: Slug.slugify("#{name} #{nickname}")
+
+  def generate_slug_from_name(%{first_name: first_name, last_name: last_name}),
+    do: Slug.slugify("#{first_name} #{last_name}")
+
   def generate_slug_from_name(resource), do: Slug.slugify("#{resource.name}")
 
   def distribute_wins_amongst_teams(number_of_teams, games_per_team) do

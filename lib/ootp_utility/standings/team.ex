@@ -4,17 +4,17 @@ defmodule OOTPUtility.Standings.Team do
 
   alias OOTPUtility.{Standings, Teams}
 
-  # @derive {Inspect,
-  #          only: [
-  #            :id,
-  #            :name,
-  #            :games,
-  #            :wins,
-  #            :losses,
-  #            :winning_percentage,
-  #            :position,
-  #            :games_behind
-  #          ]}
+  @derive {Inspect,
+           only: [
+             :id,
+             :name,
+             :games,
+             :wins,
+             :losses,
+             :winning_percentage,
+             :position,
+             :games_behind
+           ]}
 
   embedded_schema do
     field :logo_filename, :string
@@ -38,16 +38,17 @@ defmodule OOTPUtility.Standings.Team do
           name: name,
           abbr: abbr,
           logo_filename: logo,
-          record: %Standings.TeamRecord{
-            games: games,
-            games_behind: games_behind,
-            losses: losses,
-            magic_number: magic_number,
-            position: position,
-            streak: streak,
-            winning_percentage: winning_percentage,
-            wins: wins
-          } = _team_record
+          record:
+            %Standings.TeamRecord{
+              games: games,
+              games_behind: games_behind,
+              losses: losses,
+              magic_number: magic_number,
+              position: position,
+              streak: streak,
+              winning_percentage: winning_percentage,
+              wins: wins
+            } = _team_record
         } = _team
       ) do
     %Standings.Team{
