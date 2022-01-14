@@ -11,6 +11,20 @@ defmodule OOTPUtilityWeb.HelpersTest do
     end
   end
 
+  describe "capitalize_all/1" do
+    test "it takes the string and capitalizes each seperate word" do
+      assert Helpers.capitalize_all("third base") == "Third Base"
+    end
+
+    test "it leaves already capitalized strings as is" do
+      assert Helpers.capitalize_all("Third Base") == "Third Base"
+    end
+
+    test "it handles atoms correctly as well" do
+      assert Helpers.capitalize_all(:third_base) == "Third Base"
+    end
+  end
+
   describe "ordanilize/1" do
     test "it returns a string representing the ordinal form of the number" do
       assert Helpers.ordinalize(1) == "1st"

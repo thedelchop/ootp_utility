@@ -28,6 +28,20 @@ defmodule OOTPUtilityWeb.Helpers do
     Map.fetch(@stat_abbreviations, stat_name)
   end
 
+  def capitalize_all(atom) when is_atom(atom) do
+    atom
+    |> Atom.to_string()
+    |> String.replace("_", " ")
+    |> capitalize_all()
+  end
+
+  def capitalize_all(string) do
+    string
+    |> String.split(" ")
+    |> Enum.map(&String.capitalize/1)
+    |> Enum.join(" ")
+  end
+
   @spec ordinalize(integer()) :: String.t()
   def ordinalize(number) when is_integer(number) and number >= 0 do
     [to_string(number), suffix(number)]
