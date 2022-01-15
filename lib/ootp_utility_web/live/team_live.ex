@@ -1,11 +1,12 @@
 defmodule OOTPUtilityWeb.TeamLive do
   use Surface.LiveView
 
-  alias OOTPUtility.Teams
   alias OOTPUtilityWeb.Components.Team.{Header, Leaders, Roster, Organization}
   alias OOTPUtilityWeb.Components.{Scoreboard}
   alias OOTPUtilityWeb.Components.Shared.SectionHeader
   alias OOTPUtilityWeb.Components.Standings.Division, as: DivisionStandings
+
+  alias OOTPUtility.Teams
 
   @impl true
   def render(assigns) do
