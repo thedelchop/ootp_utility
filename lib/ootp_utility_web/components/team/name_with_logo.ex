@@ -17,10 +17,10 @@ defmodule OOTPUtilityWeb.Components.Team.NameWithLogo do
             <img class="h-6 lg:h-10 w-6 lg:w-10 rounded-full" src={Routes.static_path(@socket, "/images/logos/#{@team.logo_filename}")} alt="">
           </div>
           <div class="ml-3 mt-1.5">
-            <div class="lg:hidden text-sm text-left font-medium text-gray-900">
+            <div class="lg:hidden">
               {@team.abbr}
             </div>
-            <div class="hidden lg:block text-lg text-left font-medium text-gray-900">
+            <div class="hidden lg:block">
               {@team.name}
             </div>
           </div>
@@ -30,7 +30,7 @@ defmodule OOTPUtilityWeb.Components.Team.NameWithLogo do
   end
 
   def container_class(extra_classes) do
-    ["flex"] ++ extra_classes
+    ["flex text-sm text-left font-medium text-gray-900"] ++ extra_classes
   end
 
   def path_to_team(
