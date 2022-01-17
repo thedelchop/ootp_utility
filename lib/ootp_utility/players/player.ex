@@ -1,4 +1,22 @@
 defmodule OOTPUtility.Players.Player do
+  @moduledoc """
+
+    Here is the conversion of ability/potential ratings to stars
+
+    | Stars | Min | Max |
+    | ----- | --- | --- |
+    | 5     | 78  | 80  |
+    | 4.5   | 72  | 77  |
+    | 4     | 65  | 71  |
+    | 3.5   | 59  | 64  |
+    | 3     | 51  | 58  |
+    | 2.5   | 43  | 50  |
+    | 2     | 35  | 42  |
+    | 1.5   | 25  | 34  |
+    | 1     | 21  | 24  |
+    | 0.5   | 20  | 20  |
+  """
+
   alias OOTPUtility.Teams.Team
   alias OOTPUtility.Players.{Morale, Personality}
 
@@ -48,6 +66,9 @@ defmodule OOTPUtility.Players.Player do
     field :uniform_number, :integer
 
     field :free_agent, :boolean, default: false
+
+    field :ability, :integer
+    field :talent, :integer
 
     belongs_to :organization, Team
     belongs_to :team, Team

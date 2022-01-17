@@ -162,6 +162,7 @@ defmodule OOTPUtility.Imports do
           Imports.Players.Ratings.Fielding,
           Imports.Players.Ratings.Position,
           Imports.Players.Ratings.Running,
+          Imports.Players.Ratings,
           Imports.Players.Morale,
           Imports.Players.Personality,
           Imports.Teams.Roster.Membership,

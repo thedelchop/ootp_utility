@@ -33,6 +33,8 @@ defmodule OOTPUtility.PlayerFactory do
             position: position_or_key,
             uniform_number: Enum.random(1..99),
             free_agent: false,
+            ability: Enum.random(20..80),
+            talent: fn p -> p.ability end,
             team: fn -> build(:team) end
           }
           |> merge_attributes(attrs)
