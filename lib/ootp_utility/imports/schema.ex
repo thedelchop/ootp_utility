@@ -76,12 +76,14 @@ defmodule OOTPUtility.Imports.Schema do
     window = Flow.Window.count(500)
 
     attributes
+    |> Flow.map(&List.wrap/1)
+    |> Flow.flat_map(& &1)
     |> Flow.map(&import_changeset(module, schema, &1, attributes_to_import))
     |> Flow.filter(&module.validate_changeset/1)
     |> Flow.map(&Ecto.Changeset.apply_changes/1)
     |> Flow.map(&Map.from_struct/1)
     |> Flow.map(&Map.take(&1, attributes_to_import))
-    |> Flow.partition(window: window)
+    |> Flow.partition(window: window, stages: 1)
     |> Flow.reduce(fn -> [] end, &[&1 | &2])
     |> Flow.on_trigger(fn attributes ->
       {ids, _} = module.write_records_to_database(attributes)

@@ -29,7 +29,7 @@ defmodule OOTPUtility.Imports.CSV do
       def should_import?(attrs_row),
         do: OOTPUtility.Imports.CSV.should_import?(__MODULE__, attrs_row)
 
-      @spec sanitize_attributes(map()) :: map()
+      @spec sanitize_attributes(map()) :: map() | [map()]
       def sanitize_attributes(attrs),
         do: OOTPUtility.Imports.CSV.sanitize_attributes(__MODULE__, attrs)
 
