@@ -34,8 +34,13 @@ defmodule OOTPUtility.Imports.Schema do
       def update_changeset(%Ecto.Changeset{} = changeset),
         do: OOTPUtility.Imports.Schema.update_changeset(__MODULE__, changeset)
 
+      def write_records_to_database(attrs),
+        do:
+          OOTPUtility.Imports.Schema.write_records_to_database(__MODULE__, attrs, unquote(schema))
+
       defoverridable update_changeset: 1,
-                     validate_changeset: 1
+                     validate_changeset: 1,
+                     write_records_to_database: 1
 
       def import_from_attributes(attributes),
         do:
@@ -79,7 +84,7 @@ defmodule OOTPUtility.Imports.Schema do
     |> Flow.partition(window: window)
     |> Flow.reduce(fn -> [] end, &[&1 | &2])
     |> Flow.on_trigger(fn attributes ->
-      {ids, _} = do_database_insert(attributes, schema)
+      {ids, _} = module.write_records_to_database(attributes)
 
       write_imported_records_to_cache(ids, schema)
 
@@ -95,6 +100,14 @@ defmodule OOTPUtility.Imports.Schema do
     |> module.put_slug()
   end
 
+  def write_records_to_database(_module, attrs, schema) do
+    {_, records} = OOTPUtility.Repo.insert_all(schema, attrs, returning: [:id])
+
+    {Enum.map(records, & &1.id), attrs}
+  end
+
+  defp write_imported_records_to_cache([], _schema), do: :ok
+
   defp write_imported_records_to_cache(new_record_ids, schema) do
     schema
     |> table_name()
@@ -103,11 +116,5 @@ defmodule OOTPUtility.Imports.Schema do
 
   defp table_name(schema) do
     :source |> schema.__schema__() |> String.to_atom()
-  end
-
-  defp do_database_insert(attrs, schema) do
-    {_, records} = OOTPUtility.Repo.insert_all(schema, attrs, returning: [:id])
-
-    {Enum.map(records, & &1.id), attrs}
   end
 end
