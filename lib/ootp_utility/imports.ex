@@ -157,6 +157,8 @@ defmodule OOTPUtility.Imports do
       stream_imports(
         [
           Imports.Players.Ratings.Batting,
+          Imports.Players.Ratings.Pitching,
+          Imports.Players.Ratings.Pitches,
           Imports.Players.Morale,
           Imports.Players.Personality,
           Imports.Teams.Roster.Membership,
