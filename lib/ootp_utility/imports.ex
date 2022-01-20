@@ -156,6 +156,7 @@ defmodule OOTPUtility.Imports do
     player_tasks =
       stream_imports(
         [
+          Imports.Players.Ratings.Batting,
           Imports.Players.Morale,
           Imports.Players.Personality,
           Imports.Teams.Roster.Membership,
