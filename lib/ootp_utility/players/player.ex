@@ -1,6 +1,6 @@
 defmodule OOTPUtility.Players.Player do
   alias OOTPUtility.Teams.Team
-  alias OOTPUtility.Players.Morale
+  alias OOTPUtility.Players.{Morale, Personality}
 
   @derive {Inspect, only: [:id, :first_name, :last_name, :position, :role, :team]}
 
@@ -54,6 +54,7 @@ defmodule OOTPUtility.Players.Player do
 
     has_one :league, through: [:team, :league]
 
+    has_one :personality, Personality
     has_one :morale, Morale
   end
 end
