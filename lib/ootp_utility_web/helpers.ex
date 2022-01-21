@@ -60,4 +60,55 @@ defmodule OOTPUtilityWeb.Helpers do
   def suffix(2), do: "nd"
   def suffix(3), do: "rd"
   def suffix(_), do: "th"
+
+  @doc """
+
+    Here is the conversion of ability/potential ratings to stars
+
+    | Stars | Min | Max |
+    | ----- | --- | --- |
+    | 5     | 78  | 80  |
+    | 4.5   | 72  | 77  |
+    | 4     | 65  | 71  |
+    | 3.5   | 59  | 64  |
+    | 3     | 51  | 58  |
+    | 2.5   | 43  | 50  |
+    | 2     | 35  | 42  |
+    | 1.5   | 25  | 34  |
+    | 1     | 21  | 24  |
+    | 0.5   | 20  | 20  |
+  """
+  def player_rating_as_stars(rating) do
+    cond do
+      rating > 77 ->
+        5.0
+
+      rating > 71 ->
+        4.5
+
+      rating > 64 ->
+        4.0
+
+      rating > 58 ->
+        3.5
+
+      rating > 50 ->
+        3.0
+
+      rating > 42 ->
+        2.5
+
+      rating > 34 ->
+        2.0
+
+      rating > 24 ->
+        1.5
+
+      rating > 20 ->
+        1.0
+
+      true ->
+        0.5
+    end
+  end
 end

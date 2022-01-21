@@ -51,4 +51,64 @@ defmodule OOTPUtilityWeb.HelpersTest do
       assert Helpers.ordinalize("string") == "string"
     end
   end
+
+  describe "player_rating_as_stars" do
+    test "it returns 5.0 for any rating above 77" do
+      for n <- 78..80 do
+        assert Helpers.player_rating_as_stars(n) == 5.0
+      end
+    end
+
+    test "it returns 4.5 for any rating above 71 and below 78" do
+      for n <- 72..77 do
+        assert Helpers.player_rating_as_stars(n) == 4.5
+      end
+    end
+
+    test "it returns 4.0 for any rating above 74 and below 72" do
+      for n <- 65..71 do
+        assert Helpers.player_rating_as_stars(n) == 4.0
+      end
+    end
+
+    test "it returns 3.5 for any rating above 58 and below 65" do
+      for n <- 59..64 do
+        assert Helpers.player_rating_as_stars(n) == 3.5
+      end
+    end
+
+    test "it returns 3.0 for any rating above 50 and below 59" do
+      for n <- 51..58 do
+        assert Helpers.player_rating_as_stars(n) == 3.0
+      end
+    end
+
+    test "it returns 2.5 for any rating above 42 and below 51" do
+      for n <- 43..50 do
+        assert Helpers.player_rating_as_stars(n) == 2.5
+      end
+    end
+
+    test "it returns 2.0 for any rating above 34 and below 43" do
+      for n <- 35..42 do
+        assert Helpers.player_rating_as_stars(n) == 2.0
+      end
+    end
+
+    test "it returns 1.5 for any rating above 24 and below 35" do
+      for n <- 25..34 do
+        assert Helpers.player_rating_as_stars(n) == 1.5
+      end
+    end
+
+    test "it returns 1.0 for any rating above 20 and below 25" do
+      for n <- 21..24 do
+        assert Helpers.player_rating_as_stars(n) == 1.0
+      end
+    end
+
+    test "it returns 0.5 for any rating below 21" do
+      assert Helpers.player_rating_as_stars(20) == 0.5
+    end
+  end
 end
