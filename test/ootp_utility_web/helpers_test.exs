@@ -111,4 +111,31 @@ defmodule OOTPUtilityWeb.HelpersTest do
       assert Helpers.player_rating_as_stars(20) == 0.5
     end
   end
+
+  describe "display_size/1" do
+    test "it returns :xsmall when the viewport's width is less than 640" do
+      assert Helpers.display_size(%{"width" => 600}) == :xsmall
+      assert Helpers.display_size(%{"width" => 639}) == :xsmall
+    end
+
+    test "it returns :small when the viewport's width is less than 768" do
+      assert Helpers.display_size(%{"width" => 700}) == :small
+      assert Helpers.display_size(%{"width" => 767}) == :small
+    end
+
+    test "it returns :medium when the viewport's width is less than 1024" do
+      assert Helpers.display_size(%{"width" => 1000}) == :medium
+      assert Helpers.display_size(%{"width" => 1023}) == :medium
+    end
+
+    test "it returns :large when the viewport's width is less than 1280" do
+      assert Helpers.display_size(%{"width" => 1200}) == :large
+      assert Helpers.display_size(%{"width" => 1279}) == :large
+    end
+
+    test "it returns :xlarge when the viewport's width is greater than 1279" do
+      assert Helpers.display_size(%{"width" => 1280}) == :xlarge
+      assert Helpers.display_size(%{"width" => 1500}) == :xlarge
+    end
+  end
 end

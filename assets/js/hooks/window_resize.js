@@ -6,7 +6,7 @@ function debounce(func, timeout = 300){
   };
 }
 
-const WindowResize = {
+export default WindowResize = {
   mounted() {
     // Direct push of current window size to properly update view
     this.pushResizeEvent()
@@ -18,11 +18,9 @@ const WindowResize = {
   },
 
   pushResizeEvent() {
-    this.pushEventTo('#scoreboard','viewport_resize', {
+    this.pushEventTo(this.el,'viewport_resize', {
       width: window.innerWidth,
       height: window.innerHeight
     })
   }
 }
-
-export {WindowResize}

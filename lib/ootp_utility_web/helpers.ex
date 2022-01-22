@@ -111,4 +111,21 @@ defmodule OOTPUtilityWeb.Helpers do
         0.5
     end
   end
+
+  @sm_min_width 640
+  @md_min_width 768
+  @lg_min_width 1024
+  @xl_min_width 1280
+
+  def display_size(viewport) do
+    viewport
+    |> Map.get("width", 768)
+    |> do_display_size()
+  end
+
+  defp do_display_size(width) when width < @sm_min_width, do: :xsmall
+  defp do_display_size(width) when width < @md_min_width, do: :small
+  defp do_display_size(width) when width < @lg_min_width, do: :medium
+  defp do_display_size(width) when width < @xl_min_width, do: :large
+  defp do_display_size(_width), do: :xlarge
 end

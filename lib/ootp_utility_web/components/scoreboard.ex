@@ -5,10 +5,7 @@ defmodule OOTPUtilityWeb.Components.Scoreboard do
   alias OOTPUtility.Games
   alias OOTPUtilityWeb.Components.Scoreboard.{EmptyGame, Game}
 
-  @sm_min_width 640
-  @md_min_width 768
-  @lg_min_width 1024
-  @xl_min_width 1280
+  import OOTPUtilityWeb.Helpers, only: [display_size: 1]
 
   prop subject, :struct, required: true
   prop date, :date, required: true
@@ -18,7 +15,7 @@ defmodule OOTPUtilityWeb.Components.Scoreboard do
 
   def render(assigns) do
     ~F"""
-      <div class="flex overflow-hidden justify-between rounded-md" :hook="WindowResize" id="scoreboard" phx-target={@myself}>
+      <div class="flex overflow-hidden justify-between rounded-md" phx-hook="WindowResize" id="scoreboard" phx-target={@myself}>
         <div class={pagination_css_class("rounded-l-md")} :on-click="decrement_date" phx-target={@myself}>
           <Heroicons.Surface.Icon name="chevron-left" type="solid" class="h-6 w-6" />
         </div>
@@ -67,10 +64,8 @@ defmodule OOTPUtilityWeb.Components.Scoreboard do
   end
 
   def handle_event("viewport_resize", viewport, socket) do
-    width = Map.get(viewport, "width")
-
     size =
-      case display_size(width) do
+      case display_size(viewport) do
         :xsmall -> 2
         :small -> 4
         :medium -> 5
@@ -109,10 +104,4 @@ defmodule OOTPUtilityWeb.Components.Scoreboard do
       "shadow"
     ] ++ extra
   end
-
-  defp display_size(width) when width < @sm_min_width, do: :xsmall
-  defp display_size(width) when width < @md_min_width, do: :small
-  defp display_size(width) when width < @lg_min_width, do: :medium
-  defp display_size(width) when width < @xl_min_width, do: :large
-  defp display_size(_width), do: :xlarge
 end
