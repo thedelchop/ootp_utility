@@ -11,9 +11,9 @@ defmodule OOTPUtilityWeb.Components.Team.Rankings do
 
   def render(assigns) do
     ~F"""
-      <dl class="grid grid-cols-1 rounded-lg bg-gray-50 overflow-hidden shadow divide-y divide-white-200 md:grid-cols-2 md:divide-y-0 md:divide-x">
+      <dl class="grid grid-cols-2 divide-y-0 divide-x m-auto md:m-0 md:grid-cols-1 md:divide-y md:divide-x-0 rounded-lg bg-gray-50 overflow-hidden shadow divide-y divide-white-200 lg:grid-cols-2 lg:divide-y-0 lg:divide-x">
         {#for {stat, {rank, total, value}} <- rankings(@team)}
-          <div class="px-4 py-5 sm:p-6">
+          <div class="p-4">
             <dt class="text-base font-normal text-gray-900">
               {humanize(stat)}
             </dt>
@@ -21,7 +21,7 @@ defmodule OOTPUtilityWeb.Components.Team.Rankings do
               <div class="text-2xl font-semibold text-indigo-600">
                 {value}
               </div>
-              <div class="mx-1 px-2.5 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800 md:mt-2 lg:mt-0">
+              <div class="mx-1 px-2.5 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800 lg:mt-2">
                 {ordinalize(rank)} of {total}
               </div>
             </dd>
