@@ -3,11 +3,10 @@ defmodule OOTPUtilityWeb.PlayerLive do
 
   alias Surface.Components.LiveRedirect
 
-  alias OOTPUtilityWeb.Router.Helpers, as: Routes
-  alias OOTPUtilityWeb.Components.Player.Rating
   alias OOTPUtilityWeb.TeamLive
-
   alias OOTPUtilityWeb.Router.Helpers, as: Routes
+  alias OOTPUtilityWeb.Components.Player.{Details,Rating}
+  alias OOTPUtilityWeb.Components.Shared.Section
 
   import OOTPUtilityWeb.Helpers, only: [display_size: 1]
   import OOTPUtility.Utilities, only: [position_name_to_position_key: 0]
@@ -17,53 +16,30 @@ defmodule OOTPUtilityWeb.PlayerLive do
   @impl true
   def render(assigns) do
     ~F"""
-      <div class="border rounded-2xl p-4 md:p-8 flex flex-wrap justify-between items-center bg-white" phx-hook="WindowResize" id="player-live" >
-        <div class="flex gap-1 md:gap-2">
-          <img class="h-16 w-16 md:h-28 md:w-28 rounded-full md:mt-2" src={Routes.static_path(@socket, "/images/default_player_photo.jpg")} alt="">
-          <div class="flex flex-wrap items-center md:divide-x gap-2 md:gap-4">
-            <div class="flex flex-col gap-1 md:gap-2">
-              <h1 class="text-2xl md:text-4xl font-medium text-gray-900">{name(@player, @size)}</h1>
-              <div class="flex flex-row items-center gap-1 md:gap-2 text-base md:text-lg font-medium text-gray-900">
-                <LiveRedirect to={path_to_team(@team, @socket)} class="contents">
-                    <div class="flex-shrink-0 h-6 md:h-8 h-6 md:w-8">
-                      <img class="h-6 md:h-8 w-6 md:w-8 rounded-full" src={Routes.static_path(@socket, "/images/logos/#{@team.logo_filename}")} alt="">
-                    </div>
-                    <div class="block sm:hidden">{@team.abbr}</div>
-                    <div class="hidden sm:block">{@team.name}</div>
-                </LiveRedirect>
-                <div>{"##{@player.uniform_number}"}</div>
-                <div>{"#{position(@player)}"}</div>
+      <div phx-hook="WindowResize" id="player-live" >
+        <Section>
+          <div class="flex gap-1 md:gap-2">
+            <img class="h-16 w-16 md:h-28 md:w-28 rounded-full md:mt-2" src={Routes.static_path(@socket, "/images/default_player_photo.jpg")} alt="">
+            <div class="flex flex-wrap items-center md:divide-x gap-2 md:gap-4">
+              <div class="flex flex-col gap-1 md:gap-2">
+                <h1 class="text-2xl md:text-4xl font-medium text-gray-900">{name(@player, @size)}</h1>
+                <div class="flex flex-row items-center gap-1 md:gap-2 text-base md:text-lg font-medium text-gray-900">
+                  <LiveRedirect to={path_to_team(@team, @socket)} class="contents">
+                      <div class="flex-shrink-0 h-6 md:h-8 h-6 md:w-8">
+                        <img class="h-6 md:h-8 w-6 md:w-8 rounded-full" src={Routes.static_path(@socket, "/images/logos/#{@team.logo_filename}")} alt="">
+                      </div>
+                      <div class="block sm:hidden">{@team.abbr}</div>
+                      <div class="hidden sm:block">{@team.name}</div>
+                  </LiveRedirect>
+                  <div>{"##{@player.uniform_number}"}</div>
+                  <div>{"#{position(@player)}"}</div>
+                </div>
               </div>
+              <Details player={@player} />
             </div>
-            <dl class="hidden lg:block pl-4">
-              <div class="grid grid-cols-3 gap-1 p-0.5">
-                <dt class="text-sm font-medium text-gray-500">
-                  HT/WT:
-                </dt>
-                <dd class="text-sm tracking-wider text-gray-900 col-span-2">
-                  {@player.height}/{@player.weight}
-                </dd>
-              </div>
-              <div class="grid grid-cols-3 gap-1 p-0.5">
-                <dt class="text-sm font-medium text-gray-500">
-                  DOB:
-                </dt>
-                <dd class="text-sm tracking-wider text-gray-900 col-span-2">
-                  {Timex.format!(@player.date_of_birth, "{0M}/{0D}/{YYYY}")} ({@player.age})
-                </dd>
-              </div>
-              <div class="grid grid-cols-3 gap-1 p-0.5">
-                <dt class="text-sm tracking-wider font-medium text-gray-500">
-                  B/T
-                </dt>
-                <dd class="text-sm tracking-wider text-gray-900 col-span-2">
-                  {String.capitalize(@player.bats)}/{String.capitalize(@player.throws)}
-                </dd>
-              </div>
-            </dl>
           </div>
-        </div>
-        <Rating player={@player} class="m-auto md:m-0" />
+          <Rating player={@player} class="m-auto md:m-0" />
+        </Section>
       </div>
     """
   end
