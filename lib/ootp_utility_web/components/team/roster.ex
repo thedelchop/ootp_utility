@@ -36,7 +36,7 @@ defmodule OOTPUtilityWeb.Components.Team.Roster do
   end
 
   def container_class(extra_classes) do
-    ["flex", "flex-col", "space-y-8"] ++ extra_classes
+    ["flex", "flex-col", "gap-4"] ++ extra_classes
   end
 
   def render(assigns) do
