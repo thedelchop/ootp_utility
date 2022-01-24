@@ -16,31 +16,29 @@ defmodule OOTPUtilityWeb.PlayerLive do
   @impl true
   def render(assigns) do
     ~F"""
-      <div phx-hook="WindowResize" id="player-live" >
-        <Section>
-          <div class="flex gap-1 md:gap-2">
-            <img class="h-16 w-16 md:h-28 md:w-28 rounded-full md:mt-2" src={Routes.static_path(@socket, "/images/default_player_photo.jpg")} alt="">
-            <div class="flex flex-wrap items-center md:divide-x gap-2 md:gap-4">
-              <div class="flex flex-col gap-1 md:gap-2">
-                <h1 class="text-2xl md:text-4xl font-medium text-gray-900">{name(@player, @size)}</h1>
-                <div class="flex flex-row items-center gap-1 md:gap-2 text-base md:text-lg font-medium text-gray-900">
-                  <LiveRedirect to={path_to_team(@team, @socket)} class="contents">
-                      <div class="flex-shrink-0 h-6 md:h-8 h-6 md:w-8">
-                        <img class="h-6 md:h-8 w-6 md:w-8 rounded-full" src={Routes.static_path(@socket, "/images/logos/#{@team.logo_filename}")} alt="">
-                      </div>
-                      <div class="block sm:hidden">{@team.abbr}</div>
-                      <div class="hidden sm:block">{@team.name}</div>
-                  </LiveRedirect>
-                  <div>{"##{@player.uniform_number}"}</div>
-                  <div>{"#{position(@player)}"}</div>
-                </div>
+      <Section event_target={@myself}>
+        <div class="flex gap-1 md:gap-2">
+          <img class="h-16 w-16 md:h-28 md:w-28 rounded-full md:mt-2" src={Routes.static_path(@socket, "/images/default_player_photo.jpg")} alt="">
+          <div class="flex flex-wrap items-center md:divide-x gap-2 md:gap-4">
+            <div class="flex flex-col gap-1 md:gap-2">
+              <h1 class="text-2xl md:text-4xl font-medium text-gray-900">{name(@player, @size)}</h1>
+              <div class="flex flex-row items-center gap-1 md:gap-2 text-base md:text-lg font-medium text-gray-900">
+                <LiveRedirect to={path_to_team(@team, @socket)} class="contents">
+                    <div class="flex-shrink-0 h-6 md:h-8 h-6 md:w-8">
+                      <img class="h-6 md:h-8 w-6 md:w-8 rounded-full" src={Routes.static_path(@socket, "/images/logos/#{@team.logo_filename}")} alt="">
+                    </div>
+                    <div class="block sm:hidden">{@team.abbr}</div>
+                    <div class="hidden sm:block">{@team.name}</div>
+                </LiveRedirect>
+                <div>{"##{@player.uniform_number}"}</div>
+                <div>{"#{position(@player)}"}</div>
               </div>
-              <Details player={@player} />
             </div>
+            <Details player={@player} />
           </div>
-          <Rating player={@player} class="m-auto md:m-0" />
-        </Section>
-      </div>
+        </div>
+        <Rating player={@player} class="m-auto md:m-0" />
+      </Section>
     """
   end
 

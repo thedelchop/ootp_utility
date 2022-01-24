@@ -12,20 +12,19 @@ defmodule OOTPUtilityWeb.Components.Team.Header do
 
   def render(assigns) do
     ~F"""
-      <Section>
-        <div class="flex space-x-4">
-          <img class="h-28 w-28 rounded-full" src={Routes.static_path(@socket, "/images/logos/#{@team.logo_filename}")} alt="">
-          <div class="flex flex-col space-y-4">
-            <h1 class="text-4xl leading-6 font-medium text-gray-900">{full_name(@team)}</h1>
-            <div>
-              <div class="flex flex-row space-x-3">
-                <h2 class="text-xl leading-6 font-medium text-gray-900">{division_standings(@team)}</h2>
-                <h2 class="hidden sm:block text-xl leading-6 font-medium text-gray-900">{conference_standings(@team)}</h2>
+      <Section event_target={@myself}>
+        <div class="flex gap-2 lg:gap-4">
+          <img class="h-16 w-16 lg:h-28 lg:w-28 rounded-full" src={Routes.static_path(@socket, "/images/logos/#{@team.logo_filename}")} alt="">
+          <div class="flex flex-col gap-2 lg:gap-4">
+            <h1 class="text-2xl lg:text-4xl font-medium text-gray-900">{full_name(@team)}</h1>
+            <div class="contents divide-y">
+              <div class="flex flex-row gap-2 sm:gap-4 flex-wrap">
+                <h2 class="text-base lg:text-xl font-medium text-gray-900">{division_standings(@team)}</h2>
+                <h2 class="hidden sm:block text-base lg:text-xl font-medium text-gray-900">{conference_standings(@team)}</h2>
               </div>
-              <hr class="my-2"/>
-              <div class="flex flex-row space-x-2">
-                <h3 class="text-lg font-medium text-gray-900">{team_record(@team)}</h3>
-                <h3 class="text-lg font-medium text-gray-900">{games_behind(@team)}</h3>
+              <div class="flex flex-row gap-2 pt-2 lg:pt-4">
+                <h3 class="text-sm lg:text-lg font-medium text-gray-900">{team_record(@team)}</h3>
+                <h3 class="text-sm lg:text-lg font-medium text-gray-900">{games_behind(@team)}</h3>
               </div>
             </div>
           </div>
@@ -33,6 +32,10 @@ defmodule OOTPUtilityWeb.Components.Team.Header do
         <Rankings team={@team} />
       </Section>
     """
+  end
+
+  def handle_event("viewport_resize", _viewport, socket) do
+    {:noreply, socket}
   end
 
   defp full_name(%Teams.Team{name: name, nickname: nickname} = _team) do

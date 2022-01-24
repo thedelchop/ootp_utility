@@ -13,9 +13,8 @@ defmodule OOTPUtilityWeb.TeamLive do
     ~F"""
       <div class="flex flex-col space-y-4">
         <Header id={component_id_for(@team, "header")} team={@team} />
-        <div class="rounded-lg shadow bg-white p-4">
-          <Scoreboard id={component_id_for(@team, "scoreboard")} subject={@team} date={@team.league.current_date} />
-        </div>
+
+        <Scoreboard id={component_id_for(@team, "scoreboard")} subject={@team} date={@team.league.current_date} />
 
         <div class="flex space-x-4">
           <Roster id={component_id_for(@team, "roster")} team={@team} year={@team.league.season_year} class="grow" />
