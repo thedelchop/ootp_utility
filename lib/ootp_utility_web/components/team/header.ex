@@ -4,6 +4,7 @@ defmodule OOTPUtilityWeb.Components.Team.Header do
   alias OOTPUtility.Teams
   alias OOTPUtilityWeb.Components.Team.Rankings
   alias OOTPUtilityWeb.Router.Helpers, as: Routes
+  alias OOTPUtilityWeb.Components.Shared.Section
 
   import OOTPUtilityWeb.Components.Team.Helpers
 
@@ -11,7 +12,7 @@ defmodule OOTPUtilityWeb.Components.Team.Header do
 
   def render(assigns) do
     ~F"""
-      <div class="border rounded-2xl sm:p-6 lg:p-8 flex justify-between bg-white">
+      <Section>
         <div class="flex space-x-4">
           <img class="h-28 w-28 rounded-full" src={Routes.static_path(@socket, "/images/logos/#{@team.logo_filename}")} alt="">
           <div class="flex flex-col space-y-4">
@@ -30,7 +31,7 @@ defmodule OOTPUtilityWeb.Components.Team.Header do
           </div>
         </div>
         <Rankings team={@team} />
-      </div>
+      </Section>
     """
   end
 

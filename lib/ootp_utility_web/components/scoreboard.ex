@@ -4,6 +4,7 @@ defmodule OOTPUtilityWeb.Components.Scoreboard do
   alias __MODULE__
   alias OOTPUtility.Games
   alias OOTPUtilityWeb.Components.Scoreboard.{EmptyGame, Game}
+  alias OOTPUtilityWeb.Components.Shared.Section
 
   import OOTPUtilityWeb.Helpers, only: [display_size: 1]
 
@@ -15,22 +16,24 @@ defmodule OOTPUtilityWeb.Components.Scoreboard do
 
   def render(assigns) do
     ~F"""
-      <div class="flex overflow-hidden justify-between rounded-md" phx-hook="WindowResize" id="scoreboard" phx-target={@myself}>
-        <div class={pagination_css_class("rounded-l-md")} :on-click="decrement_date" phx-target={@myself}>
-          <Heroicons.Surface.Icon name="chevron-left" type="solid" class="h-6 w-6" />
-        </div>
-        {#if Enum.empty?(@games)}
-          {#for _n <- 1..8}
-            <EmptyGame />
-          {/for}
-        {#else}
-          {#for game <- @games}
-            <Game id={game.id} game={game} />
-          {/for}
-        {/if}
-        <div class={pagination_css_class("rounded-r-md")} :on-click="increment_date">
-          <Heroicons.Surface.Icon name="chevron-right" type="solid" class="h-6 w-6" />
-        </div>
+      <div phx-hook="WindowResize" id="scoreboard" phx-target={@myself}>
+        <Section border={false}>
+          <div class={pagination_css_class("rounded-l-md")} :on-click="decrement_date" phx-target={@myself}>
+            <Heroicons.Surface.Icon name="chevron-left" type="solid" class="h-6 w-6" />
+          </div>
+          {#if Enum.empty?(@games)}
+            {#for _n <- 1..8}
+              <EmptyGame />
+            {/for}
+          {#else}
+            {#for game <- @games}
+              <Game id={game.id} game={game} />
+            {/for}
+          {/if}
+          <div class={pagination_css_class("rounded-r-md")} :on-click="increment_date">
+            <Heroicons.Surface.Icon name="chevron-right" type="solid" class="h-6 w-6" />
+          </div>
+        </Section>
       </div>
     """
   end
@@ -67,10 +70,10 @@ defmodule OOTPUtilityWeb.Components.Scoreboard do
     size =
       case display_size(viewport) do
         :xsmall -> 2
-        :small -> 4
-        :medium -> 5
+        :small -> 3
+        :medium -> 4
         :large -> 6
-        _ -> 8
+        _ -> 7
       end
 
     games = Games.for_team(socket.assigns.subject, limit: size, start_date: socket.assigns.date)
