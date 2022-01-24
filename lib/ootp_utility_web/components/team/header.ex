@@ -20,7 +20,7 @@ defmodule OOTPUtilityWeb.Components.Team.Header do
             <div>
               <div class="flex flex-row space-x-3">
                 <h2 class="text-xl leading-6 font-medium text-gray-900">{division_standings(@team)}</h2>
-                <h2 class="text-xl leading-6 font-medium text-gray-900">{conference_standings(@team)}</h2>
+                <h2 class="hidden sm:block text-xl leading-6 font-medium text-gray-900">{conference_standings(@team)}</h2>
               </div>
               <hr class="my-2"/>
               <div class="flex flex-row space-x-2">
