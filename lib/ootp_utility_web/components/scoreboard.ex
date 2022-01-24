@@ -67,7 +67,7 @@ defmodule OOTPUtilityWeb.Components.Scoreboard do
   def handle_event("viewport_resize", viewport, socket) do
     size =
       case display_size(viewport) do
-        :xsmall -> 2
+        :xsmall -> 1
         :small -> 3
         :medium -> 4
         :large -> 6
