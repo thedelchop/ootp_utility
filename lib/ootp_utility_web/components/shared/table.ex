@@ -47,7 +47,7 @@ defmodule OOTPUtilityWeb.Components.Shared.Table do
       socket
       |> assign(assigns)
 
-    { :ok, assign(socket, :sorted_data, sorted_data(socket.assigns)) }
+    {:ok, assign(socket, :sorted_data, sorted_data(socket.assigns))}
   end
 
   def render(assigns) do
@@ -56,10 +56,9 @@ defmodule OOTPUtilityWeb.Components.Shared.Table do
         "divide-y",
         "divide-gray-200",
         "table-fixed",
-        "overflow-hidden",
         "min-w-full": @expanded
       }>
-        <thead class={"bg-gray-50"}>
+        <thead class={"bg-gray-100"}>
           <tr>
             {#for {col, index} <- Enum.with_index(@cols)}
               <th class={header_class_fun(@header_class).(col, index)}>
