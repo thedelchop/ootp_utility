@@ -16,19 +16,21 @@ defmodule OOTPUtilityWeb.Components.Scoreboard do
 
   def render(assigns) do
     ~F"""
-      <Section event_target={@myself}>
+      <Section event_target={@myself} wrap={false}>
         <div class={pagination_css_class("rounded-l-md")} :on-click="decrement_date" phx-target={@myself}>
           <Heroicons.Surface.Icon name="chevron-left" type="solid" class="h-4 w-4 md:h-6 md:w-6" />
         </div>
-        {#if Enum.empty?(@games)}
-          {#for _n <- 1..8}
-            <EmptyGame />
-          {/for}
-        {#else}
-          {#for game <- @games}
-            <Game id={game.id} game={game} />
-          {/for}
-        {/if}
+          {#if Enum.empty?(@games)}
+            <div class="flex justify-around mx-4 overflow-hidden">
+              {#for _n <- 1..8}
+                <EmptyGame />
+              {/for}
+            </div>
+          {#else}
+            {#for game <- @games}
+              <Game id={game.id} game={game} />
+            {/for}
+          {/if}
         <div class={pagination_css_class("rounded-r-md")} :on-click="increment_date">
           <Heroicons.Surface.Icon name="chevron-right" type="solid" class="h-4 w-4 md:h-6 md:w-6" />
         </div>
