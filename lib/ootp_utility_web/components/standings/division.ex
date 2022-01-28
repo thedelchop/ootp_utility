@@ -26,13 +26,12 @@ defmodule OOTPUtilityWeb.Components.Standings.Division do
   @impl true
   def render(assigns) do
     ~F"""
-      <div class="flex flex-col overflow-hidden">
+      <div class="flex flex-col p-1 lg:p-1 overflow-hidden">
         <Teams
           id={child_id(@division)}
           standings={@standings.team_standings}
-          parent_path={path_to_division(@division, @socket)}
           parent_name={name(@division)}
-          {=@compact}
+          compact={@compact}
         />
       </div>
     """
@@ -41,43 +40,39 @@ defmodule OOTPUtilityWeb.Components.Standings.Division do
   def name(%Leagues.Division{name: name}), do: name
 
   def path_to_division(
-    %Leagues.Division{
-      conference: %Leagues.Conference{slug: conference_slug},
-      league: %Leagues.League{slug: league_slug},
-      slug: slug
-    },
-    socket
-  ) do
+        %Leagues.Division{
+          conference: %Leagues.Conference{slug: conference_slug},
+          league: %Leagues.League{slug: league_slug},
+          slug: slug
+        },
+        socket
+      ) do
     Routes.live_path(socket, DivisionLive, league_slug, conference_slug, slug)
   end
 
   def path_to_division(
-    %Leagues.Division{
-      league: %Leagues.League{slug: league_slug},
-      slug: slug
-    },
-    socket
-  ) do
+        %Leagues.Division{
+          league: %Leagues.League{slug: league_slug},
+          slug: slug
+        },
+        socket
+      ) do
     Routes.live_path(socket, DivisionLive, league_slug, slug)
   end
 
-  def child_id(
-    %Leagues.Division{
-      conference: %Leagues.Conference{slug: conference_slug},
-      league: %Leagues.League{slug: league_slug},
-      slug: slug
-    }
-  ) do
+  def child_id(%Leagues.Division{
+        conference: %Leagues.Conference{slug: conference_slug},
+        league: %Leagues.League{slug: league_slug},
+        slug: slug
+      }) do
     [league_slug, conference_slug, slug, "teams"]
     |> Enum.join("-")
   end
 
-  def child_id(
-    %Leagues.Division{
-      league: %Leagues.League{slug: league_slug},
-      slug: slug
-    }
-  ) do
+  def child_id(%Leagues.Division{
+        league: %Leagues.League{slug: league_slug},
+        slug: slug
+      }) do
     [league_slug, slug, "teams"]
     |> Enum.join("-")
   end

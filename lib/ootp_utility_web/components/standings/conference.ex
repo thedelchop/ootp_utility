@@ -24,9 +24,9 @@ defmodule OOTPUtilityWeb.Components.Standings.Conference do
   def render(assigns) do
     ~F"""
       <div class="shadow border-b border-gray-200 rounded-lg">
-        <div class="col-span-2 pb-5 border-b border-gray-200">
+        <div class="col-span-2 pb-4 border-b border-gray-200">
           <LiveRedirect to={path_to_conference(@conference, @socket)}>
-            <h3 class="mt-3 ml-3 text-md leading-6 font-medium text-gray-900">
+            <h3 class="mt-2 ml-2 text-md font-medium text-gray-900">
               {name(@conference)}
             </h3>
           </LiveRedirect>
@@ -45,27 +45,29 @@ defmodule OOTPUtilityWeb.Components.Standings.Conference do
   end
 
   def child_id(
-    %Leagues.Conference{
-      league: %Leagues.League{
-        slug: league_slug
-      },
-      slug: conference_slug
-    },
-    %Leagues.Division{
-      slug: division_slug
-    }) do
+        %Leagues.Conference{
+          league: %Leagues.League{
+            slug: league_slug
+          },
+          slug: conference_slug
+        },
+        %Leagues.Division{
+          slug: division_slug
+        }
+      ) do
     [league_slug, conference_slug, division_slug, "standings"]
     |> Enum.join("-")
   end
 
   def child_id(
-    %Leagues.Conference{
-      league: %Leagues.League{
-        slug: league_slug
-      },
-      slug: slug
-    },
-    _team_standings) do
+        %Leagues.Conference{
+          league: %Leagues.League{
+            slug: league_slug
+          },
+          slug: slug
+        },
+        _team_standings
+      ) do
     [league_slug, slug, "teams", "standings"]
     |> Enum.join("-")
   end
@@ -76,13 +78,14 @@ defmodule OOTPUtilityWeb.Components.Standings.Conference do
   def has_divisions?(_), do: true
 
   def path_to_conference(
-    %Leagues.Conference{
-      league: %Leagues.League{
-        slug: league_slug
-      },
-      slug: slug
-    },
-    socket) do
+        %Leagues.Conference{
+          league: %Leagues.League{
+            slug: league_slug
+          },
+          slug: slug
+        },
+        socket
+      ) do
     Routes.live_path(socket, ConferenceLive, league_slug, slug)
   end
 end

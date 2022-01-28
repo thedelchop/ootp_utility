@@ -8,18 +8,14 @@ defmodule OOTPUtilityWeb.Components.Standings.Teams do
   alias OOTPUtility.Standings
 
   @default_column_classes [
-    "px-3",
-    "py-2",
-    "lg:px-6",
-    "lg:py-4",
+    "p-1",
+    "md:p-2",
     "whitespace-nowrap"
   ]
 
   @default_header_classes [
-    "px-3",
-    "py-1",
-    "lg:px-6",
-    "lg:py-3",
+    "p-1",
+    "md:p-2",
     "text-xs",
     "uppercase",
     "tracking-wider"
@@ -34,7 +30,7 @@ defmodule OOTPUtilityWeb.Components.Standings.Teams do
       <div>
         <Table id={"#{@id}-table"} data={standing <- @standings} header_class={&header_class/2} column_class={&column_class/2}>
           <Column label={@parent_name}>
-            <NameWithLogo id={"#{standing.slug}-name"} team={standing} />
+            <NameWithLogo id={"#{standing.slug}-name"} team={standing} compact={@compact} />
           </Column>
 
           <Column label="w">
@@ -62,10 +58,10 @@ defmodule OOTPUtilityWeb.Components.Standings.Teams do
   end
 
   def header_class(_col, 0),
-    do: do_header_class(["w-1/3", "text-left", "font-bold", "text-gray-900"])
+    do: do_header_class(["w-1/6", "text-left", "font-bold", "text-gray-900"])
 
   def header_class(_col, 5),
-    do: do_header_class(["text-right", "font-medium", "text-gray-500", "hidden", "lg:table-cell"])
+    do: do_header_class(["text-right", "font-medium", "text-gray-500", "hidden", "md:table-cell"])
 
   def header_class(_col, _index),
     do: do_header_class(["text-right", "font-medium", "text-gray-500"])
@@ -74,15 +70,15 @@ defmodule OOTPUtilityWeb.Components.Standings.Teams do
     Enum.join(extra_classes ++ @default_header_classes, " ")
   end
 
-  def column_class(_standing, 0), do: do_column_class()
+  def column_class(_standing, 0), do: do_column_class(["w-1/6"])
 
   def column_class(_standing, 5),
-    do: do_column_class(["text-sm", "text-gray-500", "text-right", "hidden", "lg:table-cell"])
+    do: do_column_class(["text-sm", "text-gray-500", "text-right", "hidden", "md:table-cell"])
 
   def column_class(_standing, _index),
     do: do_column_class(["text-sm", "text-gray-500", "text-right"])
 
-  defp do_column_class(extra_classes \\ []) do
+  defp do_column_class(extra_classes) do
     Enum.join(extra_classes ++ @default_column_classes, " ")
   end
 
