@@ -16,9 +16,9 @@ defmodule OOTPUtilityWeb.TeamLive do
 
         <Scoreboard id={component_id_for(@team, "scoreboard")} subject={@team} date={@team.league.current_date} />
 
-        <div class="flex gap-4">
+        <div class="flex flex-col lg:flex-row gap-4">
           <Roster id={component_id_for(@team, "roster")} team={@team} year={@team.league.season_year} class="grow" />
-          <div class="flex flex-col w-1/3 gap-4">
+          <div class="flex flex-col gap-4">
             <div class="flex flex-col rounded-lg shadow bg-white p-4">
               <SectionHeader>Standings</SectionHeader>
               <DivisionStandings id={component_id_for(@team, "standings")} compact={true} division={@team.division} />

@@ -14,7 +14,7 @@ defmodule OOTPUtilityWeb.Components.Team.Rankings do
       <dl class="grid grid-cols-2 divide-x m-auto mt-2 md:m-0 rounded-lg bg-gray-50 overflow-hidden shadow divide-y divide-white-200">
         {#for {stat, {rank, total, value}} <- rankings(@team)}
           <div class="p-4">
-            <dt class="text-base font-normal text-gray-900">
+            <dt class="text-base font-normal text-gray-900 whitespace-nowrap">
               {humanize(stat)}
             </dt>
             <dd class="mt-1 flex justify-between items-baseline">

@@ -36,14 +36,14 @@ defmodule OOTPUtilityWeb.Components.Statistics.Leaderboard.Leader do
   def render(assigns) do
     ~F"""
       <li class="flex flex-col flex-grow border-b last:border-none py-2 relative">
-        <div class="text-xs text-gray-700 capitalize">{humanized_statistic(@statistic)}</div>
+        <div class="text-sm text-gray-700 capitalize">{humanized_statistic(@statistic)}</div>
         <div class="flex justify-between">
           <div class="my-1 text-base text-gray-700">{name(@leader)}</div>
-          <div class="absolute top-5 right-0 text-2xl text-gray-900">{@leader.value}</div>
+          <div class="absolute top-5 right-0 text-lg md:text-2xl text-gray-900">{@leader.value}</div>
         </div>
         <div class="flex justify-between">
-          <div class="text-xs text-gray-500 uppercase">{position(@leader)}</div>
-          <div class="text-xs text-gray-500 uppercase">{stat_abbreviation(@statistic)}</div>
+          <div class="text-xs md:text-sm text-gray-500 uppercase">{position(@leader)}</div>
+          <div class="text-xs md:text-sm text-gray-500 uppercase">{stat_abbreviation(@statistic)}</div>
         </div>
       </li>
     """

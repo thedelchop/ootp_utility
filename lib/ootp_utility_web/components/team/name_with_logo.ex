@@ -8,20 +8,21 @@ defmodule OOTPUtilityWeb.Components.Team.NameWithLogo do
 
   prop team, :struct, required: true
   prop class, :css_class, default: []
+  prop compact, :boolean, default: false
 
   def render(assigns) do
     ~F"""
       <LiveRedirect to={path_to_team(@team, @socket)}>
         <div class={container_class(@class)}>
-          <div class="flex-shrink-0 h-6 lg:h-10 h-6 lg:w-10">
-            <img class="h-6 lg:h-10 w-6 lg:w-10 rounded-full" src={Routes.static_path(@socket, "/images/logos/#{@team.logo_filename}")} alt="">
+          <div class="flex-shrink-0 h-4 lg:h-8 h-4 lg:w-8">
+            <img class="h-4 lg:h-8 w-4 lg:w-8 rounded-full mt-1.5 lg:mt-0" src={Routes.static_path(@socket, "/images/logos/#{@team.logo_filename}")} alt="">
           </div>
-          <div class="ml-3 mt-1.5">
+          <div class="ml-2 mt-1">
             <div class="lg:hidden">
               {@team.abbr}
             </div>
             <div class="hidden lg:block">
-              {@team.name}
+              {team_name_or_abbr(@team, @compact)}
             </div>
           </div>
         </div>
@@ -32,6 +33,9 @@ defmodule OOTPUtilityWeb.Components.Team.NameWithLogo do
   def container_class(extra_classes) do
     ["flex text-sm text-left font-medium text-gray-900"] ++ extra_classes
   end
+
+  def team_name_or_abbr(team, false), do: team.name
+  def team_name_or_abbr(team, true), do: team.abbr
 
   def path_to_team(
         %{
