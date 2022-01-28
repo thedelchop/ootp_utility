@@ -5,7 +5,7 @@ defmodule OOTPUtilityWeb.PlayerLive do
 
   alias OOTPUtilityWeb.TeamLive
   alias OOTPUtilityWeb.Router.Helpers, as: Routes
-  alias OOTPUtilityWeb.Components.Player.{Details,Rating}
+  alias OOTPUtilityWeb.Components.Player.{Details, Rating}
   alias OOTPUtilityWeb.Components.Shared.Section
 
   import OOTPUtilityWeb.Helpers, only: [display_size: 1]
@@ -16,7 +16,7 @@ defmodule OOTPUtilityWeb.PlayerLive do
   @impl true
   def render(assigns) do
     ~F"""
-      <Section event_target={@myself}>
+      <Section event_target={@socket.id}>
         <div class="flex gap-1 md:gap-2">
           <img class="h-16 w-16 md:h-28 md:w-28 rounded-full md:mt-2" src={Routes.static_path(@socket, "/images/default_player_photo.jpg")} alt="">
           <div class="flex flex-wrap items-center md:divide-x gap-2 md:gap-4">
@@ -48,7 +48,8 @@ defmodule OOTPUtilityWeb.PlayerLive do
 
   def name(%Players.Player{} = player, _size), do: Players.name(player, :full)
 
-  def position(%Players.Player{position: position} = _player), do: Map.get(position_name_to_position_key(), position)
+  def position(%Players.Player{position: position} = _player),
+    do: Map.get(position_name_to_position_key(), position)
 
   def path_to_team(
         %{
