@@ -33,7 +33,7 @@ defmodule OOTPUtilityWeb.Components.Standings.Conference do
         </div>
         <div class="grid grid-cols-1 gap-4 lg:gap-8">
           {#if has_divisions?(@conference)}
-            {#for division <- @conference.divisions}
+            {#for division <- Enum.reverse(@conference.divisions)}
               <Division id={child_id(@conference, division)} division={division} />
             {/for}
           {#else}
