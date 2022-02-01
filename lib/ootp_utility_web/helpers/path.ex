@@ -3,7 +3,7 @@ defmodule OOTPUtilityWeb.Helpers.Path do
   alias OOTPUtilityWeb.Router.Helpers, as: Routes
   alias OOTPUtilityWeb.{ConferenceLive, DivisionLive, LeagueLive, TeamLive}
 
-  def path_to_team_logo(socket, team) do
+  def path_to_team_logo(team, socket) do
     Routes.static_path(socket, "/images/logos/#{team.logo_filename}")
   end
 

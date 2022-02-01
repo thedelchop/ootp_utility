@@ -1,13 +1,16 @@
 defmodule OOTPUtilityWeb.Components.Team.Header do
   use Surface.LiveComponent
 
-  alias OOTPUtility.{Standings, Teams}
+  alias Surface.Components.LiveRedirect
+
+  alias OOTPUtility.{Leagues, Standings, Teams}
+
   alias OOTPUtilityWeb.Components.Team.Rankings
-  alias OOTPUtilityWeb.Router.Helpers, as: Routes
   alias OOTPUtilityWeb.Components.Shared.Section
 
   import OOTPUtilityWeb.Components.Team.Helpers
   import OOTPUtilityWeb.Helpers, only: [ordinalize: 1]
+  import OOTPUtilityWeb.Helpers.Path
 
   prop team, :struct, required: true
 
@@ -15,13 +18,13 @@ defmodule OOTPUtilityWeb.Components.Team.Header do
     ~F"""
       <Section event_target={@myself}>
         <div class="flex gap-2 lg:gap-4">
-          <img class="h-16 w-16 lg:h-28 lg:w-28 rounded-full" src={Routes.static_path(@socket, "/images/logos/#{@team.logo_filename}")} alt="">
+          <img class="h-16 w-16 lg:h-28 lg:w-28 rounded-full" src={path_to_team_logo(@team, @socket)} alt="">
           <div class="flex flex-col gap-2 lg:gap-4">
             <h1 class="text-2xl lg:text-4xl font-medium text-gray-900 whitespace-nowrap">{full_name(@team)}</h1>
             <div class="contents divide-y">
               <div class="flex flex-row gap-2 sm:gap-4 flex-wrap">
-                <h2 class="text-base lg:text-xl font-medium text-gray-900">{standings(@team)}</h2>
-                <h2 class="hidden md:block text-base lg:text-xl font-medium text-gray-900">{standings_in_parent_league(@team)}</h2>
+                <h2 class="text-base lg:text-xl font-medium text-gray-900">{standings(@team, @socket)}</h2>
+                <h2 class="hidden md:block text-base lg:text-xl font-medium text-gray-900">{standings_in_parent_league(@team, @socket)}</h2>
               </div>
               <div class="flex flex-row gap-2 pt-2 lg:pt-4">
                 <h3 class="text-sm lg:text-lg font-medium text-gray-900">{team_record(@team)}</h3>
@@ -43,37 +46,64 @@ defmodule OOTPUtilityWeb.Components.Team.Header do
     "#{name} #{nickname}"
   end
 
-  defp standings(%Teams.Team{division: nil, conference: nil, league: league} = team) do
-    do_standings(team, league)
+  defp standings(%Teams.Team{division: nil, conference: nil, league: league} = team, socket) do
+    do_standings(team, league, socket)
   end
 
-  defp standings(%Teams.Team{division: nil, conference: conference} = team) do
-    do_standings(team, conference)
+  defp standings(%Teams.Team{division: nil, conference: conference} = team, socket) do
+    do_standings(team, conference, socket)
   end
 
-  defp standings(%Teams.Team{division: division} = team) do
-    do_standings(team, division)
+  defp standings(%Teams.Team{division: division} = team, socket) do
+    do_standings(team, division, socket)
   end
 
-  defp do_standings(team, parent) do
-    %Standings.Team{position: position} = Standings.for_team(team)
-
-    "#{ordinalize(position)} in #{parent.name}"
+  defp do_standings(team, parent, socket) do
+    team
+    |> Standings.for_team()
+    |> render_standings_link(parent, socket)
   end
 
-  defp standings_in_parent_league(%Teams.Team{division: nil, conference: nil, league: _league} = _team), do: ""
+  defp standings_in_parent_league(
+         %Teams.Team{division: nil, conference: nil, league: _league} = _team,
+         _socket
+       ),
+       do: ""
 
-  defp standings_in_parent_league(%Teams.Team{division: nil, conference: _conference, league: league} = team) do
-    do_standings_in_parent_league(team, league)
+  defp standings_in_parent_league(
+         %Teams.Team{division: nil, conference: _conference, league: league} = team,
+         socket
+       ) do
+    do_standings_in_parent_league(team, league, socket)
   end
 
-  defp standings_in_parent_league(%Teams.Team{division: _division, conference: conference} = team) do
-    do_standings_in_parent_league(team, conference)
+  defp standings_in_parent_league(
+         %Teams.Team{division: _division, conference: conference} = team,
+         socket
+       ) do
+    do_standings_in_parent_league(team, conference, socket)
   end
 
-  defp do_standings_in_parent_league(team, parent) do
-    %Standings.Team{position: position} = Standings.for_team(team, parent)
-
-    "#{ordinalize(position)} in #{parent.name}"
+  defp do_standings_in_parent_league(team, parent, socket) do
+    team
+    |> Standings.for_team(parent)
+    |> render_standings_link(parent, socket)
   end
+
+  def render_standings_link(%Standings.Team{position: position} = _standings, parent, socket) do
+    assigns = %{position: position, parent: parent, socket: socket}
+
+    ~F"""
+      <LiveRedirect to={path_to_parent(@parent, @socket)}>
+        {ordinalize(@position)} in {@parent.name}
+      </LiveRedirect>
+    """
+  end
+
+  defp path_to_parent(%Leagues.Conference{} = conf, socket), do: path_to_conference(conf, socket)
+
+  defp path_to_parent(%Leagues.Division{} = division, socket),
+    do: path_to_division(division, socket)
+
+  defp path_to_parent(%Leagues.League{} = league, socket), do: path_to_league(league, socket)
 end

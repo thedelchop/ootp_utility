@@ -19,7 +19,7 @@ defmodule OOTPUtilityWeb.Components.Team.Organization do
           {#for affiliate <- team_affiliates(@team) }
             <li class="py-2 md:py-4 flex justify-between relative">
               <div class="flex gap-2 md:gap-4 items-center mr-2 md:mr-4">
-                <img class="h-6 md:h-10 w-6 md:w-10 rounded-full" src={path_to_team_logo(@socket, affiliate)} alt="" />
+                <img class="h-6 md:h-10 w-6 md:w-10 rounded-full" src={path_to_team_logo(affiliate, @socket)} alt="" />
                 <div>
                   <LiveRedirect class="text-base text-left text-gray-900" to={path_to_team(affiliate, @socket)}>
                     {name_with_league_level(affiliate)}
