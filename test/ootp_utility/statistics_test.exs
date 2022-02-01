@@ -52,5 +52,33 @@ defmodule OOTPUtility.StatisticsTest do
 
       assert Statistics.team_ranking(subject_team, :home_runs) == {4, 6, 250}
     end
+
+    test "it sorts any prevention stats is ascending order" do
+      league = insert(:league)
+
+      insert(:team_pitching_stats,
+        team: insert(:team, league: league),
+        league: league,
+        runs: 450
+      )
+
+      insert(:team_pitching_stats,
+        team: fn -> insert(:team, league: league) end,
+        league: league,
+        runs: 350
+      )
+
+      subject_team = insert(:team, league: league)
+
+      insert(:team_pitching_stats, team: subject_team, league: league, runs: 250)
+
+      insert_pair(:team_pitching_stats,
+        team: fn -> insert(:team, league: league) end,
+        league: league,
+        runs: Faker.random_between(200, 245)
+      )
+
+      assert Statistics.team_ranking(subject_team, :runs_allowed) == {3, 5, 250}
+    end
   end
 end

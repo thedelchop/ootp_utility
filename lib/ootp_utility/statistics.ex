@@ -31,6 +31,12 @@ defmodule OOTPUtility.Statistics do
     :walks_hits_per_inning_pitched
   ]
 
+  @prevention_statistics [
+    :runs_allowed,
+    :earned_run_average,
+    :walks_hits_per_inning_pitched
+  ]
+
   defguard is_batting_stat(stat) when stat in @batting_statistics
   defguard is_pitching_stat(stat) when stat in @pitching_statistics
 
@@ -75,13 +81,21 @@ defmodule OOTPUtility.Statistics do
   end
 
   def team_ranking(%Teams.Team{} = team, stat) when is_pitching_stat(stat) do
+    sort_order = if stat in @prevention_statistics, do: :asc, else: :desc
+
     stat = stat |> Atom.to_string() |> String.replace("_allowed", "") |> String.to_atom()
 
-    do_team_ranking(team, stat, :league, PitchingStats.Team)
+    do_team_ranking(team, stat, :league, PitchingStats.Team, sort_order)
   end
 
-  defp do_team_ranking(%Teams.Team{id: team_id} = _team, statistic, partition, schema) do
-    order_by = [desc: statistic]
+  defp do_team_ranking(
+         %Teams.Team{id: team_id} = _team,
+         statistic,
+         partition,
+         schema,
+         sort_order \\ :desc
+       ) do
+    order_by = [{sort_order, statistic}]
     partition = [String.to_atom("#{partition}_id"), :year]
 
     ranking_query =
