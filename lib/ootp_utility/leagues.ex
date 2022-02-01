@@ -163,6 +163,13 @@ defmodule OOTPUtility.Leagues do
       ** (Ecto.NoResultsError)
 
   """
-  @spec get_division_by_slug!(String.t()) :: Division.t()
-  def get_division_by_slug!(slug), do: Repo.one!(from d in Division, where: d.slug == ^slug)
+  @spec get_division_by_slug!(String.t(), Keyword.t()) :: Division.t()
+  def get_division_by_slug!(slug, opts \\ Keyword.new()) do
+    preloads = Keyword.get(opts, :preload, [:league, :conference, teams: [:record]])
+
+    Division
+    |> where([d], d.slug == ^slug)
+    |> preload(^preloads)
+    |> Repo.one!()
+  end
 end
