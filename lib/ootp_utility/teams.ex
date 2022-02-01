@@ -39,7 +39,9 @@ defmodule OOTPUtility.Teams do
   end
 
   @spec get_affiliates(Team.t(), Keyword.t()) :: [Team.t()]
-  def get_affiliates(team, preloads \\ []) do
+  def get_affiliates(team, opts \\ Keyword.new()) do
+    preloads = Keyword.get(opts, :preload, [])
+
     Team
     |> join(:inner, [t], a in Affiliation, on: a.affiliate_id == t.id)
     |> where([t, a], a.team_id == ^team.id)

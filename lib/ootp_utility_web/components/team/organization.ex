@@ -43,7 +43,7 @@ defmodule OOTPUtilityWeb.Components.Team.Organization do
     {:noreply, socket}
   end
 
-  def team_affiliates(%Teams.Team{} = team), do: Teams.get_affiliates(team, [:record])
+  def team_affiliates(%Teams.Team{} = team), do: Teams.get_affiliates(team, preload: [:record])
 
   def name_with_league_level(team) do
     "#{Teams.get_full_name(team)}"
