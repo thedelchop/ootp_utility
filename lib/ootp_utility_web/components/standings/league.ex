@@ -4,8 +4,9 @@ defmodule OOTPUtilityWeb.Components.Standings.League do
   alias OOTPUtility.{Standings, Leagues}
   alias OOTPUtilityWeb.Components.Standings.{Conference, Division, Teams}
   alias OOTPUtilityWeb.Components.Shared.{Section, SectionHeader}
-  alias OOTPUtilityWeb.Router.Helpers, as: Routes
   alias Surface.Components.LiveRedirect
+
+  import OOTPUtilityWeb.Helpers.Path, only: [path_to_league: 2]
 
   prop league, :struct, required: true
 
@@ -112,8 +113,4 @@ defmodule OOTPUtilityWeb.Components.Standings.League do
 
   def is_conference?(%Leagues.Conference{}), do: true
   def is_conference?(_), do: false
-
-  def path_to_league(%Leagues.League{slug: slug}, socket) do
-    Routes.live_path(socket, OOTPUtilityWeb.LeagueLive, slug)
-  end
 end

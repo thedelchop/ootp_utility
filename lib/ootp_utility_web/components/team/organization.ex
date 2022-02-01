@@ -3,11 +3,10 @@ defmodule OOTPUtilityWeb.Components.Team.Organization do
 
   alias OOTPUtility.{Teams, Leagues}
   alias OOTPUtilityWeb.Components.Shared.{Section, SectionHeader}
-  alias OOTPUtilityWeb.Router.Helpers, as: Routes
-  alias OOTPUtilityWeb.TeamLive
   alias Surface.Components.LiveRedirect
 
   import OOTPUtilityWeb.Components.Team.Helpers, only: [team_record: 1, games_behind: 1]
+  import OOTPUtilityWeb.Helpers.Path, only: [path_to_team: 2, path_to_team_logo: 2]
 
   prop team, :struct, required: true
 
@@ -20,7 +19,7 @@ defmodule OOTPUtilityWeb.Components.Team.Organization do
           {#for affiliate <- team_affiliates(@team) }
             <li class="py-2 md:py-4 flex justify-between relative">
               <div class="flex gap-2 md:gap-4 items-center mr-2 md:mr-4">
-                <img class="h-6 md:h-10 w-6 md:w-10 rounded-full" src={path_to_logo(@socket, affiliate)} alt="" />
+                <img class="h-6 md:h-10 w-6 md:w-10 rounded-full" src={path_to_team_logo(@socket, affiliate)} alt="" />
                 <div>
                   <LiveRedirect class="text-base text-left text-gray-900" to={path_to_team(affiliate, @socket)}>
                     {name_with_league_level(affiliate)}
@@ -55,13 +54,5 @@ defmodule OOTPUtilityWeb.Components.Team.Organization do
     |> Leagues.get_league_level()
     |> Map.from_struct()
     |> Map.get(:abbr)
-  end
-
-  defp path_to_logo(socket, team) do
-    Routes.static_path(socket, "/images/logos/#{team.logo_filename}")
-  end
-
-  def path_to_team(team, socket) do
-    Routes.live_path(socket, TeamLive, team.slug)
   end
 end

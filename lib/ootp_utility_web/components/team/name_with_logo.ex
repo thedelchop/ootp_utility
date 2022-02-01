@@ -4,7 +4,8 @@ defmodule OOTPUtilityWeb.Components.Team.NameWithLogo do
   alias Surface.Components.LiveRedirect
 
   alias OOTPUtilityWeb.Router.Helpers, as: Routes
-  alias OOTPUtilityWeb.TeamLive
+
+  import OOTPUtilityWeb.Helpers.Path, only: [path_to_team: 2]
 
   prop team, :struct, required: true
   prop class, :css_class, default: []
@@ -36,13 +37,4 @@ defmodule OOTPUtilityWeb.Components.Team.NameWithLogo do
 
   def team_name_or_abbr(team, false), do: team.name
   def team_name_or_abbr(team, true), do: team.abbr
-
-  def path_to_team(
-        %{
-          slug: slug
-        } = _team,
-        socket
-      ) do
-    Routes.live_path(socket, TeamLive, slug)
-  end
 end

@@ -3,12 +3,12 @@ defmodule OOTPUtilityWeb.PlayerLive do
 
   alias Surface.Components.LiveRedirect
 
-  alias OOTPUtilityWeb.TeamLive
   alias OOTPUtilityWeb.Router.Helpers, as: Routes
   alias OOTPUtilityWeb.Components.Player.{Details, Rating}
   alias OOTPUtilityWeb.Components.Shared.Section
 
   import OOTPUtilityWeb.Helpers, only: [display_size: 1]
+  import OOTPUtilityWeb.Helpers.Path, only: [path_to_team: 2]
   import OOTPUtility.Utilities, only: [position_name_to_position_key: 0]
 
   alias OOTPUtility.Players
@@ -50,15 +50,6 @@ defmodule OOTPUtilityWeb.PlayerLive do
 
   def position(%Players.Player{position: position} = _player),
     do: Map.get(position_name_to_position_key(), position)
-
-  def path_to_team(
-        %{
-          slug: slug
-        } = _team,
-        socket
-      ) do
-    Routes.live_path(socket, TeamLive, slug)
-  end
 
   @impl true
   def handle_event("viewport_resize", viewport, socket) do

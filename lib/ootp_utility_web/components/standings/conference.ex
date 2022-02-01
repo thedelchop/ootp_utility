@@ -2,10 +2,10 @@ defmodule OOTPUtilityWeb.Components.Standings.Conference do
   use Surface.LiveComponent
 
   alias OOTPUtility.{Standings, Leagues}
-  alias OOTPUtilityWeb.ConferenceLive
   alias OOTPUtilityWeb.Components.Standings.{Division, Teams}
   alias Surface.Components.LiveRedirect
-  alias OOTPUtilityWeb.Router.Helpers, as: Routes
+
+  import OOTPUtilityWeb.Helpers.Path, only: [path_to_conference: 2]
 
   prop conference, :struct, required: true
   data standings, :struct
@@ -76,16 +76,4 @@ defmodule OOTPUtilityWeb.Components.Standings.Conference do
 
   def has_divisions?(%Leagues.Conference{divisions: []}), do: false
   def has_divisions?(_), do: true
-
-  def path_to_conference(
-        %Leagues.Conference{
-          league: %Leagues.League{
-            slug: league_slug
-          },
-          slug: slug
-        },
-        socket
-      ) do
-    Routes.live_path(socket, ConferenceLive, league_slug, slug)
-  end
 end
