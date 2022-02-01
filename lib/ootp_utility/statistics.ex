@@ -80,32 +80,6 @@ defmodule OOTPUtility.Statistics do
     do_team_ranking(team, stat, :league, PitchingStats.Team)
   end
 
-  @doc """
-  Returns a %Statistics.Leaderboard{} for the specified team and statistic
-
-  iex> Statistics.team_leaders(%Teams.Team{}, :batting_average)
-  %Statistics.Leaderboard{}
-  """
-  @spec team_leaders(Teams.Team.t(), statistic()) :: Statistics.Leaderboard.t()
-  def team_leaders(team, stat) when is_batting_stat(stat) do
-    BattingStats.team_leaders(team, stat)
-  end
-
-  def team_leaders(
-        %Teams.Team{
-          id: team_id,
-          league: %Leagues.League{
-            season_year: year
-          }
-        } = _team,
-        stat
-      )
-      when is_pitching_stat(stat) do
-    PitchingStats.Player
-    |> where([stats], stats.team_id == ^team_id and stats.year == ^year)
-    |> Leaderboard.new(stat)
-  end
-
   defp do_team_ranking(%Teams.Team{id: team_id} = _team, statistic, partition, schema) do
     order_by = [desc: statistic]
     partition = [String.to_atom("#{partition}_id"), :year]
@@ -131,5 +105,31 @@ defmodule OOTPUtility.Statistics do
         where: stats.team_id == ^team_id
 
     Repo.one(query)
+  end
+
+  @doc """
+  Returns a %Statistics.Leaderboard{} for the specified team and statistic
+
+  iex> Statistics.team_leaders(%Teams.Team{}, :batting_average)
+  %Statistics.Leaderboard{}
+  """
+  @spec team_leaders(Teams.Team.t(), statistic()) :: Statistics.Leaderboard.t()
+  def team_leaders(team, stat) when is_batting_stat(stat) do
+    BattingStats.team_leaders(team, stat)
+  end
+
+  def team_leaders(
+        %Teams.Team{
+          id: team_id,
+          league: %Leagues.League{
+            season_year: year
+          }
+        } = _team,
+        stat
+      )
+      when is_pitching_stat(stat) do
+    PitchingStats.Player
+    |> where([stats], stats.team_id == ^team_id and stats.year == ^year)
+    |> Leaderboard.new(stat)
   end
 end
