@@ -21,8 +21,12 @@ defmodule OOTPUtilityWeb.Components.Team.Roster do
   def update(assigns, socket) do
     pitchers = Players.for_team(assigns.team, position: "P", roster: :active, order_by: :position)
     catchers = Players.for_team(assigns.team, position: "C", roster: :active, order_by: :position)
-    infielders = Players.for_team(assigns.team, position: "IF", roster: :active, order_by: :position)
-    outfielders = Players.for_team(assigns.team, position: "OF", roster: :active, order_by: :position)
+
+    infielders =
+      Players.for_team(assigns.team, position: "IF", roster: :active, order_by: :position)
+
+    outfielders =
+      Players.for_team(assigns.team, position: "OF", roster: :active, order_by: :position)
 
     {:ok,
      assign(socket,

@@ -29,7 +29,11 @@ defmodule OOTPUtilityWeb.Components.Scoreboard.GameTest do
     end
   end
 
-  test_snapshot "returns a summary of a played game", %{game: game, home_team: home_team, away_team: away_team} do
+  test_snapshot "returns a summary of a played game", %{
+    game: game,
+    home_team: home_team,
+    away_team: away_team
+  } do
     winning_pitcher =
       build(:player, %{
         first_name: "Winning",
@@ -47,12 +51,11 @@ defmodule OOTPUtilityWeb.Components.Scoreboard.GameTest do
     completed_game =
       game
       |> complete_game(
-          home_team_runs: 4,
-          away_team_runs: 2,
-          winning_pitcher: winning_pitcher,
-          losing_pitcher: losing_pitcher,
-          save_pitcher: save_pitcher
-
+        home_team_runs: 4,
+        away_team_runs: 2,
+        winning_pitcher: winning_pitcher,
+        losing_pitcher: losing_pitcher,
+        save_pitcher: save_pitcher
       )
 
     render_surface do

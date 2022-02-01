@@ -14,7 +14,11 @@ defmodule OOTPUtility.Imports.Leagues.League do
     slug: :name
 
   def sanitize_attributes(
-        %{start_date: start_date_as_string, current_date: current_date_as_string, level: league_level} = attrs
+        %{
+          start_date: start_date_as_string,
+          current_date: current_date_as_string,
+          level: league_level
+        } = attrs
       ) do
     with {:ok, start_date} <- Timex.parse(start_date_as_string, "{YYYY}-{M}-{D}"),
          {:ok, current_date} <- Timex.parse(current_date_as_string, "{YYYY}-{M}-{D}") do

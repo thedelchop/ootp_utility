@@ -56,7 +56,6 @@ defmodule OOTPUtility.Standings.Team do
       abbr: abbr,
       slug: slug,
       logo_filename: logo,
-
       games: games,
       wins: wins,
       losses: losses,

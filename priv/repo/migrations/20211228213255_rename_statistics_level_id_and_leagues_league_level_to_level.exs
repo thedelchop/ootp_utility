@@ -12,7 +12,7 @@ defmodule OOTPUtility.Repo.Migrations.RenameStatisticsLevelIdAndLeaguesLeagueLev
       "players_career_fielding_stats",
       "players_career_pitching_stats",
       "players_game_batting_stats",
-      "players_game_pitching_stats",
+      "players_game_pitching_stats"
     ]
     |> Enum.each(&rename(table(&1), :level_id, to: :level))
 

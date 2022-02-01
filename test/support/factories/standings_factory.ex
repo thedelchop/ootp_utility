@@ -1,6 +1,8 @@
 defmodule OOTPUtility.StandingsFactory do
   alias OOTPUtility.{Leagues, Standings}
-  import OOTPUtility.Factories.Utilities, only: [distribute_wins_amongst_teams: 2, generate_slug_from_name: 1]
+
+  import OOTPUtility.Factories.Utilities,
+    only: [distribute_wins_amongst_teams: 2, generate_slug_from_name: 1]
 
   defmacro __using__(_opts) do
     quote do

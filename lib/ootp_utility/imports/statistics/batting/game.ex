@@ -30,7 +30,12 @@ defmodule OOTPUtility.Imports.Statistics.Batting.Game do
   def sanitize_attributes(%{league_id: league_id, level: level_id, position: position} = attrs) do
     league_id = if String.to_integer(league_id) < 1, do: nil, else: league_id
 
-    %{attrs | league_id: league_id, position: position_from_scoring_key(position), level: league_level_from_id(level_id)}
+    %{
+      attrs
+      | league_id: league_id,
+        position: position_from_scoring_key(position),
+        level: league_level_from_id(level_id)
+    }
   end
 
   def validate_changeset(

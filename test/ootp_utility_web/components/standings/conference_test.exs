@@ -15,7 +15,8 @@ defmodule OOTPUtilityWeb.Components.Standings.ConferenceTest do
     conference: conference,
     league: league
   } do
-    american_league_east = insert(:division, name: "AL East", conference: conference, league: league)
+    american_league_east =
+      insert(:division, name: "AL East", conference: conference, league: league)
 
     insert(:team,
       name: "Boston",
@@ -53,7 +54,8 @@ defmodule OOTPUtilityWeb.Components.Standings.ConferenceTest do
       wins: 8
     })
 
-    national_league_east = insert(:division, name: "National League East", conference: conference, league: league)
+    national_league_east =
+      insert(:division, name: "National League East", conference: conference, league: league)
 
     insert(:team,
       name: "Atlanta",

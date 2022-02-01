@@ -137,7 +137,18 @@ defmodule OOTPUtilityWeb.Components.Team.Roster.Pitchers do
   end
 
   def header_class(_col, 0),
-    do: do_header_class(["text-left", "font-medium", "text-gray-500", "bg-gray-100", "absolute", "top-auto", "left-0", "w-32", "h-8"])
+    do:
+      do_header_class([
+        "text-left",
+        "font-medium",
+        "text-gray-500",
+        "bg-gray-100",
+        "absolute",
+        "top-auto",
+        "left-0",
+        "w-32",
+        "h-8"
+      ])
 
   def header_class(_col, 1),
     do: do_header_class(["text-center", "font-medium", "text-gray-500"])
@@ -150,7 +161,18 @@ defmodule OOTPUtilityWeb.Components.Team.Roster.Pitchers do
   end
 
   def column_class(_standing, 0),
-    do: do_column_class(["text-sm", "text-gray-500", "text-right", "absolute", "top-auto", "left-0", "w-32", "border-t", "-mt-px"])
+    do:
+      do_column_class([
+        "text-sm",
+        "text-gray-500",
+        "text-right",
+        "absolute",
+        "top-auto",
+        "left-0",
+        "w-32",
+        "border-t",
+        "-mt-px"
+      ])
 
   def column_class(_standing, 1),
     do: do_column_class(["text-sm", "text-gray-500", "text-center", "border-t"])

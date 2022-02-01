@@ -16,12 +16,13 @@ defmodule OOTPUtilityWeb.Components.Statistics.LeaderboardTest do
     team = insert(:team, league: league)
 
     insert(:player_batting_stats,
-      player: insert(:player,
-        first_name: "Wade",
-        last_name: "Boggs",
-        position: :third_base,
-        team: team
-      ),
+      player:
+        insert(:player,
+          first_name: "Wade",
+          last_name: "Boggs",
+          position: :third_base,
+          team: team
+        ),
       home_runs: 30,
       runs_batted_in: 80,
       runs: 105,
@@ -29,12 +30,13 @@ defmodule OOTPUtilityWeb.Components.Statistics.LeaderboardTest do
     )
 
     insert(:player_batting_stats,
-      player: insert(:player,
-        first_name: "Barry",
-        last_name: "Bonds",
-        position: :left_field,
-        team: team
-      ),
+      player:
+        insert(:player,
+          first_name: "Barry",
+          last_name: "Bonds",
+          position: :left_field,
+          team: team
+        ),
       home_runs: 10,
       runs_batted_in: 40,
       runs: 150,
@@ -42,12 +44,13 @@ defmodule OOTPUtilityWeb.Components.Statistics.LeaderboardTest do
     )
 
     insert(:player_batting_stats,
-      player: insert(:player,
-        first_name: "Babe",
-        last_name: "Ruth",
-        position: :right_field,
-        team: team
-      ),
+      player:
+        insert(:player,
+          first_name: "Babe",
+          last_name: "Ruth",
+          position: :right_field,
+          team: team
+        ),
       home_runs: 55,
       runs_batted_in: 180,
       runs: 105,
@@ -60,7 +63,6 @@ defmodule OOTPUtilityWeb.Components.Statistics.LeaderboardTest do
       Statistics.team_leaders(team, :runs),
       Statistics.team_leaders(team, :batting_average)
     ]
-
 
     render_surface do
       ~F"""

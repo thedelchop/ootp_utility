@@ -51,33 +51,35 @@ defmodule OOTPUtilityWeb.Components.Standings.League do
   end
 
   def child_id(
-    %Leagues.League{
-      slug: league_slug
-    },
-    %Leagues.Division{
-      slug: division_slug
-    }) do
+        %Leagues.League{
+          slug: league_slug
+        },
+        %Leagues.Division{
+          slug: division_slug
+        }
+      ) do
     [league_slug, division_slug, "standings"]
     |> Enum.join("-")
   end
 
   def child_id(
-    %Leagues.League{
-      slug: league_slug
-    },
-    %Leagues.Conference{
-      slug: conference_slug
-    }) do
+        %Leagues.League{
+          slug: league_slug
+        },
+        %Leagues.Conference{
+          slug: conference_slug
+        }
+      ) do
     [league_slug, conference_slug, "standings"]
     |> Enum.join("-")
   end
 
   def child_id(
-    %Leagues.League{
-      slug: league_slug
-    },
-    _team_standings
-    )do
+        %Leagues.League{
+          slug: league_slug
+        },
+        _team_standings
+      ) do
     [league_slug, "standings"]
     |> Enum.join("-")
   end

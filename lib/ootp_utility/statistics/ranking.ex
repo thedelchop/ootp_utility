@@ -6,6 +6,7 @@ defmodule OOTPUtility.Statistics.Ranking do
   leaders for a population, either players or teams for a specific
   statistic.
   """
+
   # import Ecto.Query
 
   alias __MODULE__

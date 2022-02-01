@@ -21,12 +21,13 @@ defmodule OOTPUtilityWeb.Components.Team.LeadersTest do
 
   defp create_team_pitching_stats(team) do
     insert(:player_pitching_stats,
-      player: insert(:player,
-        first_name: "Craig",
-        last_name: "Kimbrel",
-        position: :middle_reliever,
-        team: team
-      ),
+      player:
+        insert(:player,
+          first_name: "Craig",
+          last_name: "Kimbrel",
+          position: :middle_reliever,
+          team: team
+        ),
       wins: 10,
       saves: 5,
       earned_run_average: 2.45,
@@ -35,12 +36,13 @@ defmodule OOTPUtilityWeb.Components.Team.LeadersTest do
     )
 
     insert(:player_pitching_stats,
-      player: insert(:player,
-        first_name: "Trevor",
-        last_name: "Hoffman",
-        position: :closer,
-        team: team
-      ),
+      player:
+        insert(:player,
+          first_name: "Trevor",
+          last_name: "Hoffman",
+          position: :closer,
+          team: team
+        ),
       wins: 1,
       saves: 50,
       earned_run_average: 1.85,
@@ -49,12 +51,13 @@ defmodule OOTPUtilityWeb.Components.Team.LeadersTest do
     )
 
     insert(:player_pitching_stats,
-      player: insert(:player,
-        first_name: "Jonathan",
-        last_name: "Papelbon",
-        position: :closer,
-        team: team
-      ),
+      player:
+        insert(:player,
+          first_name: "Jonathan",
+          last_name: "Papelbon",
+          position: :closer,
+          team: team
+        ),
       wins: 3,
       saves: 37,
       earned_run_average: 3.17,
@@ -63,12 +66,13 @@ defmodule OOTPUtilityWeb.Components.Team.LeadersTest do
     )
 
     insert(:player_pitching_stats,
-      player: insert(:player,
-        first_name: "Rod",
-        last_name: "Beck",
-        position: :middle_reliever,
-        team: team
-      ),
+      player:
+        insert(:player,
+          first_name: "Rod",
+          last_name: "Beck",
+          position: :middle_reliever,
+          team: team
+        ),
       wins: 7,
       saves: 12,
       earned_run_average: 4.45,
@@ -79,12 +83,13 @@ defmodule OOTPUtilityWeb.Components.Team.LeadersTest do
 
   defp create_team_batting_stats(team) do
     insert(:player_batting_stats,
-      player: insert(:player,
-        first_name: "Wade",
-        last_name: "Boggs",
-        position: :third_base,
-        team: team
-      ),
+      player:
+        insert(:player,
+          first_name: "Wade",
+          last_name: "Boggs",
+          position: :third_base,
+          team: team
+        ),
       home_runs: 30,
       runs_batted_in: 80,
       runs: 105,
@@ -93,12 +98,13 @@ defmodule OOTPUtilityWeb.Components.Team.LeadersTest do
     )
 
     insert(:player_batting_stats,
-      player: insert(:player,
-        first_name: "Barry",
-        last_name: "Bonds",
-        position: :left_field,
-        team: team
-      ),
+      player:
+        insert(:player,
+          first_name: "Barry",
+          last_name: "Bonds",
+          position: :left_field,
+          team: team
+        ),
       home_runs: 10,
       runs_batted_in: 40,
       runs: 150,
@@ -107,12 +113,13 @@ defmodule OOTPUtilityWeb.Components.Team.LeadersTest do
     )
 
     insert(:player_batting_stats,
-      player: insert(:player,
-        first_name: "Babe",
-        last_name: "Ruth",
-        position: :right_field,
-        team: team
-      ),
+      player:
+        insert(:player,
+          first_name: "Babe",
+          last_name: "Ruth",
+          position: :right_field,
+          team: team
+        ),
       home_runs: 55,
       runs_batted_in: 180,
       runs: 105,

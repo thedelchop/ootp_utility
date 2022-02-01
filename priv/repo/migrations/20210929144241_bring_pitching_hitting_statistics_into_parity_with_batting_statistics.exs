@@ -2,7 +2,11 @@ defmodule OOTPUtility.Repo.Migrations.BringPitchingHittingStatisticsIntoParityWi
   use Ecto.Migration
 
   def change do
-    pitching_tables = [:team_pitching_stats, :team_starting_pitching_stats, :team_bullpen_pitching_stats]
+    pitching_tables = [
+      :team_pitching_stats,
+      :team_starting_pitching_stats,
+      :team_bullpen_pitching_stats
+    ]
 
     for table_name <- pitching_tables do
       table(table_name)

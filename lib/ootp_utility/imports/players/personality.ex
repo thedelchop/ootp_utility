@@ -30,7 +30,7 @@ defmodule OOTPUtility.Imports.Players.Personality do
         desire_to_win: convert_personality_value(desire_to_win),
         work_ethic: convert_personality_value(work_ethic),
         intelligence: convert_personality_value(intelligence),
-        leadership: convert_personality_value(leadership),
+        leadership: convert_personality_value(leadership)
     }
   end
 

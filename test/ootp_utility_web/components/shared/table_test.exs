@@ -5,11 +5,13 @@ defmodule OOTPUtilityWeb.Components.Shared.TableTest do
   alias OOTPUtilityWeb.Components.Shared.Table.Column
 
   setup do
-    assigns = %{standings: [
-      %{wins: 10, losses: 2, games_behind: 0},
-      %{wins: 8, losses: 4, games_behind: 2},
-      %{wins: 3, losses: 7, games_behind: 7}
-    ]}
+    assigns = %{
+      standings: [
+        %{wins: 10, losses: 2, games_behind: 0},
+        %{wins: 8, losses: 4, games_behind: 2},
+        %{wins: 3, losses: 7, games_behind: 7}
+      ]
+    }
 
     {:ok, assigns: assigns}
   end
@@ -34,7 +36,9 @@ defmodule OOTPUtilityWeb.Components.Shared.TableTest do
     end
   end
 
-  test_snapshot "Provides a `header_class` property to specify header CSS classes", %{assigns: assigns}  do
+  test_snapshot "Provides a `header_class` property to specify header CSS classes", %{
+    assigns: assigns
+  } do
     header_class = fn _col, _index -> ["text-right", "font-medium", "text-gray-500"] end
 
     render_surface do
@@ -56,7 +60,7 @@ defmodule OOTPUtilityWeb.Components.Shared.TableTest do
     end
   end
 
-  test_snapshot "Provides a `row_class` property to specify row CSS classes", %{assigns: assigns}  do
+  test_snapshot "Provides a `row_class` property to specify row CSS classes", %{assigns: assigns} do
     row_class = fn _col, _index -> ["text-right", "font-medium", "text-gray-500"] end
 
     render_surface do

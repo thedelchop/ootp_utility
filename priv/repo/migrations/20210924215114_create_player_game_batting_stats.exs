@@ -1,5 +1,5 @@
 defmodule OOTPUtility.Repo.Migrations.CreatePlayerGameBattingStats do
- use Ecto.Migration
+  use Ecto.Migration
 
   def change do
     create table(:players_game_batting_stats) do

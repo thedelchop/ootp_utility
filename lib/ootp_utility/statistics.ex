@@ -2,8 +2,15 @@ defmodule OOTPUtility.Statistics do
   @moduledoc """
   This module provides an interface for dealing with statistics
   """
-  @type batting_statistic :: :batting_average | :home_runs | :runs_batted_in | :runs | :stolen_bases
-  @type pitching_statistic :: :runs_allowed | :wins | :saves | :earned_run_average | :strikeouts | :walks_hits_per_inning_pitched
+  @type batting_statistic ::
+          :batting_average | :home_runs | :runs_batted_in | :runs | :stolen_bases
+  @type pitching_statistic ::
+          :runs_allowed
+          | :wins
+          | :saves
+          | :earned_run_average
+          | :strikeouts
+          | :walks_hits_per_inning_pitched
 
   @type statistic :: batting_statistic() | pitching_statistic()
 

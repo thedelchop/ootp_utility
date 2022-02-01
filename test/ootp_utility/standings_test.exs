@@ -143,48 +143,49 @@ defmodule OOTPUtility.StandingsTest do
       nl_west = insert(:division, name: "NL West", conference: national_league)
 
       insert(:team,
-          name: "New York",
-          nickname: "Yankees",
-          league: mlb,
-          conference: american_league,
-          division: al_east
-        )
-        |> with_record(%{
-          games: 162,
-          wins: 81,
-          games_behind: 1.0,
-          position: 2
-        })
+        name: "New York",
+        nickname: "Yankees",
+        league: mlb,
+        conference: american_league,
+        division: al_east
+      )
+      |> with_record(%{
+        games: 162,
+        wins: 81,
+        games_behind: 1.0,
+        position: 2
+      })
 
       insert(:team,
-          name: "Los Angeles",
-          nickname: "Angels",
-          league: mlb,
-          conference: american_league,
-          division: al_west
-        )
-        |> with_record(%{
-          games: 162,
-          wins: 100,
-          games_behind: 0.0,
-          position: 1
-        })
+        name: "Los Angeles",
+        nickname: "Angels",
+        league: mlb,
+        conference: american_league,
+        division: al_west
+      )
+      |> with_record(%{
+        games: 162,
+        wins: 100,
+        games_behind: 0.0,
+        position: 1
+      })
 
       insert(:team,
-          name: "Los Angeles",
-          nickname: "Dodgers",
-          league: mlb,
-          conference: national_league,
-          division: nl_west
-        )
-        |> with_record(%{
-          games: 162,
-          wins: 98,
-          games_behind: 0.0,
-          position: 1
-        })
+        name: "Los Angeles",
+        nickname: "Dodgers",
+        league: mlb,
+        conference: national_league,
+        division: nl_west
+      )
+      |> with_record(%{
+        games: 162,
+        wins: 98,
+        games_behind: 0.0,
+        position: 1
+      })
 
-      red_sox = insert(:team,
+      red_sox =
+        insert(:team,
           name: "Boston",
           nickname: "Red Sox",
           abbr: "BOS",
@@ -208,8 +209,7 @@ defmodule OOTPUtility.StandingsTest do
     end
 
     test "it returns the standings for the specified team in the specified conference",
-      %{red_sox: red_sox, american_league: american_league} do
-
+         %{red_sox: red_sox, american_league: american_league} do
       assert Standings.for_team(red_sox, american_league) == %Standings.Team{
                id: "boston-red-sox-standings",
                name: "Boston Red Sox",
@@ -228,8 +228,7 @@ defmodule OOTPUtility.StandingsTest do
     end
 
     test "it returns the standings for the specified team in the specified league",
-      %{red_sox: red_sox, mlb: mlb} do
-
+         %{red_sox: red_sox, mlb: mlb} do
       assert Standings.for_team(red_sox, mlb) == %Standings.Team{
                id: "boston-red-sox-standings",
                name: "Boston Red Sox",

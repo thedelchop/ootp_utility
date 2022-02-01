@@ -31,14 +31,16 @@ defmodule OOTPUtilityWeb.Components.Standings.TeamsTest do
         wins: 50,
         games_behind: 11.0,
         streak: -2
-      ),
-
+      )
     ]
 
-    {:ok, standings: standings, conn: Phoenix.ConnTest.build_conn() }
+    {:ok, standings: standings, conn: Phoenix.ConnTest.build_conn()}
   end
 
-  test_snapshot "renders a list in the standings table for each team standings", %{conn: conn, standings: standings} do
+  test_snapshot "renders a list in the standings table for each team standings", %{
+    conn: conn,
+    standings: standings
+  } do
     assigns = %{socket: conn}
 
     render_surface do
@@ -58,7 +60,10 @@ defmodule OOTPUtilityWeb.Components.Standings.TeamsTest do
     end
   end
 
-  test_snapshot "it provides a compact property to condense the table", %{standings: standings, conn: conn} do
+  test_snapshot "it provides a compact property to condense the table", %{
+    standings: standings,
+    conn: conn
+  } do
     assigns = %{socket: conn}
 
     render_surface do

@@ -10,7 +10,9 @@ defmodule OOTPUtilityWeb.Components.Standings.LeagueTest do
     {:ok, league: league}
   end
 
-  test_snapshot "renders all of its conference standings if the league has conferences", %{league: league} do
+  test_snapshot "renders all of its conference standings if the league has conferences", %{
+    league: league
+  } do
     american_league = insert(:conference, name: "American League", league: league)
 
     insert(:team,
@@ -19,7 +21,8 @@ defmodule OOTPUtilityWeb.Components.Standings.LeagueTest do
       league: league,
       conference: american_league,
       division: nil
-    ) |> with_record(%{
+    )
+    |> with_record(%{
       games: 100,
       wins: 5
     })
@@ -30,7 +33,8 @@ defmodule OOTPUtilityWeb.Components.Standings.LeagueTest do
       league: league,
       conference: american_league,
       division: nil
-    ) |> with_record(%{
+    )
+    |> with_record(%{
       games: 100,
       wins: 7
     })
@@ -41,7 +45,8 @@ defmodule OOTPUtilityWeb.Components.Standings.LeagueTest do
       league: league,
       conference: american_league,
       division: nil
-    ) |> with_record(%{
+    )
+    |> with_record(%{
       games: 100,
       wins: 7
     })
@@ -54,7 +59,8 @@ defmodule OOTPUtilityWeb.Components.Standings.LeagueTest do
       league: league,
       conference: national_league,
       division: nil
-    ) |> with_record(%{
+    )
+    |> with_record(%{
       games: 10,
       wins: 5
     })
@@ -65,7 +71,8 @@ defmodule OOTPUtilityWeb.Components.Standings.LeagueTest do
       league: league,
       conference: national_league,
       division: nil
-    ) |> with_record(%{
+    )
+    |> with_record(%{
       games: 10,
       wins: 7
     })
@@ -76,12 +83,13 @@ defmodule OOTPUtilityWeb.Components.Standings.LeagueTest do
       league: league,
       conference: national_league,
       division: nil
-    ) |> with_record(%{
+    )
+    |> with_record(%{
       games: 10,
       wins: 2
     })
 
-    league = Repo.preload(league, [conferences: [:divisions, :league, teams: :record]])
+    league = Repo.preload(league, conferences: [:divisions, :league, teams: :record])
 
     render_surface do
       ~F"""
@@ -90,7 +98,8 @@ defmodule OOTPUtilityWeb.Components.Standings.LeagueTest do
     end
   end
 
-  test_snapshot "renders all of its division standings if the league has divisions but no conferences", %{league: league} do
+  test_snapshot "renders all of its division standings if the league has divisions but no conferences",
+                %{league: league} do
     american_league_east = insert(:division, name: "AL East", league: league, conference: nil)
 
     insert(:team,
@@ -99,7 +108,8 @@ defmodule OOTPUtilityWeb.Components.Standings.LeagueTest do
       league: league,
       conference: nil,
       division: american_league_east
-    ) |> with_record(%{
+    )
+    |> with_record(%{
       games: 10,
       wins: 5
     })
@@ -110,7 +120,8 @@ defmodule OOTPUtilityWeb.Components.Standings.LeagueTest do
       league: league,
       conference: nil,
       division: american_league_east
-    ) |> with_record(%{
+    )
+    |> with_record(%{
       games: 10,
       wins: 7
     })
@@ -121,12 +132,14 @@ defmodule OOTPUtilityWeb.Components.Standings.LeagueTest do
       league: league,
       conference: nil,
       division: american_league_east
-    ) |> with_record(%{
+    )
+    |> with_record(%{
       games: 10,
       wins: 8
     })
 
-    national_league_east = insert(:division, name: "National League East", league: league, conference: nil)
+    national_league_east =
+      insert(:division, name: "National League East", league: league, conference: nil)
 
     insert(:team,
       name: "Atlanta",
@@ -134,7 +147,8 @@ defmodule OOTPUtilityWeb.Components.Standings.LeagueTest do
       league: league,
       conference: nil,
       division: national_league_east
-    ) |> with_record(%{
+    )
+    |> with_record(%{
       games: 10,
       wins: 5
     })
@@ -145,7 +159,8 @@ defmodule OOTPUtilityWeb.Components.Standings.LeagueTest do
       league: league,
       conference: nil,
       division: national_league_east
-    ) |> with_record(%{
+    )
+    |> with_record(%{
       games: 10,
       wins: 7
     })
@@ -156,12 +171,14 @@ defmodule OOTPUtilityWeb.Components.Standings.LeagueTest do
       league: league,
       conference: nil,
       division: national_league_east
-    ) |> with_record(%{
+    )
+    |> with_record(%{
       games: 10,
       wins: 3
     })
 
-    league = Repo.preload(league, [:conferences, divisions: [:league, :conference, teams: [:record]]])
+    league =
+      Repo.preload(league, [:conferences, divisions: [:league, :conference, teams: [:record]]])
 
     render_surface do
       ~F"""
@@ -170,14 +187,17 @@ defmodule OOTPUtilityWeb.Components.Standings.LeagueTest do
     end
   end
 
-  test_snapshot "renders its team standings if the league has no divisions or conferences", %{league: league} do
+  test_snapshot "renders its team standings if the league has no divisions or conferences", %{
+    league: league
+  } do
     insert(:team,
       name: "Boston",
       nickname: "Red Sox",
       league: league,
       conference: nil,
       division: nil
-    ) |> with_record(%{
+    )
+    |> with_record(%{
       games: 10,
       wins: 5
     })
@@ -188,7 +208,8 @@ defmodule OOTPUtilityWeb.Components.Standings.LeagueTest do
       league: league,
       conference: nil,
       division: nil
-    ) |> with_record(%{
+    )
+    |> with_record(%{
       games: 10,
       wins: 7
     })
@@ -199,7 +220,8 @@ defmodule OOTPUtilityWeb.Components.Standings.LeagueTest do
       league: league,
       conference: nil,
       division: nil
-    ) |> with_record(%{
+    )
+    |> with_record(%{
       games: 10,
       wins: 8
     })

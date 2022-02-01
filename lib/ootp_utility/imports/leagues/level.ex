@@ -4,10 +4,10 @@ defmodule OOTPUtility.Leagues.Level do
   alias __MODULE__
 
   @type t() :: %Level{
-    id: atom(),
-    name: binary(),
-    abbr: binary()
-  }
+          id: atom(),
+          name: binary(),
+          abbr: binary()
+        }
 
   @spec new(atom()) :: Level.t()
   def new(id) do
@@ -28,18 +28,20 @@ defmodule OOTPUtility.Leagues.Level do
     |> Enum.join(" ")
   end
 
-
   defp get_abbreviation(id) do
-    Map.fetch!(%{
-      major: "ML",
-      triple_a: "AAA",
-      double_a: "AA",
-      single_a: "A",
-      low_a: "A-",
-      rookie: "R",
-      international: "INT",
-      college: "COL",
-      high_school: "HS"
-    }, id)
+    Map.fetch!(
+      %{
+        major: "ML",
+        triple_a: "AAA",
+        double_a: "AA",
+        single_a: "A",
+        low_a: "A-",
+        rookie: "R",
+        international: "INT",
+        college: "COL",
+        high_school: "HS"
+      },
+      id
+    )
   end
 end
