@@ -35,7 +35,6 @@ defmodule OOTPUtility.Standings.Team do
   def new(
         %Teams.Team{
           slug: slug,
-          name: name,
           abbr: abbr,
           logo_filename: logo,
           record:
@@ -49,11 +48,11 @@ defmodule OOTPUtility.Standings.Team do
               winning_percentage: winning_percentage,
               wins: wins
             } = _team_record
-        } = _team
+        } = team
       ) do
     %Standings.Team{
       id: "#{slug}-standings",
-      name: name,
+      name: Teams.get_full_name(team),
       abbr: abbr,
       slug: slug,
       logo_filename: logo,

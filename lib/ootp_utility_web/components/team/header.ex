@@ -1,12 +1,13 @@
 defmodule OOTPUtilityWeb.Components.Team.Header do
   use Surface.LiveComponent
 
-  alias OOTPUtility.Teams
+  alias OOTPUtility.{Standings, Teams}
   alias OOTPUtilityWeb.Components.Team.Rankings
   alias OOTPUtilityWeb.Router.Helpers, as: Routes
   alias OOTPUtilityWeb.Components.Shared.Section
 
   import OOTPUtilityWeb.Components.Team.Helpers
+  import OOTPUtilityWeb.Helpers, only: [ordinalize: 1]
 
   prop team, :struct, required: true
 
@@ -19,8 +20,8 @@ defmodule OOTPUtilityWeb.Components.Team.Header do
             <h1 class="text-2xl lg:text-4xl font-medium text-gray-900 whitespace-nowrap">{full_name(@team)}</h1>
             <div class="contents divide-y">
               <div class="flex flex-row gap-2 sm:gap-4 flex-wrap">
-                <h2 class="text-base lg:text-xl font-medium text-gray-900">{division_standings(@team)}</h2>
-                <h2 class="hidden md:block text-base lg:text-xl font-medium text-gray-900">{conference_standings(@team)}</h2>
+                <h2 class="text-base lg:text-xl font-medium text-gray-900">{standings(@team)}</h2>
+                <h2 class="hidden md:block text-base lg:text-xl font-medium text-gray-900">{standings_in_parent_league(@team)}</h2>
               </div>
               <div class="flex flex-row gap-2 pt-2 lg:pt-4">
                 <h3 class="text-sm lg:text-lg font-medium text-gray-900">{team_record(@team)}</h3>
@@ -42,11 +43,37 @@ defmodule OOTPUtilityWeb.Components.Team.Header do
     "#{name} #{nickname}"
   end
 
-  defp division_standings(_team) do
-    "2nd in AL East"
+  defp standings(%Teams.Team{division: nil, conference: nil, league: league} = team) do
+    do_standings(team, league)
   end
 
-  defp conference_standings(_team) do
-    "3rd in American League"
+  defp standings(%Teams.Team{division: nil, conference: conference} = team) do
+    do_standings(team, conference)
+  end
+
+  defp standings(%Teams.Team{division: division} = team) do
+    do_standings(team, division)
+  end
+
+  defp do_standings(team, parent) do
+    %Standings.Team{position: position} = Standings.for_team(team)
+
+    "#{ordinalize(position)} in #{parent.name}"
+  end
+
+  defp standings_in_parent_league(%Teams.Team{division: nil, conference: nil, league: _league} = _team), do: ""
+
+  defp standings_in_parent_league(%Teams.Team{division: nil, conference: _conference, league: league} = team) do
+    do_standings_in_parent_league(team, league)
+  end
+
+  defp standings_in_parent_league(%Teams.Team{division: _division, conference: conference} = team) do
+    do_standings_in_parent_league(team, conference)
+  end
+
+  defp do_standings_in_parent_league(team, parent) do
+    %Standings.Team{position: position} = Standings.for_team(team, parent)
+
+    "#{ordinalize(position)} in #{parent.name}"
   end
 end
