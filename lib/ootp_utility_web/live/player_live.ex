@@ -3,12 +3,13 @@ defmodule OOTPUtilityWeb.PlayerLive do
 
   alias OOTPUtility.Players
 
-  alias OOTPUtilityWeb.Components.Player.Header
+  alias OOTPUtilityWeb.Components.Player.{Attributes, Header}
 
   @impl true
   def render(assigns) do
     ~F"""
       <Header id={"#{@player.slug}-header"} player={@player} />
+      <Attributes id={"#{@player.slug}-attributes"} player={@player} />
     """
   end
 
