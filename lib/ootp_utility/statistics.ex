@@ -37,6 +37,7 @@ defmodule OOTPUtility.Statistics do
     :walks_hits_per_inning_pitched
   ]
 
+  defguard is_prevention_stat(stat) when stat in @prevention_statistics
   defguard is_batting_stat(stat) when stat in @batting_statistics
   defguard is_pitching_stat(stat) when stat in @pitching_statistics
 

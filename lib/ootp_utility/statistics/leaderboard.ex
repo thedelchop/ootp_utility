@@ -7,6 +7,7 @@ defmodule OOTPUtility.Statistics.Leaderboard do
   statistic.
   """
   import Ecto.Query
+  import OOTPUtility.Statistics, only: [is_prevention_stat: 1]
 
   alias __MODULE__
   alias OOTPUtility.{Players, Repo}
@@ -18,10 +19,16 @@ defmodule OOTPUtility.Statistics.Leaderboard do
     }
   end
 
-  defp leaders_for(query, field) do
+  defp leaders_for(query, field) when is_prevention_stat(field) do
+    do_leaders_for(query, field, :asc)
+  end
+
+  defp leaders_for(query, field), do: do_leaders_for(query, field)
+
+  defp do_leaders_for(query, field, sort_order \\ :desc) do
     query
     |> join(:inner, [stats], p in Players.Player, on: stats.player_id == p.id)
-    |> order_by([stats], desc: ^field)
+    |> order_by([stats], [{^sort_order, ^field}])
     |> limit(5)
     |> select([stats, p], %{subject: p, value: field(stats, ^field)})
     |> Repo.all()
