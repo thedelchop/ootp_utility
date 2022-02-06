@@ -1,1 +1,1 @@
-"    <div class=\"bg-gray-50 pb-2 border-b border-gray-200\">\n    <h3 class=\"text-lg p-2 font-medium text-gray-900\">\n      My Title\n    </h3>\n  </div>\n"
+"    <div class=\"bg-gray-50 pb-2 border-b border-gray-200 grow\">\n    <h3 class=\"text-lg p-2 font-medium text-gray-900\">\n      My Title\n    </h3>\n  </div>\n"

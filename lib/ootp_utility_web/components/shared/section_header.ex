@@ -8,7 +8,7 @@ defmodule OOTPUtilityWeb.Components.Shared.SectionHeader do
 
   def render(assigns) do
     ~F"""
-      <div class="bg-gray-50 pb-2 border-b border-gray-200">
+      <div class="bg-gray-50 pb-2 border-b border-gray-200 grow">
         <h3 class="text-lg p-2 font-medium text-gray-900">
           <#slot />
         </h3>
