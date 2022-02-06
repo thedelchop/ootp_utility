@@ -17,8 +17,7 @@ defmodule OOTPUtilityWeb.Components.Standings.Teams do
     "p-1",
     "md:p-2",
     "text-xs",
-    "uppercase",
-    "tracking-wider"
+    "uppercase"
   ]
 
   prop parent_name, :string, default: ""
