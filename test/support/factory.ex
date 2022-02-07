@@ -14,4 +14,5 @@ defmodule OOTPUtility.Factory do
   use OOTPUtility.Statistics.PitchingFactory
   use OOTPUtility.Teams.RosterFactory
   use OOTPUtility.Standings.TeamRecordFactory
+  use OOTPUtility.Factories.Players.RatingsFactory
 end
