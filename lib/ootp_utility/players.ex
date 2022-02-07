@@ -13,6 +13,16 @@ defmodule OOTPUtility.Players do
 
   import OOTPUtility.Utilities, only: [expand_position_key: 1]
 
+  @pitching_positions [
+    :pitcher,
+    :starting_pitcher,
+    :middle_reliver,
+    :closer
+  ]
+
+  defguard is_pitcher(player) when player.position in @pitching_positions
+  defguard is_hitter(player) when player.position not in @pitching_positions
+
   @doc """
   Returns all players assoicated with a specified team, providing
   the following options:
