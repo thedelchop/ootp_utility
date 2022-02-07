@@ -50,4 +50,15 @@ defmodule OOTPUtility.UtilitiesTest do
       assert Utilities.position_from_base("mars") == :error
     end
   end
+
+  describe "convert_outs_to_innings/1" do
+    test "it returns the correct number of innings pitched for the specified outs pitched" do
+      assert Utilities.convert_outs_to_innings(0) == 0.0
+      assert Utilities.convert_outs_to_innings(3) == 1.0
+      assert Utilities.convert_outs_to_innings(4) == 1.3
+      assert Utilities.convert_outs_to_innings(5) == 1.6
+
+      assert Utilities.convert_outs_to_innings(550) == 183.3
+    end
+  end
 end

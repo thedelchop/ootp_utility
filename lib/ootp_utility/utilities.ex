@@ -142,4 +142,21 @@ defmodule OOTPUtility.Utilities do
         Keyword.get(renames, key, key)
     end)
   end
+
+  @spec convert_outs_to_innings(integer()) :: float()
+  def convert_outs_to_innings(number_of_outs) do
+    whole_innings = div(number_of_outs, 3) / 1
+
+    case rem(number_of_outs, 3) do
+      0 ->
+        whole_innings
+
+      1 ->
+        whole_innings + 0.3
+
+      2 ->
+        whole_innings + 0.6
+    end
+  end
+
 end

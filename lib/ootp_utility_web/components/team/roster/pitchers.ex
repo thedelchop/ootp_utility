@@ -15,7 +15,7 @@ defmodule OOTPUtilityWeb.Components.Team.Roster.Pitchers do
 
   alias OOTPUtility.{Players, Statistics}
 
-  import OOTPUtility.Utilities, only: [get_position_key: 1]
+  import OOTPUtility.Utilities, only: [get_position_key: 1, convert_outs_to_innings: 1]
 
   prop title, :string, required: true
   prop players, :list, required: true
@@ -91,7 +91,7 @@ defmodule OOTPUtilityWeb.Components.Team.Roster.Pitchers do
               </Column>
 
               <Column label="IP">
-                {stats.losses}
+                {convert_outs_to_innings(stats.outs_pitched)}
               </Column>
 
               <Column label="W">
