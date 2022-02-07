@@ -36,6 +36,7 @@ defmodule OOTPUtility.Imports.Players.Ratings.Batting do
       ) do
     [
       %{
+        id: "#{player_id}-1",
         type: :ability,
         contact: overall_contact,
         gap_power: overall_gap,
@@ -49,6 +50,7 @@ defmodule OOTPUtility.Imports.Players.Ratings.Batting do
         player_id: player_id
       },
       %{
+        id: "#{player_id}-2",
         type: :ability_vs_left,
         contact: vs_lhp_contact,
         gap_power: vs_lhp_gap,
@@ -62,6 +64,7 @@ defmodule OOTPUtility.Imports.Players.Ratings.Batting do
         player_id: player_id
       },
       %{
+        id: "#{player_id}-3",
         type: :ability_vs_right,
         contact: vs_rhp_contact,
         gap_power: vs_rhp_gap,
@@ -75,6 +78,7 @@ defmodule OOTPUtility.Imports.Players.Ratings.Batting do
         player_id: player_id
       },
       %{
+        id: "#{player_id}-4",
         type: :talent,
         contact: talent_contact,
         gap_power: talent_gap,

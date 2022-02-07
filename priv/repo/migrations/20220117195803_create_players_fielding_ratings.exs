@@ -2,7 +2,7 @@ defmodule OOTPUtility.Repo.Migrations.CreatePlayersFieldingRatings do
   use Ecto.Migration
 
   def change do
-    create table(:players_fielding_ratings, primary_key: false) do
+    create table(:players_fielding_ratings) do
       add :infield_range, :integer
       add :infield_error, :integer
       add :infield_arm, :integer

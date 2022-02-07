@@ -10,6 +10,8 @@ defmodule OOTPUtility.Imports.Players.Ratings.Running do
     ],
     schema: Players.Ratings.Running
 
+  def sanitize_attributes(%{player_id: player_id} = attrs), do: Map.put(attrs, :id,  player_id)
+
   def write_records_to_database(attrs) do
     OOTPUtility.Repo.insert_all(Players.Ratings.Running, attrs)
 

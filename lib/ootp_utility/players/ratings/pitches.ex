@@ -1,9 +1,8 @@
 defmodule OOTPUtility.Players.Ratings.Pitches do
-  use OOTPUtility.Schema
+  use OOTPUtility.Schema, composite_key: [:player_id, :type]
 
   alias OOTPUtility.Players.Player
 
-  @primary_key false
   schema "players_pitch_ratings" do
     field :type, Ecto.Enum, values: [ability: 1, talent: 4]
 

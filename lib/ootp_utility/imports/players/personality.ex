@@ -20,7 +20,8 @@ defmodule OOTPUtility.Imports.Players.Personality do
           desire_to_win: desire_to_win,
           work_ethic: work_ethic,
           intelligence: intelligence,
-          leadership: leadership
+          leadership: leadership,
+          player_id: player_id
         } = attrs
       ) do
     %{
@@ -32,6 +33,7 @@ defmodule OOTPUtility.Imports.Players.Personality do
         intelligence: convert_personality_value(intelligence),
         leadership: convert_personality_value(leadership)
     }
+    |> Map.put(:id, player_id)
   end
 
   def write_records_to_database(attrs) do

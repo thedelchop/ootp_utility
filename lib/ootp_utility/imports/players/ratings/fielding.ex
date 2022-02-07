@@ -20,6 +20,7 @@ defmodule OOTPUtility.Imports.Players.Ratings.Fielding do
         } = _attrs
       ) do
     %{
+      id: player_id,
       infield_range: infield_range,
       infield_arm: infield_arm,
       infield_error: infield_error,

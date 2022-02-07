@@ -2,7 +2,7 @@ defmodule OOTPUtility.Repo.Migrations.CreatePlayerPitchRatings do
   use Ecto.Migration
 
   def change do
-    create table(:players_pitch_ratings, primary_key: false) do
+    create table(:players_pitch_ratings) do
       add :type, :integer
 
       add :fastballl, :integer

@@ -20,6 +20,7 @@ defmodule OOTPUtility.Imports.Players.Ratings.Position do
         } = _attrs
       ) do
     %{
+      id: player_id,
       pitcher: pitcher_experience,
       catcher: catcher_experience,
       first_base: first_base_experience,

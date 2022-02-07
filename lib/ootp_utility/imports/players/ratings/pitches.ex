@@ -36,6 +36,7 @@ defmodule OOTPUtility.Imports.Players.Ratings.Pitches do
       ) do
     [
       %{
+        id: "#{player_id}-1",
         type: :ability,
         fastball: fastball_ability,
         slider: slider_ability,
@@ -52,6 +53,7 @@ defmodule OOTPUtility.Imports.Players.Ratings.Pitches do
         player_id: player_id
       },
       %{
+        id: "#{player_id}-4",
         type: :talent,
         fastball: fastball_talent,
         slider: slider_talent,

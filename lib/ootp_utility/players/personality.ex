@@ -1,5 +1,5 @@
 defmodule OOTPUtility.Players.Personality do
-  use OOTPUtility.Schema
+  use OOTPUtility.Schema, composite_key: [:player_id]
 
   alias OOTPUtility.Players.Player
 
@@ -12,7 +12,6 @@ defmodule OOTPUtility.Players.Personality do
     high: 3
   ]
 
-  @primary_key false
   schema "players_personalities" do
     field :greed, Ecto.Enum, values: @personality_ratings
     field :loyalty, Ecto.Enum, values: @personality_ratings

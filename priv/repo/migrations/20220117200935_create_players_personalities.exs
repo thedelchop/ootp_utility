@@ -2,7 +2,7 @@ defmodule OOTPUtility.Repo.Migrations.CreatePlayersPersonalities do
   use Ecto.Migration
 
   def change do
-    create table(:players_personalities, primary_key: false) do
+    create table(:players_personalities) do
       add :greed, :integer
       add :loyalty, :integer
       add :desire_to_win, :integer

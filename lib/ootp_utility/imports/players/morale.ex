@@ -16,7 +16,8 @@ defmodule OOTPUtility.Imports.Players.Morale do
           personal_performance: personal_performance,
           team_performance: team_performance,
           team_transactions: team_transactions,
-          role_on_team: role_on_team
+          role_on_team: role_on_team,
+          player_id: player_id
         } = attrs
       ) do
     %{
@@ -26,6 +27,7 @@ defmodule OOTPUtility.Imports.Players.Morale do
         team_transactions: convert_morale_value(team_transactions),
         role_on_team: convert_player_role_value(role_on_team)
     }
+    |> Map.put(:id, player_id)
   end
 
   def write_records_to_database(attrs) do

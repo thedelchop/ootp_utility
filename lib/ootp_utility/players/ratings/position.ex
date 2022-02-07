@@ -1,9 +1,8 @@
 defmodule OOTPUtility.Players.Ratings.Position do
-  use OOTPUtility.Schema
+  use OOTPUtility.Schema, composite_key: [:player_id]
 
   alias OOTPUtility.Players.Player
 
-  @primary_key false
   schema "players_position_ratings" do
     field :pitcher, :integer
     field :catcher, :integer

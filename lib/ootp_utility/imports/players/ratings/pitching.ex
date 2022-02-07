@@ -29,6 +29,7 @@ defmodule OOTPUtility.Imports.Players.Ratings.Pitching do
       ) do
     [
       %{
+        id: "#{player_id}-1",
         type: :ability,
         stuff: overall_stuff,
         movement: overall_movement,
@@ -41,6 +42,7 @@ defmodule OOTPUtility.Imports.Players.Ratings.Pitching do
         hold: hold
       },
       %{
+        id: "#{player_id}-2",
         type: :ability_vs_left,
         stuff: vs_lhp_stuff,
         movement: vs_lhp_movement,
@@ -53,6 +55,7 @@ defmodule OOTPUtility.Imports.Players.Ratings.Pitching do
         hold: hold
       },
       %{
+        id: "#{player_id}-3",
         type: :ability_vs_right,
         stuff: vs_rhp_stuff,
         movement: vs_rhp_movement,
@@ -65,6 +68,7 @@ defmodule OOTPUtility.Imports.Players.Ratings.Pitching do
         hold: hold
       },
       %{
+        id: "#{player_id}-4",
         type: :talent,
         stuff: talent_stuff,
         movement: talent_movement,

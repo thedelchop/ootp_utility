@@ -1,5 +1,5 @@
 defmodule OOTPUtility.Players.Morale do
-  use OOTPUtility.Schema
+  use OOTPUtility.Schema, composite_key: [:player_id]
 
   alias OOTPUtility.Players.Player
 
@@ -13,7 +13,6 @@ defmodule OOTPUtility.Players.Morale do
     great: 7
   ]
 
-  @primary_key false
   schema "players_morale" do
     field :personal_performance, Ecto.Enum, values: @morale_values
     field :role_on_team, Ecto.Enum, values: @morale_values

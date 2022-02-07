@@ -1,9 +1,8 @@
 defmodule OOTPUtility.Players.Ratings.Fielding do
-  use OOTPUtility.Schema
+  use OOTPUtility.Schema, composite_key: [:player_id]
 
   alias OOTPUtility.Players.Player
 
-  @primary_key false
   schema "players_fielding_ratings" do
     field :infield_range, :integer
     field :infield_error, :integer

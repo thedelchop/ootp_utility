@@ -1,9 +1,8 @@
 defmodule OOTPUtility.Players.Ratings.Running do
-  use OOTPUtility.Schema
+  use OOTPUtility.Schema, composite_key: [:player_id]
 
   alias OOTPUtility.Players.Player
 
-  @primary_key false
   schema "players_running_ratings" do
     field :speed, :integer
     field :stealing_ability, :integer
