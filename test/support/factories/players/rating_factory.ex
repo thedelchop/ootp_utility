@@ -35,17 +35,27 @@ defmodule OOTPUtility.Factories.Players.RatingsFactory do
         }
       end
 
-      def with_batting_ratings(%Players.Player{} = player) do
+      def with_batting_ratings(%Players.Player{} = player, rating_attrs \\ []) do
         for type <- [:ability, :talent, :ability_vs_left, :ability_vs_right] do
-          insert(:batting_ratings, player: player, type: type)
+          attrs =
+            rating_attrs
+            |> Keyword.put(:player, player)
+            |> Keyword.put(:type, type)
+
+          insert(:batting_ratings, attrs)
         end
 
         player
       end
 
-      def with_pitching_ratings(%Players.Player{} = player) do
+      def with_pitching_ratings(%Players.Player{} = player, rating_attrs \\ []) do
         for type <- [:ability, :talent, :ability_vs_left, :ability_vs_right] do
-          insert(:pitching_ratings, player: player, type: type)
+          attrs =
+            rating_attrs
+            |> Keyword.put(:player, player)
+            |> Keyword.put(:type, type)
+
+          insert(:pitching_ratings, attrs)
         end
 
         player
