@@ -35,11 +35,13 @@ defmodule OOTPUtilityWeb.PlayerLive do
     player
     |> Players.Ratings.pitching_ratings_for()
     |> Players.Ratings.grouped_by_attributes()
+    |> Players.Ratings.scale_attributes(10)
   end
 
   defp get_attributes(%Players.Player{} = player) do
     player
     |> Players.Ratings.batting_ratings_for()
     |> Players.Ratings.grouped_by_attributes()
+    |> Players.Ratings.scale_attributes(10)
   end
 end

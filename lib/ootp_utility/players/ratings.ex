@@ -116,8 +116,9 @@ defmodule OOTPUtility.Players.Ratings do
           | {:movement, [attribute_ratings()]}
           | {:controll, [attribute_ratings()]}
 
-  @spec grouped_by_attributes([Ratings.Batting.t() | Ratings.Pitching.t()]) ::
-          pitching_attributes() | batting_attributes()
+  @type attributes :: [pitching_attributes()] | [batting_attributes()]
+
+  @spec grouped_by_attributes([Ratings.t()]) :: attributes()
   def grouped_by_attributes([%module{} | _] = ratings) when module == Ratings.Batting do
     ratings
     |> Enum.reduce(
@@ -172,6 +173,29 @@ defmodule OOTPUtility.Players.Ratings do
           |> update_in([:control, type], fn _ -> control end)
       end
     )
+  end
+
+  @base_scale 200
+
+  @doc """
+    Scales the attributes from their default 200 point scale to the specified scale
+  """
+  @spec scale_attributes(attributes(), integer()) :: attributes()
+  def scale_attributes(attributes, scale) do
+    attributes
+    |> Enum.map(fn
+      {attribute, ratings} ->
+        scaled_ratings =
+          ratings
+          |> Enum.map(fn
+            {type, ability} ->
+              {type, ceil(ability * scale / @base_scale)}
+          end)
+          |> Enum.reverse()
+
+        {attribute, scaled_ratings}
+    end)
+    |> Enum.reverse()
   end
 
   defp ratings_for(%Players.Player{id: player_id} = _player, schema) do
