@@ -11,7 +11,7 @@ defmodule OOTPUtilityWeb.Components.Player.Details do
             HT/WT:
           </dt>
           <dd class="text-sm tracking-wider text-gray-900 col-span-2">
-            {@player.height}/{@player.weight}
+            {height(@player)}/{"#{@player.weight} lbs"}
           </dd>
         </div>
         <div class="grid grid-cols-3 gap-1 p-0.5">
@@ -32,5 +32,14 @@ defmodule OOTPUtilityWeb.Components.Player.Details do
         </div>
       </dl>
     """
+  end
+
+  def height(player) do
+    height_inches = ceil(player.height/100 * 39.37)
+
+    height_ft = div(height_inches, 12)
+    height_in = rem(height_inches, 12)
+
+    "#{height_ft}' #{height_in}\""
   end
 end
