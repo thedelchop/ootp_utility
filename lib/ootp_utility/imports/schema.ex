@@ -83,7 +83,7 @@ defmodule OOTPUtility.Imports.Schema do
     |> Flow.map(&Ecto.Changeset.apply_changes/1)
     |> Flow.map(&Map.from_struct/1)
     |> Flow.map(&Map.take(&1, attributes_to_import))
-    |> Flow.partition(window: window, stages: 1)
+    |> Flow.partition(window: window)
     |> Flow.reduce(fn -> [] end, &[&1 | &2])
     |> Flow.on_trigger(fn attributes ->
       {ids, _} = module.write_records_to_database(attributes)

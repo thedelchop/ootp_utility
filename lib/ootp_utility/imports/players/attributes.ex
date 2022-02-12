@@ -1,4 +1,4 @@
-defmodule OOTPUtility.Imports.Players.Ratings do
+defmodule OOTPUtility.Imports.Players.Attributes do
   alias OOTPUtility.{Imports, Players}
 
   use Imports,

@@ -156,13 +156,12 @@ defmodule OOTPUtility.Imports do
     player_tasks =
       stream_imports(
         [
-          Imports.Players.Ratings.Batting,
-          Imports.Players.Ratings.Pitching,
-          Imports.Players.Ratings.Pitches,
-          Imports.Players.Ratings.Fielding,
-          Imports.Players.Ratings.Position,
-          Imports.Players.Ratings.Running,
-          Imports.Players.Ratings,
+          Imports.Players.Attributes.Batting,
+          Imports.Players.Attributes.Pitching,
+          Imports.Players.Attributes.Pitches,
+          Imports.Players.Attributes.Fielding,
+          Imports.Players.Attributes.Position,
+          Imports.Players.Attributes.Running,
           Imports.Players.Morale,
           Imports.Players.Personality,
           Imports.Teams.Roster.Membership,
@@ -188,6 +187,36 @@ defmodule OOTPUtility.Imports do
       )
 
     Task.yield_many(team_tasks ++ player_tasks ++ game_tasks, :infinity)
+
+    batting_attrs_import_task =
+      Task.Supervisor.async(
+        OOTPUtility.ImportTaskSupervisor,
+        Imports.Players.Attributes.Misc.Batting,
+        :import_from_path,
+        [path]
+      )
+
+    Task.await(batting_attrs_import_task, :infinity)
+
+    pitching_attrs_import_task =
+      Task.Supervisor.async(
+        OOTPUtility.ImportTaskSupervisor,
+        Imports.Players.Attributes.Misc.Pitching,
+        :import_from_path,
+        [path]
+      )
+
+    Task.await(pitching_attrs_import_task, :infinity)
+
+    player_attrs_import_task =
+      Task.Supervisor.async(
+        OOTPUtility.ImportTaskSupervisor,
+        Imports.Players.Attributes,
+        :import_from_path,
+        [path]
+      )
+
+    Task.await(player_attrs_import_task, :infinity)
 
     IO.puts("Finished importing all files from #{path}")
   end
