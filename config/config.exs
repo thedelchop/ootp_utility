@@ -66,6 +66,8 @@ config :surface, :components, [
    default_translator: {OOTPUtilityWeb.ErrorHelpers, :translate_error}}
 ]
 
+config :ootp_utility, :import_stages, System.schedulers_online()
+
 # Configure database
 import_config "db.exs"
 

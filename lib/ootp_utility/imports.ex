@@ -59,7 +59,7 @@ defmodule OOTPUtility.Imports do
     file
     |> File.stream!(read_ahead: 100_000)
     |> do_decode_file(true)
-    |> Flow.from_enumerable()
+    |> Flow.from_enumerable(stages: Application.fetch_env!(:ootp_utility, :import_stages))
   end
 
   def decode_files([file_with_headers | rest_of_files]) do
@@ -80,7 +80,9 @@ defmodule OOTPUtility.Imports do
       |> Enum.flat_map(&Stream.chunk_every(&1, 10_000))
       |> Enum.map(&do_decode_file(&1, headers))
 
-    Flow.from_enumerables([file_with_headers_stream] ++ rest_of_file_streams)
+    Flow.from_enumerables([file_with_headers_stream] ++ rest_of_file_streams,
+      stages: Application.fetch_env!(:ootp_utility, :import_stages)
+    )
   end
 
   def do_decode_file(file_to_decode, headers) do

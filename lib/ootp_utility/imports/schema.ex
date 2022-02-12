@@ -70,7 +70,6 @@ defmodule OOTPUtility.Imports.Schema do
   def validate_changeset(_module, changeset), do: changeset
   def update_changeset(_module, changeset), do: changeset
 
-
   @pg_maximum_parameters 65535
 
   def import_from_attributes(module, schema, attributes) do
@@ -93,7 +92,10 @@ defmodule OOTPUtility.Imports.Schema do
     |> Flow.map(&Ecto.Changeset.apply_changes/1)
     |> Flow.map(&Map.from_struct/1)
     |> Flow.map(&Map.take(&1, attributes_to_import))
-    |> Flow.partition(window: window)
+    |> Flow.partition(
+      window: window,
+      stages: Application.fetch_env!(:ootp_utility, :import_stages)
+    )
     |> Flow.reduce(fn -> [] end, &[&1 | &2])
     |> Flow.on_trigger(fn attributes ->
       {ids, _} = module.write_records_to_database(attributes)
