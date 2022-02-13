@@ -70,10 +70,20 @@ defmodule OOTPUtility.Imports.Schema do
   def validate_changeset(_module, changeset), do: changeset
   def update_changeset(_module, changeset), do: changeset
 
+
+  @pg_maximum_parameters 65535
+
   def import_from_attributes(module, schema, attributes) do
     attributes_to_import = schema.__schema__(:fields)
+    number_of_attributes = Enum.count(attributes_to_import)
 
-    window = Flow.Window.count(500)
+    # The Postgresql protocol can not write more than 65535 parameters during a single query, so since we
+    # are doing an insert all operation, the most records we can write in a single pass is depends on the
+    # number of fields we are writing for the current module. So there, we dividie the MAX_PARAMETERS by
+    # the NUMBER_OF_FIELDS_IN_SCHEMA to obtain WINDOW_SIZE.
+    window_size = div(@pg_maximum_parameters, number_of_attributes)
+
+    window = Flow.Window.count(window_size)
 
     attributes
     |> Flow.map(&List.wrap/1)
