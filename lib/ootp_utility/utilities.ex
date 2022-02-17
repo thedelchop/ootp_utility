@@ -158,5 +158,4 @@ defmodule OOTPUtility.Utilities do
         whole_innings + 0.6
     end
   end
-
 end

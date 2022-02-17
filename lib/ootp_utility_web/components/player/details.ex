@@ -35,7 +35,7 @@ defmodule OOTPUtilityWeb.Components.Player.Details do
   end
 
   def height(player) do
-    height_inches = ceil(player.height/100 * 39.37)
+    height_inches = ceil(player.height / 100 * 39.37)
 
     height_ft = div(height_inches, 12)
     height_in = rem(height_inches, 12)
