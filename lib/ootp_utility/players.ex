@@ -164,12 +164,14 @@ defmodule OOTPUtility.Players do
       ni
 
   """
-  @spec get_player_by_slug(String.t()) :: Ecto.Schema.t() | [Ecto.Schema.t()] | nil
-  def get_player_by_slug(slug) do
+  @spec get_player_by_slug(String.t(), Keyword.t()) :: Ecto.Schema.t() | [Ecto.Schema.t()] | nil
+  def get_player_by_slug(slug, opts \\ Keyword.new) do
+    preloads = Keyword.get(opts, :preload, [:team, :league])
+
     players =
       Player
       |> where([p], p.slug == ^slug)
-      |> preload([p], [:team, :league])
+      |> preload([p], ^preloads)
       |> Repo.all()
 
     case players do

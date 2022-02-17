@@ -1,7 +1,7 @@
 defmodule OOTPUtility.PlayersTest do
   use OOTPUtility.DataCase, async: true
 
-  alias OOTPUtility.Players
+  alias OOTPUtility.{Leagues, Players, Teams}
   import OOTPUtility.Factory
 
   describe "for_team/2" do
@@ -137,6 +137,25 @@ defmodule OOTPUtility.PlayersTest do
 
       assert ids_for(Players.get_player_by_slug(player.slug)) ==
                ids_for([player, duplicate_player])
+    end
+
+    test "preloads the players team and league by default", %{player: player} do
+      assert %Players.Player{team: %Teams.Team{}, league: %Leagues.League{}} =
+               Players.get_player_by_slug(player.slug)
+    end
+
+    test "only preloads the specified associations if the `:preload` is included", %{
+      player: player
+    } do
+      assert %Players.Player{
+               team: %Ecto.Association.NotLoaded{},
+               league: %Ecto.Association.NotLoaded{}
+             } = Players.get_player_by_slug(player.slug, preload: [])
+
+      assert %Players.Player{
+               team: %Teams.Team{},
+               league: %Ecto.Association.NotLoaded{}
+             } = Players.get_player_by_slug(player.slug, preload: [:team])
     end
 
     test "returns nil if the given slug does not exist" do
