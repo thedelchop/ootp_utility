@@ -8,7 +8,7 @@ defmodule OOTPUtility.Players do
   import Ecto.Query, warn: false
 
   alias OOTPUtility.Repo
-  alias OOTPUtility.Players.Player
+  alias OOTPUtility.Players.{Attributes, Player}
   alias OOTPUtility.Teams.{Roster, Team}
 
   import OOTPUtility.Utilities, only: [expand_position_key: 1]
@@ -22,6 +22,8 @@ defmodule OOTPUtility.Players do
 
   defguard is_pitcher(player) when player.position in @pitching_positions
   defguard is_hitter(player) when player.position not in @pitching_positions
+
+  defdelegate attributes_for(player, opts), to: Attributes, as: :for_player
 
   @doc """
   Returns all players assoicated with a specified team, providing
@@ -165,7 +167,7 @@ defmodule OOTPUtility.Players do
 
   """
   @spec get_player_by_slug(String.t(), Keyword.t()) :: Ecto.Schema.t() | [Ecto.Schema.t()] | nil
-  def get_player_by_slug(slug, opts \\ Keyword.new) do
+  def get_player_by_slug(slug, opts \\ Keyword.new()) do
     preloads = Keyword.get(opts, :preload, [:team, :league])
 
     players =

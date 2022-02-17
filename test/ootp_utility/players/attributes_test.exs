@@ -1,101 +1,105 @@
-defmodule OOTPUtility.Players.RatingsTest do
+defmodule OOTPUtility.Players.AttributesTest do
   use OOTPUtility.DataCase, async: true
 
   import OOTPUtility.Factory
 
-  alias OOTPUtility.Players.Ratings
+  alias OOTPUtility.Players.{Attribute, Attributes, Player}
 
-  describe "batting_ratings_for/1" do
-    test "it returns batting ratings of all types for the specified player" do
-      player = insert(:player)
+  describe "for_player/2" do
+    setup do
+      player = insert(:player, position: :closer)
 
-      ratings =
-        [:ability, :talent, :ability_vs_left, :ability_vs_right]
-        |> Enum.map(&insert(:batting_ratings, player: player, type: &1))
+      attributes =
+        [stuff: 155, movement: 100, control: 123]
+        |> Enum.flat_map(fn
+          {name, value} ->
+            Ecto.Enum.values(Attribute, :type)
+            |> Enum.map(
+              &insert(:attribute,
+                type: &1,
+                name: Atom.to_string(name),
+                value: value,
+                player: player
+              )
+            )
+        end)
 
-      assert ids_for(ratings) == ids_for(Ratings.batting_ratings_for(player))
+      {:ok, player: player, attributes: attributes}
     end
 
-    test "it returns empty if the player has no ratings" do
-      player = insert(:player)
+    test "it returns the players batting attributes by default if the player is a hitter" do
+      player = insert(:player, position: :first_base)
 
-      assert Enum.empty?(Ratings.batting_ratings_for(player))
-    end
-  end
+      player_attributes = create_attributes_for_player(player, :batting)
 
-  describe "pitching_ratings_for/1" do
-    test "it returns batting ratings of all types for the specified player" do
-      player = insert(:player)
-
-      ratings =
-        [:ability, :talent, :ability_vs_left, :ability_vs_right]
-        |> Enum.map(&insert(:pitching_ratings, player: player, type: &1))
-
-      assert ids_for(ratings) == ids_for(Ratings.pitching_ratings_for(player))
+      assert_attributes_are_equal(player_attributes, Attributes.for_player(player))
     end
 
-    test "it returns empty if the player has no ratings" do
-      player = insert(:player)
-
-      assert Enum.empty?(Ratings.pitching_ratings_for(player))
-    end
-  end
-
-  describe "grouped_by_attributes/1" do
-    test "it returns a Keyword List, whose keys are the batting attributes, when a Ratings.Batting list is passed in" do
-      player = insert(:player)
-
-      insert(:batting_ratings, player: player, type: :ability, contact: 50, gap_power: 50, home_run_power: 50, eye: 50, avoid_strikeouts: 50)
-      insert(:batting_ratings, player: player, type: :ability_vs_left, contact: 60, gap_power: 60, home_run_power: 60, eye: 60, avoid_strikeouts: 60)
-      insert(:batting_ratings, player: player, type: :ability_vs_right, contact: 40, gap_power: 40, home_run_power: 40, eye: 40, avoid_strikeouts: 40)
-      insert(:batting_ratings, player: player, type: :talent, contact: 70, gap_power: 70, home_run_power: 70, eye: 70, avoid_strikeouts: 70)
-
-      assert player |> Ratings.batting_ratings_for() |> Ratings.grouped_by_attributes() == [
-        contact:          [ talent: 70, ability_vs_right: 40, ability_vs_left: 60, ability: 50 ],
-        gap_power:        [ talent: 70, ability_vs_right: 40, ability_vs_left: 60, ability: 50 ],
-        home_run_power:   [ talent: 70, ability_vs_right: 40, ability_vs_left: 60, ability: 50 ],
-        eye:              [ talent: 70, ability_vs_right: 40, ability_vs_left: 60, ability: 50 ],
-        avoid_strikeouts: [ talent: 70, ability_vs_right: 40, ability_vs_left: 60, ability: 50 ],
-      ]
+    test "it returns the players pitching attributes by default if the player is a pitcher", %{
+      player: player,
+      attributes: attributes
+    } do
+      assert_attributes_are_equal(attributes, Attributes.for_player(player))
     end
 
-    test "it returns a Keyword List, whose keys are the pitching attributes, when a Ratings.Pitching list is passed in" do
-      player = insert(:player)
-
-      insert(:pitching_ratings, player: player, type: :ability, stuff: 50, movement: 50, control: 50)
-      insert(:pitching_ratings, player: player, type: :ability_vs_left, stuff: 60, movement: 60, control: 60)
-      insert(:pitching_ratings, player: player, type: :ability_vs_right, stuff: 40, movement: 40, control: 40)
-      insert(:pitching_ratings, player: player, type: :talent, stuff: 70, movement: 70, control: 70)
-
-      assert player |> Ratings.pitching_ratings_for() |> Ratings.grouped_by_attributes() == [
-        stuff:    [ talent: 70, ability_vs_right: 40, ability_vs_left: 60, ability: 50 ],
-        movement: [ talent: 70, ability_vs_right: 40, ability_vs_left: 60, ability: 50 ],
-        control:  [ talent: 70, ability_vs_right: 40, ability_vs_left: 60, ability: 50 ]
-      ]
-    end
-  end
-
-  describe "scale_attributes/2" do
-    test "it returns the attributes, whose ratings are adjusted from 1-200 to 1-scale" do
-
-      player = insert(:player)
-
-      insert(:pitching_ratings, player: player, type: :ability,           stuff: 150, movement: 100,  control: 75)
-      insert(:pitching_ratings, player: player, type: :ability_vs_left,   stuff: 155, movement: 106,  control: 66)
-      insert(:pitching_ratings, player: player, type: :ability_vs_right,  stuff: 147, movement: 94,   control: 84)
-      insert(:pitching_ratings, player: player, type: :talent,            stuff: 165, movement: 120,  control: 95)
-
-      scaled_ratings =
+    test "it mutates the values of the players attributes to the specified scale if the :scale option is specified",
+         %{player: player} do
+      player_attributes =
         player
-        |> Ratings.pitching_ratings_for()
-        |> Ratings.grouped_by_attributes()
-        |> Ratings.scale_attributes(20)
+        |> Attributes.for_player(scale: 10)
+        |> Enum.filter(&(&1.type == :ability))
+        |> Enum.map(fn
+          attr ->
+            {String.to_atom(attr.name), attr.value}
+        end)
 
-      assert scaled_ratings == [
-        control:  [ ability: 8,  ability_vs_left: 7,  ability_vs_right: 9,  talent: 10  ],
-        movement: [ ability: 10, ability_vs_left: 11, ability_vs_right: 10, talent: 12  ],
-        stuff:    [ ability: 15, ability_vs_left: 16, ability_vs_right: 15, talent: 17  ]
-      ]
+      assert player_attributes == [stuff: 8, movement: 5, control: 7]
+    end
+
+    test "it only includes attributes with the types specified in the :type option when included",
+         %{player: player, attributes: attributes} do
+      ability_attributes =
+        attributes
+        |> Enum.filter(&(&1.type == :ability))
+        |> Enum.map(fn
+          attr -> attr |> Map.from_struct() |> Map.drop([:player])
+        end)
+
+      assert ability_attributes ==
+               player
+               |> Attributes.for_player(type: :ability)
+               |> Enum.map(fn
+                 attr -> attr |> Map.from_struct() |> Map.drop([:player])
+               end)
+    end
+
+    test "it will preload any related records specified with the :preload option", %{
+      player: player
+    } do
+      [attribute | _rest] = Attributes.for_player(player)
+
+      assert %Attribute{player: %Ecto.Association.NotLoaded{}} = attribute
+
+      [attribute | _rest] = Attributes.for_player(player, preload: [:player])
+
+      assert %Attribute{player: %Player{}} = attribute
+    end
+
+    test "it returns empty if the player has no ratings" do
+      player = insert(:player)
+
+      assert Enum.empty?(Attributes.for_player(player))
+    end
+
+    defp assert_attributes_are_equal(expected, actual) do
+      assert(
+        Enum.map(expected, &attribute_without_player/1) ==
+          Enum.map(actual, &attribute_without_player/1)
+      )
+    end
+
+    defp attribute_without_player(attribute) do
+      attribute |> Map.from_struct() |> Map.drop([:player])
     end
   end
 end

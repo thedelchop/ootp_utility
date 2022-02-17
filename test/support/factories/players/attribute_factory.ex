@@ -10,24 +10,33 @@ defmodule OOTPUtility.Factories.Players.AttributeFactory do
         %Attribute{
           name: Enum.random(Attribute.batting_attributes()),
           type: Attribute |> Ecto.Enum.values(:type) |> Enum.random(),
-          value: Faker.random_between(0,200),
+          value: Faker.random_between(0, 200),
           player: build(:player)
         }
       end
 
-      def with_batting_attributes(%Players.Player{} = player) do
-        create_attributes_for_player(:batting, player)
+      def with_attributes(%Players.Player{} = player, attributes_and_ratings) do
+        for {attribute_name, value} <- attributes_and_ratings do
+          Attribute
+          |> Ecto.Enum.values(:type)
+          |> Enum.each(
+            &insert(:attribute,
+              type: &1,
+              name: Atom.to_string(attribute_name),
+              value: value,
+              player: player
+            )
+          )
+        end
 
         player
       end
 
-      def with_pitching_attributes(%Players.Player{} = player) do
-        create_attributes_for_player(:pitching, player)
-
-        player
-      end
-
-      def create_attributes_for_player(player \\ build(:player), batting_or_pitching, types \\ Ecto.Enum.values(Attribute, :type))
+      def create_attributes_for_player(
+            player \\ build(:player),
+            batting_or_pitching,
+            types \\ Ecto.Enum.values(Attribute, :type)
+          )
 
       def create_attributes_for_player(player, :batting, types) do
         batting_attributes()
@@ -41,7 +50,11 @@ defmodule OOTPUtility.Factories.Players.AttributeFactory do
         |> do_create_attributes_for_player(player, types)
       end
 
-      defp do_create_attributes_for_player(attribute_names, %Players.Player{} = player, types \\ Ecto.Enum.values(Attribute, :type)) do
+      defp do_create_attributes_for_player(
+             attribute_names,
+             %Players.Player{} = player,
+             types \\ Ecto.Enum.values(Attribute, :type)
+           ) do
         Enum.flat_map(attribute_names, &create_attribute_for_types(player, &1, types))
       end
 
