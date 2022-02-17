@@ -5,7 +5,14 @@ defmodule OOTPUtilityWeb.PlayerLiveTest do
   import OOTPUtility.Factory
 
   setup do
-    insert(:player, first_name: "Babe", last_name: "Ruth")
+    insert(:player, first_name: "Babe", last_name: "Ruth", position: :first_base)
+    |> with_attributes(
+      contact: 150,
+      gap_power: 135,
+      home_run_power: 175,
+      eye: 80,
+      avoid_strikeouts: 25
+    )
 
     :ok
   end

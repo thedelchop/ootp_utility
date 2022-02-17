@@ -6,13 +6,14 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes do
   alias OOTPUtility.Players
 
   import OOTPUtility.Players, only: [is_pitcher: 1]
+  import OOTPUtility.Players.Attribute
 
   prop player, :struct, required: true
 
   def render(assigns) do
     ~F"""
       <Section event_target={@myself}>
-        <PrimaryAttributes attributes={attributes(@player)} />
+        <PrimaryAttributes attributes={primary_attributes(@player)} />
       </Section>
     """
   end
@@ -21,17 +22,56 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes do
     {:noreply, socket}
   end
 
-  defp attributes(%Players.Player{} = player) when is_pitcher(player) do
+  defp primary_attributes(%Players.Player{} = player) when is_pitcher(player) do
     player
-    |> Players.Ratings.pitching_ratings_for()
-    |> Players.Ratings.grouped_by_attributes()
-    |> Players.Ratings.scale_attributes(10)
+    |> attributes()
+    |> Keyword.get(:pitching)
+  end
+
+  defp primary_attributes(%Players.Player{} = player) do
+    player
+    |> attributes()
+    |> Keyword.get(:batting)
+  end
+
+  defp attributes(%Players.Player{} = player) when is_pitcher(player) do
+    do_attributes(player, [:pitching, :pitches, :positions])
   end
 
   defp attributes(%Players.Player{} = player) do
-    player
-    |> Players.Ratings.batting_ratings_for()
-    |> Players.Ratings.grouped_by_attributes()
-    |> Players.Ratings.scale_attributes(10)
+    do_attributes(player, [:batting, :baserunning, :fielding, :positions])
+  end
+
+  defp do_attributes(%Players.Player{} = player, includes) do
+    Players.attributes_for(player, scale: 10, include: includes)
+    |> Enum.map(&Map.from_struct/1)
+    |> Enum.group_by(&attribute_group/1)
+    |> Enum.map(fn
+      {attr_name, attrs} ->
+        {
+          attr_name,
+          attrs
+          |> Enum.group_by(& &1.name)
+          |> Enum.map(fn
+            {attr_name, attrs} ->
+              {
+                String.to_atom(attr_name),
+                Enum.map(attrs, fn attr -> {attr.type, attr.value} end)
+              }
+          end)
+        }
+    end)
+  end
+
+  defp attribute_group(%{name: name}) do
+    cond do
+      is_batting_attribute(name) -> :batting
+      is_pitching_attribute(name) -> :pitching
+      is_fielding_attribute(name) -> :fielding
+      is_baserunning_attribute(name) -> :baserunning
+      is_bunting_attribute(name) -> :bunting
+      is_position(name) -> :positions
+      is_pitch(name) -> :pitches
+    end
   end
 end

@@ -3,10 +3,18 @@ defmodule OOTPUtilityWeb.Components.Player.AttributesTest do
 
   alias OOTPUtilityWeb.Components.Player.Attributes
 
+  import OOTPUtility.Factory
+
   test_snapshot "renders the batting ratings for the specified hitter" do
     player =
       insert(:player, position: :first_base)
-      |> with_batting_ratings(contact: 150, gap_power: 135, home_run_power: 175, eye: 80, avoid_strikeouts: 25)
+      |> with_attributes(
+        contact: 150,
+        gap_power: 135,
+        home_run_power: 175,
+        eye: 80,
+        avoid_strikeouts: 25
+      )
 
     render_surface do
       ~F"""
@@ -18,7 +26,7 @@ defmodule OOTPUtilityWeb.Components.Player.AttributesTest do
   test_snapshot "renders the pitching ratings for the specified pitcher" do
     player =
       insert(:player, position: :starting_pitcher)
-      |> with_pitching_ratings(stuff: 150, movement: 135, control: 80)
+      |> with_attributes(stuff: 150, movement: 135, control: 80)
 
     render_surface do
       ~F"""
