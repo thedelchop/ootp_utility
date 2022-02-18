@@ -37,6 +37,7 @@ defmodule OOTPUtility.MixProject do
     [
       {:csv, "~> 2.4"},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
+      {:deep_merge, "~> 1.0"},
       {:ecto_sql, "~> 3.6"},
       {:esbuild, "~> 0.2", runtime: Mix.env() == :dev},
       {:ex_heroicons, "~> 0.6.0"},

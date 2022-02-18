@@ -9,20 +9,7 @@ defmodule OOTPUtility.Players.AttributesTest do
     setup do
       player = insert(:player, position: :closer)
 
-      attributes =
-        [stuff: 155, movement: 100, control: 123]
-        |> Enum.flat_map(fn
-          {name, value} ->
-            Ecto.Enum.values(Attribute, :type)
-            |> Enum.map(
-              &insert(:attribute,
-                type: &1,
-                name: Atom.to_string(name),
-                value: value,
-                player: player
-              )
-            )
-        end)
+      attributes = create_attributes_for_player(player, :pitching, stuff: 155, movement: 100, control: 123)
 
       {:ok, player: player, attributes: attributes}
     end
@@ -30,7 +17,7 @@ defmodule OOTPUtility.Players.AttributesTest do
     test "it returns the players batting attributes by default if the player is a hitter" do
       player = insert(:player, position: :first_base)
 
-      player_attributes = create_attributes_for_player(player, :batting)
+      player_attributes = create_attributes_for_player(player, :batting, [])
 
       assert_attributes_are_equal(player_attributes, Attributes.for_player(player))
     end
