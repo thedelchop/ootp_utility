@@ -2,6 +2,7 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes do
   use Surface.LiveComponent
 
   alias OOTPUtilityWeb.Components.Player.Attributes.Primary, as: PrimaryAttributes
+  alias OOTPUtilityWeb.Components.Player.Attributes.Secondary, as: SecondaryAttributes
   alias OOTPUtilityWeb.Components.Shared.Section
   alias OOTPUtility.Players
 
@@ -12,8 +13,9 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes do
 
   def render(assigns) do
     ~F"""
-      <Section event_target={@myself}>
+      <Section direction={:column} event_target={@myself}>
         <PrimaryAttributes attributes={primary_attributes(@player)} />
+        <SecondaryAttributes player={@player} attributes={secondary_attributes(@player)} />
       </Section>
     """
   end
@@ -34,12 +36,24 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes do
     |> Keyword.get(:batting)
   end
 
+  defp secondary_attributes(%Players.Player{} = player) when is_pitcher(player) do
+    player
+    |> attributes()
+    |> Keyword.take([:pitches, :baserunning, :bunting, :positions])
+  end
+
+  defp secondary_attributes(%Players.Player{} = player) do
+    player
+    |> attributes()
+    |> Keyword.take([:fielding, :positions, :baserunning, :bunting])
+  end
+
   defp attributes(%Players.Player{} = player) when is_pitcher(player) do
-    do_attributes(player, [:pitching, :pitches, :positions])
+    do_attributes(player, [:pitching, :pitches, :positions, :baserunning, :bunting])
   end
 
   defp attributes(%Players.Player{} = player) do
-    do_attributes(player, [:batting, :baserunning, :fielding, :positions])
+    do_attributes(player, [:batting, :baserunning, :fielding, :positions, :bunting])
   end
 
   defp do_attributes(%Players.Player{} = player, includes) do

@@ -62,7 +62,7 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes.Primary do
     assigns = %{rating: rating}
 
     ~F"""
-      <div class={"bg-rating-#{@rating * 2}", "w-#{@rating*2}/20", "pl-2", "text-large", "text-gray-700", "text-left"}>{@rating}</div>
+      <div class={"bg-rating-#{@rating * 2}", "w-#{@rating*2}/20", "pl-2", "text-large", "text-gray-700", "text-left", "drop-shadow-lg rounded-sm"}>{@rating}</div>
     """
   end
 
