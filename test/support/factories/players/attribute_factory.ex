@@ -18,7 +18,7 @@ defmodule OOTPUtility.Factories.Players.AttributeFactory do
         }
       end
 
-      def with_attributes(player, player_attributes \\ Keyword.new)
+      def with_attributes(player, player_attributes \\ Keyword.new())
 
       def with_attributes(%Players.Player{} = player, player_attributes)
           when is_pitcher(player) do
@@ -35,7 +35,22 @@ defmodule OOTPUtility.Factories.Players.AttributeFactory do
         player
       end
 
-      def create_attributes_for_player(player, player_attributes \\ Keyword.new)
+      def with_pitches(%Players.Player{} = player, pitches) do
+        with_attributes(player, :pitches, pitches)
+      end
+
+      def with_positions(%Players.Player{} = player, positions_experience) do
+        positions_experience
+        |> Enum.map(fn
+          {position, experience} ->
+            insert(:attribute, name: Atom.to_string(position), type: :ability, value: experience, player: player)
+        end)
+
+        player
+      end
+
+      def create_attributes_for_player(player, player_attributes \\ Keyword.new())
+
       def create_attributes_for_player(%Players.Player{} = player, player_attributes)
           when is_pitcher(player) do
         create_attributes_for_player(player, :pitcher, player_attributes)
@@ -46,12 +61,12 @@ defmodule OOTPUtility.Factories.Players.AttributeFactory do
       end
 
       def create_attributes_for_player(%Players.Player{} = player, :hitter, player_attributes) do
-        [:batting, :fielding, :positions, :baserunning, :bunting]
+        [:batting, :fielding, :baserunning, :bunting]
         |> Enum.flat_map(&create_attributes_for_player(player, &1, player_attributes))
       end
 
       def create_attributes_for_player(%Players.Player{} = player, :pitcher, player_attributes) do
-        [:pitching, :pitches, :positions, :baserunning, :bunting]
+        [:pitching, :baserunning, :bunting]
         |> Enum.flat_map(&create_attributes_for_player(player, &1, player_attributes))
       end
 
@@ -93,10 +108,12 @@ defmodule OOTPUtility.Factories.Players.AttributeFactory do
         |> Enum.flat_map(&do_build_attributes(&1, attributes))
       end
 
+      defp do_build_attributes(:pitches, pitches_attributes), do: pitches_attributes
+
       defp do_build_attributes(attribute_group, player_attributes) do
         default_attributes_for_group =
           attribute_group
-          |>build_default_attributes()
+          |> build_default_attributes()
 
         player_attributes_for_group =
           player_attributes
@@ -112,7 +129,7 @@ defmodule OOTPUtility.Factories.Players.AttributeFactory do
         attribute_group |> names_for_attribute_group() |> do_build_default_attributes()
       end
 
-      def names_for_attribute_group(group_name) when group_name in [:positions, :pitches] do
+      def names_for_attribute_group(group_name) when group_name in [:pitches] do
         Attribute
         |> apply(group_name, [])
       end

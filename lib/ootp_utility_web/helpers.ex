@@ -14,6 +14,8 @@ defmodule OOTPUtilityWeb.Helpers do
 
   @type suffix :: <<_::16>>
 
+  import Phoenix.Naming, only: [humanize: 1]
+
   def friendly_date(date) do
     Timex.format!(date, "{0M}/{D}/{YYYY}")
   end
@@ -28,15 +30,9 @@ defmodule OOTPUtilityWeb.Helpers do
     Map.fetch(@stat_abbreviations, stat_name)
   end
 
-  def capitalize_all(atom) when is_atom(atom) do
-    atom
-    |> Atom.to_string()
-    |> String.replace("_", " ")
-    |> capitalize_all()
-  end
-
-  def capitalize_all(string) do
-    string
+  def capitalize_all(string_or_atom) do
+    string_or_atom
+    |> humanize()
     |> String.split(" ")
     |> Enum.map(&String.capitalize/1)
     |> Enum.join(" ")

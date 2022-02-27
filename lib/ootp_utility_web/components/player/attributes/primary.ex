@@ -14,16 +14,18 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes.Primary do
     "p-1",
     "md:p-2",
     "uppercase",
-    "font-medium",
+    "font-small",
+    "md:font-medium",
     "text-left"
   ]
 
   prop attributes, :keyword, required: true
+  prop title, :string, default: ""
 
   def render(assigns) do
     ~F"""
-      <Table id={"player-attributes"} data={{name, ratings} <- @attributes} header_class={&header_class/2} column_class={&column_class/2}>
-        <Column label={""}>
+      <Table id={"primary-player-attributes"} data={{name, ratings} <- @attributes} header_class={&header_class/2} column_class={&column_class/2}>
+        <Column label={@title}>
           {attribute_name(name)}
         </Column>
 
@@ -54,7 +56,7 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes.Primary do
         avoid_strikeouts: "Avoid Ks"
       },
       attribute,
-      attribute |> Phoenix.Naming.humanize() |> OOTPUtilityWeb.Helpers.capitalize_all()
+      OOTPUtilityWeb.Helpers.capitalize_all(attribute)
     )
   end
 
@@ -78,7 +80,7 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes.Primary do
     do_header_class(["text-left"])
   end
 
-  def header_class(_standing, index) when index in [3, 4] do
+  def header_class(_standing, index) when index in [2, 3] do
     do_header_class(["hidden", "md:table-cell"])
   end
 
@@ -93,7 +95,7 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes.Primary do
     do_column_class(["text-left"])
   end
 
-  def column_class(_standing, index) when index in [3, 4] do
+  def column_class(_standing, index) when index in [2, 3] do
     do_column_class(["hidden", "md:table-cell"])
   end
 
