@@ -63,17 +63,17 @@ defmodule OOTPUtility.Players.Attribute do
 
   @pitches [
     "fastball",
-    "slider",
-    "curveball",
-    "screwball",
-    "forkball",
-    "changeup",
     "sinker",
-    "splitter",
-    "knuckleball",
     "cutter",
+    "curveball",
+    "slider",
+    "changeup",
+    "splitter",
+    "forkball",
     "circle_change",
-    "knuckle_curve"
+    "screwball",
+    "knuckle_curve",
+    "knuckleball",
   ]
   defguard is_pitch(attr) when attr in @pitches
   def pitches, do: as_atoms(@pitches)
