@@ -62,7 +62,7 @@ defmodule OOTPUtility.Players.Attribute do
   def fielding_attributes, do: as_atoms(@fielding_attrs)
 
   @pitches [
-    "fastballl",
+    "fastball",
     "slider",
     "curveball",
     "screwball",
