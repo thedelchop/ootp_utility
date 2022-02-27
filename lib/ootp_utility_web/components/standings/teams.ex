@@ -57,7 +57,7 @@ defmodule OOTPUtilityWeb.Components.Standings.Teams do
   end
 
   def header_class(_col, 0),
-    do: do_header_class(["w-1/6", "text-left", "font-bold", "text-gray-900"])
+    do: do_header_class(["w-1/4", "text-left", "font-bold", "text-gray-900 whitespace-nowrap"])
 
   def header_class(_col, 5),
     do: do_header_class(["text-right", "font-medium", "text-gray-500", "hidden", "md:table-cell"])
