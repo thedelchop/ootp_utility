@@ -47,6 +47,27 @@ defmodule OOTPUtility.Imports.Players.Attributes.Misc.Pitching do
     Imports.Agent.in_cache?(:players, player_id)
   end
 
+  defp as_enum(:groundball_flyball_ratio, raw_value) do
+    value = String.to_integer(raw_value)
+
+    cond do
+      value > 63 ->
+        :extreme_groundball
+
+      value > 58 ->
+        :groundball
+
+      value > 48 ->
+        :neutral
+
+      value > 43 ->
+        :flyball
+
+      true ->
+        :extreme_flyball
+    end
+  end
+
   defp as_enum(enum_name, dump_value) do
     Players.Player
     |> Ecto.Enum.mappings(enum_name)
