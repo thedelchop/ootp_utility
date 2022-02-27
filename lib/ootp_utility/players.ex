@@ -16,7 +16,7 @@ defmodule OOTPUtility.Players do
   @pitching_positions [
     :pitcher,
     :starting_pitcher,
-    :middle_reliver,
+    :middle_reliever,
     :closer
   ]
 
@@ -71,7 +71,7 @@ defmodule OOTPUtility.Players do
 
       {:position, "P"} ->
         query
-        |> where([p], p.position in ^[:starting_pitcher, :middle_reliever, :closer])
+        |> where([p], p.position in ^@pitching_positions)
         |> do_for_team(team, rest)
 
       {:position, position} ->
