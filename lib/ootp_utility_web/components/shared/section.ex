@@ -35,6 +35,7 @@ defmodule OOTPUtilityWeb.Components.Shared.Section do
       "flex",
       "bg-white",
       "overflow-hidden",
+      "gap-8",
       "flex-wrap": wrap,
       border: border
     ]
