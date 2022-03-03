@@ -1,12 +1,11 @@
 defmodule OOTPUtilityWeb.Components.Player.Attributes do
   use Surface.LiveComponent
 
+  alias OOTPUtilityWeb.Components.Player.Attributes.Container, as: AttributesContainer
   alias OOTPUtilityWeb.Components.Player.Attributes.Primary, as: PrimaryAttributes
-  alias OOTPUtilityWeb.Components.Player.Attributes.Fielding, as: FieldingAttributes
   alias OOTPUtilityWeb.Components.Player.Attributes.Pitching, as: PitchingAttributes
-  alias OOTPUtilityWeb.Components.Player.Attributes.RunningBunting, as: RunningBuntingAttributes
 
-  alias OOTPUtilityWeb.Components.Player.Attributes.{Pitches, Positions}
+  alias OOTPUtilityWeb.Components.Player.Attributes.{Pitches}
 
   alias OOTPUtilityWeb.Components.Shared.Section
   alias OOTPUtility.Players
@@ -24,12 +23,11 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes do
           {#if is_pitcher(@player)}
             <div class={"grow"}><Pitches pitches={attributes_for(@player, :pitches)} /></div>
             <div class={"grow"}><PitchingAttributes player={@player} positions={attributes_for(@player, :positions)} /></div>
-            <div class={"grow"}><RunningBuntingAttributes running_attributes={attributes_for(@player, :baserunning)} bunting_attributes={attributes_for(@player, :bunting)} /></div>
           {#else}
-            <div class={"grow"}><FieldingAttributes attributes={attributes_for(@player, :fielding)} /></div>
-            <div class={"grow"}><Positions attributes={attributes_for(@player, :positions)} /></div>
-            <div class={"grow"}><RunningBuntingAttributes running_attributes={attributes_for(@player, :baserunning)} bunting_attributes={attributes_for(@player, :bunting)} /></div>
+            <AttributesContainer attributes={attributes_for(@player, :fielding)} title="Fielding Attributes" />
+            <AttributesContainer attributes={attributes_for(@player, :positions)} title="Position Raitngs" />
           {/if}
+          <AttributesContainer attributes={attributes_for(@player, [:baserunning, :bunting])} title={"Run/Bunt"} />
         </div>
       </Section>
     """
@@ -79,6 +77,10 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes do
     |> Keyword.get(:pitches)
   end
 
+  defp attributes_for(%Players.Player{} = player, types) when is_list(types) do
+    Enum.flat_map(types, &attributes_for(player, &1))
+  end
+
   defp attributes_for(%Players.Player{} = player, type) do
     do_attributes_for(player, type)
   end
@@ -123,7 +125,7 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes do
           |> order_of_attributes()
           |> Enum.reduce([], &[{&1, Keyword.get(attrs, &1, [])} | &2])
           |> Enum.filter(fn
-              {_name, ratings} -> not Enum.empty?(ratings)
+            {_name, ratings} -> not Enum.empty?(ratings)
           end)
           |> Enum.reverse()
 
@@ -133,8 +135,12 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes do
 
   defp order_of_attributes(attribute_group) do
     cond do
-      attribute_group == :positions -> positions()
-      attribute_group == :pitches -> pitches()
+      attribute_group == :positions ->
+        positions()
+
+      attribute_group == :pitches ->
+        pitches()
+
       true ->
         apply(Players.Attribute, String.to_atom("#{attribute_group}_attributes"), [])
     end
