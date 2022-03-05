@@ -52,12 +52,7 @@ defmodule OOTPUtilityWeb.Components.Shared.Table do
 
   def render(assigns) do
     ~F"""
-      <table class={
-        "divide-y",
-        "divide-gray-200",
-        "table-fixed",
-        "min-w-full": @expanded
-      }>
+      <table class={"divide-y divide-gray-200 table-fixed min-w-full"}>
         <thead class={"bg-gray-100"}>
           <tr>
             {#for {col, index} <- Enum.with_index(@cols)}
@@ -82,7 +77,7 @@ defmodule OOTPUtilityWeb.Components.Shared.Table do
             {/for}
           </tr>
         </thead>
-        <tbody class={"bg-white", "divide-y", "divide-gray-200"}>
+        <tbody class="bg-white divide-y divide-gray-200">
           <tr
             :for={{item, index} <- Enum.with_index(@sorted_data)}
             class={row_class_fun(@row_class).(item, index)}>
