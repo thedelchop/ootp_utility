@@ -52,7 +52,7 @@ defmodule OOTPUtilityWeb.Components.Shared.Table do
 
   def render(assigns) do
     ~F"""
-      <table class={"divide-y divide-gray-200 table-fixed min-w-full"}>
+      <table class={table_classes(@expanded)}>
         <thead class={"bg-gray-100"}>
           <tr>
             {#for {col, index} <- Enum.with_index(@cols)}
@@ -88,6 +88,15 @@ defmodule OOTPUtilityWeb.Components.Shared.Table do
         </tbody>
       </table>
     """
+  end
+
+  def table_classes(expanded) do
+    [
+      "divide-y",
+      "divide-gray-200",
+      "table-fixed",
+      "min-w-full": expanded
+    ]
   end
 
   def handle_event(
