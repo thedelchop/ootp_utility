@@ -14,6 +14,10 @@ module.exports = {
     pattern: /rating-(1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20)/,
     variants: ['text']
     },
+    {
+      pattern: /(angry|very-unhappy|unhappy|normal|good|very-good|great)/,
+      variants: ['text']
+    },
     'w-1/20',
     'w-2/20',
     'w-3/20',
@@ -38,6 +42,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        'angry': "#c0040c",
+        'very-unhappy': "#f83404",
+        'unhappy': "#f87c0c",
+        'normal': "#ffdc04" ,
+        'good': "#58cc04",
+        'very-good': "#08a4c4",
+        'great': "#20bcec",
         rating: {
           1: "#c0040c",
           2: "#e0040c",
