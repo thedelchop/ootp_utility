@@ -61,6 +61,7 @@ defmodule OOTPUtility.MixProject do
       {:slugify, "~> 1.3"},
       {:snapshy, "~> 0.2.4", only: :test},
       {:surface, "~> 0.7"},
+      {:surface_formatter, "~> 0.7.5"},
       {:swoosh, "~> 1.3"},
       {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
       {:telemetry_metrics, "~> 0.6"},
