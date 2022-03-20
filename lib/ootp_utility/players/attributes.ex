@@ -116,7 +116,8 @@ defmodule OOTPUtility.Players.Attributes do
   end
 
   defp attribute_names_for_includes(includes) do
-    Enum.flat_map(includes, fn
+    includes
+    |> Enum.flat_map(fn
       :pitches -> Attribute.pitches()
       :positions -> Attribute.positions()
       attr_name -> apply(Attribute, :"#{attr_name}_attributes", [])

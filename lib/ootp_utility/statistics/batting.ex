@@ -37,19 +37,17 @@ defmodule OOTPUtility.Statistics.Batting do
   def for_player([player | _] = players, opts) when is_list(players) do
     player_ids = Enum.map(players, & &1.id)
 
-    do_for_player(
-      dynamic([bs], bs.player_id in ^player_ids),
-      options_for_player(player, opts)
-    )
+    [bs]
+    |> dynamic(bs.player_id in ^player_ids)
+    |> do_for_player(options_for_player(player, opts))
     |> Repo.all()
   end
 
   def for_player(player, opts) do
     stats =
-      do_for_player(
-        dynamic([bs], bs.player_id == ^player.id),
-        options_for_player(player, opts)
-      )
+      [bs]
+      |> dynamic(bs.player_id == ^player.id)
+      |> do_for_player(options_for_player(player, opts))
       |> Repo.all()
 
     case stats do
@@ -96,6 +94,7 @@ defmodule OOTPUtility.Statistics.Batting do
 
   defp build_player_query(query, []), do: query
 
+  # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
   defp build_player_query(query, [option | rest]) do
     case option do
       {_, :any} ->

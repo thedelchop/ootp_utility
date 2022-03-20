@@ -81,8 +81,8 @@ defmodule OOTPUtility.Players.AttributesTest do
 
     defp assert_attributes_are_equal(expected, actual) do
       assert(
-        Enum.map(expected, &attribute_without_player/1) |> Enum.sort() ==
-          Enum.map(actual, &attribute_without_player/1) |> Enum.sort()
+        expected |> Enum.map(&attribute_without_player/1) |> Enum.sort() ==
+          actual |> Enum.map(&attribute_without_player/1) |> Enum.sort()
       )
     end
 

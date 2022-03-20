@@ -4,6 +4,7 @@ defmodule OOTPUtility.TeamFactory do
   import OOTPUtility.Factories.Utilities, only: [generate_slug_from_name: 1]
 
   defmacro __using__(_opts) do
+    # credo:disable-for-next-line Credo.Check.Refactor.LongQuoteBlocks
     quote do
       @doc """
       Create a team using ExMachina, which will attempt to be smart about inserting the

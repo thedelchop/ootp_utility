@@ -107,7 +107,8 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes do
   end
 
   defp do_attributes(%Players.Player{} = player, includes) do
-    Players.attributes_for(player, scale: 10, include: includes)
+    player
+    |> Players.attributes_for(scale: 10, include: includes)
     |> Enum.map(&Map.from_struct/1)
     |> Enum.group_by(&attribute_group/1)
     |> Enum.map(fn

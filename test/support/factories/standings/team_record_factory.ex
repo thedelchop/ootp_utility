@@ -2,6 +2,7 @@ defmodule OOTPUtility.Standings.TeamRecordFactory do
   alias OOTPUtility.{Leagues, Repo, Standings, Teams}
 
   defmacro __using__(_opts) do
+    # credo:disable-for-next-line Credo.Check.Refactor.LongQuoteBlocks
     quote do
       def team_record_factory(attrs) do
         games = Map.get_lazy(attrs, :games, fn -> Faker.random_between(1, 162) end)

@@ -19,17 +19,16 @@ defmodule OOTPUtility.Statistics.BattingFactory do
         team = Map.get(attrs, :team, player.team)
         league = Map.get(attrs, :league, team.league)
 
-        struct!(
-          batting_stats_factory(Batting.Player),
-          %{
-            league: league,
-            pitches_seen: 1000,
-            player: player,
-            split: :all,
-            team: team,
-            wins_above_replacement: 1.00
-          }
-        )
+        Batting.Player
+        |> batting_stats_factory()
+        |> struct!(%{
+          league: league,
+          pitches_seen: 1000,
+          player: player,
+          split: :all,
+          team: team,
+          wins_above_replacement: 1.00
+        })
         |> merge_attributes(attrs)
         |> evaluate_lazy_attributes()
       end

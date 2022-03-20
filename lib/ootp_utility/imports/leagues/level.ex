@@ -24,8 +24,7 @@ defmodule OOTPUtility.Leagues.Level do
     id
     |> Phoenix.Naming.humanize()
     |> String.split(" ")
-    |> Enum.map(&String.capitalize/1)
-    |> Enum.join(" ")
+    |> Enum.map_join(" ", &String.capitalize/1)
   end
 
   defp get_abbreviation(id) do

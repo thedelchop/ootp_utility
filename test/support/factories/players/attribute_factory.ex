@@ -8,6 +8,7 @@ defmodule OOTPUtility.Factories.Players.AttributeFactory do
     only: [is_batting_attribute: 1, is_pitching_attribute: 1, is_pitch: 1]
 
   defmacro __using__(_opts) do
+    # credo:disable-for-next-line Credo.Check.Refactor.LongQuoteBlocks
     quote do
       def attribute_factory do
         %Attribute{
@@ -41,7 +42,7 @@ defmodule OOTPUtility.Factories.Players.AttributeFactory do
 
       def with_positions(%Players.Player{} = player, positions_experience) do
         positions_experience
-        |> Enum.map(fn
+        |> Enum.each(fn
           {position, experience} ->
             insert(:attribute,
               name: Atom.to_string(position),

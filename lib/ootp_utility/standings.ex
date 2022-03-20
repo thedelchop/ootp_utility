@@ -137,7 +137,7 @@ defmodule OOTPUtility.Standings do
         where: t.league_id == ^league_id,
         select: %{
           position: rank() |> over(:rankings),
-          most_wins: first_value(tr.wins) |> over(:rankings),
+          most_wins: tr.wins |> first_value() |> over(:rankings),
           id: tr.id
         },
         windows: [
@@ -170,7 +170,7 @@ defmodule OOTPUtility.Standings do
         where: t.conference_id == ^conference_id,
         select: %{
           position: rank() |> over(:rankings),
-          most_wins: first_value(tr.wins) |> over(:rankings),
+          most_wins: tr.wins |> first_value() |> over(:rankings),
           id: tr.id
         },
         windows: [

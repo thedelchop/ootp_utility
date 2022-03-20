@@ -5,6 +5,7 @@ defmodule OOTPUtility.StandingsFactory do
     only: [distribute_wins_amongst_teams: 2, generate_slug_from_name: 1]
 
   defmacro __using__(_opts) do
+    # credo:disable-for-next-line Credo.Check.Refactor.LongQuoteBlocks
     quote do
       def team_standings_factory(%{team: team} = attrs) do
         attrs
@@ -103,20 +104,19 @@ defmodule OOTPUtility.StandingsFactory do
       def conference_standings_factory(attrs) do
         games = Map.get(attrs, :games, Faker.random_between(1, 162))
 
-        conference =
-          attrs
-          |> Map.get_lazy(:conference, fn -> build(:conference) end)
-
-        do_conference_standings_factory(conference, games)
+        attrs
+        |> Map.get_lazy(:conference, fn -> build(:conference) end)
+        |> do_conference_standings_factory(games)
         |> merge_attributes(attrs)
         |> evaluate_lazy_attributes()
       end
 
       def league_standings_factory(attrs) do
         games = Map.get(attrs, :games, Faker.random_between(1, 162))
-        league = Map.get_lazy(attrs, :league, fn -> build(:league) end)
 
-        do_league_standings_factory(league, games)
+        attrs
+        |> Map.get_lazy(:league, fn -> build(:league) end)
+        |> do_league_standings_factory(games)
         |> merge_attributes(attrs)
         |> evaluate_lazy_attributes()
       end

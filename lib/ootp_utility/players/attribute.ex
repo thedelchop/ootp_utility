@@ -86,7 +86,7 @@ defmodule OOTPUtility.Players.Attribute do
   defguard is_bunting_attribute(attr) when attr in @bunting_attrs
   def bunting_attributes, do: as_atoms(@bunting_attrs)
 
-  @positions Ecto.Enum.values(Player, :position) |> Enum.map(&Atom.to_string/1)
+  @positions Player |> Ecto.Enum.values(:position) |> Enum.map(&Atom.to_string/1)
   defguard is_position(attr) when attr in @positions
   def positions, do: as_atoms(@positions)
 

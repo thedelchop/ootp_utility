@@ -19,26 +19,25 @@ defmodule OOTPUtility.Statistics.PitchingFactory do
         team = Map.get(attrs, :team, player.team)
         league = Map.get(attrs, :league, team.league)
 
-        struct!(
-          pitching_stats_factory(Pitching.Player),
-          %{
-            league: league,
-            player: player,
-            team: team,
-            split: :all,
-            inherited_runners: 0,
-            inherited_runners_scored: 0,
-            inherited_runners_scored_percentage: 0,
-            leverage_index: 0,
-            win_probability_added: 0
-          }
-        )
+        Pitching.Player
+        |> pitching_stats_factory()
+        |> struct!(%{
+          league: league,
+          player: player,
+          team: team,
+          split: :all,
+          inherited_runners: 0,
+          inherited_runners_scored: 0,
+          inherited_runners_scored_percentage: 0,
+          leverage_index: 0,
+          win_probability_added: 0
+        })
         |> merge_attributes(Map.drop(attrs, [:player, :team, :league]))
         |> evaluate_lazy_attributes()
       end
 
-      # As a quick way to generate reasonable pitching statistiscs for both a team's season and player's season,
-      # provide a "num_of_players" parameter that defaults to 1, but could be passed something like 10 to approixmate
+      # As a quick way to generate reasonable pitching statistics for both a team's season and player's season,
+      # provide a "num_of_players" parameter that defaults to 1, but could be passed something like 10 to approximate
       # a Team's pitching statistics
 
       defp pitching_stats_factory(module, num_of_players \\ 1) do

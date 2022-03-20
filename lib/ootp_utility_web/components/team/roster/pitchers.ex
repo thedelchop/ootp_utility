@@ -54,8 +54,7 @@ defmodule OOTPUtilityWeb.Components.Team.Roster.Pitchers do
     dasherized_title =
       title
       |> String.split(" ")
-      |> Enum.map(&String.downcase/1)
-      |> Enum.join("-")
+      |> Enum.map_join("-", &String.downcase/1)
 
     "#{dasherized_title}-roster-table"
   end

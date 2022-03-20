@@ -26,7 +26,8 @@ defmodule OOTPUtility.Leagues do
   """
   @spec get_league!(String.t(), Keyword.t()) :: League.t()
   def get_league!(id, opts \\ []) do
-    dynamic([l], l.id == ^id)
+    [l]
+    |> dynamic(l.id == ^id)
     |> do_get_league(opts)
   end
 
@@ -49,7 +50,8 @@ defmodule OOTPUtility.Leagues do
         slug,
         opts \\ []
       ) do
-    dynamic([l], l.slug == ^slug)
+    [l]
+    |> dynamic(l.slug == ^slug)
     |> do_get_league(opts)
   end
 
@@ -108,7 +110,8 @@ defmodule OOTPUtility.Leagues do
   """
   @spec get_conference!(String.t(), Keyword.t()) :: Conference.t()
   def get_conference!(id, opts \\ []) do
-    dynamic([c], c.id == ^id)
+    [c]
+    |> dynamic(c.id == ^id)
     |> do_get_conference!(opts)
   end
 
@@ -134,7 +137,8 @@ defmodule OOTPUtility.Leagues do
   """
   @spec get_conference_by_slug!(String.t(), Keyword.t()) :: Conference.t()
   def get_conference_by_slug!(slug, opts \\ []) do
-    dynamic([c], c.slug == ^slug)
+    [c]
+    |> dynamic(c.slug == ^slug)
     |> do_get_conference!(opts)
   end
 

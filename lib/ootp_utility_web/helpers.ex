@@ -34,8 +34,7 @@ defmodule OOTPUtilityWeb.Helpers do
     string_or_atom
     |> humanize()
     |> String.split(" ")
-    |> Enum.map(&String.capitalize/1)
-    |> Enum.join(" ")
+    |> Enum.map_join(" ", &String.capitalize/1)
   end
 
   @spec ordinalize(integer()) :: String.t()
@@ -74,6 +73,7 @@ defmodule OOTPUtilityWeb.Helpers do
     | 1     | 21  | 24  |
     | 0.5   | 20  | 20  |
   """
+  # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
   def player_rating_as_stars(rating) do
     cond do
       rating > 77 ->

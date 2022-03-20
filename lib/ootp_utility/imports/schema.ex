@@ -56,8 +56,7 @@ defmodule OOTPUtility.Imports.Schema do
         def put_slug(%Ecto.Changeset{} = changeset) do
           slug_source =
             unquote(slug_fields)
-            |> Enum.map(&Ecto.Changeset.get_field(changeset, &1))
-            |> Enum.join(" ")
+            |> Enum.map_join(" ", &Ecto.Changeset.get_field(changeset, &1))
 
           slug = Slug.slugify(slug_source)
 
@@ -70,7 +69,7 @@ defmodule OOTPUtility.Imports.Schema do
   def validate_changeset(_module, changeset), do: changeset
   def update_changeset(_module, changeset), do: changeset
 
-  @pg_maximum_parameters 65535
+  @pg_maximum_parameters 65_535
 
   def import_from_attributes(module, schema, attributes) do
     attributes_to_import = schema.__schema__(:fields)
@@ -78,7 +77,7 @@ defmodule OOTPUtility.Imports.Schema do
 
     # The Postgresql protocol can not write more than 65535 parameters during a single query, so since we
     # are doing an insert all operation, the most records we can write in a single pass is depends on the
-    # number of fields we are writing for the current module. So there, we dividie the MAX_PARAMETERS by
+    # number of fields we are writing for the current module. So there, we divide the MAX_PARAMETERS by
     # the NUMBER_OF_FIELDS_IN_SCHEMA to obtain WINDOW_SIZE.
     window_size = div(@pg_maximum_parameters, number_of_attributes)
 

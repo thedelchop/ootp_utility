@@ -32,8 +32,6 @@ defmodule OOTPUtility.Schema do
   end
 
   def generate_composite_key(struct, keys) do
-    keys
-    |> Enum.map(&Map.get(struct, &1))
-    |> Enum.join("-")
+    Enum.map_join(keys, "-", &Map.get(struct, &1))
   end
 end
