@@ -62,77 +62,83 @@ defmodule OOTPUtilityWeb.Components.Team.Roster.Pitchers do
 
   def render(assigns) do
     ~F"""
-      <div class="flex flex-col bg-white p-4 border-b border-gray-200 rounded-md shadow">
-        <SectionHeader>{@title}</SectionHeader>
-        <div class={"relative block"}>
-          <div class={"overflow-x-scroll overflow-y-visible pb-1 ml-32"}>
-            <Table id={table_id(@title)} data={{pitcher, stats} <- @players_with_statistics} class={"px-2 py-1 lg:px-4 lg:py-2"} header_class={&header_class/2} column_class={&column_class/2}>
-              <Column label={""}>
-                <LiveRedirect to={path_to_player(pitcher, @socket)}>
-                  <span class="md:hidden">{Players.name(pitcher, :short)}</span>
-                  <span class="hidden md:block">{Players.name(pitcher, :full)}</span>
-                </LiveRedirect>
-              </Column>
+    <div class="flex flex-col bg-white p-4 border-b border-gray-200 rounded-md shadow">
+      <SectionHeader>{@title}</SectionHeader>
+      <div class="relative block">
+        <div class="overflow-x-scroll overflow-y-visible pb-1 ml-32">
+          <Table
+            id={table_id(@title)}
+            data={{pitcher, stats} <- @players_with_statistics}
+            class="px-2 py-1 lg:px-4 lg:py-2"
+            header_class={&header_class/2}
+            column_class={&column_class/2}
+          >
+            <Column label="">
+              <LiveRedirect to={path_to_player(pitcher, @socket)}>
+                <span class="md:hidden">{Players.name(pitcher, :short)}</span>
+                <span class="hidden md:block">{Players.name(pitcher, :full)}</span>
+              </LiveRedirect>
+            </Column>
 
             <Column label="Role">
-                {get_position_key(pitcher.position)}
-              </Column>
+              {get_position_key(pitcher.position)}
+            </Column>
 
-              <Column label="T">
-                {pitcher.throws |> String.first() |> String.capitalize()}
-              </Column>
+            <Column label="T">
+              {pitcher.throws |> String.first() |> String.capitalize()}
+            </Column>
 
-              <Column label="G">
-                {stats.games}
-              </Column>
+            <Column label="G">
+              {stats.games}
+            </Column>
 
-              <Column label="GS">
-                {stats.games_started}
-              </Column>
+            <Column label="GS">
+              {stats.games_started}
+            </Column>
 
-              <Column label="IP">
-                {convert_outs_to_innings(stats.outs_pitched)}
-              </Column>
+            <Column label="IP">
+              {convert_outs_to_innings(stats.outs_pitched)}
+            </Column>
 
-              <Column label="W">
-                {stats.wins}
-              </Column>
+            <Column label="W">
+              {stats.wins}
+            </Column>
 
-              <Column label="L">
-                {stats.losses}
-              </Column>
+            <Column label="L">
+              {stats.losses}
+            </Column>
 
-              <Column label="S">
-                {stats.saves}
-              </Column>
+            <Column label="S">
+              {stats.saves}
+            </Column>
 
-              <Column label="K">
-                {stats.strikeouts}
-              </Column>
+            <Column label="K">
+              {stats.strikeouts}
+            </Column>
 
-              <Column label="BB">
-                {stats.walks}
-              </Column>
+            <Column label="BB">
+              {stats.walks}
+            </Column>
 
-              <Column label="R">
-                {stats.runs}
-              </Column>
+            <Column label="R">
+              {stats.runs}
+            </Column>
 
-              <Column label="ERA">
-                {stats.earned_run_average |> :erlang.float_to_binary(decimals: 2)}
-              </Column>
+            <Column label="ERA">
+              {stats.earned_run_average |> :erlang.float_to_binary(decimals: 2)}
+            </Column>
 
-              <Column label="WHIP">
-                {stats.walks_hits_per_inning_pitched |> :erlang.float_to_binary(decimals: 2)}
-              </Column>
+            <Column label="WHIP">
+              {stats.walks_hits_per_inning_pitched |> :erlang.float_to_binary(decimals: 2)}
+            </Column>
 
-              <Column label="WAR">
-                {stats.wins_above_replacement}
-              </Column>
-            </Table>
-          </div>
+            <Column label="WAR">
+              {stats.wins_above_replacement}
+            </Column>
+          </Table>
         </div>
       </div>
+    </div>
     """
   end
 

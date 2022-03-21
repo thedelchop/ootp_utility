@@ -7,7 +7,7 @@ defmodule OOTPUtilityWeb.ConferenceLive do
   @impl true
   def render(assigns) do
     ~F"""
-      <Conference id={"#{@conference.slug}-standinhgs"} conference={@conference} />
+    <Conference id={"#{@conference.slug}-standinhgs"} conference={@conference} />
     """
   end
 

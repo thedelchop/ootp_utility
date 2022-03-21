@@ -24,7 +24,7 @@ defmodule OOTPUtilityWeb.Components.Scoreboard.GameTest do
   test_snapshot "returns a summary of an unplayed game", %{game: game} do
     render_surface do
       ~F"""
-        <Game id={"#{game.id}-game"} game={game} />
+      <Game id={"#{game.id}-game"} game={game} />
       """
     end
   end
@@ -60,7 +60,7 @@ defmodule OOTPUtilityWeb.Components.Scoreboard.GameTest do
 
     render_surface do
       ~F"""
-        <Game id={"#{completed_game.id}-game"} game={completed_game} />
+      <Game id={"#{completed_game.id}-game"} game={completed_game} />
       """
     end
   end

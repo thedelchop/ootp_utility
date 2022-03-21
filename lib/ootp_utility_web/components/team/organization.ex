@@ -13,28 +13,32 @@ defmodule OOTPUtilityWeb.Components.Team.Organization do
   @impl true
   def render(assigns) do
     ~F"""
-      <Section event_target={@myself} direction={:column} >
-        <SectionHeader>Organization</SectionHeader>
-        <ul role="list" class="divide-y divide-gray-200">
-          {#for affiliate <- team_affiliates(@team) }
-            <li class="py-2 md:py-4 flex justify-between relative">
-              <div class="flex gap-2 md:gap-4 items-center mr-2 md:mr-4">
-                <img class="h-6 md:h-10 w-6 md:w-10 rounded-full" src={path_to_team_logo(affiliate, @socket)} alt="" />
-                <div>
-                  <LiveRedirect class="text-base text-left text-gray-900" to={path_to_team(affiliate, @socket)}>
-                    {name_with_league_level(affiliate)}
-                  </LiveRedirect>
-                  <div class={"text-base text-left text-gray-900"}>{league_level(affiliate)}</div>
-                </div>
+    <Section event_target={@myself} direction={:column}>
+      <SectionHeader>Organization</SectionHeader>
+      <ul role="list" class="divide-y divide-gray-200">
+        {#for affiliate <- team_affiliates(@team)}
+          <li class="py-2 md:py-4 flex justify-between relative">
+            <div class="flex gap-2 md:gap-4 items-center mr-2 md:mr-4">
+              <img
+                class="h-6 md:h-10 w-6 md:w-10 rounded-full"
+                src={path_to_team_logo(affiliate, @socket)}
+                alt=""
+              />
+              <div>
+                <LiveRedirect class="text-base text-left text-gray-900" to={path_to_team(affiliate, @socket)}>
+                  {name_with_league_level(affiliate)}
+                </LiveRedirect>
+                <div class="text-base text-left text-gray-900">{league_level(affiliate)}</div>
               </div>
-              <div class="flex flex-col">
-                <div class="text-lg md:text-2xl text-gray-700 whitespace-nowrap">{team_record(affiliate)}</div>
-                <div class="text-xs md:text-sm text-right text-gray-500 uppercase">{games_behind(affiliate)}</div>
-              </div>
-            </li>
-          {/for}
-        </ul>
-      </Section>
+            </div>
+            <div class="flex flex-col">
+              <div class="text-lg md:text-2xl text-gray-700 whitespace-nowrap">{team_record(affiliate)}</div>
+              <div class="text-xs md:text-sm text-right text-gray-500 uppercase">{games_behind(affiliate)}</div>
+            </div>
+          </li>
+        {/for}
+      </ul>
+    </Section>
     """
   end
 

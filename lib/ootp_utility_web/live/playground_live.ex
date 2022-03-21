@@ -4,7 +4,7 @@ defmodule OOTPUtilityWeb.PlaygroundLive do
   @impl true
   def render(assigns) do
     ~F"""
-      <div></div>
+    <div />
     """
   end
 

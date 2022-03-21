@@ -8,10 +8,10 @@ defmodule OOTPUtilityWeb.PlayerLive do
   @impl true
   def render(assigns) do
     ~F"""
-      <div class="flex flex-col gap-4">
-        <Header id={"#{@player.slug}-header"} player={@player} />
-        <Attributes id={"#{@player.slug}-attributes"} player={@player} />
-      </div>
+    <div class="flex flex-col gap-4">
+      <Header id={"#{@player.slug}-header"} player={@player} />
+      <Attributes id={"#{@player.slug}-attributes"} player={@player} />
+    </div>
     """
   end
 

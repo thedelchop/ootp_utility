@@ -97,7 +97,7 @@ defmodule OOTPUtilityWeb.Components.Standings.ConferenceTest do
 
     render_surface do
       ~F"""
-        <ConferenceStandings id={"#{conference.slug}-standings"} conference={conference} />
+      <ConferenceStandings id={"#{conference.slug}-standings"} conference={conference} />
       """
     end
   end
@@ -146,7 +146,7 @@ defmodule OOTPUtilityWeb.Components.Standings.ConferenceTest do
 
     render_surface do
       ~F"""
-        <ConferenceStandings id={"#{conference.slug}-standings"} conference={conference} />
+      <ConferenceStandings id={"#{conference.slug}-standings"} conference={conference} />
       """
     end
   end

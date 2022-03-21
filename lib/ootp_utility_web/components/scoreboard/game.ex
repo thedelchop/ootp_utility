@@ -8,14 +8,14 @@ defmodule OOTPUtilityWeb.Components.Scoreboard.Game do
 
   def render(assigns) do
     ~F"""
-      <div class="flex flex-col flex-none bg-white border border-gray-200 p-2 rounded-lg w-32 shadow">
-        {team_summary(@socket, @game, :away_team)}
-        {team_summary(@socket, @game, :home_team)}
-        <hr class="my-2" />
-        <div class={"text-xs", "text-gray-500", "tracking-tighter", "px-0.5", "text-center": not(is_played?(@game))}>
-          { if is_played?(@game), do: results(@game), else: start_time(@game)}
-        </div>
+    <div class="flex flex-col flex-none bg-white border border-gray-200 p-2 rounded-lg w-32 shadow">
+      {team_summary(@socket, @game, :away_team)}
+      {team_summary(@socket, @game, :home_team)}
+      <hr class="my-2">
+      <div class={"text-xs", "text-gray-500", "tracking-tighter", "px-0.5", "text-center": not is_played?(@game)}>
+        {if is_played?(@game), do: results(@game), else: start_time(@game)}
       </div>
+    </div>
     """
   end
 
@@ -35,22 +35,22 @@ defmodule OOTPUtilityWeb.Components.Scoreboard.Game do
       )
 
     ~F"""
-      <dl>
+    <dl>
+      <div class="flex">
+        <dt class="text-xs">W:</dt>
+        <dd class="flex-grow text-xs text-right">{@winning_pitcher}</dd>
+      </div>
+      <div class="flex">
+        <dt class="text-xs">L:</dt>
+        <dd class="flex-grow text-right text-xs">{@losing_pitcher}</dd>
+      </div>
+      {#if not is_nil(@save_pitcher)}
         <div class="flex">
-          <dt class="text-xs">W:</dt>
-          <dd class="flex-grow text-xs text-right">{@winning_pitcher}</dd>
+          <dt class="text-xs">S:</dt>
+          <dd class="flex-grow text-right text-xs">{@save_pitcher}</dd>
         </div>
-        <div class="flex">
-          <dt class="text-xs">L:</dt>
-          <dd class="flex-grow text-right text-xs">{@losing_pitcher}</dd>
-        </div>
-        {#if not is_nil(@save_pitcher) }
-          <div class="flex">
-            <dt class="text-xs">S:</dt>
-            <dd class="flex-grow text-right text-xs">{@save_pitcher}</dd>
-          </div>
-        {/if}
-      </dl>
+      {/if}
+    </dl>
     """
   end
 
@@ -85,11 +85,11 @@ defmodule OOTPUtilityWeb.Components.Scoreboard.Game do
 
   defp render_team_summary(assigns) do
     ~F"""
-      <div class="flex">
-        <img class="h-5 w-5" src={Routes.static_path(@socket, "/images/logos/#{@logo}")} alt="">
-        <h4 class="text-sm tracking-tighter mx-1">{@abbr}</h4>
-        <h5 class="flex-grow flex-shrink-0 text-xs text-gray-400 text-right ml-2">{@record_or_score}</h5>
-      </div>
+    <div class="flex">
+      <img class="h-5 w-5" src={Routes.static_path(@socket, "/images/logos/#{@logo}")} alt="">
+      <h4 class="text-sm tracking-tighter mx-1">{@abbr}</h4>
+      <h5 class="flex-grow flex-shrink-0 text-xs text-gray-400 text-right ml-2">{@record_or_score}</h5>
+    </div>
     """
   end
 

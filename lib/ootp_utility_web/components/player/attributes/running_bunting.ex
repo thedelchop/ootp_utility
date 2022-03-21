@@ -24,15 +24,20 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes.RunningBunting do
 
   def render(assigns) do
     ~F"""
-      <Table id={"player-running-bunting-attributes"} data={{name, ratings} <- @bunting_attributes ++ @running_attributes} header_class={&header_class/2} column_class={&column_class/2}>
-        <Column label={"Run/Bunt"}>
-          {attribute_name(name)}
-        </Column>
+    <Table
+      id="player-running-bunting-attributes"
+      data={{name, ratings} <- @bunting_attributes ++ @running_attributes}
+      header_class={&header_class/2}
+      column_class={&column_class/2}
+    >
+      <Column label="Run/Bunt">
+        {attribute_name(name)}
+      </Column>
 
-        <Column label="">
-          {as_number(Keyword.get(ratings, :ability))}
-        </Column>
-      </Table>
+      <Column label="">
+        {as_number(Keyword.get(ratings, :ability))}
+      </Column>
+    </Table>
     """
   end
 
@@ -44,7 +49,7 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes.RunningBunting do
     assigns = %{rating: rating}
 
     ~F"""
-      <span class={"text-rating-#{@rating * 2}"}>{@rating}</span>
+    <span class={"text-rating-#{@rating * 2}"}>{@rating}</span>
     """
   end
 

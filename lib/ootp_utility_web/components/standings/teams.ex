@@ -26,33 +26,38 @@ defmodule OOTPUtilityWeb.Components.Standings.Teams do
 
   def render(assigns) do
     ~F"""
-      <div>
-        <Table id={"#{@id}-table"} data={standing <- @standings} header_class={&header_class/2} column_class={&column_class/2}>
-          <Column label={@parent_name}>
-            <NameWithLogo id={"#{standing.slug}-name"} team={standing} compact={@compact} />
-          </Column>
+    <div>
+      <Table
+        id={"#{@id}-table"}
+        data={standing <- @standings}
+        header_class={&header_class/2}
+        column_class={&column_class/2}
+      >
+        <Column label={@parent_name}>
+          <NameWithLogo id={"#{standing.slug}-name"} team={standing} compact={@compact} />
+        </Column>
 
-          <Column label="w">
-            {standing.wins}
-          </Column>
+        <Column label="w">
+          {standing.wins}
+        </Column>
 
-          <Column label="l">
-            {standing.losses}
-          </Column>
+        <Column label="l">
+          {standing.losses}
+        </Column>
 
-          <Column label="pct">
-            {winning_percentage(standing)}
-          </Column>
+        <Column label="pct">
+          {winning_percentage(standing)}
+        </Column>
 
-          <Column label="gb">
-            {standing.games_behind}
-          </Column>
+        <Column label="gb">
+          {standing.games_behind}
+        </Column>
 
-          <Column label="strk">
-            {streak(standing)}
-          </Column>
-        </Table>
-      </div>
+        <Column label="strk">
+          {streak(standing)}
+        </Column>
+      </Table>
+    </div>
     """
   end
 

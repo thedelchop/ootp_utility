@@ -26,15 +26,20 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes.Pitching do
 
   def render(assigns) do
     ~F"""
-      <Table id={"player-pitching-attributes"} data={{name, ratings} <- attributes(@player, @positions)} header_class={&header_class/2} column_class={&column_class/2}>
-        <Column label={"Other Pitching Ratings"}>
-          {attribute_name(name)}
-        </Column>
+    <Table
+      id="player-pitching-attributes"
+      data={{name, ratings} <- attributes(@player, @positions)}
+      header_class={&header_class/2}
+      column_class={&column_class/2}
+    >
+      <Column label="Other Pitching Ratings">
+        {attribute_name(name)}
+      </Column>
 
-        <Column label="">
-          {as_number(name, Keyword.get(ratings, :ability))}
-        </Column>
-      </Table>
+      <Column label="">
+        {as_number(name, Keyword.get(ratings, :ability))}
+      </Column>
+    </Table>
     """
   end
 
@@ -44,7 +49,7 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes.Pitching do
     assigns = %{rating: rating}
 
     ~F"""
-      <span>{@rating}</span>
+    <span>{@rating}</span>
     """
   end
 
@@ -52,7 +57,7 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes.Pitching do
     assigns = %{rating: rating}
 
     ~F"""
-      <span class={"text-rating-#{@rating * 2}"}>{@rating}</span>
+    <span class={"text-rating-#{@rating * 2}"}>{@rating}</span>
     """
   end
 
@@ -85,7 +90,7 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes.Pitching do
       stamina: [ability: scale_value(player.stamina, 10)],
       type: [ability: pitcher_type(player.groundball_flyball_ratio)],
       hold_runners: [ability: scale_value(player.hold_runners, 10)],
-      defense: Keyword.get(positions, :pitcher, [ability: "-"])
+      defense: Keyword.get(positions, :pitcher, ability: "-")
     ]
   end
 

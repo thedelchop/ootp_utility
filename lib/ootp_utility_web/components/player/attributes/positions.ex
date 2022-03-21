@@ -23,15 +23,20 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes.Positions do
 
   def render(assigns) do
     ~F"""
-      <Table id={"player-position-experience"} data={{name, ratings} <- @attributes} header_class={&header_class/2} column_class={&column_class/2}>
-        <Column label={"Position Ratings"}>
-          {attribute_name(name)}
-        </Column>
+    <Table
+      id="player-position-experience"
+      data={{name, ratings} <- @attributes}
+      header_class={&header_class/2}
+      column_class={&column_class/2}
+    >
+      <Column label="Position Ratings">
+        {attribute_name(name)}
+      </Column>
 
-        <Column label="">
-          {as_number(Keyword.get(ratings, :ability))}
-        </Column>
-      </Table>
+      <Column label="">
+        {as_number(Keyword.get(ratings, :ability))}
+      </Column>
+    </Table>
     """
   end
 
@@ -43,7 +48,7 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes.Positions do
     assigns = %{rating: nil}
 
     ~F"""
-      <span>-</span>
+    <span>-</span>
     """
   end
 
@@ -51,7 +56,7 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes.Positions do
     assigns = %{rating: rating}
 
     ~F"""
-      <span class={"text-rating-#{@rating * 2}"}>{@rating}</span>
+    <span class={"text-rating-#{@rating * 2}"}>{@rating}</span>
     """
   end
 

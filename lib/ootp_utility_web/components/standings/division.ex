@@ -24,14 +24,14 @@ defmodule OOTPUtilityWeb.Components.Standings.Division do
   @impl true
   def render(assigns) do
     ~F"""
-      <div class="flex flex-col p-1 lg:p-1 overflow-hidden">
-        <Teams
-          id={child_id(@division)}
-          standings={@standings.team_standings}
-          parent_name={name(@division)}
-          compact={@compact}
-        />
-      </div>
+    <div class="flex flex-col p-1 lg:p-1 overflow-hidden">
+      <Teams
+        id={child_id(@division)}
+        standings={@standings.team_standings}
+        parent_name={name(@division)}
+        compact={@compact}
+      />
+    </div>
     """
   end
 

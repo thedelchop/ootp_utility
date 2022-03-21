@@ -9,7 +9,8 @@ defmodule OOTPUtility.Players.AttributesTest do
     setup do
       player = insert(:player, position: :closer)
 
-      attributes = create_attributes_for_player(player, :pitching, stuff: 155, movement: 100, control: 123)
+      attributes =
+        create_attributes_for_player(player, :pitching, stuff: 155, movement: 100, control: 123)
 
       {:ok, player: player, attributes: attributes}
     end

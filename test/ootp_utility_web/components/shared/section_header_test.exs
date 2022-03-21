@@ -6,7 +6,7 @@ defmodule OOTPUtilityWeb.Components.Shared.SectionHeaderTest do
   test_snapshot "Renders a section header with the specified title" do
     render_surface do
       ~F"""
-        <SectionHeader>My Title</SectionHeader>
+      <SectionHeader>My Title</SectionHeader>
       """
     end
   end

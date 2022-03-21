@@ -93,7 +93,7 @@ defmodule OOTPUtilityWeb.Components.Standings.LeagueTest do
 
     render_surface do
       ~F"""
-        <LeagueStandings id={"#{league.slug}-standings"} league={league} />
+      <LeagueStandings id={"#{league.slug}-standings"} league={league} />
       """
     end
   end
@@ -182,7 +182,7 @@ defmodule OOTPUtilityWeb.Components.Standings.LeagueTest do
 
     render_surface do
       ~F"""
-        <LeagueStandings id={"#{league.slug}-standings"} league={league} />
+      <LeagueStandings id={"#{league.slug}-standings"} league={league} />
       """
     end
   end
@@ -230,7 +230,7 @@ defmodule OOTPUtilityWeb.Components.Standings.LeagueTest do
 
     render_surface do
       ~F"""
-        <LeagueStandings id={"#{league.slug}-standings"} league={league} />
+      <LeagueStandings id={"#{league.slug}-standings"} league={league} />
       """
     end
   end

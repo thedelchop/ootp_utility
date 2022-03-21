@@ -19,7 +19,7 @@ defmodule OOTPUtilityWeb.Components.Team.RosterTest do
 
     render_surface do
       ~F"""
-        <Roster id={"#{team.slug}-roster"} team={team} year={league.season_year} />
+      <Roster id={"#{team.slug}-roster"} team={team} year={league.season_year} />
       """
     end
   end

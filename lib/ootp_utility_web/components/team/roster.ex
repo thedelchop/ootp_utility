@@ -45,12 +45,12 @@ defmodule OOTPUtilityWeb.Components.Team.Roster do
 
   def render(assigns) do
     ~F"""
-      <div class={container_class(@class)}>
-        <Roster.Pitchers id="pitchers-roster" players={@pitchers} year={@year} title="Pitchers"/>
-        <Roster.Hitters id="catchers-roster" players={@catchers} year={@year} title="Catchers"/>
-        <Roster.Hitters id="infielders-roster" players={@infielders} year={@year} title="Infielders"/>
-        <Roster.Hitters id="outfielders-roster" players={@outfielders} year={@year} title="Outfielders"/>
-      </div>
+    <div class={container_class(@class)}>
+      <Roster.Pitchers id="pitchers-roster" players={@pitchers} year={@year} title="Pitchers" />
+      <Roster.Hitters id="catchers-roster" players={@catchers} year={@year} title="Catchers" />
+      <Roster.Hitters id="infielders-roster" players={@infielders} year={@year} title="Infielders" />
+      <Roster.Hitters id="outfielders-roster" players={@outfielders} year={@year} title="Outfielders" />
+    </div>
     """
   end
 end

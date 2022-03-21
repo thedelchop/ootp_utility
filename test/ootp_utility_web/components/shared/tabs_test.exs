@@ -7,14 +7,14 @@ defmodule OOTPUtilityWeb.Components.Shared.TabsTest do
   test_snapshot "Renders a set of tabs with custom content" do
     render_surface do
       ~F"""
-        <Tabs id="test-tabs">
-          <Tab label="Tab 1">
-            <h1>This is my first tab</h1>
-          </Tab>
-          <Tab label="Tab 2">
-            <h1>This is my second tab</h1>
-          </Tab>
-        </Tabs>
+      <Tabs id="test-tabs">
+        <Tab label="Tab 1">
+          <h1>This is my first tab</h1>
+        </Tab>
+        <Tab label="Tab 2">
+          <h1>This is my second tab</h1>
+        </Tab>
+      </Tabs>
       """
     end
   end
@@ -22,14 +22,14 @@ defmodule OOTPUtilityWeb.Components.Shared.TabsTest do
   test_snapshot "Accepts a class property to style the container" do
     render_surface do
       ~F"""
-        <Tabs id="test-tabs" class={["mb-5", "p-2"]}>
-          <Tab label="Tab 1">
-            <h1>This is my first tab</h1>
-          </Tab>
-          <Tab label="Tab 2">
-            <h1>This is my second tab</h1>
-          </Tab>
-        </Tabs>
+      <Tabs id="test-tabs" class={["mb-5", "p-2"]}>
+        <Tab label="Tab 1">
+          <h1>This is my first tab</h1>
+        </Tab>
+        <Tab label="Tab 2">
+          <h1>This is my second tab</h1>
+        </Tab>
+      </Tabs>
       """
     end
   end

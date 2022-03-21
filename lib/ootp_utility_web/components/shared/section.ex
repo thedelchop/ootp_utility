@@ -10,9 +10,13 @@ defmodule OOTPUtilityWeb.Components.Shared.Section do
 
   def render(assigns) do
     ~F"""
-      <div phx-hook="WindowResize" phx-target={@event_target} class={css_classes(@border, @wrap, @direction)}>
-        <#slot />
-      </div>
+    <div
+      phx-hook="WindowResize"
+      phx-target={@event_target}
+      class={css_classes(@border, @wrap, @direction)}
+    >
+      <#slot />
+    </div>
     """
   end
 

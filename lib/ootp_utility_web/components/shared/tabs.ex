@@ -41,11 +41,9 @@ defmodule OOTPUtilityWeb.Components.Shared.Tabs do
       </div>
       <section class="overflow-hidden">
         {#for {tab, index} <- Enum.with_index(@tabs)}
-          <div
-            :show={tab.visible && @active_tab == index}
-          >
+          <div :show={tab.visible && @active_tab == index}>
             <#slot name="tabs" index={index} />
-        </div>
+          </div>
         {/for}
       </section>
     </div>

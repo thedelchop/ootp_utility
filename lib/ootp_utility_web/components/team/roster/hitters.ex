@@ -58,80 +58,86 @@ defmodule OOTPUtilityWeb.Components.Team.Roster.Hitters do
 
   def render(assigns) do
     ~F"""
-      <div class="flex flex-col bg-white p-4 border-b border-gray-200 rounded-md shadow overflow-x-scroll">
-        <SectionHeader>{@title}</SectionHeader>
-        <div class={"relative block"}>
-          <div class={"overflow-x-scroll overflow-y-visible pb-1 ml-32"}>
-            <Table id={table_id(@title)} data={ {hitter, stats} <- @players_with_statistics } class={"px-2 py-1 lg:px-4 lg:py-2"} header_class={&header_class/2} column_class={&column_class/2}>
-              <Column label="">
-                <LiveRedirect to={path_to_player(hitter, @socket)}>
-                  {Players.name(hitter, :full)}
-                </LiveRedirect>
-              </Column>
+    <div class="flex flex-col bg-white p-4 border-b border-gray-200 rounded-md shadow overflow-x-scroll">
+      <SectionHeader>{@title}</SectionHeader>
+      <div class="relative block">
+        <div class="overflow-x-scroll overflow-y-visible pb-1 ml-32">
+          <Table
+            id={table_id(@title)}
+            data={{hitter, stats} <- @players_with_statistics}
+            class="px-2 py-1 lg:px-4 lg:py-2"
+            header_class={&header_class/2}
+            column_class={&column_class/2}
+          >
+            <Column label="">
+              <LiveRedirect to={path_to_player(hitter, @socket)}>
+                {Players.name(hitter, :full)}
+              </LiveRedirect>
+            </Column>
 
-              <Column label="POS">
-                {get_position_key(hitter.position)}
-              </Column>
+            <Column label="POS">
+              {get_position_key(hitter.position)}
+            </Column>
 
-              <Column label="B">
-                {hitter.bats |> String.first() |> String.capitalize()}
-              </Column>
+            <Column label="B">
+              {hitter.bats |> String.first() |> String.capitalize()}
+            </Column>
 
-              <Column label="G">
-                {stats.games}
-              </Column>
+            <Column label="G">
+              {stats.games}
+            </Column>
 
-              <Column label="AB">
-                {stats.at_bats}
-              </Column>
+            <Column label="AB">
+              {stats.at_bats}
+            </Column>
 
-              <Column label="H">
-                {stats.hits}
-              </Column>
+            <Column label="H">
+              {stats.hits}
+            </Column>
 
-              <Column label="HR">
-                {stats.home_runs}
-              </Column>
+            <Column label="HR">
+              {stats.home_runs}
+            </Column>
 
-              <Column label="RBI">
-                {stats.runs_batted_in}
-              </Column>
+            <Column label="RBI">
+              {stats.runs_batted_in}
+            </Column>
 
-              <Column label="R">
-                {stats.runs}
-              </Column>
+            <Column label="R">
+              {stats.runs}
+            </Column>
 
-              <Column label="BB">
-                {stats.walks}
-              </Column>
+            <Column label="BB">
+              {stats.walks}
+            </Column>
 
-              <Column label="K">
-                {stats.strikeouts}
-              </Column>
+            <Column label="K">
+              {stats.strikeouts}
+            </Column>
 
-              <Column label="SB">
-                {stats.stolen_bases}
-              </Column>
+            <Column label="SB">
+              {stats.stolen_bases}
+            </Column>
 
-              <Column label="AVG">
-                {stats.batting_average |> :erlang.float_to_binary(decimals: 3) |> String.trim_leading("0")}
-              </Column>
+            <Column label="AVG">
+              {stats.batting_average |> :erlang.float_to_binary(decimals: 3) |> String.trim_leading("0")}
+            </Column>
 
-              <Column label="OBP">
-                {stats.on_base_percentage |> :erlang.float_to_binary(decimals: 3) |> String.trim_leading("0")}
-              </Column>
+            <Column label="OBP">
+              {stats.on_base_percentage |> :erlang.float_to_binary(decimals: 3) |> String.trim_leading("0")}
+            </Column>
 
-              <Column label="SLG">
-                {stats.slugging |> :erlang.float_to_binary(decimals: 3) |> String.trim_leading("0")}
-              </Column>
+            <Column label="SLG">
+              {stats.slugging |> :erlang.float_to_binary(decimals: 3) |> String.trim_leading("0")}
+            </Column>
 
-              <Column label="WAR">
-                {stats.wins_above_replacement |> :erlang.float_to_binary(decimals: 1)}
-              </Column>
-            </Table>
-          </div>
+            <Column label="WAR">
+              {stats.wins_above_replacement |> :erlang.float_to_binary(decimals: 1)}
+            </Column>
+          </Table>
         </div>
       </div>
+    </div>
     """
   end
 

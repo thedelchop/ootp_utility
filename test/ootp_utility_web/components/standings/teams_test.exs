@@ -45,7 +45,7 @@ defmodule OOTPUtilityWeb.Components.Standings.TeamsTest do
 
     render_surface do
       ~F"""
-        <TeamsStandings id={"team-standings"} standings={standings} />
+      <TeamsStandings id="team-standings" standings={standings} />
       """
     end
   end
@@ -55,7 +55,7 @@ defmodule OOTPUtilityWeb.Components.Standings.TeamsTest do
 
     render_surface do
       ~F"""
-        <TeamsStandings id={"team-standings"} standings={standings} parent_name={"American League"} />
+      <TeamsStandings id="team-standings" standings={standings} parent_name="American League" />
       """
     end
   end
@@ -68,7 +68,7 @@ defmodule OOTPUtilityWeb.Components.Standings.TeamsTest do
 
     render_surface do
       ~F"""
-        <TeamsStandings id={"team-standings"} standings={standings} compact={true} />
+      <TeamsStandings id="team-standings" standings={standings} compact />
       """
     end
   end

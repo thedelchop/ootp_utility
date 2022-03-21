@@ -12,11 +12,11 @@ defmodule OOTPUtilityWeb.Components.Statistics.Leaderboard do
 
   def render(assigns) do
     ~F"""
-      <ul class="pt-4 border-b">
-        {#for %Leaderboard{statistic: statistic, leaders: [leader| _rest]} <- @leaders}
-          <Leader {=leader} {=statistic} />
-        {/for}
-      </ul>
+    <ul class="pt-4 border-b">
+      {#for %Leaderboard{statistic: statistic, leaders: [leader | _rest]} <- @leaders}
+        <Leader {=leader} {=statistic} />
+      {/for}
+    </ul>
     """
   end
 end

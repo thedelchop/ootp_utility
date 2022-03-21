@@ -11,7 +11,7 @@ defmodule OOTPUtilityWeb.Components.Team.OrganizationTest do
 
     render_surface do
       ~F"""
-        <Organization id= {"#{organization.slug}-organization"} team={organization} />
+      <Organization id={"#{organization.slug}-organization"} team={organization} />
       """
     end
   end

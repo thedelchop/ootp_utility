@@ -16,25 +16,29 @@ defmodule OOTPUtilityWeb.Components.Team.Header do
 
   def render(assigns) do
     ~F"""
-      <Section event_target={@myself}>
-        <div class="flex gap-2 lg:gap-4">
-          <img class="h-16 w-16 lg:h-28 lg:w-28 rounded-full" src={path_to_team_logo(@team, @socket)} alt="">
-          <div class="flex flex-col gap-2 lg:gap-4">
-            <h1 class="text-2xl lg:text-4xl font-medium text-gray-900 whitespace-nowrap">{full_name(@team)}</h1>
-            <div class="contents divide-y">
-              <div class="flex flex-row gap-2 sm:gap-4 flex-wrap">
-                <h2 class="text-base lg:text-xl font-medium text-gray-900">{standings(@team, @socket)}</h2>
-                <h2 class="hidden md:block text-base lg:text-xl font-medium text-gray-900">{standings_in_parent_league(@team, @socket)}</h2>
-              </div>
-              <div class="flex flex-row gap-2 pt-2 lg:pt-4">
-                <h3 class="text-sm lg:text-lg font-medium text-gray-900">{team_record(@team)}</h3>
-                <h3 class="text-sm lg:text-lg font-medium text-gray-900">{games_behind(@team)}</h3>
-              </div>
+    <Section event_target={@myself}>
+      <div class="flex gap-2 lg:gap-4">
+        <img
+          class="h-16 w-16 lg:h-28 lg:w-28 rounded-full"
+          src={path_to_team_logo(@team, @socket)}
+          alt=""
+        />
+        <div class="flex flex-col gap-2 lg:gap-4">
+          <h1 class="text-2xl lg:text-4xl font-medium text-gray-900 whitespace-nowrap">{full_name(@team)}</h1>
+          <div class="contents divide-y">
+            <div class="flex flex-row gap-2 sm:gap-4 flex-wrap">
+              <h2 class="text-base lg:text-xl font-medium text-gray-900">{standings(@team, @socket)}</h2>
+              <h2 class="hidden md:block text-base lg:text-xl font-medium text-gray-900">{standings_in_parent_league(@team, @socket)}</h2>
+            </div>
+            <div class="flex flex-row gap-2 pt-2 lg:pt-4">
+              <h3 class="text-sm lg:text-lg font-medium text-gray-900">{team_record(@team)}</h3>
+              <h3 class="text-sm lg:text-lg font-medium text-gray-900">{games_behind(@team)}</h3>
             </div>
           </div>
         </div>
-        <Rankings team={@team} />
-      </Section>
+      </div>
+      <Rankings team={@team} />
+    </Section>
     """
   end
 
@@ -94,9 +98,9 @@ defmodule OOTPUtilityWeb.Components.Team.Header do
     assigns = %{position: position, parent: parent, socket: socket}
 
     ~F"""
-      <LiveRedirect to={path_to_parent(@parent, @socket)}>
-        {ordinalize(@position)} in {@parent.name}
-      </LiveRedirect>
+    <LiveRedirect to={path_to_parent(@parent, @socket)}>
+      {ordinalize(@position)} in {@parent.name}
+    </LiveRedirect>
     """
   end
 

@@ -8,7 +8,7 @@ defmodule OOTPUtilityWeb.Components.Player.RatingTest do
 
     render_surface do
       ~F"""
-        <Rating player={player} />
+      <Rating player={player} />
       """
     end
   end

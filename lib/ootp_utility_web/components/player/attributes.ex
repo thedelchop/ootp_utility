@@ -18,20 +18,29 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes do
 
   def render(assigns) do
     ~F"""
-      <Section direction={:column} event_target={@myself}>
-        <PrimaryAttributes title={primary_attributes_title(@player)} attributes={primary_attributes(@player)} />
-        <div class="flex gap-8 flex-wrap">
-          {#if is_pitcher(@player)}
-            <div class={"grow"}><Pitches pitches={attributes_for(@player, :pitches)} /></div>
-            <div class={"grow"}><PitchingAttributes player={@player} positions={attributes_for(@player, :positions)} /></div>
-            <div class={"grow"}><RunningBuntingAttributes running_attributes={attributes_for(@player, :baserunning)} bunting_attributes={attributes_for(@player, :bunting)} /></div>
-          {#else}
-            <div class={"grow"}><FieldingAttributes attributes={attributes_for(@player, :fielding)} /></div>
-            <div class={"grow"}><Positions attributes={attributes_for(@player, :positions)} /></div>
-            <div class={"grow"}><RunningBuntingAttributes running_attributes={attributes_for(@player, :baserunning)} bunting_attributes={attributes_for(@player, :bunting)} /></div>
-          {/if}
-        </div>
-      </Section>
+    <Section direction={:column} event_target={@myself}>
+      <PrimaryAttributes
+        title={primary_attributes_title(@player)}
+        attributes={primary_attributes(@player)}
+      />
+      <div class="flex gap-8 flex-wrap">
+        {#if is_pitcher(@player)}
+          <div class="grow"><Pitches pitches={attributes_for(@player, :pitches)} /></div>
+          <div class="grow"><PitchingAttributes player={@player} positions={attributes_for(@player, :positions)} /></div>
+          <div class="grow"><RunningBuntingAttributes
+              running_attributes={attributes_for(@player, :baserunning)}
+              bunting_attributes={attributes_for(@player, :bunting)}
+            /></div>
+        {#else}
+          <div class="grow"><FieldingAttributes attributes={attributes_for(@player, :fielding)} /></div>
+          <div class="grow"><Positions attributes={attributes_for(@player, :positions)} /></div>
+          <div class="grow"><RunningBuntingAttributes
+              running_attributes={attributes_for(@player, :baserunning)}
+              bunting_attributes={attributes_for(@player, :bunting)}
+            /></div>
+        {/if}
+      </div>
+    </Section>
     """
   end
 
@@ -123,7 +132,7 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes do
           |> order_of_attributes()
           |> Enum.reduce([], &[{&1, Keyword.get(attrs, &1, [])} | &2])
           |> Enum.filter(fn
-              {_name, ratings} -> not Enum.empty?(ratings)
+            {_name, ratings} -> not Enum.empty?(ratings)
           end)
           |> Enum.reverse()
 
@@ -133,8 +142,12 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes do
 
   defp order_of_attributes(attribute_group) do
     cond do
-      attribute_group == :positions -> positions()
-      attribute_group == :pitches -> pitches()
+      attribute_group == :positions ->
+        positions()
+
+      attribute_group == :pitches ->
+        pitches()
+
       true ->
         apply(Players.Attribute, String.to_atom("#{attribute_group}_attributes"), [])
     end

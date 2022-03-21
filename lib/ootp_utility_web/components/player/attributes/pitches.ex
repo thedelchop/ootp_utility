@@ -24,19 +24,24 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes.Pitches do
 
   def render(assigns) do
     ~F"""
-      <Table id={"player-pitch-ratings"} data={{name, ratings} <- @pitches} header_class={&header_class/2} column_class={&column_class/2}>
-        <Column label={"Pitches"}>
-          {attribute_name(name)}
-        </Column>
+    <Table
+      id="player-pitch-ratings"
+      data={{name, ratings} <- @pitches}
+      header_class={&header_class/2}
+      column_class={&column_class/2}
+    >
+      <Column label="Pitches">
+        {attribute_name(name)}
+      </Column>
 
-        <Column label="Ability">
-          {as_number(Keyword.get(ratings, :ability))}
-        </Column>
+      <Column label="Ability">
+        {as_number(Keyword.get(ratings, :ability))}
+      </Column>
 
-        <Column label="Talent">
-          {as_number(Keyword.get(ratings, :talent))}
-        </Column>
-      </Table>
+      <Column label="Talent">
+        {as_number(Keyword.get(ratings, :talent))}
+      </Column>
+    </Table>
     """
   end
 
@@ -48,7 +53,7 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes.Pitches do
     assigns = %{rating: rating}
 
     ~F"""
-      <span class={"text-rating-#{@rating * 2}"}>{@rating}</span>
+    <span class={"text-rating-#{@rating * 2}"}>{@rating}</span>
     """
   end
 

@@ -13,21 +13,25 @@ defmodule OOTPUtilityWeb.Components.Team.NameWithLogo do
 
   def render(assigns) do
     ~F"""
-      <LiveRedirect to={path_to_team(@team, @socket)}>
-        <div class={container_class(@class)}>
-          <div class="flex-shrink-0 h-4 lg:h-8 h-4 lg:w-8">
-            <img class="h-4 lg:h-8 w-4 lg:w-8 rounded-full mt-1.5 lg:mt-0" src={Routes.static_path(@socket, "/images/logos/#{@team.logo_filename}")} alt="">
+    <LiveRedirect to={path_to_team(@team, @socket)}>
+      <div class={container_class(@class)}>
+        <div class="flex-shrink-0 h-4 lg:h-8 h-4 lg:w-8">
+          <img
+            class="h-4 lg:h-8 w-4 lg:w-8 rounded-full mt-1.5 lg:mt-0"
+            src={Routes.static_path(@socket, "/images/logos/#{@team.logo_filename}")}
+            alt=""
+          />
+        </div>
+        <div class="ml-2 mt-1">
+          <div class="lg:hidden">
+            {@team.abbr}
           </div>
-          <div class="ml-2 mt-1">
-            <div class="lg:hidden">
-              {@team.abbr}
-            </div>
-            <div class="hidden lg:block">
-              {team_name_or_abbr(@team, @compact)}
-            </div>
+          <div class="hidden lg:block">
+            {team_name_or_abbr(@team, @compact)}
           </div>
         </div>
-      </LiveRedirect>
+      </div>
+    </LiveRedirect>
     """
   end
 

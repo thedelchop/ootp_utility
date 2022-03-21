@@ -52,41 +52,42 @@ defmodule OOTPUtilityWeb.Components.Shared.Table do
 
   def render(assigns) do
     ~F"""
-      <table class={table_classes(@expanded)}>
-        <thead class={"bg-gray-100"}>
-          <tr>
-            {#for {col, index} <- Enum.with_index(@cols)}
-              <th class={header_class_fun(@header_class).(col, index)}>
-                {#if !is_nil(col.sort_by) && assigns.sorted_by == col.label}
+    <table class={table_classes(@expanded)}>
+      <thead class="bg-gray-100">
+        <tr>
+          {#for {col, index} <- Enum.with_index(@cols)}
+            <th class={header_class_fun(@header_class).(col, index)}>
+              {#if !is_nil(col.sort_by) && assigns.sorted_by == col.label}
                 <a :on-click="sorted_click" phx-value-value={col.label} href="#">
                   <span>
-                  {col.label}
-                  <Chevron direction={if assigns.sort_reverse, do: :up, else: :down}/>
+                    {col.label}
+                    <Chevron direction={if assigns.sort_reverse, do: :up, else: :down} />
                   </span>
                 </a>
-                {/if}
-                {#if !is_nil(col.sort_by) && assigns.sorted_by != col.label}
-                  <a :on-click="sorted_click" phx-value-value={col.label} href="#">
-                    {col.label}
-                  </a>
-                {/if}
-                {#if is_nil(col.sort_by)}
+              {/if}
+              {#if !is_nil(col.sort_by) && assigns.sorted_by != col.label}
+                <a :on-click="sorted_click" phx-value-value={col.label} href="#">
                   {col.label}
-                {/if}
-              </th>
-            {/for}
-          </tr>
-        </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
-          <tr
-            :for={{item, index} <- Enum.with_index(@sorted_data)}
-            class={row_class_fun(@row_class).(item, index)}>
-            <td :for.index={index <- @cols} class={column_class_fun(@column_class).(item, index)}>
-              <#slot name="cols" index={index} :args={item: item}/>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                </a>
+              {/if}
+              {#if is_nil(col.sort_by)}
+                {col.label}
+              {/if}
+            </th>
+          {/for}
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <tr
+          :for={{item, index} <- Enum.with_index(@sorted_data)}
+          class={row_class_fun(@row_class).(item, index)}
+        >
+          <td :for.index={index <- @cols} class={column_class_fun(@column_class).(item, index)}>
+            <#slot name="cols" index={index} :args={item: item} />
+          </td>
+        </tr>
+      </tbody>
+    </table>
     """
   end
 

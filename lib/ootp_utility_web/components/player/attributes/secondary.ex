@@ -16,7 +16,10 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes.Secondary do
     <div class={container_classes()}>
       <Pitches pitches={attributes_for(@attributes, :pitches)} />
       <PitchingAttributes player={@player} positions={attributes_for(@attributes, :positions)} />
-      <RunningBuntingAttributes running_attributes={attributes_for(@attributes, :baserunning)} bunting_attributes={attributes_for(@attributes, :bunting)} />
+      <RunningBuntingAttributes
+        running_attributes={attributes_for(@attributes, :baserunning)}
+        bunting_attributes={attributes_for(@attributes, :bunting)}
+      />
     </div>
     """
   end
@@ -26,7 +29,10 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes.Secondary do
     <div class={container_classes()}>
       <FieldingAttributes attributes={attributes_for(@attributes, :fielding)} />
       <Positions attributes={attributes_for(@attributes, :positions)} />
-      <RunningBuntingAttributes running_attributes={attributes_for(@attributes, :baserunning)} bunting_attributes={attributes_for(@attributes, :bunting)} />
+      <RunningBuntingAttributes
+        running_attributes={attributes_for(@attributes, :baserunning)}
+        bunting_attributes={attributes_for(@attributes, :bunting)}
+      />
     </div>
     """
   end

@@ -7,7 +7,7 @@ defmodule OOTPUtilityWeb.DivisionLive do
   @impl true
   def render(assigns) do
     ~F"""
-      <Division id={"#{@slug}-standings"} division={@division} />
+    <Division id={"#{@slug}-standings"} division={@division} />
     """
   end
 

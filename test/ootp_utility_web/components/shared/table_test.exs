@@ -19,19 +19,19 @@ defmodule OOTPUtilityWeb.Components.Shared.TableTest do
   test_snapshot "Renders a table with each of the specified columns", %{assigns: assigns} do
     render_surface do
       ~F"""
-        <Table id={"test-table"} data={standing <- @standings}>
-          <Column label="Wins">
-            {standing[:wins]}
-          </Column>
+      <Table id="test-table" data={standing <- @standings}>
+        <Column label="Wins">
+          {standing[:wins]}
+        </Column>
 
-          <Column label="Losses">
-            {standing[:losses]}
-          </Column>
+        <Column label="Losses">
+          {standing[:losses]}
+        </Column>
 
-          <Column label="GB">
-            {standing[:games_behind]}
-          </Column>
-        </Table>
+        <Column label="GB">
+          {standing[:games_behind]}
+        </Column>
+      </Table>
       """
     end
   end
@@ -43,19 +43,19 @@ defmodule OOTPUtilityWeb.Components.Shared.TableTest do
 
     render_surface do
       ~F"""
-        <Table id={"test-table"} data={standing <- @standings} header_class={header_class}>
-          <Column label="Wins">
-            {standing[:wins]}
-          </Column>
+      <Table id="test-table" data={standing <- @standings} header_class={header_class}>
+        <Column label="Wins">
+          {standing[:wins]}
+        </Column>
 
-          <Column label="Losses">
-            {standing[:losses]}
-          </Column>
+        <Column label="Losses">
+          {standing[:losses]}
+        </Column>
 
-          <Column label="GB">
-            {standing[:games_behind]}
-          </Column>
-        </Table>
+        <Column label="GB">
+          {standing[:games_behind]}
+        </Column>
+      </Table>
       """
     end
   end
@@ -65,19 +65,19 @@ defmodule OOTPUtilityWeb.Components.Shared.TableTest do
 
     render_surface do
       ~F"""
-        <Table id={"test-table"} data={standing <- @standings} row_class={row_class}>
-          <Column label="Wins">
-            {standing[:wins]}
-          </Column>
+      <Table id="test-table" data={standing <- @standings} row_class={row_class}>
+        <Column label="Wins">
+          {standing[:wins]}
+        </Column>
 
-          <Column label="Losses">
-            {standing[:losses]}
-          </Column>
+        <Column label="Losses">
+          {standing[:losses]}
+        </Column>
 
-          <Column label="GB">
-            {standing[:games_behind]}
-          </Column>
-        </Table>
+        <Column label="GB">
+          {standing[:games_behind]}
+        </Column>
+      </Table>
       """
     end
   end

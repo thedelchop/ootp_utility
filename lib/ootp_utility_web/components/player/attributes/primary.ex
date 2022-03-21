@@ -24,27 +24,32 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes.Primary do
 
   def render(assigns) do
     ~F"""
-      <Table id={"primary-player-attributes"} data={{name, ratings} <- @attributes} header_class={&header_class/2} column_class={&column_class/2}>
-        <Column label={@title}>
-          {attribute_name(name)}
-        </Column>
+    <Table
+      id="primary-player-attributes"
+      data={{name, ratings} <- @attributes}
+      header_class={&header_class/2}
+      column_class={&column_class/2}
+    >
+      <Column label={@title}>
+        {attribute_name(name)}
+      </Column>
 
-        <Column label="Ability">
-          {as_graph(Keyword.get(ratings, :ability))}
-        </Column>
+      <Column label="Ability">
+        {as_graph(Keyword.get(ratings, :ability))}
+      </Column>
 
-        <Column label="Vs Left">
-          {as_graph(Keyword.get(ratings, :ability_vs_left))}
-        </Column>
+      <Column label="Vs Left">
+        {as_graph(Keyword.get(ratings, :ability_vs_left))}
+      </Column>
 
-        <Column label="Vs Right">
-          {as_graph(Keyword.get(ratings, :ability_vs_right))}
-        </Column>
+      <Column label="Vs Right">
+        {as_graph(Keyword.get(ratings, :ability_vs_right))}
+      </Column>
 
-        <Column label="Talent">
-          {as_graph(Keyword.get(ratings, :talent))}
-        </Column>
-      </Table>
+      <Column label="Talent">
+        {as_graph(Keyword.get(ratings, :talent))}
+      </Column>
+    </Table>
     """
   end
 
@@ -64,7 +69,15 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes.Primary do
     assigns = %{rating: rating}
 
     ~F"""
-      <div class={"bg-rating-#{@rating * 2}", "w-#{@rating*2}/20", "pl-2", "text-large", "text-gray-700", "text-left", "drop-shadow-lg rounded-sm"}>{@rating}</div>
+    <div class={
+      "bg-rating-#{@rating * 2}",
+      "w-#{@rating * 2}/20",
+      "pl-2",
+      "text-large",
+      "text-gray-700",
+      "text-left",
+      "drop-shadow-lg rounded-sm"
+    }>{@rating}</div>
     """
   end
 
@@ -72,7 +85,7 @@ defmodule OOTPUtilityWeb.Components.Player.Attributes.Primary do
     assigns = %{rating: rating}
 
     ~F"""
-      <span class={"text-rating-#{@rating * 2}"}>{@rating}</span>
+    <span class={"text-rating-#{@rating * 2}"}>{@rating}</span>
     """
   end
 

@@ -43,7 +43,12 @@ defmodule OOTPUtility.Factories.Players.AttributeFactory do
         positions_experience
         |> Enum.map(fn
           {position, experience} ->
-            insert(:attribute, name: Atom.to_string(position), type: :ability, value: experience, player: player)
+            insert(:attribute,
+              name: Atom.to_string(position),
+              type: :ability,
+              value: experience,
+              player: player
+            )
         end)
 
         player

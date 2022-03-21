@@ -30,7 +30,7 @@ defmodule OOTPUtilityWeb.Components.Player.HeaderTest do
 
     render_surface do
       ~F"""
-        <Header id={"player-header"} player={player} />
+      <Header id="player-header" player={player} />
       """
     end
   end

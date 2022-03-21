@@ -66,7 +66,7 @@ defmodule OOTPUtilityWeb.Components.Statistics.LeaderboardTest do
 
     render_surface do
       ~F"""
-        <Leaderboard leaders={leaders} />
+      <Leaderboard leaders={leaders} />
       """
     end
   end

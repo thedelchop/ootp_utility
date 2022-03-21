@@ -17,18 +17,18 @@ defmodule OOTPUtilityWeb.Components.Team.Leaders do
 
   def render(assigns) do
     ~F"""
-      <div class="bg-white overflow-hidden shadow rounded-lg divide-y divide-gray-200 p-4">
-        <SectionHeader>Team Leaders</SectionHeader>
-        <Tabs id="team_leaders" class="mb-4">
-          <Tab label="Hitting">
-            <Leaderboard leaders={batting_leaders(@team)} />
-          </Tab>
-          <Tab label="Pitching">
-            <Leaderboard leaders={pitching_leaders(@team)} />
-          </Tab>
-        </Tabs>
-        <LiveRedirect class="border-none" to="#">Sortable Stats</LiveRedirect>
-      </div>
+    <div class="bg-white overflow-hidden shadow rounded-lg divide-y divide-gray-200 p-4">
+      <SectionHeader>Team Leaders</SectionHeader>
+      <Tabs id="team_leaders" class="mb-4">
+        <Tab label="Hitting">
+          <Leaderboard leaders={batting_leaders(@team)} />
+        </Tab>
+        <Tab label="Pitching">
+          <Leaderboard leaders={pitching_leaders(@team)} />
+        </Tab>
+      </Tabs>
+      <LiveRedirect class="border-none" to="#">Sortable Stats</LiveRedirect>
+    </div>
     """
   end
 

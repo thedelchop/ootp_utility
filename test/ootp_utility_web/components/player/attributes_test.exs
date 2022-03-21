@@ -36,7 +36,7 @@ defmodule OOTPUtilityWeb.Components.Player.AttributesTest do
 
     render_surface do
       ~F"""
-        <Attributes id={"player-attributes"} player={player} />
+      <Attributes id="player-attributes" player={player} />
       """
     end
   end
@@ -65,7 +65,7 @@ defmodule OOTPUtilityWeb.Components.Player.AttributesTest do
 
     render_surface do
       ~F"""
-        <Attributes id={"player-attributes"} player={player} />
+      <Attributes id="player-attributes" player={player} />
       """
     end
   end

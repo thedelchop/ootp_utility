@@ -14,7 +14,7 @@ defmodule OOTPUtilityWeb.Components.Team.LeadersTest do
 
     render_surface do
       ~F"""
-        <Leaders id= {"#{team.slug}-leaderboard"} team={team} />
+      <Leaders id={"#{team.slug}-leaderboard"} team={team} />
       """
     end
   end

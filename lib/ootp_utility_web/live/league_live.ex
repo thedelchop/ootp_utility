@@ -7,7 +7,7 @@ defmodule OOTPUtilityWeb.LeagueLive do
   @impl true
   def render(assigns) do
     ~F"""
-      <League id={"#{@slug}-standings"} league={@league} />
+    <League id={"#{@slug}-standings"} league={@league} />
     """
   end
 

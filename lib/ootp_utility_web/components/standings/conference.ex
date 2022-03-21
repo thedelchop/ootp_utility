@@ -23,24 +23,27 @@ defmodule OOTPUtilityWeb.Components.Standings.Conference do
 
   def render(assigns) do
     ~F"""
-      <div class="shadow border-b border-gray-200 rounded-lg">
-        <div class="col-span-2 pb-4 border-b border-gray-200">
-          <LiveRedirect to={path_to_conference(@conference, @socket)}>
-            <h3 class="mt-2 ml-2 text-md font-medium text-gray-900">
-              {name(@conference)}
-            </h3>
-          </LiveRedirect>
-        </div>
-        <div class="grid grid-cols-1 gap-4 lg:gap-8">
-          {#if has_divisions?(@conference)}
-            {#for division <- Enum.reverse(@conference.divisions)}
-              <Division id={child_id(@conference, division)} division={division} />
-            {/for}
-          {#else}
-            <Teams id={child_id(@conference, @standings.team_standings)} standings={@standings.team_standings} />
-          {/if}
-        </div>
+    <div class="shadow border-b border-gray-200 rounded-lg">
+      <div class="col-span-2 pb-4 border-b border-gray-200">
+        <LiveRedirect to={path_to_conference(@conference, @socket)}>
+          <h3 class="mt-2 ml-2 text-md font-medium text-gray-900">
+            {name(@conference)}
+          </h3>
+        </LiveRedirect>
       </div>
+      <div class="grid grid-cols-1 gap-4 lg:gap-8">
+        {#if has_divisions?(@conference)}
+          {#for division <- Enum.reverse(@conference.divisions)}
+            <Division id={child_id(@conference, division)} division={division} />
+          {/for}
+        {#else}
+          <Teams
+            id={child_id(@conference, @standings.team_standings)}
+            standings={@standings.team_standings}
+          />
+        {/if}
+      </div>
+    </div>
     """
   end
 

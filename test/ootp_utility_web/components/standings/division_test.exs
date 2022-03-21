@@ -48,7 +48,7 @@ defmodule OOTPUtilityWeb.Components.Standings.DivisionTest do
 
     render_surface do
       ~F"""
-        <DivisionStandings id={"#{division.slug}-standings"} division={division} />
+      <DivisionStandings id={"#{division.slug}-standings"} division={division} />
       """
     end
   end
@@ -98,7 +98,7 @@ defmodule OOTPUtilityWeb.Components.Standings.DivisionTest do
 
     render_surface do
       ~F"""
-        <DivisionStandings id={"#{division.slug}-standings"} division={division} />
+      <DivisionStandings id={"#{division.slug}-standings"} division={division} />
       """
     end
   end
