@@ -16,3 +16,6 @@ erl_crash.dump
 
 # Static artifacts
 node_modules
+
+# Ignore any CSV data files used for development
+/priv/csv
