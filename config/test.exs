@@ -1,5 +1,8 @@
 import Config
 
+# Configure database
+import_config "db.exs"
+
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
 config :ootp_utility, OOTPUtilityWeb.Endpoint,

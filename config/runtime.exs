@@ -15,17 +15,17 @@ if config_env() == :prod do
       """
 
   config :ootp_utility, OOTPUtility.Repo,
-    # ssl: true,
-    # socket_options: [:inet6],
+    ssl: true,
+    socket_options: [:inet6],
     url: database_url,
     pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10")
 
-  secret_key_base =
-    System.get_env("SECRET_KEY_BASE") ||
-      raise """
-      environment variable SECRET_KEY_BASE is missing.
-      You can generate one by calling: mix phx.gen.secret
-      """
+  secret_key_base = "Kds/Bg9F3kZnI5Z2ICiU3AKyj9u/nOFvOe91RVUUA4D3WAeJwnzweycwYN8GIcuz"
+  # System.get_env("SECRET_KEY_BASE") ||
+  #   raise """
+  #   environment variable SECRET_KEY_BASE is missing.
+  #   You can generate one by calling: mix phx.gen.secret
+  #   """
 
   config :ootp_utility, OOTPUtilityWeb.Endpoint,
     http: [

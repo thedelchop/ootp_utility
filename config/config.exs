@@ -14,7 +14,6 @@ config :ootp_utility,
 # Configures the endpoint
 config :ootp_utility, OOTPUtilityWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "EM5qknKTZHK3AxMp7vXtJM3VYC6DlWNeQlVUPvm4RjdAJDJtDTRaZug/rpnHoxyo",
   render_errors: [view: OOTPUtilityWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: OOTPUtility.PubSub,
   live_view: [signing_salt: "D1r/CG3Y"]
@@ -67,9 +66,6 @@ config :surface, :components, [
 ]
 
 config :ootp_utility, :import_stages, System.schedulers_online()
-
-# Configure database
-import_config "db.exs"
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
