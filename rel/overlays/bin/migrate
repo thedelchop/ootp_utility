@@ -1,0 +1,3 @@
+#!/bin/sh
+cd -P -- "$(dirname -- "$0")"
+exec ./ootp_utility eval OOTPUtility.Release.migrate
