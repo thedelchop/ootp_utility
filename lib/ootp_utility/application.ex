@@ -7,6 +7,8 @@ defmodule OOTPUtility.Application do
 
   @impl true
   def start(_type, _args) do
+    topologies = Application.get_env(:libcluster, :topologies) || []
+
     children = [
       # Start the Ecto repository
       OOTPUtility.Repo,
@@ -19,7 +21,10 @@ defmodule OOTPUtility.Application do
       # Start a worker by calling: OOTPUtility.Worker.start_link(arg)
       OOTPUtility.Imports.Agent,
       # Start a TaskSupervisor to track our import tasks
-      {Task.Supervisor, name: OOTPUtility.ImportTaskSupervisor}
+      {Task.Supervisor, name: OOTPUtility.ImportTaskSupervisor},
+
+      # Setup a Cluster supervisor to allow communication between nodes on Fly.io
+      {Cluster.Supervisor, [topologies, [name: HelloElixir.ClusterSupervisor]]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

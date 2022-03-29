@@ -4,7 +4,7 @@ defmodule OOTPUtility.MixProject do
   def project do
     [
       app: :ootp_utility,
-      version: "0.1.0",
+      version: "0.3.0",
       elixir: "~> 1.13",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:gettext] ++ Mix.compilers() ++ [:surface],
@@ -12,7 +12,8 @@ defmodule OOTPUtility.MixProject do
       aliases: aliases(),
       deps: deps(),
       build_embedded: Mix.env() == :prod,
-      start_permanent: Mix.env() == :prod
+      start_permanent: Mix.env() == :prod,
+      releases: releases()
     ]
   end
 
@@ -47,6 +48,7 @@ defmodule OOTPUtility.MixProject do
       {:flow, "~> 1.0"},
       {:gettext, "~> 0.18"},
       {:html_sanitize_ex, "~> 1.4"},
+      {:libcluster, "~> 3.3"},
       {:jason, "~> 1.2"},
       {:morphix, "~> 0.8.0"},
       {:phoenix, "~> 1.6", override: true},
@@ -83,6 +85,15 @@ defmodule OOTPUtility.MixProject do
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.deploy": ["esbuild default --minify", "phx.digest"]
+    ]
+  end
+
+  defp releases do
+    [
+      ootp_utility: [
+        include_executables_for: [:unix],
+        cookie: "LjohwnSJp04uz6ucDTWt4tn9gNYVr7BmyLILKFsTCkBiWxZKp6_8gA=="
+      ]
     ]
   end
 end
