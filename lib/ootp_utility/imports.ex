@@ -101,7 +101,33 @@ defmodule OOTPUtility.Imports do
     end)
   end
 
+  def import_from_archive(zip_file_path) do
+    unzipped_content =
+      zip_file_path
+      |> String.to_charlist()
+      |> :zip.unzip([{:cwd, ~c'./csvs/'}])
+
+    case unzipped_content do
+      {:ok, [file | _] = contents} ->
+        IO.puts("League zip files extracted successfully")
+
+        dirname = Path.dirname(file) <> "/"
+
+        import_all_from_path_async(dirname)
+
+        {:ok, contents}
+
+      {:error, error} ->
+        IO.puts("League zip files extraction failed")
+
+        {:ok, error}
+    end
+  end
+
   def import_all_from_path_async(path) do
+    require IEx
+    IEx.pry()
+
     [
       Imports.Leagues.League,
       Imports.Leagues.Conference,
