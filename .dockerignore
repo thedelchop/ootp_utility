@@ -19,3 +19,4 @@ node_modules
 
 # Ignore any CSV data files used for development
 /priv/csv
+/csvs

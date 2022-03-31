@@ -37,3 +37,5 @@ npm-debug.log
 
 # Ignore the auto generated JS hooks files created by Surface
 /assets/js/_hooks/
+
+/csvs
