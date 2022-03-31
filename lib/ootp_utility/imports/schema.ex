@@ -114,7 +114,12 @@ defmodule OOTPUtility.Imports.Schema do
   end
 
   def write_records_to_database(_module, attrs, schema) do
-    {_, records} = OOTPUtility.Repo.insert_all(schema, attrs, returning: [:id])
+    {_, records} =
+      OOTPUtility.Repo.insert_all(schema, attrs,
+        on_conflict: :replace_all,
+        conflict_target: [:id],
+        returning: [:id]
+      )
 
     {Enum.map(records, & &1.id), attrs}
   end
