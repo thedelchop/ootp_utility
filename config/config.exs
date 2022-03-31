@@ -66,7 +66,13 @@ config :surface, :components, [
    default_translator: {OOTPUtilityWeb.ErrorHelpers, :translate_error}}
 ]
 
-config :ootp_utility, :import_stages, System.schedulers_online()
+config :ootp_utility,
+       :import_stages,
+       String.to_integer(System.get_env("IMPORT_STAGES") || "#{System.schedulers_online()}")
+
+config :ootp_utility,
+       :uploads_directory,
+       System.get_env("UPLOADS_DIRECTORY") || "priv/csvs"
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

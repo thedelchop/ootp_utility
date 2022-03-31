@@ -39,7 +39,9 @@ defmodule OOTPUtilityWeb.UploadsLive do
       :csv_file,
       fn
         %{path: path}, %{client_name: client_name} ->
-          dest = Path.join(["./csvs", client_name])
+          dest_directory = Application.fetch_env!(:ootp_utility, :uploads_directory)
+
+          dest = Path.join([dest_directory, client_name])
 
           # The `static/uploads` directory must exist for `File.cp!/2` to work.
           File.cp!(path, dest)

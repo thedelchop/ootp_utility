@@ -71,7 +71,3 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
-
-config :ootp_utility,
-       :import_stages,
-       String.to_integer(System.get_env("IMPORT_STAGES") || "#{System.schedulers_online()}")

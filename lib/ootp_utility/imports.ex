@@ -102,10 +102,12 @@ defmodule OOTPUtility.Imports do
   end
 
   def import_from_archive(zip_file_path) do
+    dest = to_charlist(Application.fetch_env!(:ootp_utility, :uploads_directory))
+
     unzipped_content =
       zip_file_path
       |> String.to_charlist()
-      |> :zip.unzip([{:cwd, ~c'./csvs/'}])
+      |> :zip.unzip([{:cwd, dest}])
 
     case unzipped_content do
       {:ok, [file | _] = contents} ->
@@ -125,9 +127,6 @@ defmodule OOTPUtility.Imports do
   end
 
   def import_all_from_path_async(path) do
-    require IEx
-    IEx.pry()
-
     [
       Imports.Leagues.League,
       Imports.Leagues.Conference,
