@@ -22,9 +22,8 @@ defmodule OOTPUtility.Application do
       OOTPUtility.Imports.Agent,
       # Start a TaskSupervisor to track our import tasks
       {Task.Supervisor, name: OOTPUtility.ImportTaskSupervisor},
-
       # Setup a Cluster supervisor to allow communication between nodes on Fly.io
-      {Cluster.Supervisor, [topologies, [name: HelloElixir.ClusterSupervisor]]}
+      {Cluster.Supervisor, [topologies, [name: OOTPUtility.ClusterSupervisor]]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
