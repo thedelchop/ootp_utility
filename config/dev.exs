@@ -21,7 +21,7 @@ config :ootp_utility, OOTPUtilityWeb.Endpoint,
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
     tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
   ],
-  secret_key_base: System.get_env("SECRET_KEY_BASE")
+  secret_key_base: "OI/yadtoYx1TU53+C1/Zddh+dVa5dqZk77ULWy9KEKs9RCTeflYsmHru9cSqLEDL"
 
 # ## SSL Support
 #

@@ -8,7 +8,7 @@ import_config "db.exs"
 config :ootp_utility, OOTPUtilityWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
   server: false,
-  secret_key_base: System.get_env("SECRET_KEY_BASE")
+  secret_key_base: "OI/yadtoYx1TU53+C1/Zddh+dVa5dqZk77ULWy9KEKs9RCTeflYsmHru9cSqLEDL"
 
 # In test we don't send emails.
 config :ootp_utility, OOTPUtility.Mailer, adapter: Swoosh.Adapters.Test
