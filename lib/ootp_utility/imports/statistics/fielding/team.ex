@@ -31,6 +31,6 @@ defmodule OOTPUtility.Imports.Statistics.Fielding.Team do
           }
         } = _changeset
       ) do
-    OOTPUtility.Imports.Agent.in_cache?(:teams, team_id)
+    OOTPUtility.Imports.ImportAgent.in_cache?(:teams, team_id)
   end
 end

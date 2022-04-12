@@ -36,6 +36,6 @@ defmodule OOTPUtility.Imports.Players.Attributes.Running do
   end
 
   def validate_changeset(%Ecto.Changeset{changes: %{player_id: player_id}} = _) do
-    Imports.Agent.in_cache?(:players, player_id)
+    Imports.ImportAgent.in_cache?(:players, player_id)
   end
 end

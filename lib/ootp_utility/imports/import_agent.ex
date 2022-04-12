@@ -1,7 +1,7 @@
-defmodule OOTPUtility.Imports.Agent do
+defmodule OOTPUtility.Imports.ImportAgent do
   use Agent
 
-  def start_link(_state) do
+  def start_link(_) do
     Agent.start_link(fn -> %{} end, name: __MODULE__)
   end
 

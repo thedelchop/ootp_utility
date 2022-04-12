@@ -46,7 +46,7 @@ defmodule OOTPUtility.Imports.Statistics.Batting.Game do
           }
         } = _changeset
       ) do
-    OOTPUtility.Imports.Agent.in_cache?(:teams, team_id) &&
-      OOTPUtility.Imports.Agent.in_cache?(:games, game_id)
+    OOTPUtility.Imports.ImportAgent.in_cache?(:teams, team_id) &&
+      OOTPUtility.Imports.ImportAgent.in_cache?(:games, game_id)
   end
 end

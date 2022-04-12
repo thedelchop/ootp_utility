@@ -78,7 +78,7 @@ defmodule OOTPUtility.Imports.Statistics.Pitching.Team do
               }
             } = _changeset
           ) do
-        OOTPUtility.Imports.Agent.in_cache?(:teams, team_id)
+        OOTPUtility.Imports.ImportAgent.in_cache?(:teams, team_id)
       end
 
       defp calculate_outs_pitched(%{ip: innings_pitched, ipf: innings_pitched_fraction} = _) do

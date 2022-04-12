@@ -9,6 +9,6 @@ defmodule OOTPUtility.Imports.Games.Score do
     do: Games.Score.put_composite_key(changeset)
 
   def validate_changeset(%Ecto.Changeset{changes: %{game_id: game_id}} = _) do
-    Imports.Agent.in_cache?(:games, game_id)
+    Imports.ImportAgent.in_cache?(:games, game_id)
   end
 end

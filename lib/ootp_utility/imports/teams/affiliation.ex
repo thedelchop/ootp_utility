@@ -10,7 +10,7 @@ defmodule OOTPUtility.Imports.Teams.Affiliation do
   def validate_changeset(
         %Ecto.Changeset{changes: %{team_id: team_id, affiliate_id: affiliate_id}} = _c
       ) do
-    OOTPUtility.Imports.Agent.in_cache?(:teams, team_id) &&
-      OOTPUtility.Imports.Agent.in_cache?(:teams, affiliate_id)
+    OOTPUtility.Imports.ImportAgent.in_cache?(:teams, team_id) &&
+      OOTPUtility.Imports.ImportAgent.in_cache?(:teams, affiliate_id)
   end
 end

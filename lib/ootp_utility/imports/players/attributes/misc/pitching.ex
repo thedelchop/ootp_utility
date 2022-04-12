@@ -44,7 +44,7 @@ defmodule OOTPUtility.Imports.Players.Attributes.Misc.Pitching do
   end
 
   def validate_changeset(%Ecto.Changeset{changes: %{id: player_id}} = _) do
-    Imports.Agent.in_cache?(:players, player_id)
+    Imports.ImportAgent.in_cache?(:players, player_id)
   end
 
   defp as_enum(:groundball_flyball_ratio, raw_value) do

@@ -37,7 +37,7 @@ defmodule OOTPUtility.Imports.Players.Morale do
   end
 
   def validate_changeset(%Ecto.Changeset{changes: %{player_id: player_id}} = _) do
-    Imports.Agent.in_cache?(:players, player_id)
+    Imports.ImportAgent.in_cache?(:players, player_id)
   end
 
   defp convert_player_role_value(value_as_string) do

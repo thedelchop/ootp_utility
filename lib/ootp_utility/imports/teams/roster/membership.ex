@@ -28,7 +28,7 @@ defmodule OOTPUtility.Imports.Teams.Roster.Membership do
     do: Teams.Roster.Membership.put_composite_key(changeset)
 
   def validate_changeset(%Ecto.Changeset{changes: %{team_id: team_id, player_id: player_id}} = _) do
-    Imports.Agent.in_cache?(:teams, team_id) &&
-      Imports.Agent.in_cache?(:players, player_id)
+    Imports.ImportAgent.in_cache?(:teams, team_id) &&
+      Imports.ImportAgent.in_cache?(:players, player_id)
   end
 end

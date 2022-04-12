@@ -17,6 +17,6 @@ defmodule OOTPUtility.Imports.Standings.TeamRecord do
     do: Standings.TeamRecord.put_composite_key(changeset)
 
   def validate_changeset(%Ecto.Changeset{changes: %{team_id: team_id}} = _) do
-    Imports.Agent.in_cache?(:teams, team_id)
+    Imports.ImportAgent.in_cache?(:teams, team_id)
   end
 end

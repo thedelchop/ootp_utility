@@ -129,7 +129,7 @@ defmodule OOTPUtility.Imports.Schema do
   defp write_imported_records_to_cache(new_record_ids, schema) do
     schema
     |> table_name()
-    |> OOTPUtility.Imports.Agent.put_cache(new_record_ids)
+    |> OOTPUtility.Imports.ImportAgent.put_cache(new_record_ids)
   end
 
   defp table_name(schema) do

@@ -50,8 +50,8 @@ defmodule OOTPUtility.Imports.Statistics.Batting.Player do
           }
         } = _
       ) do
-    OOTPUtility.Imports.Agent.in_cache?(:teams, team_id) &&
-      OOTPUtility.Imports.Agent.in_cache?(:players, player_id)
+    OOTPUtility.Imports.ImportAgent.in_cache?(:teams, team_id) &&
+      OOTPUtility.Imports.ImportAgent.in_cache?(:players, player_id)
   end
 
   def validate_changeset(_changeset), do: true

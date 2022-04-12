@@ -44,6 +44,6 @@ defmodule OOTPUtility.Imports.Statistics.Batting.Team do
   def should_import?(_attrs), do: true
 
   def validate_changeset(%Ecto.Changeset{changes: %{team_id: team_id}} = _) do
-    OOTPUtility.Imports.Agent.in_cache?(:teams, team_id)
+    OOTPUtility.Imports.ImportAgent.in_cache?(:teams, team_id)
   end
 end

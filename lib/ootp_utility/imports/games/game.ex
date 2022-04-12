@@ -64,7 +64,7 @@ defmodule OOTPUtility.Imports.Games.Game do
     changes
     |> Map.take(team_keys)
     |> Map.values()
-    |> Enum.all?(&Imports.Agent.in_cache?(:teams, &1))
+    |> Enum.all?(&Imports.ImportAgent.in_cache?(:teams, &1))
   end
 
   defp players_exist?(%Ecto.Changeset{changes: changes}) do
@@ -79,6 +79,6 @@ defmodule OOTPUtility.Imports.Games.Game do
     changes
     |> Map.take(player_keys)
     |> Map.values()
-    |> Enum.all?(&Imports.Agent.in_cache?(:players, &1))
+    |> Enum.all?(&Imports.ImportAgent.in_cache?(:players, &1))
   end
 end

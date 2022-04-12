@@ -29,7 +29,7 @@ defmodule OOTPUtility.Imports.Teams.Team do
 
   defp put_division_id(%Ecto.Changeset{changes: changes} = changeset) do
     with division_id <- Division.generate_foreign_key(changes) do
-      if OOTPUtility.Imports.Agent.in_cache?(:divisions, division_id) do
+      if OOTPUtility.Imports.ImportAgent.in_cache?(:divisions, division_id) do
         change(changeset, %{division_id: division_id})
       else
         change(changeset, %{division_id: nil})
@@ -39,7 +39,7 @@ defmodule OOTPUtility.Imports.Teams.Team do
 
   defp put_conference_id(%Ecto.Changeset{changes: changes} = changeset) do
     with conference_id <- Conference.generate_foreign_key(changes) do
-      if OOTPUtility.Imports.Agent.in_cache?(:conferences, conference_id) do
+      if OOTPUtility.Imports.ImportAgent.in_cache?(:conferences, conference_id) do
         change(changeset, %{conference_id: conference_id})
       else
         change(changeset, %{conference_id: nil})
