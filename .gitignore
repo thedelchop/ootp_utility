@@ -39,3 +39,6 @@ npm-debug.log
 /assets/js/_hooks/
 
 /csvs
+
+# Ignore the uploads directory
+/priv/uploads/
