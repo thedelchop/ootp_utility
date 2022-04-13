@@ -10,6 +10,7 @@ defmodule OOTPUtility.Imports do
     schema = Keyword.get(opts, :schema)
     headers = Keyword.get(opts, :headers, [])
     slug = Keyword.get(opts, :slug)
+    cache = Keyword.get(opts, :cache, false)
 
     quote do
       use OOTPUtility.Imports.CSV,
@@ -18,7 +19,8 @@ defmodule OOTPUtility.Imports do
 
       use OOTPUtility.Imports.Schema,
         schema: unquote(schema),
-        slug: unquote(slug)
+        slug: unquote(slug),
+        cache: unquote(cache)
 
       def import_from_path(path) do
         wildcard_path = [path, unquote(filename), "{_[1-50].csv,.csv}"] |> Enum.join()

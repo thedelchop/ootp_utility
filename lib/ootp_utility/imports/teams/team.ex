@@ -12,7 +12,8 @@ defmodule OOTPUtility.Imports.Teams.Team do
       {:logo_file_name, :logo_filename}
     ],
     schema: OOTPUtility.Teams.Team,
-    slug: [:name, :nickname]
+    slug: [:name, :nickname],
+    cache: true
 
   def sanitize_attributes(%{level: league_level} = attrs) do
     %{attrs | level: convert_league_level(league_level)}

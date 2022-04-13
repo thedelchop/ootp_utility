@@ -11,7 +11,8 @@ defmodule OOTPUtility.Imports.Leagues.League do
       {:logo_file_name, :logo_filename}
     ],
     schema: Leagues.League,
-    slug: :name
+    slug: :name,
+    cache: true
 
   def sanitize_attributes(
         %{

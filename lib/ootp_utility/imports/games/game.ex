@@ -20,7 +20,8 @@ defmodule OOTPUtility.Imports.Games.Game do
       {:starter1, :home_team_starter_id},
       {:save_pitcher, :save_pitcher_id}
     ],
-    schema: OOTPUtility.Games.Game
+    schema: OOTPUtility.Games.Game,
+    cache: true
 
   def sanitize_attributes(%{save_pitcher_id: "0"} = attrs) do
     sanitize_attributes(%{attrs | save_pitcher_id: nil})

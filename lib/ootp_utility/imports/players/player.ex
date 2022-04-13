@@ -12,7 +12,8 @@ defmodule OOTPUtility.Imports.Players.Player do
       {:national_pop, :national_popularity}
     ],
     schema: OOTPUtility.Players.Player,
-    slug: [:first_name, :last_name]
+    slug: [:first_name, :last_name],
+    cache: true
 
   def should_import?(_attrs), do: true
 

@@ -5,7 +5,8 @@ defmodule OOTPUtility.Imports.Leagues.Conference do
     from: "sub_leagues",
     headers: [{:sub_league_id, :id}],
     schema: Leagues.Conference,
-    slug: :name
+    slug: :name,
+    cache: true
 
   def should_import?(%{name: ""}), do: false
   def should_import?(_), do: true
