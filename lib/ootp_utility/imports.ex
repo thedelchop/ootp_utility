@@ -62,44 +62,6 @@ defmodule OOTPUtility.Imports do
     )
   end
 
-  def decode_files([file | []]) do
-    file
-    |> File.stream!(read_ahead: 100_000)
-    |> do_decode_file(true)
-    |> Flow.from_enumerable(stages: Application.fetch_env!(:ootp_utility, :import_stages))
-  end
-
-  def decode_files([file_with_headers | rest_of_files]) do
-    [headers] =
-      file_with_headers
-      |> File.stream!()
-      |> CSV.decode!(headers: false, strip_fields: true)
-      |> Enum.take(1)
-
-    file_with_headers_stream =
-      file_with_headers
-      |> File.stream!(read_ahead: 100_000)
-      |> do_decode_file(true)
-
-    rest_of_file_streams =
-      rest_of_files
-      |> Enum.map(&File.stream!(&1, read_ahead: 100_000))
-      |> Enum.flat_map(&Stream.chunk_every(&1, 10_000))
-      |> Enum.map(&do_decode_file(&1, headers))
-
-    Flow.from_enumerables([file_with_headers_stream] ++ rest_of_file_streams,
-      stages: Application.fetch_env!(:ootp_utility, :import_stages)
-    )
-  end
-
-  def do_decode_file(file_to_decode, headers) do
-    file_to_decode
-    |> CSV.decode!(
-      headers: headers,
-      strip_fields: true
-    )
-  end
-
   def import_from_archive(zip_file_path) do
     dest = to_charlist(Application.fetch_env!(:ootp_utility, :uploads_directory))
 
@@ -123,5 +85,43 @@ defmodule OOTPUtility.Imports do
 
         {:ok, error}
     end
+  end
+
+  defp decode_files([file | []]) do
+    file
+    |> File.stream!(read_ahead: 100_000)
+    |> do_decode_file(true)
+    |> Flow.from_enumerable(stages: Application.fetch_env!(:ootp_utility, :import_stages))
+  end
+
+  defp decode_files([file_with_headers | rest_of_files]) do
+    [headers] =
+      file_with_headers
+      |> File.stream!()
+      |> CSV.decode!(headers: false, strip_fields: true)
+      |> Enum.take(1)
+
+    file_with_headers_stream =
+      file_with_headers
+      |> File.stream!(read_ahead: 100_000)
+      |> do_decode_file(true)
+
+    rest_of_file_streams =
+      rest_of_files
+      |> Enum.map(&File.stream!(&1, read_ahead: 100_000))
+      |> Enum.flat_map(&Stream.chunk_every(&1, 10_000))
+      |> Enum.map(&do_decode_file(&1, headers))
+
+    Flow.from_enumerables([file_with_headers_stream] ++ rest_of_file_streams,
+      stages: Application.fetch_env!(:ootp_utility, :import_stages)
+    )
+  end
+
+  defp do_decode_file(file_to_decode, headers) do
+    file_to_decode
+    |> CSV.decode!(
+      headers: headers,
+      strip_fields: true
+    )
   end
 end
