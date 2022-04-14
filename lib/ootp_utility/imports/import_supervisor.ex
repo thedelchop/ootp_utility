@@ -13,19 +13,7 @@ defmodule OOTPUtility.Imports.ImportSupervisor do
     children = [
       {Registry, keys: :unique, name: Imports.StateRegistry},
       {Imports.ImportAgent, []},
-      :poolboy.child_spec(
-        :import_worker,
-        [
-          name: {:local, :import_worker},
-          worker_module: Imports.ImportWorker,
-          size: 10,
-          max_overflow: 0
-        ],
-        [
-          session,
-          path
-        ]
-      ),
+      poolboy_worker_pool_spec(session, path),
       {Imports.ImportState, {session, dependencies}}
     ]
 
@@ -36,5 +24,18 @@ defmodule OOTPUtility.Imports.ImportSupervisor do
     ]
 
     Supervisor.init(children, opts)
+  end
+
+  defp poolboy_worker_pool_spec(session, path) do
+    :poolboy.child_spec(
+      :import_worker,
+      [
+        name: {:local, :import_worker},
+        worker_module: Imports.ImportWorker,
+        size: 10,
+        max_overflow: 0
+      ],
+      [session, path]
+    )
   end
 end
