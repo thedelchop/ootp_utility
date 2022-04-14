@@ -5,16 +5,14 @@ defmodule OOTPUtility.Imports.ImportSession do
   alias OOTPUtility.Imports.{ImportState, ImportSupervisor, ImportWorker}
 
   def start_link(path) do
-    {:ok, session_pid} = GenServer.start_link(__MODULE__, path, name: __MODULE__)
-
-    ImportSupervisor.start_link({session_pid, build_dependency_graph(), path})
-
-    ImportState.import_available(session_pid, Imports.Leagues.League)
-
-    {:ok, session_pid}
+    GenServer.start_link(__MODULE__, path, name: __MODULE__)
   end
 
   def init(path) do
+    ImportSupervisor.start_link({self(), build_dependency_graph(), path})
+
+    ImportState.import_available(self(), Imports.Leagues.League)
+
     {:ok, path}
   end
 
@@ -23,7 +21,7 @@ defmodule OOTPUtility.Imports.ImportSession do
       IO.puts("Import appears to be finished, shutting down.")
       GenServer.stop(__MODULE__)
     else
-      GenServer.call(__MODULE__, :process_available_imports)
+      GenServer.call(__MODULE__, :process_available_imports, :infinity)
 
       process_available_imports(session)
     end

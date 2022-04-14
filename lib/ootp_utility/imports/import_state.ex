@@ -1,7 +1,7 @@
 defmodule OOTPUtility.Imports.ImportState do
   use GenServer
 
-  def start_link(session, dependency_graph) do
+  def start_link({session, dependency_graph}) do
     GenServer.start_link(__MODULE__, dependency_graph, name: via(session))
   end
 

@@ -38,10 +38,28 @@ defmodule OOTPUtility.Imports do
   end
 
   def import_from_path(module, files) do
-    files
-    |> decode_files()
-    |> module.import_from_csv()
-    |> module.import_from_attributes()
+    IO.puts("Starting import of #{module} records")
+
+    Benchmark.measure(
+      fn ->
+        files
+        |> decode_files()
+        |> module.import_from_csv()
+        |> module.import_from_attributes()
+      end,
+      module
+    )
+  end
+
+  def import_all_from_path(path) do
+    Benchmark.measure(
+      fn ->
+        {:ok, session} = Imports.ImportSession.start_link(path)
+
+        Imports.ImportSession.process_available_imports(session)
+      end,
+      "Complete import"
+    )
   end
 
   def decode_files([file | []]) do
@@ -96,11 +114,7 @@ defmodule OOTPUtility.Imports do
 
         dirname = Path.dirname(file) <> "/"
 
-        Benchmark.measure(fn ->
-          {:ok, session} = Imports.ImportSession.start_link(dirname)
-
-          Imports.ImportSession.process_available_imports(session)
-        end)
+        import_all_from_path(dirname)
 
         {:ok, contents}
 

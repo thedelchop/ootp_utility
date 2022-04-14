@@ -18,8 +18,6 @@ defmodule OOTPUtility.Application do
       {Phoenix.PubSub, name: OOTPUtility.PubSub},
       # Start the Endpoint (http/https)
       OOTPUtilityWeb.Endpoint,
-      # Start a worker by calling: OOTPUtility.Worker.start_link(arg)
-      OOTPUtility.Imports.ImportAgent,
       # Start a TaskSupervisor to track our import tasks
       {Task.Supervisor, name: OOTPUtility.ImportTaskSupervisor},
       # Setup a Cluster supervisor to allow communication between nodes on Fly.io
