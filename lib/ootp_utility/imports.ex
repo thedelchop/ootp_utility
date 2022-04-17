@@ -108,11 +108,11 @@ defmodule OOTPUtility.Imports do
 
     rest_of_file_streams =
       rest_of_files
-      |> Enum.map(&File.stream!(&1, read_ahead: 100_000))
-      |> Enum.flat_map(&Stream.chunk_every(&1, 10_000))
-      |> Enum.map(&do_decode_file(&1, headers))
+      |> Stream.map(&File.stream!(&1, read_ahead: 100_000))
+      |> Stream.flat_map(&Stream.chunk_every(&1, 10_000))
+      |> Stream.map(&do_decode_file(&1, headers))
 
-    Flow.from_enumerables([file_with_headers_stream] ++ rest_of_file_streams,
+    Flow.from_enumerables([file_with_headers_stream | rest_of_file_streams],
       stages: Application.fetch_env!(:ootp_utility, :import_stages)
     )
   end
