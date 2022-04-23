@@ -2,11 +2,19 @@ defmodule OOTPUtility.Statistics.Calculations do
   alias OOTPUtility.Statistics.{Batting, Pitching}
 
   @batting_stats [
+    :hits,
+    :batting_average,
+    :batting_average_on_balls_in_play,
+    :plate_appearances,
     :extra_base_hits,
     :isolated_power,
+    :on_base_percentage,
+    :on_base_plus_slugging,
     :runs_created,
     :singles,
-    :stolen_base_percentage
+    :slugging,
+    :stolen_base_percentage,
+    :total_bases
   ]
 
   @pitching_stats [
@@ -85,74 +93,6 @@ defmodule OOTPUtility.Statistics.Calculations do
 
   def do_calculate(attrs, stat) when stat in @pitching_stats,
     do: Pitching.Calculations.calculate(attrs, stat)
-
-  def do_calculate(%{at_bats: 0}, :batting_average), do: 0.0
-
-  def do_calculate(%{hits: h, at_bats: ab}, :batting_average) do
-    h / ab
-  end
-
-  def do_calculate(
-        %{
-          hits: h,
-          home_runs: hr,
-          at_bats: ab,
-          strikeouts: k,
-          sacrifice_flys: sf
-        } = _attrs,
-        :batting_average_on_balls_in_play
-      ) do
-    balls_in_play = ab - k - hr - sf
-
-    if balls_in_play > 0 do
-      (h - hr) / balls_in_play
-    else
-      0.0
-    end
-  end
-
-  def do_calculate(
-        %{
-          at_bats: ab,
-          hits: h,
-          walks: bb,
-          hit_by_pitch: hbp,
-          sacrifice_flys: sf
-        },
-        :on_base_percentage
-      ) do
-    on_base_attempts = ab + bb + hbp + sf
-
-    if on_base_attempts == 0, do: 0.0, else: (h + bb + hbp) / on_base_attempts
-  end
-
-  def do_calculate(%{at_bats: 0}, :slugging), do: 0.0
-
-  def do_calculate(
-        %{
-          at_bats: ab
-        } = attrs,
-        :slugging
-      ) do
-    total_bases = calculate(attrs, :total_bases)
-    total_bases / ab
-  end
-
-  def do_calculate(
-        %{
-          singles: s,
-          doubles: d,
-          triples: t,
-          home_runs: hr
-        },
-        :total_bases
-      ) do
-    s + 2 * d + 3 * t + 4 * hr
-  end
-
-  def do_calculate(attrs, :on_base_plus_slugging) do
-    calculate(attrs, :on_base_percentage) + calculate(attrs, :slugging)
-  end
 
   def do_calculate(attrs, stat), do: Map.get(attrs, stat)
 
