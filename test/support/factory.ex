@@ -11,6 +11,8 @@ defmodule OOTPUtility.Factory do
   use OOTPUtility.PlayerFactory
   use OOTPUtility.StandingsFactory
   use OOTPUtility.Statistics.BattingFactory
+  use OOTPUtility.Statistics.Batting.GameFactory
+  use OOTPUtility.Statistics.Pitching.GameFactory
   use OOTPUtility.Statistics.PitchingFactory
   use OOTPUtility.Teams.RosterFactory
   use OOTPUtility.Standings.TeamRecordFactory

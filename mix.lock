@@ -66,4 +66,5 @@
   "timex": {:hex, :timex, "3.7.6", "502d2347ec550e77fdf419bc12d15bdccd31266bb7d925b30bf478268098282f", [:mix], [{:combine, "~> 0.10", [hex: :combine, repo: "hexpm", optional: false]}, {:gettext, "~> 0.10", [hex: :gettext, repo: "hexpm", optional: false]}, {:tzdata, "~> 1.0", [hex: :tzdata, repo: "hexpm", optional: false]}], "hexpm", "a296327f79cb1ec795b896698c56e662ed7210cc9eb31f0ab365eb3a62e2c589"},
   "tzdata": {:hex, :tzdata, "1.1.0", "72f5babaa9390d0f131465c8702fa76da0919e37ba32baa90d93c583301a8359", [:mix], [{:hackney, "~> 1.17", [hex: :hackney, repo: "hexpm", optional: false]}], "hexpm", "18f453739b48d3dc5bcf0e8906d2dc112bb40baafe2c707596d89f3c8dd14034"},
   "unicode_util_compat": {:hex, :unicode_util_compat, "0.7.0", "bc84380c9ab48177092f43ac89e4dfa2c6d62b40b8bd132b1059ecc7232f9a78", [:rebar3], [], "hexpm", "25eee6d67df61960cf6a794239566599b09e17e668d3700247bc498638152521"},
+  "weighted_random": {:hex, :weighted_random, "0.1.0", "e028f43472b3bc971fadf9fdecce1ec7cd067823efab5e83913967b04186a79f", [:mix], [], "hexpm", "14e7ad5f4a07dae8fcf82a2ac0366df0ec08eacaafe5156b6282afaa77a45480"},
 }

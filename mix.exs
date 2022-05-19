@@ -70,6 +70,7 @@ defmodule OOTPUtility.MixProject do
       {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
+      {:weighted_random, "~> 0.1.0", only: [:test]},
       {:timex, ">= 3.7.6"}
     ]
   end

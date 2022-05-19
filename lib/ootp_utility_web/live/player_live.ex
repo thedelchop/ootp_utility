@@ -3,7 +3,7 @@ defmodule OOTPUtilityWeb.PlayerLive do
 
   alias OOTPUtility.Players
 
-  alias OOTPUtilityWeb.Components.Player.{Attributes, Header}
+  alias OOTPUtilityWeb.Components.Player.{Attributes, Header, GameLog}
 
   @impl true
   def render(assigns) do
@@ -11,6 +11,7 @@ defmodule OOTPUtilityWeb.PlayerLive do
     <div class="flex flex-col gap-4">
       <Header id={"#{@player.slug}-header"} player={@player} />
       <Attributes id={"#{@player.slug}-attributes"} player={@player} />
+      <GameLog id={"#{@player.slug}-game-log"} player={@player} />
     </div>
     """
   end

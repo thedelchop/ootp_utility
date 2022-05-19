@@ -41,7 +41,7 @@ defmodule OOTPUtility.Statistics do
   defguard is_batting_stat(stat) when stat in @batting_statistics
   defguard is_pitching_stat(stat) when stat in @pitching_statistics
 
-  alias OOTPUtility.{Repo, Teams, Leagues}
+  alias OOTPUtility.{Games, Leagues, Players, Repo, Teams, Leagues}
   alias Ecto.Association.NotLoaded
 
   alias OOTPUtility.Statistics.Batting, as: BattingStats
@@ -50,8 +50,96 @@ defmodule OOTPUtility.Statistics do
 
   import Ecto.Query
 
+  import OOTPUtility.Players, only: [is_pitcher: 1]
+
   defdelegate calculate(attrs, stat), to: OOTPUtility.Statistics.Calculations
   defdelegate round(attrs, stat), to: OOTPUtility.Statistics.Calculations
+
+  @type game_logs_for_options :: [
+          type: :pitching | :hitting,
+          limit: integer(),
+          before: Date.t() | nil,
+          after: Date.t() | nil
+        ]
+
+  @type game_statistics :: BattingStats.Game.t() | PitchingStats.Game.t()
+
+  @doc """
+    Returns a list of either %Statistics.Batting.Game{} or %Statistics.Pitching.Game{}
+    for the specified player.
+
+    The following options game be provided:
+
+      * `limit`  - Number of game logs to return
+      * `before` - Include games which occur on or before this date, defaults to the current league date
+      * `after`  - Include games which occur on or after this date, default to nil
+  """
+  @spec game_logs_for(Players.Player.t(), game_logs_for_options()) :: [game_statistics()]
+
+  def game_logs_for(player, opts \\ [])
+
+  def game_logs_for(%Players.Player{league: %NotLoaded{}} = player, opts) do
+    player
+    |> Repo.preload(:league)
+    |> game_logs_for(opts)
+  end
+
+  def game_logs_for(%Players.Player{league: %Leagues.League{current_date: date}} = player, opts) do
+    opts_with_defaults =
+      cond do
+        date_option_missing?(opts) ->
+          Keyword.put_new(opts, :before, date)
+
+        true ->
+          opts
+      end
+      |> Keyword.put_new(:limit, 10)
+
+    do_game_logs_for(player, opts_with_defaults)
+  end
+
+  defp do_game_logs_for(%Players.Player{} = player, opts) when is_pitcher(player) do
+    do_game_logs_for(PitchingStats.Game, player, opts)
+  end
+
+  defp do_game_logs_for(%Players.Player{} = player, opts) do
+    do_game_logs_for(BattingStats.Game, player, opts)
+  end
+
+  defp do_game_logs_for(query, %Players.Player{id: player_id} = _player, []) do
+    query
+    |> where([gs, _game], gs.player_id == ^player_id)
+    |> preload([:player, game: [:away_team, :home_team]])
+    |> Repo.all()
+  end
+
+  defp do_game_logs_for(query, player, [opt | rest]) do
+    case opt do
+      {:limit, limit} ->
+        query
+        |> limit(^limit)
+        |> do_game_logs_for(player, rest)
+
+      {:before, date} ->
+        query
+        |> join(:inner, [gs], game in Games.Game, on: gs.game_id == game.id)
+        |> where([_gs, game], game.date <= ^date)
+        |> do_game_logs_for(player, rest)
+
+      {:after, date} ->
+        query
+        |> join(:inner, [gs], game in Games.Game, on: gs.game_id == game.id)
+        |> where([_gs, game], game.date >= ^date)
+        |> do_game_logs_for(player, rest)
+
+      _ ->
+        do_game_logs_for(query, player, rest)
+    end
+  end
+
+  defp date_option_missing?(opts) do
+    not Keyword.has_key?(opts, :before) and not Keyword.has_key?(opts, :after)
+  end
 
   @doc """
     Retuns the ranking for the specified %Teams.Team{} in the specified scope,
